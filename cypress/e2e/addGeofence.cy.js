@@ -13,36 +13,31 @@
 
 describe("Add Geofence", () => {
 	it("authentication", () => {
-		cy.task("log", Cypress.env("URL"));
-		cy.task("log", Cypress.env("USERNAME"));
-		cy.task("log", Cypress.env("PASSWORD"));
-		cy.task("log", Cypress.env("IDENTITY_POOL_ID"));
-		cy.task("log", Cypress.env("USER_DOMAIN"));
-		cy.task("log", Cypress.env("USER_POOL_CLIENT_ID"));
-		cy.task("log", Cypress.env("USER_POOL_ID"));
-		cy.task("log", Cypress.env("WEB_SOCKET_URL"));
 		cy.visit(Cypress.env("URL"), {
 			auth: {
 				username: Cypress.env("USERNAME"),
 				password: Cypress.env("PASSWORD")
 			}
 		});
-		cy.wait(20000);
+		cy.wait(5000);
+		// cy.clearLocalStorage();
+		// cy.clearAllSessionStorage();
+		// cy.exec("rm -rf ~/Library/Application\\ Support/Google/Chrome");
 		cy.get('[id="Icon"]').click();
 		cy.wait(2000);
 		cy.contains("Settings").click();
 		cy.wait(2000);
 		cy.contains("Connect AWS Account").click();
 		cy.wait(2000);
-		cy.get('[placeholder="Enter IdentityPoolId"]').type(Cypress.env("IDENTITY_POOL_ID"));
+		cy.get('[placeholder="Enter IdentityPoolId"]').type(Cypress.env("IDENTITYPOOLID"));
 		cy.wait(2000);
-		cy.get('[placeholder="Enter UserDomain"]').type(Cypress.env("USER_DOMAIN"));
+		cy.get('[placeholder="Enter UserDomain"]').type(Cypress.env("USERDOMAIN"));
 		cy.wait(2000);
-		cy.get('[placeholder="Enter UserPoolClientId"]').type(Cypress.env("USER_POOL_CLIENT_ID"));
+		cy.get('[placeholder="Enter UserPoolClientId"]').type(Cypress.env("USERPOOLCLIENTID"));
 		cy.wait(2000);
-		cy.get('[placeholder="Enter UserPoolId"]').type(Cypress.env("USER_POOL_ID"));
+		cy.get('[placeholder="Enter UserPoolId"]').type(Cypress.env("USERPOOLID"));
 		cy.wait(2000);
-		cy.get('[placeholder="Enter WebSocketUrl"]').type(Cypress.env("WEB_SOCKET_URL"));
+		cy.get('[placeholder="Enter WebSocketUrl"]').type(Cypress.env("WEBSOCKETURL"));
 		cy.wait(2000);
 		cy.get('[class="amplify-button amplify-field-group__control amplify-button--primary"]').click();
 		cy.wait(6000);
@@ -55,7 +50,7 @@ describe("Add Geofence", () => {
 				[...els].forEach(el => {
 					cy.wait(5000);
 					cy.wrap(el).get('[placeholder="Username"]').eq(1).type(Cypress.env("EMAIL"));
-					cy.wrap(el).get('[placeholder="Password"]').eq(1).type(Cypress.env("EMAIL_PASS"));
+					cy.wrap(el).get('[placeholder="Password"]').eq(1).type(Cypress.env("EMAILPASS"));
 					cy.wrap(el).get('[name="signInSubmitButton"]').eq(1).click();
 				});
 			});

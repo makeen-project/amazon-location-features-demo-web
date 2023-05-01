@@ -14,13 +14,15 @@ export default defineConfig({
 	chromeWebSecurity: false,
 	e2e: {
 		setupNodeEvents(on, config) {
-			on('task', {
+			on("task", {
+				/* Logging */
 				log(message) {
-				  console.log(message)
-		
-				  return null
-				},
-			  })
+					console.log(message);
+
+					return null;
+				}
+			});
+
 			// eslint-disable-next-line no-param-reassign
 			config = cypressBrowserPermissionsPlugin(on, config);
 			allureWriter(on, config);
@@ -29,7 +31,7 @@ export default defineConfig({
 
 		baseUrl: "https://qa.amazonlocation.services",
 		specPattern: "./cypress/e2e/**/*.cy.{js,jsx,ts,tsx}",
-		// supportFile: false,
+		supportFile: false,
 		chromeWebSecurity: false,
 		env: {
 			browserPermissions: {
