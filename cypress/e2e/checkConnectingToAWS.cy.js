@@ -41,7 +41,7 @@ describe("Check connecting to AWS from settings, from tracker and from geofence 
 		cy.wait(2000);
 		cy.get('[placeholder="Enter WebSocketUrl"]').type(`${Cypress.env("WEB_SOCKET_URL")}`);
 		cy.wait(2000);
-		cy.get('[type="button"]').eq(3).click();
+		cy.get('[class="amplify-button amplify-field-group__control amplify-button--primary"]').click();
 		cy.wait(6000);
 		cy.contains("Connect AWS Account").click();
 		cy.wait(2000);
@@ -88,7 +88,7 @@ context("Check connecting to AWS from settings, from tracker and from geofence C
 		cy.wait(2000);
 		cy.get('[placeholder="Enter WebSocketUrl"]').type(`${Cypress.env("WEB_SOCKET_URL")}`);
 		cy.wait(2000);
-		cy.get('[type="button"]').eq(3).click();
+		cy.get('[class="amplify-button amplify-field-group__control amplify-button--primary"]').click();
 		cy.wait(6000);
 		cy.get("div").should("contain", "Your AWS account is now connected.");
 		cy.wait(2000);
@@ -133,7 +133,7 @@ context("Check connecting to AWS from settings, from tracker and from geofence C
 		cy.wait(2000);
 		cy.get('[placeholder="Enter WebSocketUrl"]').type(`${Cypress.env("WEB_SOCKET_URL")}`);
 		cy.wait(2000);
-		cy.get('[type="button"]').eq(3).click();
+		cy.get('[class="amplify-button amplify-field-group__control amplify-button--primary"]').click();
 		cy.wait(6000);
 		cy.get("div").should("contain", "Your AWS account is now connected.");
 		cy.wait(2000);

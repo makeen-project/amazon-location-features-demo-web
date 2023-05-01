@@ -43,7 +43,7 @@ describe("Add Simulator Tracker for drone", () => {
 		cy.wait(6000);
 		cy.contains("Connect AWS Account").click();
 		cy.wait(2000);
-		cy.get('[type="button"]').eq(3).click();
+		cy.get('[class="amplify-button amplify-field-group__control amplify-button--primary"]').click();
 		cy.wait(2000);
 		cy.origin(Cypress.env("ORIGIN_WEB"), () => {
 			cy.get(Cypress.env("GET_WEB")).then(els => {

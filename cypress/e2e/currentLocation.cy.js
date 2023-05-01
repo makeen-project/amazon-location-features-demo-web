@@ -15,7 +15,7 @@ describe("Verify that system is showing users current location", () => {
 			}
 		});
 		cy.wait(20000);
-		cy.get('[class="mapboxgl-user-location-dot mapboxgl-marker mapboxgl-marker-anchor-center"]').should("be.visible");
+		cy.get('div').should('have.class', '[class="mapboxgl-user-location-dot mapboxgl-marker mapboxgl-marker-anchor-center"]')
 		cy.wait(2000);
 	});
 });

@@ -16,7 +16,7 @@ describe("Verify that direction button beside search bar is working fine", () =>
 			}
 		});
 		cy.wait(20000);
-		cy.get('[class="mapboxgl-user-location-dot mapboxgl-marker mapboxgl-marker-anchor-center"]')
+		cy.get('[class="mapboxgl-user-location-dot mapboxgl-marker mapboxgl-marker-anchor-center"]').eq(0)
 			.wait(5000)
 			.should("be.visible")
 			.click();
