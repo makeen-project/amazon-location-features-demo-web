@@ -48,14 +48,9 @@ describe("Add Simulator Tracker for drone", () => {
 		cy.origin(Cypress.env("ORIGIN_WEB"), () => {
 			cy.get(Cypress.env("GET_WEB")).then(els => {
 				[...els].forEach(el => {
-					cy.wrap(el)
-						.get('[placeholder="Username"]')
-						.eq(1)
-						.type(`${Cypress.env("EMAIL")}`);
-					cy.wrap(el)
-						.get('[placeholder="Password"]')
-						.eq(1)
-						.type(`${Cypress.env("EMAIL_PASS")}`);
+					cy.wait(5000);
+					cy.wrap(el).get('[placeholder="Username"]').eq(1).type(Cypress.env("EMAIL"));
+					cy.wrap(el).get('[placeholder="Password"]').eq(1).type(Cypress.env("EMAIL_PASS"));
 					cy.wrap(el).get('[name="signInSubmitButton"]').eq(1).click();
 				});
 			});
