@@ -13,8 +13,16 @@
 		"cypress open": "cypress open",
 		"ui-regression-allure": "rm -r allure-results/ allure-report cypress/screenshots || cypress run --browser chrome --spec cypress/e2e/**.js --env allure=true",
 		"allure:report": "allure generate allure-results --clean -o allure-report",
+<<<<<<< HEAD
 		"cypress": "cypress run --browser chrome --spec cypress/e2e/**.js"
 		
+=======
+		"run-security-tests": "cd security-tests && yarn install && node index.js && cd ../",
+		"test": "react-scripts test",
+		"coverage": "react-scripts test --coverage --watchAll",
+		"ci-test": "CI=true react-scripts test",
+		"prepare": "husky install"
+>>>>>>> e05c4895ab01b3076f3a90d65c2b4d4e1d08870a
 	},
 	"dependencies": {
 		"@aws-amplify/ui-react": "^3.5.11",
@@ -71,7 +79,8 @@
 		"typescript": "^4.9.3",
 		"vite": "^3.1.0",
 		"vite-plugin-eslint": "^1.7.0",
-		"vite-plugin-svgr": "^2.2.1"
+		"vite-plugin-svgr": "^2.2.1",
+		"husky": "^8.0.0"
 	},
 	"engines": {
 		"node": ">=14.x.x"

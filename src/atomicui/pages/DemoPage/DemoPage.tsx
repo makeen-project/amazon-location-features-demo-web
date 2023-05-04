@@ -327,7 +327,7 @@ const DemoPage: React.FC = () => {
 		resetAwsRouteStore();
 		resetAwsGeofenceStore();
 		resetAwsTrackingStore();
-		setShow(initShow);
+		setShow(s => ({ ...initShow, stylesCard: s.stylesCard, settings: s.settings }));
 	};
 
 	const transformRequest = useCallback(
@@ -354,9 +354,9 @@ const DemoPage: React.FC = () => {
 	);
 
 	return credentials ? (
-		<>
+		<View style={{ height }}>
 			<Map
-				style={{ width: "100%", height: height }}
+				style={{ width: "100%", height: "100%" }}
 				ref={mapViewRef}
 				cursor={isEditingRoute ? "crosshair" : ""}
 				maxTileCacheSize={100}
@@ -509,7 +509,7 @@ const DemoPage: React.FC = () => {
 			<Flex className="logo-stroke-container">
 				<img src={LogoStroke} />
 			</Flex>
-		</>
+		</View>
 	) : null;
 };
 

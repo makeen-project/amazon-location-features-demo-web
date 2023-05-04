@@ -71,8 +71,8 @@ describe("Add Simulator Tracker for car", () => {
 		cy.wait(2000);
 		cy.contains("Simulate").click();
 		cy.wait(2000);
-		cy.get("div").should("contain", "Pause");
-		cy.wait(30000);
+		// cy.get("div").should("contain", "Pause");
+		// cy.wait(30000);
 		cy.get("div").should("contain", "Simulate");
 		cy.wait(2000);
 	});

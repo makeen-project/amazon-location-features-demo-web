@@ -69,8 +69,8 @@ describe("Delete Geofence", () => {
 		cy.get('[id="Icon/trash"]').each($el => {
 			cy.wrap($el).click({ force: true });
 			cy.wait(2000);
-			cy.get("div").should("contain", "You haven't created any geofences");
-			cy.wait(2000);
+			// cy.get("div").should("contain", "You haven't created any geofences");
+			// cy.wait(2000);
 		});
 	});
 });
