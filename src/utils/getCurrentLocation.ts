@@ -63,7 +63,7 @@ export const getCurrentLocation = (
 			message: "Please check that your location services are enabled on your phone."
 		};
 
-		setCurrentLocation({ currentLocation: undefined, error: errorObj });
+		setCurrentLocation({ currentLocation: undefined, error: errorObj as GeolocationPositionError });
 		showToast({ content: errorObj.message, type: ToastType.ERROR });
 	}
 };

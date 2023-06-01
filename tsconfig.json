@@ -20,6 +20,7 @@
 			"@demo/*": ["*"]
 		}
 	},
+	"include": ["src"],
 	"references": [{ "path": "./tsconfig.node.json" }],
 	"exclude": ["cypress.config.ts"]
 }

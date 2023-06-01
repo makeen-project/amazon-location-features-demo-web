@@ -4,3 +4,4 @@
 export * from "./AppWrapper";
 export * from "./Routes";
 export * from "./Toast";
+export * as appConfig from "./constants/appConfig";
