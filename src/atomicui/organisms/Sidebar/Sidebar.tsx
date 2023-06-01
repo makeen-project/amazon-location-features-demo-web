@@ -6,14 +6,14 @@ import React from "react";
 import { Button, Card, Flex, Text, View } from "@aws-amplify/ui-react";
 import { IconClose, IconCompass, IconGear, IconGeofence, IconInfo, IconLockSolid, IconRoute } from "@demo/assets";
 import { List, Logo } from "@demo/atomicui/atoms";
-import { sideBarMenuOptions } from "@demo/core/constants";
-import appConfig from "@demo/core/constants/appConfig";
+import { appConfig, marketingMenuOptionsData } from "@demo/core/constants";
 import { useAmplifyAuth, useAmplifyMap, useAws, useAwsIot } from "@demo/hooks";
 import { MapProviderEnum } from "@demo/types";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
-
 import "./styles.scss";
+
+const sidebarData = marketingMenuOptionsData.filter(v => v.label !== "Demo");
 
 interface Props {
 	onCloseSidebar: () => void;
@@ -167,7 +167,7 @@ const Sidebar: React.FC<Props> = ({
 					<Text>About</Text>
 				</Flex>
 			</View>
-			<List listArray={sideBarMenuOptions} className="verticle-list side-bar__external-menu" hideIcons />
+			<List listArray={sidebarData} className="verticle-list side-bar__external-menu" hideIcons />
 			<View className="button-wrapper">
 				{isUserAwsAccountConnected && (
 					<Button variation="primary" fontFamily="AmazonEmber-Bold" onClick={isAuthenticated ? _onLogout : _onLogin}>

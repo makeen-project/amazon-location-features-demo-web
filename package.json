@@ -1,5 +1,5 @@
 {
-    "name": "aws-demo-web",
+    "name": "amazon-location-web-demo",
     "version": "0.0.0",
     "files": [
         "lib"

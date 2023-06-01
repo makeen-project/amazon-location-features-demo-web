@@ -7,7 +7,7 @@ import { Button, Flex, Placeholder, Text, View } from "@aws-amplify/ui-react";
 import { IconCar, IconClose, IconCopyPages, IconDirections, IconInfo } from "@demo/assets";
 import { TextEl } from "@demo/atomicui/atoms";
 import { useAmplifyMap, useAwsPlace, useAwsRoute, useMediaQuery } from "@demo/hooks";
-import { DistanceUnitEnum, MapProviderEnum, MapUnitEnum, SuggestionType } from "@demo/types";
+import { DistanceUnitEnum, MapProviderEnum, MapUnitEnum, SuggestionType, TravelMode } from "@demo/types";
 
 import { humanReadableTime } from "@demo/utils/dateTimeUtils";
 import { calculateGeodesicDistance } from "@demo/utils/geoCalculation";
@@ -28,7 +28,13 @@ interface Props {
 }
 const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 	const [routeData, setRouteData] = useState<CalculateRouteResponse>();
-	const { currentLocationData, mapProvider: currentMapProvider, mapUnit: currentMapUnit } = useAmplifyMap();
+	const {
+		currentLocationData,
+		viewpoint,
+		mapProvider: currentMapProvider,
+		mapUnit: currentMapUnit,
+		isCurrentLocationDisabled
+	} = useAmplifyMap();
 	const { clearPoiList } = useAwsPlace();
 	const { getRoute, setDirections, isFetchingRoute } = useAwsRoute();
 	const [longitude, latitude] = info.Place?.Geometry.Point as Position;
@@ -37,14 +43,16 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 	const geodesicDistance = useMemo(
 		() =>
 			calculateGeodesicDistance(
-				[
-					currentLocationData?.currentLocation?.longitude as number,
-					currentLocationData?.currentLocation?.latitude as number
-				],
+				currentLocationData?.currentLocation && !isCurrentLocationDisabled
+					? [
+							currentLocationData.currentLocation.longitude as number,
+							currentLocationData.currentLocation.latitude as number
+					  ]
+					: [viewpoint.longitude, viewpoint.latitude],
 				[longitude, latitude],
 				currentMapUnit === METRIC ? (KILOMETERS.toLowerCase() as Units) : (MILES.toLowerCase() as Units)
 			),
-		[currentLocationData, longitude, latitude, currentMapUnit]
+		[isCurrentLocationDisabled, viewpoint, currentLocationData, longitude, latitude, currentMapUnit]
 	);
 
 	const geodesicDistanceWithUnit = useMemo(
@@ -67,23 +75,26 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 			const maxDistance = currentMapUnit === METRIC ? 400 : 248.55;
 			return currentMapProvider === MapProviderEnum.ESRI && geodesicDistance >= maxDistance;
 		} else {
-			return true;
+			return false;
 		}
 	}, [geodesicDistance, currentMapUnit, currentMapProvider]);
 
 	const loadRouteData = useCallback(async () => {
 		const params: Omit<CalculateRouteRequest, "CalculatorName" | "DepartNow"> = {
-			DeparturePosition: [
-				currentLocationData?.currentLocation?.longitude,
-				currentLocationData?.currentLocation?.latitude
-			] as Position,
+			DeparturePosition:
+				!!currentLocationData?.currentLocation && !isCurrentLocationDisabled
+					? ([
+							currentLocationData?.currentLocation?.longitude,
+							currentLocationData?.currentLocation?.latitude
+					  ] as Position)
+					: [viewpoint.longitude, viewpoint.latitude],
 			DestinationPosition: [longitude, latitude],
 			DistanceUnit: currentMapUnit === METRIC ? KILOMETERS : MILES,
-			TravelMode: "Car"
+			TravelMode: TravelMode.CAR
 		};
 		const r = await getRoute(params as CalculateRouteRequest);
 		setRouteData(r);
-	}, [currentLocationData, longitude, latitude, currentMapUnit, getRoute]);
+	}, [isCurrentLocationDisabled, currentLocationData, viewpoint, longitude, latitude, currentMapUnit, getRoute]);
 
 	useEffect(() => {
 		if (!routeData && active && !isEsriLimitation) {
@@ -129,7 +140,10 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 					/>
 				</Flex>
 			);
-		} else if (currentMapProvider === MapProviderEnum.HERE && !routeData) {
+		} else if (
+			(currentMapProvider === MapProviderEnum.HERE || currentMapProvider === MapProviderEnum.GRAB) &&
+			!routeData
+		) {
 			return (
 				<Flex data-testid="here-message-container" gap={0} direction={"column"}>
 					<TextEl variation="secondary" fontFamily="AmazonEmber-Bold" text={geodesicDistanceWithUnit} />
