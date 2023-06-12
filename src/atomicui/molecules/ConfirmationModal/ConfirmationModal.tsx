@@ -5,6 +5,7 @@ import React from "react";
 
 import { Button, Flex, Text } from "@aws-amplify/ui-react";
 import { Modal } from "@demo/atomicui/atoms";
+import { useTranslation } from "react-i18next";
 import "./styles.scss";
 
 interface ConfirmationModalProps {
@@ -23,15 +24,17 @@ interface ConfirmationModalProps {
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 	open,
 	onClose,
-	heading = "Confirmation",
-	description = "Are you sure?",
+	heading,
+	description,
 	onConfirm,
-	confirmationText = "Continue",
+	confirmationText,
 	showLearnMore = false,
 	handleLeanMore = () => {},
 	hideCancelButton = false,
-	cancelationText = "Cancel"
+	cancelationText
 }) => {
+	const { t } = useTranslation();
+
 	return (
 		<Modal
 			data-testid="confirmation-modal-container"
@@ -42,7 +45,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 			content={
 				<Flex className="confirmation-content">
 					<Text className="bold medium-text" textAlign="center">
-						{heading}
+						{heading || t("CONFIRMATION_MODAL.HEADING")}
 					</Text>
 					{typeof description === "string" ? (
 						<Text
@@ -52,7 +55,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 							textAlign="center"
 							whiteSpace="pre-line"
 						>
-							{description}
+							{description || t("CONFIRMATION_MODAL.DESC")}
 						</Text>
 					) : (
 						description
@@ -64,7 +67,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 						marginTop="2.46rem"
 						onClick={onConfirm}
 					>
-						{confirmationText}
+						{confirmationText || t("CONFIRMATION_MODAL.CONFIRMATION_TEXT")}
 					</Button>
 					{showLearnMore && (
 						<Flex
@@ -73,14 +76,14 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 							onClick={handleLeanMore}
 						>
 							<Text className="bold" fontSize="1.08rem" textAlign="center">
-								Learn more
+								{t("CONFIRMATION_MODAL.LEARN_MORE")}
 							</Text>
 						</Flex>
 					)}
 					{!hideCancelButton && (
 						<Flex data-testid="confirmation-cancel-button" className="confirmation-cancel-button" onClick={onClose}>
 							<Text className="bold" fontSize="1.08rem" textAlign="center">
-								{cancelationText}
+								{cancelationText || t("CONFIRMATION_MODAL.CANCELATION_TEXT")}
 							</Text>
 						</Flex>
 					)}

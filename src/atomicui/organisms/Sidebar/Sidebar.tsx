@@ -5,17 +5,20 @@ import React from "react";
 
 import { Button, Card, Flex, Text, View } from "@aws-amplify/ui-react";
 import { IconClose, IconCompass, IconGear, IconGeofence, IconInfo, IconLockSolid, IconRoute } from "@demo/assets";
-import { List, Logo } from "@demo/atomicui/atoms";
+import { LanguageSwitcher, List, Logo } from "@demo/atomicui/atoms";
 import { appConfig, marketingMenuOptionsData } from "@demo/core/constants";
 import { useAmplifyAuth, useAmplifyMap, useAwsIot } from "@demo/hooks";
 import { MapProviderEnum } from "@demo/types";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import "./styles.scss";
 
-const sidebarData = marketingMenuOptionsData.filter(v => v.label !== "Demo");
+const {
+	ROUTES: { DEMO, OVERVIEW }
+} = appConfig;
 
-interface Props {
+interface SidebarProps {
 	onCloseSidebar: () => void;
 	onOpenConnectAwsAccountModal: () => void;
 	onOpenSignInModal: () => void;
@@ -26,11 +29,7 @@ interface Props {
 	onShowAboutModal: () => void;
 }
 
-const {
-	ROUTES: { DEMO, OVERVIEW }
-} = appConfig;
-
-const Sidebar: React.FC<Props> = ({
+const Sidebar: React.FC<SidebarProps> = ({
 	onCloseSidebar,
 	onOpenConnectAwsAccountModal,
 	onOpenSignInModal,
@@ -46,6 +45,9 @@ const Sidebar: React.FC<Props> = ({
 	const { detachPolicy } = useAwsIot();
 	const navigate = useNavigate();
 	const isAuthenticated = !!credentials?.authenticated;
+	const { t } = useTranslation();
+
+	const sidebarData = marketingMenuOptionsData.filter(v => t(v.label) !== t("DEMO"));
 
 	const onConnectAwsAccount = () => {
 		onCloseSidebar();
@@ -123,11 +125,11 @@ const Sidebar: React.FC<Props> = ({
 					}}
 				>
 					<IconCompass className="menu-icon" />
-					<Text>Demo</Text>
+					<Text>{t("DEMO")}</Text>
 				</Flex>
 				<Flex className="link-item" onClick={onClickGeofence}>
 					<IconGeofence className="menu-icon" />
-					<Text>Geofence</Text>
+					<Text>{t("SIDEBAR.GEOFENCE")}</Text>
 					{!isAuthenticated && (
 						<Flex className="locked-item">
 							<IconLockSolid
@@ -142,7 +144,7 @@ const Sidebar: React.FC<Props> = ({
 				</Flex>
 				<Flex className="link-item" onClick={onClickTracking}>
 					<IconRoute className="menu-icon" />
-					<Text>Tracker</Text>
+					<Text>{t("SIDEBAR.TRACKER")}</Text>
 					{!isAuthenticated && (
 						<Flex className="locked-item">
 							<IconLockSolid
@@ -157,23 +159,24 @@ const Sidebar: React.FC<Props> = ({
 				</Flex>
 				<Flex className="link-item" onClick={onClickSettings}>
 					<IconGear className="menu-icon" />
-					<Text>Settings</Text>
+					<Text>{t(t("SIDEBAR.SETTINGS"))}</Text>
 				</Flex>
 				<Flex className="link-item" onClick={onClickMore}>
 					<IconInfo className="menu-icon" />
-					<Text>About</Text>
+					<Text>{t("SIDEBAR.ABOUT")}</Text>
 				</Flex>
 			</View>
 			<List listArray={sidebarData} className="verticle-list side-bar__external-menu" hideIcons />
+			<LanguageSwitcher />
 			<View className="button-wrapper">
 				{isUserAwsAccountConnected && (
 					<Button variation="primary" fontFamily="AmazonEmber-Bold" onClick={isAuthenticated ? _onLogout : _onLogin}>
-						{isAuthenticated ? "Sign out" : "Sign in"}
+						{isAuthenticated ? t("SIDEBAR.SIGN_OUT") : t("SIDEBAR.SIGN_IN")}
 					</Button>
 				)}
 				{!isUserAwsAccountConnected && (
 					<Button variation="primary" fontFamily="AmazonEmber-Bold" onClick={onConnectAwsAccount}>
-						Connect AWS Account
+						{t("SIDEBAR.CONNECT_AWS_ACCOUNT")}
 					</Button>
 				)}
 				{isUserAwsAccountConnected && !isAuthenticated && (
@@ -184,7 +187,7 @@ const Sidebar: React.FC<Props> = ({
 						marginTop="8px"
 						onClick={onDisconnectAwsAccount}
 					>
-						Disconnect AWS Account
+						{t("SIDEBAR.DISCONNECT_AWS_ACCOUNT")}
 					</Button>
 				)}
 			</View>

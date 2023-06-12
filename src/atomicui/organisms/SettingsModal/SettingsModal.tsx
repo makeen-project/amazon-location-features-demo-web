@@ -14,7 +14,7 @@ import {
 } from "@demo/assets";
 import { Modal, TextEl } from "@demo/atomicui/atoms";
 import { InputField } from "@demo/atomicui/molecules";
-import { appConfig, connectAwsAccountData } from "@demo/core/constants";
+import { appConfig } from "@demo/core/constants";
 import { useAmplifyAuth, useAmplifyMap, useAws, useAwsIot, usePersistedData } from "@demo/hooks";
 import {
 	ConnectFormValuesType,
@@ -26,6 +26,7 @@ import {
 	SettingOptionEnum,
 	SettingOptionItemType
 } from "@demo/types";
+import { useTranslation } from "react-i18next";
 import "./styles.scss";
 
 const {
@@ -37,8 +38,6 @@ const {
 	},
 	LINKS: { AWS_TERMS_AND_CONDITIONS }
 } = appConfig;
-const { TITLE, TITLE_DESC, HOW_TO, STEP1, STEP1_DESC, STEP2, STEP2_DESC, STEP3, STEP3_DESC, AGREE } =
-	connectAwsAccountData;
 const { IMPERIAL, METRIC } = MapUnitEnum;
 const { ESRI, HERE, GRAB } = MapProviderEnum;
 
@@ -96,6 +95,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 	const { detachPolicy } = useAwsIot();
 	const keyArr = Object.keys(formValues);
 	const isAuthenticated = !!credentials?.authenticated;
+	const { t } = useTranslation();
 
 	const handleAutoMapUnitChange = useCallback(() => {
 		setIsAutomaticMapUnit(true);
@@ -188,8 +188,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 		() => [
 			{
 				id: SettingOptionEnum.UNITS,
-				title: SettingOptionEnum.UNITS,
-				defaultValue: currentMapUnit,
+				title: t("SETTINGS_MODAL.UNITS"),
+				defaultValue:
+					currentMapUnit === MapUnitEnum.IMPERIAL
+						? (t("SETTINGS_MODAL.IMPERIAL") as string)
+						: (t("SETTINGS_MODAL.METRIC") as string),
 				icon: <IconPeopleArrows />,
 				detailsComponent: (
 					<Flex
@@ -205,7 +208,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								checked={isAutomaticMapUnit}
 								onChange={handleAutoMapUnitChange}
 							>
-								<TextEl marginLeft="1.23rem" text={"Automatic"} />
+								<TextEl marginLeft="1.23rem" text={t("SETTINGS_MODAL.AUTOMATIC")} />
 							</Radio>
 						</Flex>
 						<Flex style={{ gap: 0, padding: "1.08rem 0rem", cursor: "pointer" }}>
@@ -215,8 +218,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								checked={!isAutomaticMapUnit && currentMapUnit === IMPERIAL}
 								onChange={() => onMapUnitChange(IMPERIAL)}
 							>
-								<TextEl marginLeft="1.23rem" text={IMPERIAL} />
-								<TextEl variation="tertiary" marginLeft="1.23rem" text={"Miles, pounds"} />
+								<TextEl marginLeft="1.23rem" text={t("SETTINGS_MODAL.IMPERIAL")} />
+								<TextEl variation="tertiary" marginLeft="1.23rem" text={t("SETTINGS_MODAL.IMPERIAL_UNITS")} />
 							</Radio>
 						</Flex>
 						<Flex style={{ gap: 0, padding: "1.08rem 0rem", cursor: "pointer" }}>
@@ -226,8 +229,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								checked={!isAutomaticMapUnit && currentMapUnit === METRIC}
 								onChange={() => onMapUnitChange(METRIC)}
 							>
-								<TextEl marginLeft="1.23rem" text={METRIC} />
-								<TextEl variation="tertiary" marginLeft="1.23rem" text={"Kilometers, kilograms"} />
+								<TextEl marginLeft="1.23rem" text={t("SETTINGS_MODAL.METRIC")} />
+								<TextEl variation="tertiary" marginLeft="1.23rem" text={t("SETTINGS_MODAL.METRIC_UNITS")} />
 							</Radio>
 						</Flex>
 					</Flex>
@@ -235,7 +238,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			},
 			{
 				id: SettingOptionEnum.DATA_PROVIDER,
-				title: SettingOptionEnum.DATA_PROVIDER,
+				title: t("SETTINGS_MODAL.DATA_PROVIDER"),
 				defaultValue: currentMapProvider,
 				icon: <IconMapOutlined />,
 				detailsComponent: (
@@ -285,8 +288,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			},
 			{
 				id: SettingOptionEnum.MAP_STYLE,
-				title: SettingOptionEnum.MAP_STYLE,
-				defaultValue: selectedMapStyle,
+				title: t("SETTINGS_MODAL.MAP_STYLE"),
+				defaultValue: t(selectedMapStyle as string) as string,
 				icon: <IconPaintroller />,
 				detailsComponent: (
 					<Flex
@@ -308,7 +311,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 										onClick={() => handleMapStyleChange(id)}
 									>
 										<img src={image} />
-										<TextEl marginTop="0.62rem" text={name} />
+										<TextEl marginTop="0.62rem" text={t(name)} />
 									</Flex>
 								))}
 							</Flex>
@@ -326,7 +329,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 										onClick={() => handleMapStyleChange(id)}
 									>
 										<img src={image} />
-										<TextEl marginTop="0.62rem" text={name} />
+										<TextEl marginTop="0.62rem" text={t(name)} />
 									</Flex>
 								))}
 							</Flex>
@@ -346,7 +349,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 												onClick={() => handleMapStyleChange(id)}
 											>
 												<img src={image} />
-												<TextEl marginTop="0.62rem" text={name} />
+												<TextEl marginTop="0.62rem" text={t(name)} />
 											</Flex>
 										))}
 									</Flex>
@@ -358,7 +361,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			},
 			{
 				id: SettingOptionEnum.ROUTE_OPTIONS,
-				title: SettingOptionEnum.ROUTE_OPTIONS,
+				title: t("SETTINGS_MODAL.DEFAULT_ROUTE_OPTIONS"),
 				icon: <IconShuffle />,
 				detailsComponent: (
 					<Flex
@@ -370,8 +373,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 						<CheckboxField
 							data-testid="avoid-tolls"
 							className="sm-checkbox"
-							label="Avoid tolls"
-							name="Avoid tolls"
+							label={t("SETTINGS_MODAL.AVOID_TOLLS")}
+							name={t("SETTINGS_MODAL.AVOID_TOLLS")}
 							value="Avoid tolls"
 							checked={defaultRouteOptions.avoidTolls}
 							onChange={e => setDefaultRouteOptions({ ...defaultRouteOptions, avoidTolls: e.target.checked })}
@@ -379,8 +382,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 						<CheckboxField
 							data-testid="avoid-ferries"
 							className="sm-checkbox"
-							label="Avoid ferries"
-							name="Avoid ferries"
+							label={t("SETTINGS_MODAL.AVOID_FERRIES")}
+							name={t("SETTINGS_MODAL.AVOID_FERRIES")}
 							value="Avoid ferries"
 							checked={defaultRouteOptions.avoidFerries}
 							onChange={e => setDefaultRouteOptions({ ...defaultRouteOptions, avoidFerries: e.target.checked })}
@@ -390,7 +393,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			},
 			{
 				id: SettingOptionEnum.AWS_CLOUD_FORMATION,
-				title: TITLE,
+				title: t("CONNECT_AWS_ACCOUNT.TITLE"),
 				icon: <IconCloud />,
 				detailsComponent: (
 					<Flex
@@ -409,7 +412,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 							/>
 							<Flex gap={0} direction="column" marginTop="1.23rem">
 								<Text marginTop="0.31rem" variation="tertiary" whiteSpace="pre-line">
-									{TITLE_DESC}
+									{t("CONNECT_AWS_ACCOUNT.TITLE_DESC")}
 								</Text>
 							</Flex>
 						</Flex>
@@ -420,52 +423,52 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								lineHeight="1.85rem"
 								marginBottom="1.38rem"
 								alignSelf="flex-start"
-								text={HOW_TO}
+								text={t("CONNECT_AWS_ACCOUNT.HOW_TO")}
 							/>
 							<Flex gap={0} marginBottom="1.85rem" alignSelf="flex-start">
 								<View className="step-number">
-									<TextEl fontFamily="AmazonEmber-Bold" text="1" />
+									<TextEl fontFamily="AmazonEmber-Bold" text={t("CONNECT_AWS_ACCOUNT.STEP_1.NUM")} />
 								</View>
 								<View>
 									<Flex gap={5}>
 										<Text className="bold">
 											<Link href={CF_TEMPLATE} target="_blank">
-												Click here
+												{t("CONNECT_AWS_ACCOUNT.CLICK_HERE")}
 											</Link>
-											{STEP1}
+											{t("CONNECT_AWS_ACCOUNT.STEP_1.TITLE")}
 										</Text>
 									</Flex>
-									<TextEl className="step-two-description" text={STEP1_DESC} />
+									<TextEl className="step-two-description" text={t("CONNECT_AWS_ACCOUNT.STEP_1.DESC")} />
 								</View>
 							</Flex>
 							<Flex gap={0} marginBottom="1.85rem" alignSelf="flex-start">
 								<View className="step-number">
-									<TextEl fontFamily="AmazonEmber-Bold" text="2" />
+									<TextEl fontFamily="AmazonEmber-Bold" text={t("CONNECT_AWS_ACCOUNT.STEP_2.NUM")} />
 								</View>
 								<View>
-									<TextEl fontFamily="AmazonEmber-Bold" text={STEP2} />
+									<TextEl fontFamily="AmazonEmber-Bold" text={t("CONNECT_AWS_ACCOUNT.STEP_2.TITLE")} />
 									<Text className="step-two-description">
-										{STEP2_DESC}
+										{t("CONNECT_AWS_ACCOUNT.STEP_2.DESC")}
 										<a href={HELP} target="_blank" rel="noreferrer">
-											Learn more
+											{t("CONNECT_AWS_ACCOUNT.LEARN_MORE")}
 										</a>
 									</Text>
 								</View>
 							</Flex>
 							<Flex gap={0} marginBottom="1.85rem" alignSelf="flex-start">
 								<View className="step-number">
-									<TextEl fontFamily="AmazonEmber-Bold" text="3" />
+									<TextEl fontFamily="AmazonEmber-Bold" text={t("CONNECT_AWS_ACCOUNT.STEP_3.NUM")} />
 								</View>
 								<View>
-									<TextEl fontFamily="AmazonEmber-Bold" text={STEP3} />
-									<TextEl className="step-two-description" text={STEP3_DESC} />
+									<TextEl fontFamily="AmazonEmber-Bold" text={t("CONNECT_AWS_ACCOUNT.STEP_3.TITLE")} />
+									<TextEl className="step-two-description" text={t("CONNECT_AWS_ACCOUNT.STEP_3.DESC")} />
 								</View>
 							</Flex>
 							{isUserAwsAccountConnected ? (
 								!isAuthenticated ? (
 									<>
 										<Button variation="primary" fontFamily="AmazonEmber-Bold" width="100%" onClick={_onLogin}>
-											Sign in
+											{t("CONNECT_AWS_ACCOUNT.SIGN_IN")}
 										</Button>
 										<Button
 											variation="primary"
@@ -475,12 +478,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 											marginTop="0.62rem"
 											onClick={onDisconnectAwsAccount}
 										>
-											Disconnect AWS Account
+											{t("CONNECT_AWS_ACCOUNT.DISCONNECT_AWS_ACCOUNT")}
 										</Button>
 									</>
 								) : (
 									<Button variation="primary" fontFamily="AmazonEmber-Bold" width="100%" onClick={_onLogout}>
-										Sign out
+										{t("CONNECT_AWS_ACCOUNT.SIGN_OUT")}
 									</Button>
 								)
 							) : (
@@ -491,18 +494,18 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 												key={key}
 												containerMargin="0rem 0rem 1.85rem 0rem"
 												label={key}
-												placeholder={`Enter ${key}`}
+												placeholder={`${t("CONNECT_AWS_ACOUNT.ENTER")} ${key}`}
 												value={formValues[key as keyof ConnectFormValuesType]}
 												onChange={e => onChangeFormValues(key, e.target.value.trim())}
 											/>
 										);
 									})}
 									<Button variation="primary" width="100%" isDisabled={!isBtnEnabled} onClick={onConnect}>
-										Connect
+										{t("CONNECT_AWS_ACCOUNT.CONNECT")}
 									</Button>
-									<TextEl marginTop="0.62rem" text={AGREE} />
+									<TextEl marginTop="0.62rem" text={t("CONNECT_AWS_ACCOUNT.AGREE")} />
 									<View onClick={() => window.open(AWS_TERMS_AND_CONDITIONS, "_blank")}>
-										<TextEl className="hyperlink" fontFamily="AmazonEmber-Bold" text="Terms & Conditions" />
+										<TextEl className="hyperlink" fontFamily="AmazonEmber-Bold" text={t("CONNECT_AWS_ACCOUNT.T&C")} />
 									</View>
 								</>
 							)}
@@ -533,7 +536,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			onChangeFormValues,
 			isAuthenticated,
 			_onLogin,
-			_onLogout
+			_onLogout,
+			t
 		]
 	);
 

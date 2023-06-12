@@ -6,9 +6,10 @@ import React, { ReactNode, useMemo } from "react";
 import { ThemeProvider } from "@aws-amplify/ui-react";
 import { appConfig } from "@demo/core/constants";
 import { useAmplifyAuth } from "@demo/hooks";
+import i18n from "@demo/locales";
 import { appTheme } from "@demo/theme";
 import { EsriMapEnum } from "@demo/types";
-
+import { I18nextProvider } from "react-i18next";
 import "@aws-amplify/ui-react/styles.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import "@demo/theme/appStyles.scss";
@@ -66,7 +67,7 @@ const AppWrapper: React.FC<AppWrapperProps> = ({ children }) => {
 
 	return (
 		<ThemeProvider theme={appTheme} nonce="dAnIsRazNonCe">
-			{children}
+			<I18nextProvider i18n={i18n}>{children}</I18nextProvider>
 		</ThemeProvider>
 	);
 };

@@ -9,6 +9,7 @@ import { TextEl } from "@demo/atomicui/atoms";
 import { appConfig } from "@demo/core/constants";
 import { useAmplifyAuth, useAmplifyMap, useAwsGeofence } from "@demo/hooks";
 import { EsriMapEnum, GrabMapEnum, HereMapEnum, MapProviderEnum } from "@demo/types";
+import { useTranslation } from "react-i18next";
 import { Tooltip } from "react-tooltip";
 import "./styles.scss";
 
@@ -51,6 +52,7 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 	const { mapProvider: currentMapProvider, mapStyle: currentMapStyle, setMapStyle } = useAmplifyMap();
 	const { isAddingGeofence, setIsAddingGeofence } = useAwsGeofence();
 	const isAuthenticated = !!credentials?.authenticated;
+	const { t } = useTranslation();
 
 	const handleClickOutside = useCallback(
 		(ev: MouseEvent) => {
@@ -189,16 +191,16 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 							<Flex data-testid="esri-map-styles" gap={0} padding="0rem 1.23rem 1.23rem 1.23rem" wrap="wrap">
 								{ESRI_STYLES.map(({ id, image, name }) => (
 									<Flex
-										data-testid={`map-style-item-${name}`}
+										data-testid={`map-style-item-${t(name)}`}
 										key={id}
 										className={id === currentMapStyle ? "mb-style-container selected" : "mb-style-container"}
 										onClick={() => onChangeStyle(id)}
 									>
 										<Flex gap={0} position="relative">
 											{isLoadingImg && <Placeholder position="absolute" width="82px" height="82px" />}
-											<img src={image} alt={name} onLoad={() => setIsLoadingImg(false)} />
+											<img src={image} alt={t(name) as string} onLoad={() => setIsLoadingImg(false)} />
 										</Flex>
-										<TextEl marginTop="0.62rem" text={name} />
+										<TextEl marginTop="0.62rem" text={t(name)} />
 									</Flex>
 								))}
 							</Flex>
@@ -229,16 +231,16 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 							<Flex data-testid="here-map-styles" gap={0} padding="0rem 1.23rem 1.23rem 1.23rem" wrap="wrap">
 								{HERE_STYLES.map(({ id, image, name }) => (
 									<Flex
-										data-testid={`map-style-item-${name}`}
+										data-testid={`map-style-item-${t(name)}`}
 										key={id}
 										className={id === currentMapStyle ? "mb-style-container selected" : "mb-style-container"}
 										onClick={() => onChangeStyle(id)}
 									>
 										<Flex gap={0} position="relative">
 											{isLoadingImg && <Placeholder position="absolute" width="82px" height="82px" />}
-											<img src={image} alt={name} onLoad={() => setIsLoadingImg(false)} />
+											<img src={image} alt={t(name) as string} onLoad={() => setIsLoadingImg(false)} />
 										</Flex>
-										<TextEl marginTop="0.62rem" text={name} />
+										<TextEl marginTop="0.62rem" text={t(name)} />
 									</Flex>
 								))}
 							</Flex>
@@ -270,16 +272,16 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 									<Flex data-testid="grab-map-styles" gap={0} padding="0rem 1.23rem 1.23rem 1.23rem" wrap="wrap">
 										{GRAB_STYLES.map(({ id, image, name }) => (
 											<Flex
-												data-testid={`map-style-item-${name}`}
+												data-testid={`map-style-item-${t(name)}`}
 												key={id}
 												className={id === currentMapStyle ? "mb-style-container selected" : "mb-style-container"}
 												onClick={() => onChangeStyle(id)}
 											>
 												<Flex gap={0} position="relative">
 													{isLoadingImg && <Placeholder position="absolute" width="82px" height="82px" />}
-													<img src={image} alt={name} onLoad={() => setIsLoadingImg(false)} />
+													<img src={image} alt={t(name) as string} onLoad={() => setIsLoadingImg(false)} />
 												</Flex>
-												<TextEl marginTop="0.62rem" text={name} />
+												<TextEl marginTop="0.62rem" text={t(name)} />
 											</Flex>
 										))}
 									</Flex>

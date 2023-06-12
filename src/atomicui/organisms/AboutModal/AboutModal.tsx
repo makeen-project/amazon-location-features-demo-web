@@ -9,6 +9,7 @@ import { Modal } from "@demo/atomicui/atoms";
 import { aboutModalData, appConfig } from "@demo/core/constants";
 import { useAmplifyMap } from "@demo/hooks";
 import { AboutOptionEnum, MapProviderEnum } from "@demo/types/Enums";
+import { useTranslation } from "react-i18next";
 import "./styles.scss";
 
 const {
@@ -35,6 +36,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 			? window.open(ESRI_ATTRIBUTION_LINK, "_blank")
 			: window.open(HERE_ATTRIBUTION_LINK, "_blank");
 	}, [mapProvider]);
+	const { t } = useTranslation();
 
 	const optionItems = useMemo(
 		() => [
@@ -44,7 +46,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 				detailsComponent: (
 					<Flex gap={0} direction="column" padding="0rem 1.15rem" alignItems="center">
 						<Text className="small-text" fontFamily="AmazonEmber-Bold" marginTop="1.15rem" alignSelf="flex-start">
-							{PARTNER_ATTRIBUTION_TITLE}
+							{t(PARTNER_ATTRIBUTION_TITLE)}
 						</Text>
 						<Text className="more-secondary-text" marginTop="1.15rem">
 							{attributionText}
@@ -57,13 +59,13 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 							width="100%"
 							onClick={handlePartnerLearnMore}
 						>
-							Learn More
+							{t("ABOUT_MODAL.LEARN_MORE")}
 						</Button>
 						<Text className="small-text" fontFamily="AmazonEmber-Bold" marginTop="1.15rem" alignSelf="flex-start">
-							{SOFTWARE_ATTRIBUTION_TITLE}
+							{t(SOFTWARE_ATTRIBUTION_TITLE)}
 						</Text>
 						<Text className="more-secondary-text" marginTop="1.15rem" alignSelf="flex-start">
-							{SOFTWARE_ATTRIBUTION_DESC}
+							{t(SOFTWARE_ATTRIBUTION_DESC)}
 						</Text>
 						<Button
 							className="learn-more-button"
@@ -72,7 +74,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 							width="100%"
 							onClick={() => window.open(SOFTWARE_ATTRIBUTIONS, "_blank")}
 						>
-							Learn More
+							{t("ABOUT_MODAL.LEARN_MORE")}
 						</Button>
 					</Flex>
 				)
@@ -85,7 +87,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 						<Text className="more-secondary-text">
 							{VERSION}: {VERSION_VALUE} {BUILD}
 						</Text>
-						<Text className="more-secondary-text">{COPYRIGHT}</Text>
+						<Text className="more-secondary-text">{`© ${new Date().getFullYear()}, ${t(COPYRIGHT)}`}</Text>
 						<Flex gap={0} direction="column" padding="0rem 3.15rem">
 							<IconPoweredByAws1 className="powered-by-aws-1-icon" />
 						</Flex>
@@ -98,17 +100,17 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 				detailsComponent: (
 					<Flex gap={0} direction="column" padding="0rem 1.15rem" alignItems="center">
 						<Text className="more-secondary-text">
-							{TERMS_PREFIX}
+							{t(TERMS_PREFIX)}
 							<a href={TERMS} target="_blank" rel="noreferrer">
-								{TERMS_LINK_LABEL}
+								{t(TERMS_LINK_LABEL)}
 							</a>
-							{TERMS_SUFFIX}
+							{t(TERMS_SUFFIX)}
 						</Text>
 					</Flex>
 				)
 			}
 		],
-		[attributionText, handlePartnerLearnMore]
+		[attributionText, handlePartnerLearnMore, t]
 	);
 
 	const renderOptionItems = useMemo(() => {
@@ -149,7 +151,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 				<Flex className="more-modal-content">
 					<Flex className="options-container">
 						<Text className="bold regular-text" padding={"1.23rem 0rem 1.23rem 1.23rem"}>
-							About
+							{t("ABOUT_MODAL.HEADING")}
 						</Text>
 						{renderOptionItems}
 					</Flex>

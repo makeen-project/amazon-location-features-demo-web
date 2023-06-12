@@ -7,6 +7,7 @@ import { Button, Flex } from "@aws-amplify/ui-react";
 import { IconGeofence, IconRoute } from "@demo/assets";
 import { Modal, TextEl } from "@demo/atomicui/atoms";
 import { useAmplifyAuth } from "@demo/hooks";
+import { useTranslation } from "react-i18next";
 import "./styles.scss";
 
 interface SignInModalProps {
@@ -16,6 +17,7 @@ interface SignInModalProps {
 
 const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
 	const { onLogin } = useAmplifyAuth();
+	const { t } = useTranslation();
 
 	return (
 		<Modal
@@ -39,14 +41,14 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
 						lineHeight="28px"
 						marginTop="40px"
 						textAlign="center"
-						text="Sign in required"
+						text={t("SIGN_IN_MODAL.TEXT_1")}
 					/>
 					<TextEl
 						variation="tertiary"
 						marginTop="16px"
 						textAlign="center"
 						whiteSpace="pre-line"
-						text={"Sign in to access Tracking and Geofence features or\nproceed to Explore the map"}
+						text={t("SIGN_IN_MODAL.TEXT_2")}
 					/>
 					<Button
 						data-testid="sign-in-button"
@@ -55,7 +57,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
 						marginTop="32px"
 						onClick={() => onLogin()}
 					>
-						Sign in
+						{t("SIGN_IN_MODAL.SIGN_IN")}
 					</Button>
 					<Flex className="maybe-later-button" onClick={onClose}>
 						<TextEl
@@ -64,7 +66,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
 							fontSize="14px"
 							lineHeight="16px"
 							textAlign="center"
-							text="Maybe later"
+							text={t("SIGN_IN_MODAL.MAYBE_LATER")}
 						/>
 					</Flex>
 				</Flex>

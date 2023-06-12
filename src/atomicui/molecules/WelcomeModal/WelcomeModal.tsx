@@ -7,6 +7,7 @@ import { Button, Flex, Text } from "@aws-amplify/ui-react";
 import { LogoSmall } from "@demo/assets";
 import { Modal } from "@demo/atomicui/atoms";
 import { appConfig } from "@demo/core/constants";
+import { useTranslation } from "react-i18next";
 import "./styles.scss";
 
 const {
@@ -19,6 +20,8 @@ interface WelcomeModalProps {
 }
 
 const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onClose }) => {
+	const { t } = useTranslation();
+
 	return (
 		<Modal
 			data-testid="welcome-modal"
@@ -32,17 +35,17 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onClose }) => {
 						<LogoSmall width="36px" height="36px" />
 					</Flex>
 					<Text className="bold medium-text" textAlign="center" whiteSpace="pre-line" marginBottom="1rem">
-						{"Welcome to\nAmazon Location Demo"}
+						{t("WELCOME_MODAL.HEADING")}
 					</Text>
 					<Text className="regular-text" textAlign="center" marginBottom="1rem">
-						By using the Amazon Location Demo App, you agree to the App&apos;s{" "}
+						{t("WELCOME_MODAL.TEXT_1")}{" "}
 						<a href={TERMS} target="_blank" rel="noreferrer">
-							Terms & Conditions
+							{t("WELCOME_MODAL.TEXT_2")}
 						</a>{" "}
-						for use.
+						{t("WELCOME_MODAL.TEXT_3")}
 					</Text>
 					<Button variation="primary" onClick={onClose}>
-						Continue
+						{t("WELCOME_MODAL.CONTINUE")}
 					</Button>
 				</Flex>
 			}

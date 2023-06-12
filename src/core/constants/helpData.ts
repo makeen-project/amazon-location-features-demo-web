@@ -27,109 +27,110 @@ import { HelpAccordionEnum } from "@demo/types";
 
 const helpData = [
 	{
-		title: HelpAccordionEnum.CREATE,
-		description:
-			"Running a CloudFormation template via your own AWS account to configure a stack which creates all the necessary resources.",
+		key: HelpAccordionEnum.CREATE,
+		title: "HELP.ITEM_1.TITLE",
+		description: "HELP.ITEM_1.DESC",
 		content: [
 			{
-				text: "Open sidebar on demo page and click on [click here] link to get redirected to AWS console.",
+				text: "HELP.ITEM_1.CONTENT_1.TEXT",
 				image: EmptyConnectModal
 			},
 			{
-				text: "Once redirected, if your AWS isn't logged in, you'll be asked to login.",
+				text: "HELP.ITEM_1.CONTENT_2.TEXT",
 				image: Login
 			},
 			{
-				text: "After login you'll be taken to CloudFormation create stack step and you'd notice that Amazon S3 URL field is prefilled. Click on Next.",
+				text: "HELP.ITEM_1.CONTENT_3.TEXT",
 				image: CreateStack1
 			},
 			{
-				text: "On the next step enter any email address in CognitoUserEmail field, you'll be sent a temporary password on this email, which will be later used to login into the applicatoin using Amazon Hosted UI. Click on Next.",
+				text: "HELP.ITEM_1.CONTENT_4.TEXT",
 				image: CreateStack2
 			},
 			{
-				text: "Do not modify any config on the next couple of steps and simply proceed by clicking Next, until you are presented with the Submit button, here accept the acknowledgement and press Submit.",
+				text: "HELP.ITEM_1.CONTENT_5.TEXT",
 				image: CreateStack34
 			},
 			{
-				text: "You'll see that the stack is now being created, depending on you internet speed this step can take from 5 to 10 minutes. Once the stack creation is completed, go to Outputs tab.",
+				text: "HELP.ITEM_1.CONTENT_6.TEXT",
 				image: StackOutputs
 			},
 			{
-				text: "Copy and paste all the values into the form. Make sure all values are copied correctly to ensure a successful connection. Click on Connect.",
+				text: "HELP.ITEM_1.CONTENT_7.TEXT",
 				image: FilledConnectModal
 			},
 			{
-				text: "If you encounter any error, make sure that all the values copied from step 6 are correct and try again, once succeeded, you'd notice a success state.",
+				text: "HELP.ITEM_1.CONTENT_8.TEXT",
 				image: ConnectSuccess
 			},
 			{
-				text: "You can now either continue to use Maps, Places and Routes funtionality or sign in to use Geofence and Tracking functionality. Use the email you entered in step 4 and enter the temporary password that you received on that email.",
+				text: "HELP.ITEM_1.CONTENT_9.TEXT",
 				image: HostedUiLogin1
 			},
 			{
-				text: "You'd be asked to updated your temporary password if you are using the credentials for the first time.",
+				text: "HELP.ITEM_1.CONTENT_10.TEXT",
 				image: HostedUiLogin2
 			},
 			{
-				text: "After you have successfully logged in, you'd notice in the sidebar that Geofence and Tracking functionality is now unlocked/enabled.",
+				text: "HELP.ITEM_1.CONTENT_11.TEXT",
 				image: SuccessLogin
 			}
 		]
 	},
 	{
-		title: HelpAccordionEnum.DELETE,
-		description: "Deleting a CloudFormation stack successfully.",
+		key: HelpAccordionEnum.DELETE,
+		title: "HELP.ITEM_2.TITLE",
+		description: "HELP.ITEM_2.DESC",
 		content: [
 			{
-				text: "Make sure you have signed out of the application.",
+				text: "HELP.ITEM_2.CONTENT_1.TEXT",
 				image: SuccessLogin
 			},
 			{
-				text: "After signing out, make sure to Disconnect AWS Account.",
+				text: "HELP.ITEM_2.CONTENT_2.TEXT",
 				image: DisconnectAccount
 			},
 			{
-				text: "Once disconnected, go to AWS Console and search for CloudFormation.",
+				text: "HELP.ITEM_2.CONTENT_3.TEXT",
 				image: SearchCloudFormation
 			},
 			{
-				text: "Select amazon-location-resource-setup stack.",
+				text: "HELP.ITEM_2.CONTENT_4.TEXT",
 				image: SelectStack
 			},
 			{
-				text: "After selecting the above mentioned stack, Click on Delete.",
+				text: "HELP.ITEM_2.CONTENT_5.TEXT",
 				image: DeleteStack
 			}
 		]
 	},
 	{
-		title: HelpAccordionEnum.TROUBLESHOOT,
-		description:
-			"Ways to resolve possible issues that could arise while deleting a stack. Such as corruption of stack.",
+		key: HelpAccordionEnum.TROUBLESHOOT,
+		title: "HELP.ITEM_3.TITLE",
+		description: "HELP.ITEM_3.DESC",
 		content: [
 			{
-				text: "Sometimes the stack might fail to be deleted successfully.",
+				text: "HELP.ITEM_3.CONTENT_1.TEXT",
 				image: DeleteFailed
 			},
 			{
-				text: "In that case, search for IoT Core in the search box and open it.",
+				text: "HELP.ITEM_3.CONTENT_2.TEXT",
 				image: SearchIotCore
 			},
 			{
-				text: "In the left sidebar, select Policies under Security and select AmazonLocationIotPolicy and click on Delete.",
+				text: "HELP.ITEM_3.CONTENT_3.TEXT",
 				image: SelectPolicy
 			},
 			{
-				text: "Confirm delete by agreeing.",
+				text: "HELP.ITEM_3.CONTENT_4.TEXT",
 				image: ConfirmDeletePolicy
 			},
 			{
-				text: "Go back to CloudFormation service, select amazon-location-resource-setup stack and click on Delete.",
+				text: "HELP.ITEM_3.CONTENT_5.TEXT",
 				image: DeleteFailed
 			},
 			{
-				text: "A confirmation popup would appear asking if you'd like to retain resources, without checking anything, click on Delete stack, after a few minutes the stack should be deleted successfully.",
+				text: "HELP.ITEM_3.CONTENT_6.TEXT",
 				image: ConfirmDeleteStack
 			}
 		]
