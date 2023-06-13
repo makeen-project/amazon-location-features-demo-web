@@ -7,4 +7,4 @@ export * from "./Loader";
 export * from "./Logo";
 export * from "./Modal";
 export * from "./TextEl";
-export * from "./LanguageSwitcher";
+export * from "./DropdownEl";

@@ -3,6 +3,7 @@
 
 export { default as aboutModalData } from "./aboutModalData";
 export { default as appConfig } from "./appConfig";
+export { default as connectAwsAccountData } from "./connectAwsAccountData";
 export { default as footerOptionsData } from "./footerOptionsData";
 export { default as helpData } from "./helpData";
 export { default as marketingMenuOptionsData } from "./marketingMenuOptionsData";

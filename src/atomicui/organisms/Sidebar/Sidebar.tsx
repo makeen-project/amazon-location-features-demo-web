@@ -5,7 +5,8 @@ import React from "react";
 
 import { Button, Card, Flex, Text, View } from "@aws-amplify/ui-react";
 import { IconClose, IconCompass, IconGear, IconGeofence, IconInfo, IconLockSolid, IconRoute } from "@demo/assets";
-import { LanguageSwitcher, List, Logo } from "@demo/atomicui/atoms";
+import { List, Logo } from "@demo/atomicui/atoms";
+import { LanguageSwitcher } from "@demo/atomicui/molecules";
 import { appConfig, marketingMenuOptionsData } from "@demo/core/constants";
 import { useAmplifyAuth, useAmplifyMap, useAwsIot } from "@demo/hooks";
 import { MapProviderEnum } from "@demo/types";
