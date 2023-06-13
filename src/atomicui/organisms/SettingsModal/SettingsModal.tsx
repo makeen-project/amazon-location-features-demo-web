@@ -14,7 +14,7 @@ import {
 } from "@demo/assets";
 import { DropdownEl, Modal, TextEl } from "@demo/atomicui/atoms";
 import { InputField } from "@demo/atomicui/molecules";
-import { appConfig, connectAwsAccountData } from "@demo/core/constants";
+import { appConfig, regionsData } from "@demo/core/constants";
 import { useAmplifyAuth, useAmplifyMap, useAws, useAwsIot, usePersistedData } from "@demo/hooks";
 import {
 	ConnectFormValuesType,
@@ -39,8 +39,6 @@ const {
 	},
 	LINKS: { AWS_TERMS_AND_CONDITIONS }
 } = appConfig;
-const { TITLE, TITLE_DESC, HOW_TO, STEP1, STEP1_DESC, STEP2, STEP2_DESC, STEP3, STEP3_DESC, AGREE, OPTIONS } =
-	connectAwsAccountData;
 const { IMPERIAL, METRIC } = MapUnitEnum;
 const { ESRI, HERE, GRAB } = MapProviderEnum;
 
@@ -83,7 +81,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 		WebSocketUrl: ""
 	});
 	const [cloudFormationLink, setCloudFormationLink] = useState(CF_TEMPLATE);
-	const [stackRegion, setStackRegion] = useState<{ value: string; label: string }>(OPTIONS[2]);
+	const [stackRegion, setStackRegion] = useState<{ value: string; label: string }>(regionsData[2]);
 	const {
 		isUserAwsAccountConnected,
 		validateFormValues,
@@ -437,7 +435,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								width="100%"
 							>
 								<TextEl fontFamily="AmazonEmber-Bold" fontSize="1.23rem" text={t("CONNECT_AWS_ACCOUNT.HOW_TO")} />
-								<DropdownEl defaultOption={stackRegion} options={OPTIONS} onSelect={_onSelect} />
+								<DropdownEl defaultOption={stackRegion} options={regionsData} onSelect={_onSelect} />
 							</Flex>
 							<Flex gap={0} marginBottom="1.85rem" alignSelf="flex-start">
 								<View className="step-number">

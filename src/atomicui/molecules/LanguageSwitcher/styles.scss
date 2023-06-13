@@ -1,0 +1,13 @@
+/* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
+/* SPDX-License-Identifier: MIT-0 */
+
+.language-switcher-container {
+	gap: 0;
+	align-self: flex-start;
+
+	.dropdown-container {
+		.options {
+			left: 10%;
+		}
+	}
+}

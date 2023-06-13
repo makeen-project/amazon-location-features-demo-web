@@ -1,6 +1,10 @@
+/* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
+/* SPDX-License-Identifier: MIT-0 */
+
 import React, { useEffect, useRef, useState } from "react";
 
 import { IconArrow } from "@demo/assets";
+import { useTranslation } from "react-i18next";
 import "./styles.scss";
 
 interface DropdownElProps {
@@ -13,6 +17,7 @@ interface DropdownElProps {
 const DropdownEl: React.FC<DropdownElProps> = ({ defaultOption, options, onSelect, showSelected = false }) => {
 	const [open, setOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
+	const { t } = useTranslation();
 
 	const handleClickOutside = (event: MouseEvent) => {
 		if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -36,7 +41,7 @@ const DropdownEl: React.FC<DropdownElProps> = ({ defaultOption, options, onSelec
 	return (
 		<div ref={dropdownRef} className="dropdown-container">
 			<div className="trigger" onClick={() => setOpen(!open)}>
-				<p>{defaultOption?.label || "Select an option"}</p>
+				<p>{t(defaultOption?.label as string) || t("DROPDOWN.PLACEHOLDER")}</p>
 				<IconArrow
 					style={{
 						transform: open ? "rotate(180deg)" : "rotate(0deg)",
@@ -54,7 +59,7 @@ const DropdownEl: React.FC<DropdownElProps> = ({ defaultOption, options, onSelec
 							className={showSelected && defaultOption?.value === option.value ? "selected" : ""}
 							onClick={() => handleClick(option)}
 						>
-							{option.label}
+							{t(option.label)}
 						</li>
 					))}
 				</ul>

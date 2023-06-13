@@ -7,7 +7,7 @@ import { Button, Flex, Link, Text, View } from "@aws-amplify/ui-react";
 import { IconAwsCloudFormation, IconCheckMarkCircle } from "@demo/assets";
 import { DropdownEl, Modal, TextEl } from "@demo/atomicui/atoms";
 import { InputField } from "@demo/atomicui/molecules";
-import { appConfig, connectAwsAccountData } from "@demo/core/constants";
+import { appConfig, regionsData } from "@demo/core/constants";
 import { useAmplifyAuth, useAmplifyMap, useAws } from "@demo/hooks";
 import { ConnectFormValuesType, EsriMapEnum, MapProviderEnum } from "@demo/types";
 import { transformCloudFormationLink } from "@demo/utils/transformCloudFormationLink";
@@ -20,21 +20,6 @@ const {
 	MAP_RESOURCES: { GRAB_SUPPORTED_AWS_REGIONS },
 	LINKS: { AWS_TERMS_AND_CONDITIONS }
 } = appConfig;
-const {
-	TITLE,
-	TITLE_DESC,
-	HOW_TO,
-	STEP1,
-	STEP1_DESC,
-	STEP2,
-	STEP2_DESC,
-	STEP3,
-	STEP3_DESC,
-	AGREE,
-	POST_CONNECT,
-	POST_CONNECT_DESC,
-	OPTIONS
-} = connectAwsAccountData;
 
 interface ConnectAwsAccountModalProps {
 	open: boolean;
@@ -55,7 +40,7 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 		WebSocketUrl: ""
 	});
 	const [cloudFormationLink, setCloudFormationLink] = useState(CF_TEMPLATE);
-	const [stackRegion, setStackRegion] = useState<{ value: string; label: string }>(OPTIONS[2]);
+	const [stackRegion, setStackRegion] = useState<{ value: string; label: string }>(regionsData[2]);
 	const {
 		isUserAwsAccountConnected,
 		setConnectFormValues,
@@ -160,7 +145,7 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 									lineHeight="1.85rem"
 									text={t("CONNECT_AWS_ACCOUNT.HOW_TO")}
 								/>
-								<DropdownEl defaultOption={stackRegion} options={OPTIONS} onSelect={_onSelect} />
+								<DropdownEl defaultOption={stackRegion} options={regionsData} onSelect={_onSelect} />
 							</Flex>
 							<View marginTop="1.23rem">
 								<Flex gap={0} marginBottom="1.85rem">
