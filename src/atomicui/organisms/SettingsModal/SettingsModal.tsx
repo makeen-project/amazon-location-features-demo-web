@@ -428,13 +428,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 						<Flex className="sm-aws-cloudformation-form">
 							<Flex
 								gap={0}
-								justifyContent="space-between"
+								justifyContent="flex-start"
 								alignItems="center"
-								alignSelf="flex-start"
 								margin="1.85rem 0rem 1.85rem 0rem"
 								width="100%"
 							>
-								<TextEl fontFamily="AmazonEmber-Bold" fontSize="1.23rem" text={t("CONNECT_AWS_ACCOUNT.HOW_TO")} />
+								<Text className="bold" fontSize="1.08rem">
+									{t("CONNECT_AWS_ACCOUNT.HOW_TO")}
+								</Text>
 								<DropdownEl defaultOption={stackRegion} options={regionsData} onSelect={_onSelect} />
 							</Flex>
 							<Flex gap={0} marginBottom="1.85rem" alignSelf="flex-start">

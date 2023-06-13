@@ -1,7 +1,7 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Button, Flex, Link, Text, View } from "@aws-amplify/ui-react";
 import { IconAwsCloudFormation, IconCheckMarkCircle } from "@demo/assets";
@@ -53,6 +53,24 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 	const { mapProvider: currentMapProvider, setMapProvider, setMapStyle } = useAmplifyMap();
 	const keyArr = Object.keys(formValues);
 	const { t } = useTranslation();
+
+	useEffect(() => {
+		const newUrl = transformCloudFormationLink(CF_TEMPLATE, regionsData[3].value);
+
+		if (currentMapProvider === MapProviderEnum.GRAB && cloudFormationLink !== newUrl) {
+			setCloudFormationLink(newUrl);
+			setStackRegion(regionsData[3]);
+		}
+	}, [currentMapProvider, cloudFormationLink]);
+
+	useEffect(() => {
+		const newUrl = transformCloudFormationLink(CF_TEMPLATE, regionsData[3].value);
+
+		if (currentMapProvider === MapProviderEnum.GRAB && cloudFormationLink !== newUrl) {
+			setCloudFormationLink(newUrl);
+			setStackRegion(regionsData[3]);
+		}
+	}, [currentMapProvider, cloudFormationLink]);
 
 	const _onClose = () => {
 		onClose();
@@ -138,13 +156,10 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 							{t("CONNECT_AWS_ACCOUNT.TITLE_DESC")}
 						</Text>
 						<View>
-							<Flex gap={0} justifyContent="space-between" alignItems="center" marginTop="1rem">
-								<TextEl
-									fontFamily="AmazonEmber-Bold"
-									fontSize="1.23rem"
-									lineHeight="1.85rem"
-									text={t("CONNECT_AWS_ACCOUNT.HOW_TO")}
-								/>
+							<Flex gap={0} justifyContent="flex-start" alignItems="center" marginTop="1rem">
+								<Text className="bold" fontSize="1.08rem">
+									{t("CONNECT_AWS_ACCOUNT.HOW_TO")}
+								</Text>
 								<DropdownEl defaultOption={stackRegion} options={regionsData} onSelect={_onSelect} />
 							</Flex>
 							<View marginTop="1.23rem">
