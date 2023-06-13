@@ -19,6 +19,7 @@ const LanguageSwitcher: React.FC = () => {
 				defaultOption={defaultOption}
 				options={languageSwitcherData}
 				onSelect={({ value }) => i18n.changeLanguage(value)}
+				showSelected
 			/>
 		</Flex>
 	);
