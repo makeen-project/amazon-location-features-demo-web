@@ -63,15 +63,6 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 		}
 	}, [currentMapProvider, cloudFormationLink]);
 
-	useEffect(() => {
-		const newUrl = transformCloudFormationLink(CF_TEMPLATE, regionsData[3].value);
-
-		if (currentMapProvider === MapProviderEnum.GRAB && cloudFormationLink !== newUrl) {
-			setCloudFormationLink(newUrl);
-			setStackRegion(regionsData[3]);
-		}
-	}, [currentMapProvider, cloudFormationLink]);
-
 	const _onClose = () => {
 		onClose();
 		isUserAwsAccountConnected && window.location.reload();
@@ -160,7 +151,7 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 								<Text className="bold" fontSize="1.08rem">
 									{t("CONNECT_AWS_ACCOUNT.HOW_TO")}
 								</Text>
-								<DropdownEl defaultOption={stackRegion} options={regionsData} onSelect={_onSelect} />
+								<DropdownEl defaultOption={stackRegion} options={regionsData} onSelect={_onSelect} showSelected />
 							</Flex>
 							<View marginTop="1.23rem">
 								<Flex gap={0} marginBottom="1.85rem">

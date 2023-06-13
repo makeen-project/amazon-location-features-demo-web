@@ -1,7 +1,7 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button, CheckboxField, Divider, Flex, Link, Radio, Text, View } from "@aws-amplify/ui-react";
 import {
@@ -99,6 +99,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 	const keyArr = Object.keys(formValues);
 	const isAuthenticated = !!credentials?.authenticated;
 	const { t } = useTranslation();
+
+	useEffect(() => {
+		const newUrl = transformCloudFormationLink(CF_TEMPLATE, regionsData[3].value);
+
+		if (currentMapProvider === MapProviderEnum.GRAB && cloudFormationLink !== newUrl) {
+			setCloudFormationLink(newUrl);
+			setStackRegion(regionsData[3]);
+		}
+	}, [currentMapProvider, cloudFormationLink]);
 
 	const handleAutoMapUnitChange = useCallback(() => {
 		setIsAutomaticMapUnit(true);
@@ -436,7 +445,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								<Text className="bold" fontSize="1.08rem">
 									{t("CONNECT_AWS_ACCOUNT.HOW_TO")}
 								</Text>
-								<DropdownEl defaultOption={stackRegion} options={regionsData} onSelect={_onSelect} />
+								<DropdownEl defaultOption={stackRegion} options={regionsData} onSelect={_onSelect} showSelected />
 							</Flex>
 							<Flex gap={0} marginBottom="1.85rem" alignSelf="flex-start">
 								<View className="step-number">
