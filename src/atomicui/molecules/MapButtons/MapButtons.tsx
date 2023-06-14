@@ -152,18 +152,19 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 				<Card data-testid="map-styles-card" ref={stylesCardRef} className="map-styles-card">
 					<View className="triangle-pointer" />
 					<Flex className="map-styles-header">
-						<TextEl margin="1.23rem 0rem" fontFamily="AmazonEmber-Bold" fontSize="1.23rem" text="Map style" />
+						<TextEl
+							margin="1.23rem 0rem"
+							fontFamily="AmazonEmber-Bold"
+							fontSize="1.23rem"
+							text={t("MAP_BUTTONS.HEADING")}
+						/>
 						<Flex className="map-styles-icon-close-container" onClick={() => setOpenStylesCard(false)}>
 							<IconClose />
 						</Flex>
 					</Flex>
 					<Flex className="ms-info-container">
 						<IconInfoSolid />
-						<TextEl
-							variation="tertiary"
-							text={"Changing data provider also affects\nPaces & Routes API"}
-							whiteSpace="pre-line"
-						/>
+						<TextEl variation="tertiary" text={t("MAP_BUTTONS.INFO")} whiteSpace="pre-line" />
 					</Flex>
 					<Flex gap={0} direction="column">
 						{/* Esri */}

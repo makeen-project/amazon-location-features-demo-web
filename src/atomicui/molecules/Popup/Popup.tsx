@@ -13,6 +13,7 @@ import { humanReadableTime } from "@demo/utils/dateTimeUtils";
 import { calculateGeodesicDistance } from "@demo/utils/geoCalculation";
 import { Units } from "@turf/turf";
 import { CalculateRouteRequest, CalculateRouteResponse, Position } from "aws-sdk/clients/location";
+import { useTranslation } from "react-i18next";
 import { Popup as PopupGl } from "react-map-gl";
 import { Tooltip } from "react-tooltip";
 import "./styles.scss";
@@ -39,6 +40,7 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 	const { getRoute, setDirections, isFetchingRoute } = useAwsRoute();
 	const [longitude, latitude] = info.Place?.Geometry.Point as Position;
 	const isDesktop = useMediaQuery("(min-width: 1024px)");
+	const { t } = useTranslation();
 
 	const geodesicDistance = useMemo(
 		() =>
@@ -122,7 +124,7 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 				<Flex data-testid="permission-denied-error-container" gap={3} alignItems="center">
 					<TextEl
 						variation="info"
-						text={isCurrentLocationDisabled ? "Current location disabled" : "Current location permission denied"}
+						text={isCurrentLocationDisabled ? t("POPUP.CURRENT_LOCATION_DISABLED") : t("POPUP.CURRENT_LOCATION_DENIED")}
 					/>
 					<IconInfo
 						className="location-permission-denied-info-icon"
@@ -188,7 +190,8 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 		currentMapUnit,
 		isEsriLimitation,
 		routeData,
-		isFetchingRoute
+		isFetchingRoute,
+		t
 	]);
 
 	const address = useMemo(() => {
@@ -248,7 +251,7 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 				>
 					<IconDirections />
 					<Text className="bold" variation="primary" fontSize={"0.92rem"}>
-						Directions
+						{t("POPUP.DIRECTIONS")}
 					</Text>
 				</Button>
 			</View>

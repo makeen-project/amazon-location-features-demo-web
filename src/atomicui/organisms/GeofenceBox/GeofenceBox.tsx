@@ -20,10 +20,10 @@ import { showToast } from "@demo/core";
 import { useAmplifyMap, useAwsGeofence, useAwsPlace, useMediaQuery } from "@demo/hooks";
 import { CircleDrawEventType, DistanceUnitEnum, MapUnitEnum, RadiusInM, SuggestionType, ToastType } from "@demo/types";
 import { ListGeofenceResponseEntry, Place, Position } from "aws-sdk/clients/location";
+import { useTranslation } from "react-i18next";
 import { LngLat, MapRef } from "react-map-gl";
 
 import CircleDrawControl from "./CircleDrawControl";
-
 import "./styles.scss";
 
 const { IMPERIAL, METRIC } = MapUnitEnum;
@@ -61,6 +61,7 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 		isAddingGeofence,
 		setIsAddingGeofence
 	} = useAwsGeofence();
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		isDesktop && isCollapsed && setIsCollapsed(false);
@@ -159,7 +160,7 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 							{PlaceId ? <IconPin /> : <IconSearch />}
 							<Flex gap={0} direction="column" justifyContent="center" marginLeft="19px">
 								<TextEl text={title} />
-								<TextEl variation="tertiary" text={PlaceId && address ? address : "Search nearby"} />
+								<TextEl variation="tertiary" text={PlaceId && address ? address : t("GEOFENCE_BOX.SEARCH_NEARBY")} />
 							</Flex>
 						</Flex>
 					);
@@ -170,7 +171,7 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 				</Flex>
 			);
 		}
-	}, [value, suggestions, onSelectSuggestion]);
+	}, [value, suggestions, onSelectSuggestion, t]);
 
 	const onSave = useCallback(async () => {
 		if (geofenceCenter) {
@@ -226,9 +227,9 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 		const errorMsg =
 			!!name && !isEditing
 				? !validName
-					? "Name can only contain alphanumeric, underscore and hyphen characters"
+					? t("GEOFENCE_BOX.ERROR_1")
 					: nameExists
-					? "Name already exists, please enter a unique name"
+					? t("GEOFENCE_BOX.ERROR_2")
 					: ""
 				: "";
 		const isSaveDisabled = isEditing ? current.value === value && current.radiusInM === radiusInM : !name || !!errorMsg;
@@ -240,11 +241,7 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 						<Flex className="icon-plus-rounded">
 							<IconPlus />
 						</Flex>
-						<TextEl
-							marginLeft="16px"
-							variation="tertiary"
-							text="Click on any point on the map or enter the address/coordinate to create a geofence marker"
-						/>
+						<TextEl marginLeft="16px" variation="tertiary" text={t("GEOFENCE_BOX.CLICK_ANY_POINT")} />
 					</Flex>
 				)}
 				<InputField
@@ -266,7 +263,7 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 						<InputField
 							containerMargin={errorMsg ? "0px 0px 8px 0px" : "0px 0px 24px 0px"}
 							label="Name"
-							placeholder="Type unique Geofence Name"
+							placeholder={t("GEOFENCE_BOX.SEARCH_PLACEHOLDER") as string}
 							value={name}
 							onChange={onChangeName}
 							disabled={isEditing}
@@ -359,7 +356,7 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 									disabled={isSaveDisabled}
 									onClick={onSave}
 								>
-									Save
+									{t("GEOFENCE_BOX.SAVE")}
 								</Button>
 							</>
 						)}
@@ -374,7 +371,7 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 						lineHeight="18px"
 						onClick={resetAll}
 					>
-						Go Back
+						{t("GEOFENCE_BOX.GO_BACK")}
 					</Button>
 				)}
 			</Flex>
@@ -397,7 +394,8 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 		onChangeRadius,
 		current,
 		currentMapUnit,
-		isCollapsed
+		isCollapsed,
+		t
 	]);
 
 	const onDelete = useCallback(
@@ -458,7 +456,12 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 			return (
 				<Flex gap={0} padding="24px 0px" direction="column" justifyContent="center" alignItems="center">
 					<Loader width="40px" height="40px" />
-					<TextEl marginTop="16px" variation="tertiary" fontFamily="AmazonEmber-Bold" text="fetching geofences..." />
+					<TextEl
+						marginTop="16px"
+						variation="tertiary"
+						fontFamily="AmazonEmber-Bold"
+						text={t("GEOFENCE_BOX.FETCHING_GEOFENCES")}
+					/>
 				</Flex>
 			);
 		} else {
@@ -469,13 +472,13 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 			} else {
 				return (
 					<Flex gap={0} direction="column" justifyContent="center" alignItems="center" padding="24px 24px">
-						<TextEl text="You haven't created any geofences" />
-						<TextEl variation="tertiary" text="Add a geofence to view it here!" />
+						<TextEl text={t("GEOFENCE_BOX.HAVE_NOT_CREATED")} />
+						<TextEl variation="tertiary" text={t("GEOFENCE_BOX.ADD_TO_VIEW")} />
 					</Flex>
 				);
 			}
 		}
-	}, [isFetchingGeofences, geofences, renderGeofenceListItem, isCollapsed]);
+	}, [isFetchingGeofences, geofences, renderGeofenceListItem, isCollapsed, t]);
 
 	const isAddingOrEditing = useMemo(() => isAddingGeofence || isEditing, [isAddingGeofence, isEditing]);
 
@@ -483,7 +486,9 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 		if (!isAddingOrEditing && geofences && geofences.length > 3) {
 			return (
 				<Flex className="show-hide-details-container" onClick={() => setIsCollapsed(s => !s)}>
-					<Text className="text">{isCollapsed ? "Geofence details" : "Hide details"}</Text>
+					<Text className="text">
+						{isCollapsed ? t("GEOFENCE_BOX.GEOFENCE_DETAILS") : t("GEOFENCE_BOX.HIDE_DETAILS")}
+					</Text>
 					<IconArrow style={{ transform: isCollapsed ? "rotate(0deg)" : "rotate(180deg)" }} />
 				</Flex>
 			);
@@ -492,12 +497,14 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 		if ((isAddingGeofence && !!geofenceCenter) || isEditing) {
 			return (
 				<Flex className="show-hide-details-container" onClick={() => setIsCollapsed(s => !s)}>
-					<Text className="text">{isCollapsed ? "Geofence details" : "Hide details"}</Text>
+					<Text className="text">
+						{isCollapsed ? t("GEOFENCE_BOX.GEOFENCE_DETAILS") : t("GEOFENCE_BOX.HIDE_DETAILS")}
+					</Text>
 					<IconArrow style={{ transform: isCollapsed ? "rotate(0deg)" : "rotate(180deg)" }} />
 				</Flex>
 			);
 		}
-	}, [isAddingOrEditing, geofences, isAddingGeofence, geofenceCenter, isEditing, isCollapsed]);
+	}, [isAddingOrEditing, geofences, isAddingGeofence, geofenceCenter, isEditing, isCollapsed, t]);
 
 	const renderGeofenceMarkers = useMemo(() => {
 		if (geofences?.length) {
@@ -556,14 +563,20 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 						<TextEl
 							fontFamily="AmazonEmber-Medium"
 							fontSize="1.08rem"
-							text={isAddingGeofence ? (isEditing ? "Edit Geofence" : "Add Geofence") : "Geofence"}
+							text={
+								isAddingGeofence
+									? isEditing
+										? t("GEOFENCE_BOX.EDIT_GEOFENCE")
+										: t("GEOFENCE_BOX.ADD_GEOFENCE")
+									: t("GEOFENCE_BOX.GEOFENCE")
+							}
 						/>
 					</Flex>
 					<Flex gap={0} alignItems="center">
 						{!isAddingGeofence && (
 							<Flex className="geofence-action" onClick={() => setIsAddingGeofence(true)}>
 								<IconPlus />
-								<TextEl fontFamily="AmazonEmber-Bold" text="Add" />
+								<TextEl fontFamily="AmazonEmber-Bold" text={t("GEOFENCE_BOX.ADD")} />
 							</Flex>
 						)}
 						{!isAddingOrEditing && (

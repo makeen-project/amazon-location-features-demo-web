@@ -1,12 +1,13 @@
 {
+	"AMAZON_LOCATION": "Amazon Location",
 	"DEMO": "Demo",
 	"WEB": "Web",
 	"IOS": "iOS",
 	"ANDROID": "Android",
 	"HEADER": {
-		"OVERVIEW": "Overview!",
+		"OVERVIEW": "Overview",
 		"PRODUCT": "Product",
-		"SAMPLES": "Samples!",
+		"SAMPLES": "Samples",
 		"TRY_IT": "Try It",
 		"TRY_OUR_DEMO_APP": "Try our demo app"
 	},
@@ -1126,6 +1127,26 @@
 		"AD_695": "The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.",
 		"AD_696": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
+	"SEARCH_BOX": {},
+	"ROUTE_BOX": {},
+	"GEOFENCE_BOX": {
+		"SEARCH_NEARBY": "Search nearby",
+		"ERROR_1": "Name can only contain alphanumeric, underscore and hyphen characters",
+		"ERROR_2": "Name already exists, please enter a unique name",
+		"CLICK_ANY_POINT": "Click on any point on the map or enter the address/coordinate to create a geofence marker",
+		"SEARCH_PLACEHOLDER": "Type unique Geofence Name",
+		"FETCHING_GEOFENCES": "fetching geofences...",
+		"HAVE_NOT_CREATED": "You haven't created any geofences",
+		"ADD_TO_VIEW": "Add a geofence to view it here!",
+		"GEOFENCE_DETAILS": "Geofence details",
+		"HIDE_DETAILS": "Hide details",
+		"EDIT_GEOFENCE": "Edit Geofence",
+		"ADD_GEOFENCE": "Add Geofence",
+		"GEOFENCE": "Geofence",
+		"ADD": "Add",
+		"SAVE": "Save",
+		"GO_BACK": "Go Back"
+	},
 	"WELCOME_MODAL": {
 		"HEADING": "Welcome to\nAmazon Location Demo",
 		"TEXT_1": "By using the Amazon Location Demo App, you agree to the App's",
@@ -1141,6 +1162,10 @@
 		"DOWNLOAD": "Download",
 		"CONTINUE_TO_WEB_EXPERIENCE": "Continue to web experience"
 	},
+	"MAP_BUTTONS": {
+		"HEADING": "Map style",
+		"INFO": "Changing data provider also affects\nPaces & Routes API"
+	},
 	"SIDEBAR": {
 		"GEOFENCE": "GeoFence",
 		"TRACKER": "Tracker",
@@ -1148,10 +1173,10 @@
 		"ABOUT": "About",
 		"SIGN_OUT": "Sign out",
 		"SIGN_IN": "Sign in",
-		"CONNECT_AWS_ACCOUNT": "Connect AWS Account",
+		"CONNECT_AWS_ACCOUNT_MODAL": "Connect AWS Account",
 		"DISCONNECT_AWS_ACCOUNT": "Disconnect AWS Account"
 	},
-	"CONNECT_AWS_ACCOUNT": {
+	"CONNECT_AWS_ACCOUNT_MODAL_MODAL": {
 		"TITLE": "Connect AWS Account",
 		"TITLE_DESC": "Connect your AWS account to enable Geofences and Trackers. This will ensure your tracking and geofencing data is only stored in your account. After you log in, all features of the Demo App will run using resources you deploy in your AWS account. Log out if you wish to continue running the Demo App using resources in AWS’s demo app account.",
 		"HOW_TO": "How to connect:",
@@ -1263,7 +1288,26 @@
 		"DESC": "Grab provides Maps, Routes and Place search in Malaysia, Philippines, Thailand, Singapore, Vietnam, Indonesia, Myanmar, and Cambodia.\nWhile car and motorcycle routes are available across the above countries, the bicycle and walking routes are supported in only key cities such as Singapore, Jakarta, Manila, Klang Valley, Bangkok, Ho Chi Minh City, and Hanoi.",
 		"CONFIRMATION_TEXT": "Enable Grab"
 	},
-	"SHOW_TOAST": {},
+	"TRACKER_INFORMTAION_MODAL": {
+		"HEADING": "Enable Tracker",
+		"DESC": "You can use any data provider except Esri for your asset management or tracking use cases. If you want to use Esri for your asset management or tracking user case, please read",
+		"T&C": "terms and conditions"
+	},
+	"NOT_FOUND_CARD": {
+		"TITLE": "No matching places found",
+		"DESC": "Make sure your search is spelled correctly. Try adding a city, country or postcode."
+	},
+	"POPUP": {
+		"CURRENT_LOCATION_DISABLED": "Current location disabled",
+		"CURRENT_LOCATION_DENIED": "Current location permission denied",
+		"DIRECTIONS": "Directions"
+	},
+	"SHOW_TOAST": {
+		"GRAB_NOT_SUPPORTED": "Your current location is outside countries supported by Grab. Currently, Grab supports Malaysia, Philippines, Thailand, Singapore, Vietnam, Indonesia, Myanmar, Cambodia",
+		"LOCATION_PERMISSION_DENIED": "Location permission denied, please enable browser location and refresh the page",
+		"LOCATION_PERMISSION_UNAVAILABLE": "Location permission unavailable, please try again",
+		"ROUTE_WAYPOINTS_RESTRICTION": "Cannot set more than 25 points"
+	},
 	"ERROR_HANDLER": {},
 	"TOOL_TIP": {}
 }

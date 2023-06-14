@@ -8,9 +8,9 @@ import { IconLocateMe, LogoDark, LogoLight } from "@demo/assets";
 import {
 	ConnectAwsAccountModal,
 	GrabConfirmationModal,
-	ConfirmationModal as InformationModal,
 	MapButtons,
 	SignInModal,
+	ConfirmationModal as TrackerInformationModal,
 	WelcomeModal
 } from "@demo/atomicui/molecules";
 import {
@@ -44,6 +44,7 @@ import { Signer } from "aws-amplify";
 import { differenceInMilliseconds } from "date-fns";
 import { LngLatBoundsLike } from "mapbox-gl";
 import { omit } from "ramda";
+import { useTranslation } from "react-i18next";
 import {
 	AttributionControl,
 	GeolocateControl,
@@ -55,7 +56,6 @@ import {
 	MapRef,
 	NavigationControl
 } from "react-map-gl";
-
 import "./styles.scss";
 
 const {
@@ -126,6 +126,7 @@ const DemoPage: React.FC = () => {
 	const { isEditingRoute, trackerPoints, setTrackerPoints, resetStore: resetAwsTrackingStore } = useAwsTracker();
 	const { showWelcomeModal, setShowWelcomeModal } = usePersistedData();
 	const isDesktop = useMediaQuery("(min-width: 1024px)");
+	const { t } = useTranslation();
 	const shouldClearCredentials = localStorage.getItem(SHOULD_CLEAR_CREDENTIALS) === "true";
 	const isGrabVisible = useMemo(
 		() => !isUserAwsAccountConnected || (isUserAwsAccountConnected && GRAB_SUPPORTED_AWS_REGIONS.includes(region)),
@@ -305,8 +306,7 @@ const DemoPage: React.FC = () => {
 		if (GRAB_SUPPORTED_AWS_REGIONS.includes(region)) {
 			if (isCurrentLocationDisabled) {
 				showToast({
-					content:
-						"Your current location is outside countries supported by Grab. Currently, Grab supports Malaysia, Philippines, Thailand, Singapore, Vietnam, Indonesia, Myanmar, Cambodia",
+					content: t("SHOW_TOAST.GRAB_NOT_SUPPORTED"),
 					type: ToastType.INFO
 				});
 				mapViewRef.current?.flyTo({ center: [AMAZON_HQ.SG.longitude, AMAZON_HQ.SG.latitude], zoom: 15 });
@@ -319,6 +319,7 @@ const DemoPage: React.FC = () => {
 	}, [
 		region,
 		isCurrentLocationDisabled,
+		t,
 		setCurrentLocation,
 		setViewpoint,
 		currentMapProvider,
@@ -359,12 +360,12 @@ const DemoPage: React.FC = () => {
 		if (e.code === e.PERMISSION_DENIED) {
 			localStorage.setItem(GEO_LOCATION_ALLOWED, "no");
 			showToast({
-				content: "Location permission denied, please enable browser location and refresh the page",
+				content: t("SHOW_TOAST.LOCATION_PERMISSION_DENIED"),
 				type: ToastType.ERROR
 			});
 		} else if (e.code === e.POSITION_UNAVAILABLE) {
 			showToast({
-				content: "Location permission unavailable, please try again",
+				content: t("SHOW_TOAST.LOCATION_PERMISSION_UNAVAILABLE"),
 				type: ToastType.ERROR
 			});
 		}
@@ -384,7 +385,7 @@ const DemoPage: React.FC = () => {
 				if (trackerPoints) {
 					trackerPoints.length < 25
 						? setTrackerPoints([longitude, latitude])
-						: showToast({ content: "Cannot set more than 25 points", type: ToastType.WARNING });
+						: showToast({ content: t("SHOW_TOAST.ROUTE_WAYPOINTS_RESTRICTION"), type: ToastType.WARNING });
 				} else {
 					setTrackerPoints([longitude, latitude]);
 				}
@@ -768,10 +769,10 @@ const DemoPage: React.FC = () => {
 				handleCurrentLocationAndViewpoint={handleCurrentLocationAndViewpoint}
 			/>
 			<AboutModal open={show.about} onClose={() => setShow(s => ({ ...s, about: false }))} />
-			<InformationModal
+			<TrackerInformationModal
 				open={show.trackingDisclaimerModal}
 				onClose={() => setShow(s => ({ ...s, trackingDisclaimerModal: false }))}
-				heading="Enable Tracker"
+				heading={t("TRACKER_INFORMTAION_MODAL.HEADING") as string}
 				description={
 					<Text
 						className="regular-text"
@@ -780,15 +781,14 @@ const DemoPage: React.FC = () => {
 						textAlign="center"
 						whiteSpace="pre-line"
 					>
-						You can use any data provider except Esri for your asset management or tracking use cases. If you want to
-						use Esri for your asset management or tracking user case, please read{" "}
+						{t("TRACKER_INFORMTAION_MODAL.DESC")}{" "}
 						<a
 							style={{ cursor: "pointer", color: "var(--primary-color)" }}
 							href={AMAZON_LOCATION_TERMS_AND_CONDITIONS}
 							target="_blank"
 							rel="noreferrer"
 						>
-							terms and conditions.
+							{t("TRACKER_INFORMTAION_MODAL.T&C")}
 						</a>
 					</Text>
 				}
