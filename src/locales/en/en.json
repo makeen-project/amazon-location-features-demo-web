@@ -1277,6 +1277,8 @@
 		"TITLE": "Settings",
 		"UNITS": "Units",
 		"AUTOMATIC": "Automatic",
+		"AUTOMATIC_DESC_1": "Based on your browser settings (Miles, pounds)",
+		"AUTOMATIC_DESC_2": "Based on your browser settings (Kilometers, kilograms)",
 		"IMPERIAL": "Imperial",
 		"IMPERIAL_UNITS": "Miles, pounds",
 		"METRIC": "Metric",

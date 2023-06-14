@@ -207,10 +207,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			{
 				id: SettingOptionEnum.UNITS,
 				title: t("SETTINGS_MODAL.UNITS"),
-				defaultValue:
-					currentMapUnit === MapUnitEnum.IMPERIAL
-						? (t("SETTINGS_MODAL.IMPERIAL") as string)
-						: (t("SETTINGS_MODAL.METRIC") as string),
+				defaultValue: isAutomaticMapUnit
+					? (t("SETTINGS_MODAL.AUTOMATIC") as string)
+					: currentMapUnit === MapUnitEnum.IMPERIAL
+					? (t("SETTINGS_MODAL.IMPERIAL") as string)
+					: (t("SETTINGS_MODAL.METRIC") as string),
 				icon: <IconPeopleArrows />,
 				detailsComponent: (
 					<Flex
@@ -227,6 +228,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								onChange={handleAutoMapUnitChange}
 							>
 								<TextEl marginLeft="1.23rem" text={t("SETTINGS_MODAL.AUTOMATIC")} />
+								<TextEl
+									variation="tertiary"
+									marginLeft="1.23rem"
+									text={
+										currentMapUnit === IMPERIAL
+											? t("SETTINGS_MODAL.AUTOMATIC_DESC_1")
+											: t("SETTINGS_MODAL.AUTOMATIC_DESC_2")
+									}
+								/>
 							</Radio>
 						</Flex>
 						<Flex style={{ gap: 0, padding: "1.08rem 0rem", cursor: "pointer" }}>
@@ -361,7 +371,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 									<Flex className="sm-styles-container">
 										{GRAB_STYLES.map(({ id, image, name }) => (
 											<Flex
-												data-testid="gran-map-style"
+												data-testid="grab-map-style"
 												key={id}
 												className={id === currentMapStyle ? "sm-style selected" : "sm-style"}
 												onClick={() => handleMapStyleChange(id)}
