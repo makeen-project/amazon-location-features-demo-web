@@ -14,6 +14,7 @@ import { uuid } from "@demo/utils/uuid";
 import { Units } from "@turf/turf";
 import { Location } from "aws-sdk";
 import { LngLat } from "mapbox-gl";
+import { useTranslation } from "react-i18next";
 import { MapRef } from "react-map-gl";
 import { Tooltip } from "react-tooltip";
 import "./styles.scss";
@@ -59,6 +60,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 		setSelectedMarker,
 		setHoveredMarker
 	} = useAwsPlace();
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		if (!value) {
@@ -169,7 +171,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 							<TextEl variation="tertiary" text={`${region}, ${country}`} />
 						</Flex>
 					) : (
-						<TextEl variation="tertiary" text={placeid && address ? address : "Search nearby"} />
+						<TextEl variation="tertiary" text={placeid && address ? address : t("SEARCH_BOX.SEARCH_NEARBY")} />
 					)}
 				</View>
 			</Flex>
@@ -265,7 +267,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 						ref={autocompleteRef}
 						inputMode="search"
 						hasSearchIcon={false}
-						label="Search"
+						label={t("SEARCH_BOX.SEARCH")}
 						innerStartComponent={
 							<Flex className="inner-start-component" onClick={onToggleSideMenu}>
 								<IconActionMenu />
@@ -278,7 +280,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 						value={value}
 						onChange={onChange}
 						onClear={clearPoiList}
-						placeholder="Search"
+						placeholder={t("SEARCH_BOX.SEARCH") as string}
 						options={options || []}
 						results={options?.length || 0}
 						renderOption={renderOption}
@@ -290,7 +292,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 									<IconSearch
 										data-tooltip-id="search-button"
 										data-tooltip-place="bottom"
-										data-tooltip-content="Search"
+										data-tooltip-content={t("TOOLTIP.SEARCH")}
 									/>
 									<Tooltip id="search-button" />
 								</Flex>
@@ -305,7 +307,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 											<IconDirections
 												data-tooltip-id="directions-button"
 												data-tooltip-place="bottom"
-												data-tooltip-content="Routes"
+												data-tooltip-content={t("TOOLTIP.ROUTES")}
 											/>
 											<Tooltip id="directions-button" />
 										</>
@@ -318,7 +320,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 				{isSearching ? (
 					<Flex className="search-loader-container">
 						<Loader />
-						<TextEl margin="15px 0px 30px 0px" text="Searching for suggestions..." />
+						<TextEl margin="15px 0px 30px 0px" text={t("SEARCH_BOX.SEARCHING_FOR_SUGGESTIONS")} />
 					</Flex>
 				) : !!value && !suggestions?.length ? (
 					<NotFoundCard />

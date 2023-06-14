@@ -130,11 +130,7 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 						className="location-permission-denied-info-icon"
 						data-tooltip-id="location-permission-denied-info"
 						data-tooltip-place="top"
-						data-tooltip-content={
-							isCurrentLocationDisabled
-								? "Distance can't be calculated since your current location is outside countries supported by Grab. Currently, Grab supports Malaysia, Philippines, Thailand, Singapore, Vietnam, Indonesia, Myanmar, Cambodia"
-								: "Distance can't be calculate if location permission is not granted, kindly grant access to location from the URL bar or browser settings"
-						}
+						data-tooltip-content={isCurrentLocationDisabled ? t("TOOLTIP.CL_GRAB") : t("TOOLTIP.CL_DENIED")}
 					/>
 					<Tooltip id="location-permission-denied-info" />
 				</Flex>
@@ -146,9 +142,7 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 					<TextEl
 						style={{ marginTop: "0px" }}
 						variation="info"
-						text={`Distance is greater than ${
-							currentMapUnit === METRIC ? "400 km" : "248.55 mi"
-						}, can't calculate via Esri, kindly switch to HERE provider`}
+						text={currentMapUnit === METRIC ? t("POPUP.ESRI_LIMITATION_1") : t("POPUP.ESRI_LIMITATION_2")}
 					/>
 				</Flex>
 			);
@@ -156,7 +150,7 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 			return (
 				<Flex data-testid="here-message-container" gap={0} direction={"column"}>
 					<TextEl variation="secondary" fontFamily="AmazonEmber-Bold" text={geodesicDistanceWithUnit} />
-					<TextEl style={{ marginTop: "0px" }} variation="info" text="Route not found" />
+					<TextEl style={{ marginTop: "0px" }} variation="info" text={t("POPUP.ROUTE_NOT_FOUND")} />
 				</Flex>
 			);
 		} else {

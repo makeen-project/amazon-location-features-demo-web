@@ -130,7 +130,7 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 					onClick={toggleMapStyles}
 					data-tooltip-id="map-styles-button"
 					data-tooltip-place="left"
-					data-tooltip-content="Map provider and styles"
+					data-tooltip-content={t("TOOLTIP.MAP_PROVIDER_STYLES")}
 				>
 					<IconMapSolid />
 				</Flex>
@@ -142,7 +142,7 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 					onClick={onClickGeofence}
 					data-tooltip-id="geofence-control-button"
 					data-tooltip-place="left"
-					data-tooltip-content="Geofence"
+					data-tooltip-content={t("TOOLTIP.GEOFENCE")}
 				>
 					<IconGeofencePlusSolid />
 				</Flex>

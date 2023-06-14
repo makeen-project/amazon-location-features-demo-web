@@ -31,9 +31,9 @@ import {
 	SuggestionType,
 	TravelMode
 } from "@demo/types";
-
 import { humanReadableTime } from "@demo/utils/dateTimeUtils";
 import { CalculateRouteRequest, LineString, Place, Position } from "aws-sdk/clients/location";
+import { useTranslation } from "react-i18next";
 import { Layer, LayerProps, LngLat, MapRef, Marker as ReactMapGlMarker, Source } from "react-map-gl";
 import { Tooltip } from "react-tooltip";
 import "./styles.scss";
@@ -86,6 +86,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 	const [expandRouteOptions, setExpandRouteOptions] = useState(false);
 	const [routeOptions, setRouteOptions] = useState<RouteOptionsType>({ ...defaultRouteOptions });
 	const isDesktop = useMediaQuery("(min-width: 1024px)");
+	const { t } = useTranslation();
 
 	const clearRoutePosition = useCallback((type: InputType) => setRoutePositions(undefined, type), [setRoutePositions]);
 
@@ -109,7 +110,11 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 			directions && setDirections(undefined);
 		}
 
-		if (value.from !== "My Location" && value.to !== "My Location" && isCurrentLocationSelected) {
+		if (
+			value.from !== t("ROUTE_BOX.MY_LOCATION") &&
+			value.to !== t("ROUTE_BOX.MY_LOCATION") &&
+			isCurrentLocationSelected
+		) {
 			setIsCurrentLocationSelected(false);
 		}
 	}, [
@@ -123,7 +128,8 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 		clearRouteData,
 		stepsData,
 		directions,
-		setDirections
+		setDirections,
+		t
 	]);
 
 	useEffect(() => {
@@ -201,7 +207,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 				setValue({
 					from:
 						!currentLocationData?.error && !directions.isEsriLimitation && !isCurrentLocationDisabled
-							? "My Location"
+							? t("ROUTE_BOX.MY_LOCATION")
 							: "",
 					to: directions.info.Place.Label
 						? directions.info.Place.Label
@@ -220,7 +226,8 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 		viewpoint,
 		currentLocationData?.error,
 		setRoutePositions,
-		calculateRouteData
+		calculateRouteData,
+		t
 	]);
 
 	const onClose = () => {
@@ -292,13 +299,13 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 			>
 				{!expandRouteOptions ? (
 					<Text className="collapsed-route-options-text" onClick={onClickRouteOptions}>
-						Route Options
+						{t("ROUTE_BOX.ROUTE_OPTIONS")}
 					</Text>
 				) : (
 					<View className="expanded-route-options">
 						<Text className="text-1">Route Options</Text>
 						<Text className="text-2" onClick={onClickRouteOptions}>
-							Close
+							{t("ROUTE_BOX.CLOSE")}
 						</Text>
 					</View>
 				)}
@@ -306,8 +313,8 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 					<View className="route-option-items">
 						<CheckboxField
 							className="option-item"
-							label="Avoid tolls"
-							name="Avoid tolls"
+							label={t("ROUTE_BOX.AVOID_TOLLS")}
+							name={t("ROUTE_BOX.AVOID_TOLLS")}
 							value="Avoid tolls"
 							checked={routeOptions.avoidTolls}
 							onChange={e => {
@@ -317,8 +324,8 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 						/>
 						<CheckboxField
 							className="option-item"
-							label="Avoid ferries"
-							name="Avoid ferries"
+							label={t("ROUTE_BOX.AVOID_FERRIES")}
+							name={t("ROUTE_BOX.AVOID_FERRIES")}
 							value="Avoid ferries"
 							checked={routeOptions.avoidFerries}
 							onChange={e => {
@@ -330,12 +337,13 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 				)}
 			</View>
 		),
-		[inputFocused, routeData, expandRouteOptions, onClickRouteOptions, routeOptions, setRouteData]
+		[inputFocused, routeData, expandRouteOptions, onClickRouteOptions, routeOptions, setRouteData, t]
 	);
 
 	const onSelectCurrentLocaiton = (type: InputType) => {
-		type === InputType.FROM && setValue({ ...value, from: isCurrentLocationSelected ? "" : "My Location" });
-		type === InputType.TO && setValue({ ...value, to: isCurrentLocationSelected ? "" : "My Location" });
+		type === InputType.FROM &&
+			setValue({ ...value, from: isCurrentLocationSelected ? "" : t("ROUTE_BOX.MY_LOCATION") });
+		type === InputType.TO && setValue({ ...value, to: isCurrentLocationSelected ? "" : t("ROUTE_BOX.MY_LOCATION") });
 		setIsCurrentLocationSelected(!isCurrentLocationSelected);
 	};
 
@@ -412,7 +420,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 					{PlaceId ? <IconPin /> : <IconSearch />}
 					<View className="description">
 						<span className="title">{title}</span>
-						<span className="address">{PlaceId && address ? address : "Search nearby"}</span>
+						<span className="address">{PlaceId && address ? address : t("ROUTE_BOX.SEARCH_NEARBY")}</span>
 					</View>
 				</View>
 			);
@@ -453,7 +461,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 					<IconDestination width="32px" height="32px" />
 				</ReactMapGlMarker>
 			);
-		} else if (currentLocationData?.currentLocation && value.to === "My Location") {
+		} else if (currentLocationData?.currentLocation && value.to === t("ROUTE_BOX.SEARCH_NEARBY")) {
 			const {
 				currentLocation: { longitude, latitude }
 			} = currentLocationData;
@@ -463,7 +471,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 				</ReactMapGlMarker>
 			);
 		}
-	}, [routePositions, currentLocationData, value]);
+	}, [routePositions, currentLocationData, value, t]);
 
 	const routeLayer = useMemo(() => {
 		if (routeData && routePositions) {
@@ -580,7 +588,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 						<IconCar
 							data-tooltip-id="icon-car-tooltip"
 							data-tooltip-place="top"
-							data-tooltip-content={'Calculate route with "Car" as travel mode'}
+							data-tooltip-content={t("TOOLTIP.CALCULATE_ROUTE_CAR")}
 						/>
 						<Tooltip id="icon-car-tooltip" />
 					</View>
@@ -592,7 +600,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 						<IconWalking
 							data-tooltip-id="icon-walking-tooltip"
 							data-tooltip-place="top"
-							data-tooltip-content={'Calculate route with "Walking" as travel mode'}
+							data-tooltip-content={t("TOOLTIP.CALCULATE_ROUTE_WALK")}
 						/>
 						<Tooltip id="icon-walking-tooltip" />
 					</View>
@@ -606,7 +614,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 								<IconBicycleSolid
 									data-tooltip-id="icon-bicycle-tooltip"
 									data-tooltip-place="top"
-									data-tooltip-content={'Calculate route with "Bicycle" as travel mode'}
+									data-tooltip-content={t("TOOLTIP.CALCULATE_ROUTE_BICYCLE")}
 								/>
 								<Tooltip id="icon-bicycle-tooltip" />
 							</View>
@@ -618,7 +626,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 								<IconMotorcycleSolid
 									data-tooltip-id="icon-motorcycle-tooltip"
 									data-tooltip-place="top"
-									data-tooltip-content={'Calculate route with "Motorcycle" as travel mode'}
+									data-tooltip-content={t("TOOLTIP.CALCULATE_ROUTE_MOTORCYCLE")}
 								/>
 								<Tooltip id="icon-motorcycle-tooltip" />
 							</View>
@@ -632,7 +640,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 							<IconTruckSolid
 								data-tooltip-id="icon-truck-tooltip"
 								data-tooltip-place="top"
-								data-tooltip-content={'Calculate route with "Truck" as travel mode'}
+								data-tooltip-content={t("TOOLTIP.CALCULATE_ROUTE_TRUCK")}
 							/>
 							<Tooltip id="icon-truck-tooltip" />
 						</View>
@@ -649,7 +657,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 					<Flex className="inputs-container">
 						<input
 							data-testid="from-input"
-							placeholder="From"
+							placeholder={t("ROUTE_BOX.FROM") as string}
 							onFocus={() => onFocus(InputType.FROM)}
 							value={value.from}
 							onChange={e => onChangeValue(e, InputType.FROM)}
@@ -657,7 +665,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 						<View className="divider" />
 						<input
 							data-testid="to-input"
-							placeholder="To"
+							placeholder={t("ROUTE_BOX.TO") as string}
 							onFocus={() => onFocus(InputType.TO)}
 							value={value.to}
 							onChange={e => onChangeValue(e, InputType.TO)}
@@ -681,7 +689,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 								onClick={() => onSelectCurrentLocaiton(inputFocused.from ? InputType.FROM : InputType.TO)}
 							>
 								<IconMyLocation />
-								<Text>Current location</Text>
+								<Text>{t("ROUTE_BOX.CURRENT_LOCATION")}</Text>
 							</View>
 						)}
 
@@ -689,14 +697,14 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 						? renderSuggestions(suggestions.from, InputType.FROM)
 						: !isSearching &&
 						  value.from?.length > 2 &&
-						  value.from !== "My Location" &&
+						  value.from !== t("ROUTE_BOX.MY_LOCATION") &&
 						  !placeData.from &&
 						  inputFocused.from && <NotFoundCard />}
 					{!!suggestions.to?.length
 						? renderSuggestions(suggestions.to, InputType.TO)
 						: !isSearching &&
 						  value.to?.length > 2 &&
-						  value.to !== "My Location" &&
+						  value.to !== t("ROUTE_BOX.MY_LOCATION") &&
 						  !placeData.to &&
 						  inputFocused.to && <NotFoundCard />}
 				</View>
@@ -725,11 +733,11 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 										travelMode === TravelMode.TRUCK ||
 										travelMode === TravelMode.BICYCLE ||
 										travelMode === TravelMode.MOTORCYCLE
-											? "Drive"
-											: "Walk"}
+											? t("ROUTE_BOX.DRIVE")
+											: t("ROUTE_BOX.WALK")}
 									</Text>
 									<View className="separator" />
-									<Text className="grey-text">Selected</Text>
+									<Text className="grey-text">{t("ROUTE_BOX.SELECTED")}</Text>
 								</View>
 								<Text className="grey-text">{`${routeData.Summary.Distance.toFixed(2)} ${
 									currentMapUnit === METRIC ? KILOMETERS_SHORT : MILES_SHORT
@@ -744,7 +752,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 				)}
 				{routeData && (
 					<View className="show-hide-details-container bottom-border-radius" onClick={() => setIsCollapsed(s => !s)}>
-						<Text className="text">{isCollapsed ? "Route details" : "Hide details"}</Text>
+						<Text className="text">{isCollapsed ? t("ROUTE_BOX.ROUTE_DETAILS") : t("ROUTE_BOX.HIDE_DETAILS")}</Text>
 						<IconArrow style={{ transform: isCollapsed ? "rotate(0deg)" : "rotate(180deg)" }} />
 					</View>
 				)}

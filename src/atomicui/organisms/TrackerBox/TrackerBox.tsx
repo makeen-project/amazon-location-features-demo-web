@@ -13,6 +13,7 @@ import { RouteDataType, TrackerType } from "@demo/types";
 import * as turf from "@turf/turf";
 import { PubSub } from "aws-amplify";
 import { Position } from "aws-sdk/clients/location";
+import { useTranslation } from "react-i18next";
 import { Layer, MapRef, Marker, Source } from "react-map-gl";
 import { Tooltip } from "react-tooltip";
 
@@ -49,6 +50,7 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 	} = useAwsTracker();
 	const subscription = useWebSocketService();
 	const isDesktop = useMediaQuery("(min-width: 1024px)");
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		return () => {
@@ -258,11 +260,7 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 				</Flex>
 				<Flex gap={0} alignItems="center" padding="1.23rem">
 					<IconInfoSolid className="icon-plus-rounded" />
-					<TextEl
-						marginLeft="1.23rem"
-						variation="tertiary"
-						text={"Click at any point on the map to start creating a tracking route"}
-					/>
+					<TextEl marginLeft="1.23rem" variation="tertiary" text={t("TRACKER_BOX.CLICK_ANY_POINT")} />
 				</Flex>
 				<Flex className="marker-container">
 					{trackerTypes.map(({ type, icon }, idx) => (
@@ -280,10 +278,10 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 								data-tooltip-place="top"
 								data-tooltip-content={
 									type === TrackerType.CAR
-										? "Simulate tracking using car as travel mode"
+										? t("TOOLTIP.SIMULATE_TRACKING_CAR")
 										: type === TrackerType.WALK
-										? "Simulate tracking using walk as travel mode"
-										: "Simulate tracking using drone as travel mode"
+										? t("TOOLTIP.SIMULATE_TRACKING_WALK")
+										: t("TOOLTIP.SIMULATE_TRACKING_DRONE")
 								}
 								marginLeft={!!idx ? "0.62rem" : "0rem"}
 								onClick={() => onTrackerMarkerChange(type)}
@@ -298,14 +296,14 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 							{isEditingRoute ? (
 								<>
 									<View className="button" onClick={onClear}>
-										<TextEl fontFamily="AmazonEmber-Bold" color="var(--red-color)" text="Clear" />
+										<TextEl fontFamily="AmazonEmber-Bold" color="var(--red-color)" text={t("TRACKER_BOX.CLEAR")} />
 									</View>
 									<View className="button" onClick={onSave}>
 										<TextEl
 											fontFamily="AmazonEmber-Bold"
 											color={trackerPoints.length >= 2 ? "var(--primary-color)" : "var(--tertiary-color)"}
 											opacity={trackerPoints.length >= 2 ? 1 : 0.3}
-											text="Save"
+											text={t("TRACKER_BOX.SAVE")}
 										/>
 									</View>
 								</>
@@ -319,10 +317,16 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 										isLoading={isFetchingRoute}
 										onClick={onPlayPause}
 									>
-										{isFetchingRoute ? <Loader size="large" /> : isPlaying ? "Pause" : "Simulate"}
+										{isFetchingRoute ? (
+											<Loader size="large" />
+										) : isPlaying ? (
+											t("TRACKER_BOX.PAUSE")
+										) : (
+											t("TRACKER_BOX.SIMULATE")
+										)}
 									</Button>
 									<Button className="edit-button" variation="primary" onClick={onEdit}>
-										Edit
+										{t("TRACKER_BOX.EDIT")}
 									</Button>
 								</>
 							)}
@@ -332,7 +336,9 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 				{!isCollapsed && renderTrackerPointsList}
 				{!!trackerPoints?.length && (
 					<Flex className="show-hide-details-container bottom-border-radius" onClick={() => setIsCollapsed(s => !s)}>
-						<Text className="text">{isCollapsed ? "Tracker details" : "Hide details"}</Text>
+						<Text className="text">
+							{isCollapsed ? t("TRACKER_BOX.TRACKER_DETAILS") : t("TRACKER_BOX.HIDE_DETAILS")}
+						</Text>
 						<IconArrow style={{ transform: isCollapsed ? "rotate(0deg)" : "rotate(180deg)" }} />
 					</Flex>
 				)}

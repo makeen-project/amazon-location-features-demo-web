@@ -4,6 +4,7 @@
 import { showToast } from "@demo/core";
 
 import { appConfig } from "@demo/core/constants";
+import i18n from "@demo/locales";
 import { CurrentLocationDataType, MapProviderEnum, ToastType, ViewPointType } from "@demo/types";
 import * as R from "ramda";
 
@@ -53,16 +54,16 @@ export const getCurrentLocation = (
 
 				switch (errorObj.code) {
 					case 1:
-						errorObj.message = "Location permission denied, please enable browser location and refresh the page";
+						errorObj.message = i18n.t("SHOW_TOAST.CURRENT_LOCATION.ERROR_1");
 						break;
 					case 2:
-						errorObj.message = "Location permission unavailable, please try again";
+						errorObj.message = i18n.t("SHOW_TOAST.CURRENT_LOCATION.ERROR_2");
 						break;
 					case 3:
-						errorObj.message = "Location timeout, please try again";
+						errorObj.message = i18n.t("SHOW_TOAST.CURRENT_LOCATION.ERROR_3");
 						break;
 					default:
-						errorObj.message = "Location permission denied, please enable browser location and refresh the page";
+						errorObj.message = i18n.t("SHOW_TOAST.CURRENT_LOCATION.ERROR_4");
 				}
 
 				localStorage.setItem(GEO_LOCATION_ALLOWED, "no");
@@ -80,7 +81,7 @@ export const getCurrentLocation = (
 			POSITION_UNAVAILABLE: 2,
 			TIMEOUT: 3,
 			code: 1,
-			message: "Please check that your location services are enabled on your phone."
+			message: i18n.t("SHOW_TOAST.CURRENT_LOCATION.ERROR_5")
 		} as GeolocationPositionError;
 
 		setCurrentLocation({ currentLocation: undefined, error: errorObj });

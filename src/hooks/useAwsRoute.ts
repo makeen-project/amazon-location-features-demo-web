@@ -6,9 +6,9 @@ import { useMemo } from "react";
 import { useAwsRouteService } from "@demo/services";
 import { useAmplifyMapStore, useAwsRouteStore } from "@demo/stores";
 import { InputType, RouteDataType, SuggestionType } from "@demo/types";
-
 import { errorHandler } from "@demo/utils/errorHandler";
 import { CalculateRouteRequest, Position } from "aws-sdk/clients/location";
+import { useTranslation } from "react-i18next";
 
 const useAwsRoute = () => {
 	const store = useAwsRouteStore();
@@ -16,6 +16,7 @@ const useAwsRoute = () => {
 	const { setState } = useAwsRouteStore;
 	const routesService = useAwsRouteService();
 	const mapStore = useAmplifyMapStore();
+	const { t } = useTranslation();
 
 	const methods = useMemo(
 		() => ({
@@ -25,7 +26,7 @@ const useAwsRoute = () => {
 					const routeData = await routesService.calculateRoute(params, mapStore.mapProvider);
 					return routeData;
 				} catch (error) {
-					errorHandler(error, "Failed to calculate route");
+					errorHandler(error, t("ERROR_HANDLER.FAILED_CALCULATE_ROUTE") as string);
 				} finally {
 					setState({ isFetchingRoute: false });
 				}
@@ -47,7 +48,7 @@ const useAwsRoute = () => {
 				setInitial();
 			}
 		}),
-		[setInitial, setState, routesService, mapStore.mapProvider]
+		[setInitial, setState, routesService, mapStore.mapProvider, t]
 	);
 
 	return useMemo(() => ({ ...methods, ...store }), [methods, store]);

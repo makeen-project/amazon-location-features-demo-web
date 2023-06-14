@@ -550,7 +550,7 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 				: parseInt((radiusInKm * 1000).toString())
 		);
 		radiusInKm > RadiusInM.MAX / 1000 &&
-			showToast({ content: "Radius can't be greater than 10 KM", type: ToastType.INFO });
+			showToast({ content: t("SHOW_TOAST.RADIUS_RESTRICTION"), type: ToastType.INFO });
 	};
 
 	return (

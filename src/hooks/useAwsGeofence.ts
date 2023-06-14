@@ -5,9 +5,9 @@ import { useMemo } from "react";
 
 import { useAwsGeofenceService } from "@demo/services";
 import { useAmplifyAuthStore, useAwsGeofenceStore } from "@demo/stores";
-
 import { errorHandler } from "@demo/utils/errorHandler";
 import { GeofenceGeometry, Position } from "aws-sdk/clients/location";
+import { useTranslation } from "react-i18next";
 
 const useAwsGeofence = () => {
 	const store = useAwsGeofenceStore();
@@ -15,6 +15,7 @@ const useAwsGeofence = () => {
 	const { setState } = useAwsGeofenceStore;
 	const geofenceService = useAwsGeofenceService();
 	const authStore = useAmplifyAuthStore();
+	const { t } = useTranslation();
 
 	const methods = useMemo(
 		() => ({
@@ -24,7 +25,7 @@ const useAwsGeofence = () => {
 					const res = await geofenceService.listGeofences();
 					setState({ geofences: res?.Entries });
 				} catch (error) {
-					errorHandler(error, "Failed to fetch geofences");
+					errorHandler(error, t("ERROR_HANDLER.FAILED_FETCH_GEOFENCES") as string);
 				} finally {
 					setState({ isFetchingGeofences: false });
 				}
@@ -35,7 +36,7 @@ const useAwsGeofence = () => {
 					const res = await geofenceService.putGeofence(GeofenceId, Geometry);
 					res && methods.getGeofencesList();
 				} catch (error) {
-					errorHandler(error, "Failed to create geofence");
+					errorHandler(error, t("ERROR_HANDLER.FAILED_CREATE_GEOFENCES") as string);
 				} finally {
 					setState({ isCreatingGeofence: false });
 				}
@@ -46,7 +47,7 @@ const useAwsGeofence = () => {
 					const res = await geofenceService.deleteGeofence(GeofenceId);
 					res && methods.getGeofencesList();
 				} catch (error) {
-					errorHandler(error, "Failed to delete geofence");
+					errorHandler(error, t("ERROR_HANDLER.FAILED_DELETE_GEOFENCES") as string);
 				} finally {
 					setState({ isDeletingGeofence: false });
 				}
@@ -55,7 +56,7 @@ const useAwsGeofence = () => {
 				try {
 					await geofenceService.evaluateGeofence(Position, authStore.credentials!.identityId);
 				} catch (error) {
-					errorHandler(error, "Failed to evaluate geofence");
+					errorHandler(error, t("ERROR_HANDLER.FAILED_EVALUATE_GEOFENCES") as string);
 				}
 			},
 			setIsAddingGeofence: (isAddingGeofence: boolean) => {
@@ -66,7 +67,7 @@ const useAwsGeofence = () => {
 				setInitial();
 			}
 		}),
-		[setInitial, setState, geofenceService, authStore.credentials]
+		[setInitial, setState, geofenceService, authStore.credentials, t]
 	);
 
 	return useMemo(() => ({ ...methods, ...store }), [methods, store]);

@@ -4,6 +4,7 @@
 import { showToast } from "@demo/core/Toast";
 
 import { appConfig } from "@demo/core/constants";
+import i18n from "@demo/locales";
 import { ToastType } from "@demo/types";
 
 const {
@@ -32,7 +33,7 @@ export const errorHandler = (error: any, message?: string) => {
 		errors.codes.includes(error.statusCode || error.status) &&
 		errors.exceptions.includes(error.code)
 	) {
-		showToast({ content: "Refreshing your session, please wait", type: ToastType.INFO });
+		showToast({ content: i18n.t("SHOW_TOAST.REFRESHING_SESSION"), type: ToastType.INFO });
 		setTimeout(() => {
 			localStorage.setItem(SHOULD_CLEAR_CREDENTIALS, "true");
 			window.location.reload();
@@ -42,7 +43,7 @@ export const errorHandler = (error: any, message?: string) => {
 		if (!isStackCorrupted && errors.codes.includes(error.statusCode || error.status)) {
 			if (isUserAwsAccountConnected) {
 				isStackCorrupted = true;
-				showToast({ content: "Stack is corrupted, switching back to default stack", type: ToastType.ERROR });
+				showToast({ content: i18n.t("SHOW_TOAST.STACK_IS_CORRUPTED"), type: ToastType.ERROR });
 				setTimeout(() => {
 					localStorage.clear();
 					window.location.reload();
@@ -50,7 +51,7 @@ export const errorHandler = (error: any, message?: string) => {
 				return;
 			} else {
 				window.location.replace(ERROR_BOUNDARY);
-				showToast({ content: "Something went wrong!", type: ToastType.ERROR });
+				showToast({ content: i18n.t("SHOW_TOAST.SOMETHING_WENT_WRONG"), type: ToastType.ERROR });
 				return;
 			}
 		}

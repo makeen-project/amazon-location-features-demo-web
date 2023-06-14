@@ -10,6 +10,7 @@ import { ClustersType, SuggestionType, ViewPointType } from "@demo/types";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { calculateClusters, getHash, getPrecision, isGeoString } from "@demo/utils/geoCalculation";
 import { Position } from "aws-sdk/clients/location";
+import { useTranslation } from "react-i18next";
 
 const useAwsPlace = () => {
 	const store = useAwsPlaceStore();
@@ -17,6 +18,7 @@ const useAwsPlace = () => {
 	const { setState } = useAwsPlaceStore;
 	const { setViewpoint } = useAmplifyMap();
 	const placesService = useAwsPlaceService();
+	const { t } = useTranslation();
 
 	const methods = useMemo(
 		() => ({
@@ -34,7 +36,7 @@ const useAwsPlace = () => {
 					});
 					setViewpoint(viewpoint);
 				} catch (error) {
-					errorHandler(error, "Failed to search place suggestions");
+					errorHandler(error, t("ERROR_HANDLER.FAILED_SEARCH_PLACE_SUGGESTIONS") as string);
 				} finally {
 					setState({ isSearching: false });
 				}
@@ -45,7 +47,7 @@ const useAwsPlace = () => {
 					const data = await placesService.getPlaceById(placeId);
 					return data;
 				} catch (error) {
-					errorHandler(error, "Failed to fetch place by ID");
+					errorHandler(error, t("ERROR_HANDLER.FAILED_FETCH_PLACE_ID") as string);
 				} finally {
 					setState({ isFetchingPlaceData: false });
 				}
@@ -71,7 +73,7 @@ const useAwsPlace = () => {
 					});
 					setViewpoint(viewpoint);
 				} catch (error) {
-					errorHandler(error, "Failed to search place by text");
+					errorHandler(error, t("ERROR_HANDLER.FAILED_SEARCH_PLACE_TEXT") as string);
 				} finally {
 					setState({ isSearching: false });
 				}
@@ -80,7 +82,7 @@ const useAwsPlace = () => {
 				try {
 					return await placesService.getPlaceByCoordinates(input);
 				} catch (error) {
-					errorHandler(error, "Failed to fetch place by coordinates");
+					errorHandler(error, t("ERROR_HANDLER.FAILED_FETCH_PLACE_COORDS") as string);
 				}
 			},
 			searchPlacesByCoordinates: async (
@@ -101,7 +103,7 @@ const useAwsPlace = () => {
 					setState({ bound: undefined });
 					setViewpoint(vPoint);
 				} catch (error) {
-					errorHandler(error, "Failed to search place by coordinates");
+					errorHandler(error, t("ERROR_HANDLER.FAILED_SEARCH_PLACE_COORDS") as string);
 				} finally {
 					setState({ isSearching: false });
 				}
@@ -145,7 +147,7 @@ const useAwsPlace = () => {
 						const pd = await placesService.getPlaceById(selectedMarker.PlaceId);
 						coords = pd?.Place.Geometry.Point;
 					} catch (error) {
-						errorHandler(error, "Failed to fetch place by ID for marker");
+						errorHandler(error, t("ERROR_HANDLER.FAILED_FETCH_PLACE_ID_MARKER") as string);
 					}
 				}
 
@@ -177,7 +179,7 @@ const useAwsPlace = () => {
 				setInitial();
 			}
 		}),
-		[placesService, setState, store.precision, setInitial, setViewpoint]
+		[placesService, setState, store.precision, setInitial, setViewpoint, t]
 	);
 	return useMemo(() => ({ ...methods, ...store }), [methods, store]);
 };

@@ -137,7 +137,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 								className="lock-icon"
 								data-tooltip-id="geofence-lock"
 								data-tooltip-place="top"
-								data-tooltip-content="Sign in to your AWS account is required"
+								data-tooltip-content={t("TOOLTIP.SIGN_IN_REQUIRED")}
 							/>
 							<Tooltip id="geofence-lock" />
 						</Flex>
@@ -152,7 +152,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 								className="lock-icon"
 								data-tooltip-id="tracker-lock"
 								data-tooltip-place="top"
-								data-tooltip-content="Sign in to your AWS account is required"
+								data-tooltip-content={t("TOOLTIP.SIGN_IN_REQUIRED")}
 							/>
 							<Tooltip id="tracker-lock" />
 						</Flex>

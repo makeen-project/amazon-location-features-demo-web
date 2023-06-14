@@ -4,7 +4,6 @@
 import { useMemo } from "react";
 
 import { useAwsIotService } from "@demo/services";
-
 import { errorHandler } from "@demo/utils/errorHandler";
 
 const useAwsIot = () => {

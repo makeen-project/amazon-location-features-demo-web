@@ -1127,8 +1127,27 @@
 		"AD_695": "The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.",
 		"AD_696": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"SEARCH_BOX": {},
-	"ROUTE_BOX": {},
+	"SEARCH_BOX": {
+		"SEARCH": "Search",
+		"SEARCH_NEARBY": "Search nearby",
+		"SEARCHING_FOR_SUGGESTIONS": "Searching for suggestions..."
+	},
+	"ROUTE_BOX": {
+		"MY_LOCATION": "My Location",
+		"ROUTE_OPTIONS": "Route options",
+		"CLOSE": "Close",
+		"AVOID_TOLLS": "Avoid tolls",
+		"AVOID_FERRIES": "Avoid ferries",
+		"SEARCH_NEARBY": "Search nearby",
+		"FROM": "From",
+		"TO": "To",
+		"CURRENT_LOCATION": "Current location",
+		"DRIVE": "Drive",
+		"WALK": "Walk",
+		"SELECTED": "Selected",
+		"ROUTE_DETAILS": "Route details",
+		"HIDE_DETAILS": "Hide details"
+	},
 	"GEOFENCE_BOX": {
 		"SEARCH_NEARBY": "Search nearby",
 		"ERROR_1": "Name can only contain alphanumeric, underscore and hyphen characters",
@@ -1147,12 +1166,15 @@
 		"SAVE": "Save",
 		"GO_BACK": "Go Back"
 	},
-	"WELCOME_MODAL": {
-		"HEADING": "Welcome to\nAmazon Location Demo",
-		"TEXT_1": "By using the Amazon Location Demo App, you agree to the App's",
-		"TEXT_2": "Terms & Conditions",
-		"TEXT_3": "for use.",
-		"CONTINUE": "Continue"
+	"TRACKER_BOX": {
+		"CLICK_ANY_POINT": "Click at any point on the map to start creating a tracking route",
+		"CLEAR": "Clear",
+		"SAVE": "Save",
+		"PAUSE": "Pause",
+		"SIMULATE": "Simulate",
+		"EDIT": "Edit",
+		"TRACKER_DETAILS": "Tracker details",
+		"HIDE_DETAILS": "Hide details"
 	},
 	"APP_DOWNLOAD_NOTIFICATION": {
 		"HEADING": "Get Amazon Location app for the best experience",
@@ -1300,14 +1322,68 @@
 	"POPUP": {
 		"CURRENT_LOCATION_DISABLED": "Current location disabled",
 		"CURRENT_LOCATION_DENIED": "Current location permission denied",
+		"ESRI_LIMITATION_1": "Distance is greater than 400 km, can't calculate via Esri, kindly switch to HERE provider",
+		"ESRI_LIMITATION_2": "Distance is greater than 248.55 mi, can't calculate via Esri, kindly switch to HERE provider",
+		"ROUTE_NOT_FOUND": "Route not found",
 		"DIRECTIONS": "Directions"
 	},
 	"SHOW_TOAST": {
 		"GRAB_NOT_SUPPORTED": "Your current location is outside countries supported by Grab. Currently, Grab supports Malaysia, Philippines, Thailand, Singapore, Vietnam, Indonesia, Myanmar, Cambodia",
 		"LOCATION_PERMISSION_DENIED": "Location permission denied, please enable browser location and refresh the page",
 		"LOCATION_PERMISSION_UNAVAILABLE": "Location permission unavailable, please try again",
-		"ROUTE_WAYPOINTS_RESTRICTION": "Cannot set more than 25 points"
+		"ROUTE_WAYPOINTS_RESTRICTION": "Cannot set more than 25 points",
+		"RADIUS_RESTRICTION": "Radius can't be greater than 10 KM",
+		"FAILED_TO_CONNECT_1": "Failed to connect AWS account, invalid IdentityPoolId or region",
+		"FAILED_TO_CONNECT_2": "Failed to connect AWS account, invalid UserDomain or UserPoolClientId",
+		"REFRESHING_SESSION": "Refreshing your session, please wait",
+		"STACK_IS_CORRUPTED": "Stack is corrupted, switching back to default stack",
+		"SOMETHING_WENT_WRONG": "Something went wrong!",
+		"CURRENT_LOCATION": {
+			"ERROR_1": "Location permission denied, please enable browser location and refresh the page",
+			"ERROR_2": "Location permission unavailable, please try again",
+			"ERROR_3": "Location timeout, please try again",
+			"ERROR_4": "Location permission denied, please enable browser location and refresh the page",
+			"ERROR_5": "Please check that your location services are enabled on your phone."
+		}
 	},
-	"ERROR_HANDLER": {},
-	"TOOL_TIP": {}
+	"ERROR_HANDLER": {
+		"FAILED_CONFIGURE_AMPLIFY": "Failed to configure amplify",
+		"FAILED_CONNECT_1": "Failed to connect AWS account, invalid UserDomain or UserPoolClientId",
+		"FAILED_CONNECT_2": "Failed to connect AWS account, invalid UserPoolId",
+		"FAILED_FETCH_CREDS": "Failed to fetch credentials",
+		"FAILED_SIGN_IN": "Failed to sign in",
+		"FAILED_SIGN_OUT": "Failed to sign out",
+		"FAILED_FETCH_DEFAULT_MAP": "Failed to fetch default map",
+		"FAILED_FETCH_AVAILABLE_MAP": "Failed to fetch available maps",
+		"FAILED_CREATE_LOCATION_CLIENT": "Failed to create location client",
+		"FAILED_CREATE_IOT_CLIENT": "Failed to create iot client",
+		"FAILED_FETCH_GEOFENCES": "Failed to fetch geofences",
+		"FAILED_CREATE_GEOFENCES": "Failed to create geofence",
+		"FAILED_DELETE_GEOFENCES": "Failed to delete geofence",
+		"FAILED_EVALUATE_GEOFENCES": "Failed to evaluate geofence",
+		"FAILED_SEARCH_PLACE_SUGGESTIONS": "Failed to search place suggestions",
+		"FAILED_FETCH_PLACE_ID": "Failed to fetch place by ID",
+		"FAILED_SEARCH_PLACE_TEXT": "Failed to search place by text",
+		"FAILED_FETCH_PLACE_COORDS": "Failed to fetch place by coordinates",
+		"FAILED_SEARCH_PLACE_COORDS": "Failed to search place by coordinates",
+		"FAILED_FETCH_PLACE_ID_MARKER": "Failed to fetch place by ID for marker",
+		"FAILED_CALCULATE_ROUTE": "Failed to calculate route"
+	},
+	"TOOLTIP": {
+		"MAP_PROVIDER_STYLES": "Map provider and styles",
+		"GEOFENCE": "Geofence",
+		"CL_GRAB": "Distance can't be calculated since your current location is outside countries supported by Grab. Currently, Grab supports Malaysia, Philippines, Thailand, Singapore, Vietnam, Indonesia, Myanmar, Cambodia",
+		"CL_DENIED": "Distance can't be calculate if location permission is not granted, kindly grant access to location from the URL bar or browser settings",
+		"CALCULATE_ROUTE_CAR": "Calculate route with 'Car' as travel mode",
+		"CALCULATE_ROUTE_WALK": "Calculate route with 'Walking' as travel mode",
+		"CALCULATE_ROUTE_BICYCLE": "Calculate route with 'Bicycle' as travel mode",
+		"CALCULATE_ROUTE_MOTORCYCLE": "Calculate route with 'Motorcycle' as travel mode",
+		"CALCULATE_ROUTE_TRUCK": "Calculate route with 'Truck' as travel mode",
+		"SEARCH": "Search",
+		"ROUTES": "Routes",
+		"SIGN_IN_REQUIRED": "Sign in to your AWS account is required",
+		"SIMULATE_TRACKING_CAR": "Simulate tracking using car as travel mode",
+		"SIMULATE_TRACKING_WALK": "Simulate tracking using walk as travel mode",
+		"SIMULATE_TRACKING_DRONE": "Simulate tracking using drone as travel mode"
+	}
 }
