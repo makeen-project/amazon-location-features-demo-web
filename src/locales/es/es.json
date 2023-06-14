@@ -237,6 +237,7 @@
 		"HYPERLINK_1": "Developer Guide",
 		"HYPERLINK_2": "GitHub",
 		"HYPERLINK_3": "blog",
+		"AND": "and",
 		"RECORD_NOT_FOUND": "Record not found",
 		"PUBLISHED_ON": "Published on",
 		"UPDATED_ON": "Updated on",
@@ -247,6 +248,13 @@
 		"CLEAR": "Clear",
 		"APPLY": "Apply",
 		"DONE": "Done",
+		"CREATE_RESOURCES": "Create resources",
+		"CLONE": "Clone",
+		"RUN": "Run",
+		"FOLLOW": "Follow: ",
+		"TESTING": "Testing",
+		"DEPLOY": "Deploy",
+		"CLEAN_UP": "Clean up",
 		"FILTER_1": {
 			"TITLE": "Features",
 			"OPTION_1": {
@@ -1127,6 +1135,23 @@
 		"AD_695": "The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.",
 		"AD_696": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
+	"ERROR_BOUNDARY_PAGE": {
+		"HEADING": "Oops!",
+		"DESC": "Looks like something went wrong, we are already looking into it. Click reload page to continue.",
+		"BUTTON_TEXT": "Reload page"
+	},
+	"NOT_FOUND_404_PAGE": {
+		"HEADING": "404",
+		"DESC": "Sorry, the page you tried cannot be found."
+	},
+	"APP_DOWNLOAD_NOTIFICATION": {
+		"HEADING": "Get Amazon Location app for the best experience",
+		"LIST_ITEM_1": "Create geofences",
+		"LIST_ITEM_2": "Track your location",
+		"LIST_ITEM_3": "Get notified in geofence area",
+		"DOWNLOAD": "Download",
+		"CONTINUE_TO_WEB_EXPERIENCE": "Continue to web experience"
+	},
 	"SEARCH_BOX": {
 		"SEARCH": "Search",
 		"SEARCH_NEARBY": "Search nearby",
@@ -1175,14 +1200,6 @@
 		"EDIT": "Edit",
 		"TRACKER_DETAILS": "Tracker details",
 		"HIDE_DETAILS": "Hide details"
-	},
-	"APP_DOWNLOAD_NOTIFICATION": {
-		"HEADING": "Get Amazon Location app for the best experience",
-		"LIST_ITEM_1": "Create geofences",
-		"LIST_ITEM_2": "Track your location",
-		"LIST_ITEM_3": "Get notified in geofence area",
-		"DOWNLOAD": "Download",
-		"CONTINUE_TO_WEB_EXPERIENCE": "Continue to web experience"
 	},
 	"MAP_BUTTONS": {
 		"HEADING": "Map style",
