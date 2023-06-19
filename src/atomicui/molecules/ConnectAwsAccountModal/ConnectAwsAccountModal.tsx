@@ -15,11 +15,13 @@ import { useTranslation } from "react-i18next";
 import "./styles.scss";
 
 const {
-	ENV: { CF_TEMPLATE },
+	ENV: { CF_TEMPLATE, REGION, REGION_ASIA },
 	ROUTES: { HELP },
 	MAP_RESOURCES: { GRAB_SUPPORTED_AWS_REGIONS },
 	LINKS: { AWS_TERMS_AND_CONDITIONS }
 } = appConfig;
+const defaultRegion = regionsData.find(option => option.value === REGION) as { value: string; label: string };
+const defaultRegionAsia = regionsData.find(option => option.value === REGION_ASIA) as { value: string; label: string };
 
 interface ConnectAwsAccountModalProps {
 	open: boolean;
@@ -40,7 +42,7 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 		WebSocketUrl: ""
 	});
 	const [cloudFormationLink, setCloudFormationLink] = useState(CF_TEMPLATE);
-	const [stackRegion, setStackRegion] = useState<{ value: string; label: string }>(regionsData[2]);
+	const [stackRegion, setStackRegion] = useState<{ value: string; label: string }>(defaultRegion);
 	const {
 		isUserAwsAccountConnected,
 		setConnectFormValues,
@@ -55,11 +57,11 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 	const { t } = useTranslation();
 
 	useEffect(() => {
-		const newUrl = transformCloudFormationLink(CF_TEMPLATE, regionsData[3].value);
+		const newUrl = transformCloudFormationLink(REGION_ASIA);
 
 		if (currentMapProvider === MapProviderEnum.GRAB && cloudFormationLink !== newUrl) {
 			setCloudFormationLink(newUrl);
-			setStackRegion(regionsData[3]);
+			setStackRegion(defaultRegionAsia);
 		}
 	}, [currentMapProvider, cloudFormationLink]);
 
@@ -69,7 +71,7 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 	};
 
 	const _onSelect = (option: { value: string; label: string }) => {
-		const newUrl = transformCloudFormationLink(CF_TEMPLATE, option.value);
+		const newUrl = transformCloudFormationLink(option.value);
 		setCloudFormationLink(newUrl);
 		setStackRegion(option);
 	};
