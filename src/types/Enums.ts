@@ -102,6 +102,7 @@ export enum SettingOptionEnum {
 	UNITS = "Units",
 	DATA_PROVIDER = "Data provider",
 	MAP_STYLE = "Map style",
+	LANGUAGE = "Language",
 	ROUTE_OPTIONS = "Default route options",
 	AWS_CLOUD_FORMATION = "Connect AWS Account"
 }

@@ -1,9 +1,9 @@
 {
-	"AMAZON_LOCATION": "Amazon Location",
-	"DEMO": "Demo",
-	"WEB": "Web",
+	"AMAZON_LOCATION": "موقع أمازون",
+	"DEMO": "تجريبي",
+	"WEB": "الويب",
 	"IOS": "iOS",
-	"ANDROID": "Android",
+	"ANDROID": "ذكري المظهر",
 	"HEADER": {
 		"OVERVIEW": "ملخص",
 		"PRODUCT": "منتج",
@@ -12,8 +12,8 @@
 		"TRY_OUR_DEMO_APP": "جرب تطبيقنا التجريبي"
 	},
 	"FOOTER": {
-		"AL": "Amazon Location",
-		"LEARN_ABOUT_AL": "Amazon Location تعرف على",
+		"AL": "موقع أمازون",
+		"LEARN_ABOUT_AL": "تعرف على أمازون",
 		"GETTING_STARTED": "ابدء",
 		"FAQ": "أسئلة مكررة",
 		"PRICING": "التسعير",
@@ -37,11 +37,11 @@
 		"COMMUNITY": "مجتمع",
 		"CONTACT_US": "اتصل بنا",
 		"CONNECT_AWS_IQ": "AWS IQ قم بتوصيل",
-		"GITHUB": "Github",
+		"GITHUB": "جيثب",
 		"AWS_RE:POST": "AWS re:Post",
-		"STACK_OVERFLOW": "Stack Overflow",
+		"STACK_OVERFLOW": "مكدس الفائض",
 		"HELP": "يساعد",
-		"AWS_COPYRIGHT": "Amazon Web Services، Inc. أو الشركات التابعة لها. كل الحقوق محفوظة.",
+		"AWS_COPYRIGHT": "Amazon Web Services، Inc. أو الشركات التابعة لها. كل الحقوق محفوظة",
 		"PRIVACY": "خصوصية",
 		"SITE_TERMS": "شروط الموقع"
 	},
@@ -107,101 +107,101 @@
 		"GROCERY_STORE": "محل بقالة"
 	},
 	"PRODUCT": {
-		"HEADING": "Product",
-		"SUB_HEADING": "Discover Amazon Location tools you need to build location-based services and applications that can be used to find nearby places, get directions, and display real-time traffic updates.",
+		"HEADING": "منتج",
+		"SUB_HEADING": ".اكتشف أدوات موقع أمازون التي تحتاجها لإنشاء خدمات وتطبيقات تعتمد على الموقع يمكن استخدامها للعثور على الأماكن القريبة ، والحصول على الاتجاهات ، وعرض تحديثات حركة المرور في الوقت الفعلي",
 		"PLACES": {
-			"TITLE": "Places",
+			"TITLE": "أماكن",
 			"PRODUCT_1": {
-				"TITLE": "Geocode",
-				"INFO_TEXT": "Geocodes free-form text, such as an address, name, city, or region to allow you to search for Places or points of interest.",
+				"TITLE": "تكويد جغرافيًا",
+				"INFO_TEXT": ".تكويد نص حر الشكل جغرافيًا ، مثل عنوان أو اسم أو مدينة أو منطقة للسماح لك بالبحث عن الأماكن أو نقاط الاهتمام",
 				"LINK_LABEL": "SearchPlaceIndexForText"
 			},
 			"PRODUCT_2": {
-				"TITLE": "Reverse Geocode",
-				"INFO_TEXT": "Reverse geocodes a given coordinate and returns a legible address.",
+				"TITLE": "عكس الترميز الجغرافي",
+				"INFO_TEXT": ".عكس الترميز الجغرافي للإحداثيات المحددة وإرجاع عنوان يمكن قراءته",
 				"LINK_LABEL": "SearchPlaceIndexForPosition"
 			},
 			"PRODUCT_3": {
-				"TITLE": "Autosuggest",
-				"INFO_TEXT": "Generates suggestions for addresses and points of interest based on partial or misspelled free-form text.",
+				"TITLE": "اقتراح تلقائي",
+				"INFO_TEXT": ".يولد اقتراحات للعناوين ونقاط الاهتمام بناءً على نص حر جزئي أو به أخطاء إملائية",
 				"LINK_LABEL": "SearchPlaceIndexForSuggestions"
 			},
 			"PRODUCT_4": {
-				"TITLE": "Place Details",
-				"INFO_TEXT": "Finds details of a place by its unique PlaceId. A PlaceId is returned by other search operations.",
+				"TITLE": "تفاصيل المكان",
+				"INFO_TEXT": ".البحث عن تفاصيل مكان عن طريق PlaceId الفريد الخاص به. يتم إرجاع PlaceId بواسطة عمليات البحث الأخرى",
 				"LINK_LABEL": "GetPlace"
 			}
 		},
 		"MAPS": {
-			"TITLE": "Maps",
+			"TITLE": "خرائط",
 			"PRODUCT_1": {
-				"TITLE": "Glyphs",
-				"INFO_TEXT": "Retrieves glyphs used to display labels on a map. Glyphs is a binary file containing encoded Unicode characters.",
+				"TITLE": "الحروف الرسومية",
+				"INFO_TEXT": ".يسترجع الحروف الرسومية المستخدمة لعرض الملصقات على الخريطة. Glyphs هو ملف ثنائي يحتوي على أحرف Unicode مشفرة",
 				"LINK_LABEL": "GetMapGlyphs"
 			},
 			"PRODUCT_2": {
-				"TITLE": "Sprites",
-				"INFO_TEXT": "Retrieves glyphs used to display labels on a map. Glyphs is a binary file containing encoded Unicode characters.",
+				"TITLE": "العفاريت",
+				"INFO_TEXT": ".يسترجع الحروف الرسومية المستخدمة لعرض الملصقات على الخريطة. Glyphs هو ملف ثنائي يحتوي على أحرف Unicode مشفرة",
 				"LINK_LABEL": "GetMapSprites"
 			},
 			"PRODUCT_3": {
-				"TITLE": "Map Style",
-				"INFO_TEXT": "Retrieves the map style descriptor from a map resource. Map style defines color and other style information for the data to define how it will look when rendered.",
+				"TITLE": "نمط الخريطة",
+				"INFO_TEXT": ".يسترجع واصف نمط الخريطة من مورد الخريطة. يحدد نمط الخريطة اللون ومعلومات النمط الأخرى للبيانات لتحديد كيف ستبدو عند تقديمها",
 				"LINK_LABEL": "GetMapStyleDescriptor"
 			},
 			"PRODUCT_4": {
 				"TITLE": "Map Tile",
-				"INFO_TEXT": "Retrieves a vector data tile. A Map tile format stores map data using vector shapes and used by a map renderer client to render a map.",
+				"INFO_TEXT": ".يسترجع بلاط بيانات المتجهات. يخزن تنسيق تجريد الخريطة بيانات الخريطة باستخدام أشكال المتجه ويستخدمه عميل عارض الخريطة لتقديم خريطة",
 				"LINK_LABEL": "GetMapTile"
 			}
 		},
 		"ROUTES": {
-			"TITLE": "Routes",
+			"TITLE": "الطرق",
 			"PRODUCT_1": {
-				"TITLE": "Route",
-				"INFO_TEXT": "Calculates routes between an origin and a destination, with up to 23 waypoints along the route, for different modes of transportation, avoidances, and traffic conditions.",
+				"TITLE": "طريق",
+				"INFO_TEXT": ".يحسب الطرق بين الأصل والوجهة ، مع ما يصل إلى 23 نقطة طريق على طول الطريق ، لأنماط مختلفة من النقل ، وتجنب ، وظروف حركة المرور",
 				"LINK_LABEL": "CalculateRoute"
 			},
 			"PRODUCT_2": {
-				"TITLE": "Route Matrix",
-				"INFO_TEXT": "Generates matrix from a set of departure positions to a set of destination positions. Useful as inputs into route planning or optimization software.",
+				"TITLE": "طريق المصفوفة",
+				"INFO_TEXT": ".يولد المصفوفة من مجموعة من مواقع المغادرة إلى مجموعة من مواقع الوجهة. مفيد كمدخلات في برنامج تخطيط المسار أو برنامج التحسين",
 				"LINK_LABEL": "CalculateRouteMatrix"
 			}
 		},
 		"GEOFENCES": {
-			"TITLE": "Geofences",
+			"TITLE": "الجيولوجية",
 			"PRODUCT_1": {
-				"TITLE": "Geofence Collection",
-				"INFO_TEXT": "Create, Read, Update and Delete a Geofence Collection. A geofence Collection contains zero or more geofences.",
+				"TITLE": "مجموعة Geofence",
+				"INFO_TEXT": ".قم بإنشاء وقراءة وتحديث وحذف مجموعة Geofence. مجموعة الجيوفينس تحتوي على صفر أو أكثر من الجيش",
 				"LINK_LABEL_1": "CreateGeofenceCollection",
 				"LINK_LABEL_2": "UpdateGeofenceCollection",
 				"LINK_LABEL_3": "DeleteGeofenceCollection",
 				"LINK_LABEL_4": "DescribeGeofenceCollection"
 			},
 			"PRODUCT_2": {
-				"TITLE": "Geofence",
-				"INFO_TEXT": "Create, Read, Update and Delete a Geofence. Geofence is polygon geometry that defines a virtual boundary on a map.",
+				"TITLE": "الجيوبنس",
+				"INFO_TEXT": ".قم بإنشاء وقراءة وتحديث وحذف الجغرافي. Geofence هو هندسة المضلعة التي تحدد الحدود الافتراضية على الخريطة",
 				"LINK_LABEL_1": "PutGeofence",
 				"LINK_LABEL_2": "GetGeofence",
 				"LINK_LABEL_3": "ListGeofences"
 			},
 			"PRODUCT_3": {
-				"TITLE": "Batch Process",
-				"INFO_TEXT": "Stores or Deletes a batch of geofences from a geofence collection.",
+				"TITLE": "عملية الدُفعات",
+				"INFO_TEXT": ".تخزن أو حذف مجموعة من الجيش من مجموعة Geofence",
 				"LINK_LABEL_1": "BatchPutGeofence",
 				"LINK_LABEL_2": "BatchDeleteGeofence"
 			},
 			"PRODUCT_4": {
-				"TITLE": "Evaluate",
-				"INFO_TEXT": "Evaluates device positions against the geofence geometries from a given geofence collection. Also, sends notifications when it determines if the device has entered or exited a geofenced area.",
+				"TITLE": "يقيم",
+				"INFO_TEXT": ".يقوم بتقييم مواقف الجهاز ضد الهندسة الجغرافية من مجموعة جغرافية معينة. أيضًا ، يرسل الإخطارات عندما يحدد ما إذا كان الجهاز قد دخل أو خرج منطقة جغرافية",
 				"LINK_LABEL_1": "BatchEvaluateGeofences"
 			}
 		},
 		"TRACKERS": {
-			"TITLE": "Trackers",
+			"TITLE": "المتتبعين",
 			"PRODUCT_1": {
-				"TITLE": "Tracker",
-				"INFO_TEXT": "Create, Read, Update and Delete a Tracker. Trackers help retrieve current and historical location of devices.",
+				"TITLE": "تعقب",
+				"INFO_TEXT": ".قم بإنشاء وقراءة وتحديث وحذف متتبع. تساعد المتتبعين في استرداد الموقع الحالي والتاريخي للأجهزة",
 				"LINK_LABEL_1": "CreateTracker",
 				"LINK_LABEL_2": "DescribeTracker",
 				"LINK_LABEL_3": "UpdateTracker",
@@ -209,23 +209,23 @@
 				"LINK_LABEL_5": "ListTrackers"
 			},
 			"PRODUCT_2": {
-				"TITLE": "Consumer",
-				"INFO_TEXT": "Association or disassociate a tracker resource from a geofence collection.",
+				"TITLE": "مستهلك",
+				"INFO_TEXT": ".الارتباط أو فصل مورد تعقب من مجموعة الجيوفينس",
 				"LINK_LABEL_1": "AssociateTrackerConsumer",
 				"LINK_LABEL_2": "DisassociateTrackerConsumer",
 				"LINK_LABEL_3": "ListTrackerConsumers"
 			},
 			"PRODUCT_3": {
-				"TITLE": "Current Position",
-				"INFO_TEXT": "Retrieves most recent position of device(s)",
+				"TITLE": "الموقف الحالى",
+				"INFO_TEXT": "يسترجع أحدث موقف الأجهزة (أجهزة)",
 				"LINK_LABEL_1": "GetDevicePosition",
 				"LINK_LABEL_2": "BatchGetDevicePosition",
 				"LINK_LABEL_3": "BatchUpdateDevicePosition",
 				"LINK_LABEL_4": "ListDevicePositions"
 			},
 			"PRODUCT_4": {
-				"TITLE": "Position History",
-				"INFO_TEXT": "Retrieves the device(s) position history within a specified range of time.",
+				"TITLE": "تاريخ الموقف",
+				"INFO_TEXT": ".يسترجع سجل الموضع (الجهاز) في حدود الوقت المحدد من الوقت",
 				"LINK_LABEL_1": "GetDevicePositionHistory",
 				"LINK_LABEL_2": "BatchDeleteDevicePositionHistory"
 			}
@@ -338,102 +338,103 @@
 		}
 	},
 	"HELP": {
-		"HEADING": "Demo Help",
-		"SUB_HEADING": "Detailed instructions for creating, deleting and troubleshooting the Demo app's stack.",
+		"HEADING": "مساعدة التوضيح",
+		"SUB_HEADING": ".إرشادات مفصلة لإنشاء وحذف واستكشاف الأخطاء وإصلاحها في مكدس التطبيق التجريبي",
+		"SEARCH": "يبحث",
 		"ITEM_1": {
-			"TITLE": "Creation",
-			"DESC": "Running a CloudFormation template via your own AWS account to configure a stack which creates all the necessary resources.",
+			"TITLE": "خلق",
+			"DESC": ".تشغيل قالب CloudFormation عبر حساب AWS الخاص بك لتكوين مكدس يخلق جميع الموارد اللازمة",
 			"CONTENT_1": {
-				"TEXT": "Open sidebar on demo page and click on [click here] link to get redirected to AWS console."
+				"TEXT": ".افتح الشريط الجانبي على الصفحة التجريبية وانقر على الرابط [انقر هنا] لإعادة توجيهه إلى وحدة التحكم AWS"
 			},
 			"CONTENT_2": {
-				"TEXT": "Once redirected, if your AWS isn't logged in, you'll be asked to login."
+				"TEXT": ".بمجرد إعادة توجيهها ، إذا لم يتم تسجيل الدخول AWS الخاص بك ، فسيُطلب منك تسجيل الدخول"
 			},
 			"CONTENT_3": {
-				"TEXT": "After login you'll be taken to CloudFormation create stack step and you'd notice that Amazon S3 URL field is prefilled. Click on Next."
+				"TEXT": ".بعد تسجيل الدخول ، ستُنقل إلى CloudFormation ، قم بإنشاء خطوة مكدس وستلاحظ أن حقل url Amazon S3 مملوء مسبقًا. انقر فوق التالي"
 			},
 			"CONTENT_4": {
-				"TEXT": "On the next step enter any email address in CognitoUserEmail field, you'll be sent a temporary password on this email, which will be later used to login into the applicatoin using Amazon Hosted UI. Click on Next."
+				"TEXT": ".في الخطوة التالية ، أدخل أي عنوان بريد إلكتروني في حقل CognitouserEmail ، سيتم إرسالك كلمة مرور مؤقتة على هذا البريد الإلكتروني ، والتي سيتم استخدامها لاحقًا لتسجيل الدخول إلى تطبيق Applatoin باستخدام Amazon Hosted UI. انقر فوق التالي"
 			},
 			"CONTENT_5": {
-				"TEXT": "Do not modify any config on the next couple of steps and simply proceed by clicking Next, until you are presented with the Submit button, here accept the acknowledgement and press Submit."
+				"TEXT": ".لا تقم بتعديل أي تهيئة على الخطوات القليلة التالية ، ومتابعة ببساطة بالنقر فوق التالي ، حتى يتم تقديم زر الإرسال ، هنا قبول الإقرار واضغط على إرسال"
 			},
 			"CONTENT_6": {
-				"TEXT": "You'll see that the stack is now being created, depending on you internet speed this step can take from 5 to 10 minutes. Once the stack creation is completed, go to Outputs tab."
+				"TEXT": ".سترى أنه يتم الآن إنشاء المكدس ، اعتمادًا على سرعة الإنترنت التي يمكن أن تتخذها هذه الخطوة من 5 إلى 10 دقائق. بمجرد اكتمال إنشاء المكدس ، انتقل إلى علامة التبويب المخرجات"
 			},
 			"CONTENT_7": {
-				"TEXT": "Copy and paste all the values into the form. Make sure all values are copied correctly to ensure a successful connection. Click on Connect."
+				"TEXT": ".نسخ ولصق جميع القيم في النموذج. تأكد من نسخ جميع القيم بشكل صحيح لضمان اتصال ناجح. انقر على الاتصال"
 			},
 			"CONTENT_8": {
-				"TEXT": "If you encounter any error, make sure that all the values copied from step 6 are correct and try again, once succeeded, you'd notice a success state."
+				"TEXT": ".إذا واجهت أي خطأ ، فتأكد من أن جميع القيم التي تم نسخها من الخطوة 6 صحيحة وحاول مرة أخرى ، بمجرد أن تنجح ، ستلاحظ حالة نجاح"
 			},
 			"CONTENT_9": {
-				"TEXT": "You can now either continue to use Maps, Places and Routes funtionality or sign in to use Geofence and Tracking functionality. Use the email you entered in step 4 and enter the temporary password that you received on that email."
+				"TEXT": ".يمكنك الآن مواصلة استخدام الخرائط والأماكن والطرق أو التسجيل لاستخدام وظائف Geofence وتتبع. استخدم البريد الإلكتروني الذي أدخلته في الخطوة 4 وأدخل كلمة المرور المؤقتة التي تلقيتها على هذا البريد الإلكتروني"
 			},
 			"CONTENT_10": {
-				"TEXT": "You'd be asked to updated your temporary password if you are using the credentials for the first time."
+				"TEXT": ".سيُطلب منك تحديث كلمة المرور المؤقتة إذا كنت تستخدم بيانات الاعتماد لأول مرة"
 			},
 			"CONTENT_11": {
-				"TEXT": "After you have successfully logged in, you'd notice in the sidebar that Geofence and Tracking functionality is now unlocked/enabled."
+				"TEXT": ".بعد تسجيل الدخول بنجاح ، ستلاحظ في الشريط الجانبي أن وظائف الجغرافية والتتبع يتم الآن فتحها/تمكينها"
 			}
 		},
 		"ITEM_2": {
-			"TITLE": "Deletion",
-			"DESC": "Deleting a CloudFormation stack successfully.",
+			"TITLE": "حذف",
+			"DESC": ".حذف مكدس السحاب بنجاح",
 			"CONTENT_1": {
-				"TEXT": "Make sure you have signed out of the application."
+				"TEXT": ".تأكد من تسجيل الخروج من التطبيق"
 			},
 			"CONTENT_2": {
-				"TEXT": "After signing out, make sure to Disconnect AWS Account."
+				"TEXT": ".بعد التوقيع ، تأكد من فصل حساب AWS"
 			},
 			"CONTENT_3": {
-				"TEXT": "Once disconnected, go to AWS Console and search for CloudFormation."
+				"TEXT": ".بمجرد فصلها ، انتقل إلى وحدة التحكم في AWS وابحث عن CloudFormation"
 			},
 			"CONTENT_4": {
-				"TEXT": "Select amazon-location-resource-setup stack."
+				"TEXT": ".حدد مكدس Amazon-Location-Resource-Setup"
 			},
 			"CONTENT_5": {
-				"TEXT": "After selecting the above mentioned stack, Click on Delete."
+				"TEXT": ".بعد تحديد المكدس المذكور أعلاه ، انقر فوق حذف"
 			}
 		},
 		"ITEM_3": {
-			"TITLE": "Troubleshooting",
-			"DESC": "Ways to resolve possible issues that could arise while deleting a stack. Such as corruption of stack.",
+			"TITLE": "استكشاف الأخطاء وإصلاحها",
+			"DESC": "طرق لحل المشكلات المحتملة التي يمكن أن تنشأ مع حذف المكدس. مثل فساد المكدس",
 			"CONTENT_1": {
-				"TEXT": "Sometimes the stack might fail to be deleted successfully."
+				"TEXT": ".في بعض الأحيان قد يتم حذف المكدس بنجاح"
 			},
 			"CONTENT_2": {
-				"TEXT": "In that case, search for IoT Core in the search box and open it."
+				"TEXT": ".في هذه الحالة ، ابحث عن IoT Core في مربع البحث وافتحه"
 			},
 			"CONTENT_3": {
-				"TEXT": "In the left sidebar, select Policies under Security and select AmazonLocationIotPolicy and click on Delete."
+				"TEXT": ".في الشريط الجانبي الأيسر ، حدد السياسات تحت الأمن وحدد AmazonLocationiOtpolicy وانقر فوق حذف"
 			},
 			"CONTENT_4": {
-				"TEXT": "Confirm delete by agreeing."
+				"TEXT": ".تأكيد الحذف بالاتفاق"
 			},
 			"CONTENT_5": {
-				"TEXT": "Go back to CloudFormation service, select amazon-location-resource-setup stack and click on Delete."
+				"TEXT": ".ارجع إلى خدمة CloudFormation ، وحدد مكدس Amazon-Location-Resource-setup وانقر فوق حذف"
 			},
 			"CONTENT_6": {
-				"TEXT": "A confirmation popup would appear asking if you'd like to retain resources, without checking anything, click on Delete stack, after a few minutes the stack should be deleted successfully."
+				"TEXT": ".قد تظهر نافذة منبثقة للتأكيد تسأل عما إذا كنت ترغب في الاحتفاظ بالموارد ، دون التحقق من أي شيء ، انقر فوق حذف المكدس ، بعد بضع دقائق يجب حذف المكدس بنجاح"
 			}
 		}
 	},
 	"TERMS": {
-		"HEADING": "Demo Terms & Conditions",
-		"SUB_HEADING": "Terms & Conditions for Amazon Location Demo App (the “App”)",
-		"POINT_1": "The App is provided solely as a demonstration for what AWS customers can build using Amazon Location Service. It is intended only for your internal testing and evaluation of Amazon Location Service. Do not use the App for any other purposes, including but not limited to navigation, and you are solely responsible for all liability that may arise from any such use.",
-		"POINT_2": "By downloading, installing, or using the App, you agree to the AWS Customer Agreement, AWS Acceptable Use Policy, and the AWS Privacy Notice.  If you already have an AWS Customer Agreement or Enterprise Agreement, you agree that the terms of that agreement govern your download, installation, and use of this App. These Terms & Conditions supplement those Agreements.",
-		"POINT_3": "The App is AWS Content as defined in the Customer Agreement. Your use of Amazon Location Service through the App is governed by the AWS Service Terms.",
-		"POINT_4": "When using the App, you consent to AWS’s collection and use of your request parameters (e.g. location searches), including your device location if you consent to share it with us, for the purpose of providing the App’s geolocation features. You authorize AWS to transmit your request parameters to our third-party geolocation data provider(s) for processing.  Your device’s location is only used while we process your results in near real-time. We do not store or retain your device’s location, and you may stop our processing by exiting the App.",
-		"POINT_5": "Unless you connect your AWS Account, your request parameters will be processed in the US East (Northern Virginia) Region if using the web version of the App, or in the US West (Oregon) Region if using the mobile version of the App. You are responsible for verifying the adequacy of these Regions for the processing of request parameters.",
-		"POINT_6": "We may generate unique identifiers and store them on your device to help us measure use of and improve the App. You can delete these identifiers by deleting the App from your device.",
-		"POINT_7": "To keep the App up-to-date, we may offer automatic or manual updates at any time and without notice to you. If we elect to provide maintenance or support of any kind, we may terminate that maintenance or support at any time without notice to you.",
-		"POINT_8": "Amazon Web Services, Inc. or its affiliates. All rights reserved.",
-		"KEYWORD_1": "AWS Customer Agreement",
-		"KEYWORD_2": "AWS Acceptable Use Policy",
-		"KEYWORD_3": "AWS Privacy Notice",
-		"KEYWORD_4": "AWS Service Terms"
+		"HEADING": "الشروط والأحكام التجريبية",
+		"SUB_HEADING": "الشروط والأحكام لتطبيق Amazon Location Demo ('التطبيق')",
+		"POINT_1": ".يتم توفير التطبيق فقط كإظهار لما يمكن لعملاء AWS بناءه باستخدام خدمة موقع Amazon. ويهدف فقط للاختبار الداخلي وتقييم خدمة موقع Amazon. لا تستخدم التطبيق لأي أغراض أخرى ، بما في ذلك على سبيل المثال لا الحصر التنقل ، وأنت وحدك مسؤول عن جميع المسؤولية التي قد تنشأ عن أي استخدام من هذا القبيل",
+		"POINT_2": ".من خلال تنزيل التطبيق أو تثبيته أو استخدامه ، فإنك توافق على اتفاقية عميل AWS ، وسياسة الاستخدام المقبولة AWS ، وإشعار خصوصية AWS. إذا كان لديك بالفعل اتفاقية عميل AWS أو اتفاقية المؤسسة ، فأنت توافق على أن شروط هذا الاتفاق تحكم التنزيل والتركيب واستخدام هذا التطبيق. تكمل هذه الشروط والأحكام هذه الاتفاقات",
+		"POINT_3": ".التطبيق هو محتوى AWS كما هو محدد في اتفاقية العميل. يخضع استخدامك لخدمة موقع Amazon من خلال التطبيق لشروط خدمة AWS",
+		"POINT_4": ".عند استخدام التطبيق ، فإنك توافق على جمع AWS واستخدام معلمات الطلب الخاصة بك (مثل عمليات البحث عن الموقع) ، بما في ذلك موقع جهازك إذا كنت توافق على مشاركته معنا ، لغرض توفير ميزات تحديد الموقع الجغرافي للتطبيق. أنت تسمح لـ AWS بنقل معلمات طلبك إلى مزود (موفرات) بيانات تحديد الموقع الجغرافي للجهات الخارجية للمعالجة. يتم استخدام موقع جهازك فقط أثناء معالجة نتائجك في الوقت الفعلي. نحن لا نقوم بتخزين موقع جهازك أو نحتفظ به ، ويمكنك إيقاف معالجتنا عن طريق الخروج من التطبيق",
+		"POINT_5": ".ما لم تقم بتوصيل حساب AWS الخاص بك ، ستتم معالجة معلمات طلبك في منطقة الولايات المتحدة الشرقية (شمال فرجينيا) إذا كنت تستخدم إصدار الويب من التطبيق ، أو في منطقة الولايات المتحدة الغربية (أوريغون) إذا كنت تستخدم إصدار الجوال من التطبيق. أنت مسؤول عن التحقق من كفاية هذه المناطق لمعالجة معلمات الطلب",
+		"POINT_6": ".قد ننشئ معرفات فريدة وتخزينها على جهازك لمساعدتنا في قياس التطبيق وتحسينه. يمكنك حذف هذه المعرفات عن طريق حذف التطبيق من جهازك",
+		"POINT_7": ".للحفاظ على تحديث التطبيق ، قد نقدم تحديثات تلقائية أو يدوية في أي وقت ودون إشعار لك. إذا اخترنا توفير الصيانة أو الدعم من أي نوع ، فقد ننهي هذه الصيانة أو الدعم في أي وقت دون إشعار لك",
+		"POINT_8": ".Amazon Web Services ، Inc. أو الشركات التابعة لها. كل الحقوق محفوظة",
+		"KEYWORD_1": "اتفاق العميل AWS",
+		"KEYWORD_2": "AWS سياسة الاستخدام المقبولة",
+		"KEYWORD_3": "AWS إشعار الخصوصية",
+		"KEYWORD_4": "شروط خدمة AWS"
 	},
 	"SOFTWARE_ATTRIBUTIONS": {
 		"HEADING": "Demo Software Attributions",
@@ -1136,21 +1137,28 @@
 		"AD_696": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
 	"ERROR_BOUNDARY_PAGE": {
-		"HEADING": "Oops!",
-		"DESC": "Looks like something went wrong, we are already looking into it. Click reload page to continue.",
-		"BUTTON_TEXT": "Reload page"
+		"HEADING": "!أُووبس",
+		"DESC": ".يبدو أن هناك خطأ ما ، نحن نبحث بالفعل فيه. انقر فوق صفحة إعادة تحميل للمتابعة",
+		"BUTTON_TEXT": "إعادة تحميل الصفحة"
 	},
 	"NOT_FOUND_404_PAGE": {
 		"HEADING": "404",
-		"DESC": "Sorry, the page you tried cannot be found."
+		"DESC": ".آسف ، لا يمكن العثور على الصفحة التي حاولت"
 	},
 	"APP_DOWNLOAD_NOTIFICATION": {
-		"HEADING": "Get Amazon Location app for the best experience",
-		"LIST_ITEM_1": "Create geofences",
-		"LIST_ITEM_2": "Track your location",
-		"LIST_ITEM_3": "Get notified in geofence area",
-		"DOWNLOAD": "Download",
-		"CONTINUE_TO_WEB_EXPERIENCE": "Continue to web experience"
+		"HEADING": "احصل على تطبيق موقع Amazon للحصول على أفضل تجربة",
+		"LIST_ITEM_1": "إنشاء Geofences",
+		"LIST_ITEM_2": "تتبع موقعك",
+		"LIST_ITEM_3": "يتم إخطارها في منطقة الجيوفينس",
+		"DOWNLOAD": "تحميل",
+		"CONTINUE_TO_WEB_EXPERIENCE": "استمر في تجربة الويب"
+	},
+	"WELCOME_MODAL": {
+		"HEADING": "مرحبا بكم في توضيح موقع\namazon",
+		"TEXT_1": "باستخدام تطبيق Demo Amazon ، فإنك توافق على التطبيق",
+		"TEXT_2": "البنود و الظروف",
+		"TEXT_3": ".للاستخدام",
+		"CONTINUE": "يكمل"
 	},
 	"SEARCH_BOX": {
 		"SEARCH": "يبحث",
@@ -1253,19 +1261,19 @@
 		"PLACEHOLDER": "حدد اختيارا"
 	},
 	"REGIONS": {
-		"US_EAST_1": "US East (N. Virginia) us-east-1",
-		"US_EAST_2": "US East (Ohio) us-east-2",
-		"US_WEST_2": "US West (Oregon) us-west-2",
-		"AP_SOUTH_1": "Asia Pacific (Mumbai) ap-south-1",
-		"AP_SOUTHEAST_1": "Asia Pacific (Singapore) ap-southeast-1",
-		"AP_SOUTHEAST_2": "Asia Pacific (Sydney) ap-southeast-2",
-		"AP_NORTHEAST_1": "Asia Pacific (Tokyo) ap-northeast-1",
-		"CA_CENTRAL_1": "Canada (Central) ca-central-1",
-		"EU_CENTRAL_1": "Europe (Frankfurt) eu-central-1",
-		"EU_WEST_1": "Europe (Ireland) eu-west-1",
-		"EU_WEST_2": "Europe (London) eu-west-2",
-		"EU_NORTH_1": "Europe (Stockholm) eu-north-1",
-		"SA_EAST_1": "South America (São Paulo) sa-east-1"
+		"US_EAST_1": "شرق الولايات المتحدة (ن. فرجينيا) us-east-1",
+		"US_EAST_2": "شرق الولايات المتحدة (أوهايو) us-east-2",
+		"US_WEST_2": "الولايات المتحدة الغربية (أوريغون) us-west-2",
+		"AP_SOUTH_1": "آسيا والمحيط الهادئ (مومباي) ap-south-1",
+		"AP_SOUTHEAST_1": "آسيا والمحيط الهادئ (سنغافورة) ap-southeast-1",
+		"AP_SOUTHEAST_2": "آسيا والمحيط الهادئ (سيدني) ap-southeast-2",
+		"AP_NORTHEAST_1": "آسيا والمحيط الهادئ (طوكيو) ap-northeast-1",
+		"CA_CENTRAL_1": "كندا (وسط) ca-central-1",
+		"EU_CENTRAL_1": "أوروبا (فرانكفورت) eu-central-1",
+		"EU_WEST_1": "أوروبا (أيرلندا) eu-west-1",
+		"EU_WEST_2": "أوروبا (لندن) eu-west-2",
+		"EU_NORTH_1": "أوروبا (ستوكهولم) eu-north-1",
+		"SA_EAST_1": "أمريكا الجنوبية (ساو باولو) sa-east-1"
 	},
 	"SIGN_IN_MODAL": {
 		"TEXT_1": "تسجيل الدخول مطلوب",
@@ -1296,6 +1304,7 @@
 		"EXPLORE_TRUCK": "اكتشف Truck",
 		"HYBRID": "هجين",
 		"DARK": "مظلم",
+		"LANGUAGE": "لغة",
 		"DEFAULT_ROUTE_OPTIONS": "خيارات المسار الافتراضية",
 		"AVOID_TOLLS": "تجنب الرسوم",
 		"AVOID_FERRIES": "تجنب العبارات"

@@ -14,7 +14,7 @@ import {
 } from "@demo/assets";
 import { DropdownEl, Modal, TextEl } from "@demo/atomicui/atoms";
 import { InputField } from "@demo/atomicui/molecules";
-import { appConfig, regionsData } from "@demo/core/constants";
+import { appConfig, languageSwitcherData, regionsData } from "@demo/core/constants";
 import { useAmplifyAuth, useAmplifyMap, useAws, useAwsIot, usePersistedData } from "@demo/hooks";
 import {
 	ConnectFormValuesType,
@@ -400,6 +400,36 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 				)
 			},
 			{
+				id: SettingOptionEnum.LANGUAGE,
+				title: t("SETTINGS_MODAL.LANGUAGE"),
+				defaultValue: languageSwitcherData.find(({ value }) => value === i18n.language)?.label as string,
+				icon: <IconPaintroller />, // TODO: update from designs
+				detailsComponent: (
+					<Flex
+						data-testid={`${SettingOptionEnum.UNITS}-details-component`}
+						gap={0}
+						direction="column"
+						padding="0rem 1.15rem"
+						overflow="scroll"
+					>
+						{languageSwitcherData.map(({ value, label }, idx) => (
+							<Flex key={idx} style={{ gap: 0, padding: "1.08rem 0rem", cursor: "pointer" }}>
+								<Radio
+									data-testid="unit-automatic-radio"
+									value={value}
+									checked={i18n.language === value}
+									onChange={({ target: { value } }) => {
+										i18n.changeLanguage(value);
+									}}
+								>
+									<TextEl marginLeft="1.23rem" text={label} />
+								</Radio>
+							</Flex>
+						))}
+					</Flex>
+				)
+			},
+			{
 				id: SettingOptionEnum.ROUTE_OPTIONS,
 				title: t("SETTINGS_MODAL.DEFAULT_ROUTE_OPTIONS"),
 				icon: <IconShuffle />,
@@ -589,7 +619,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			stackRegion,
 			cloudFormationLink,
 			t,
-			langDir
+			langDir,
+			i18n
 		]
 	);
 
@@ -636,7 +667,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 							fontSize="1.23rem"
 							lineHeight="1.85rem"
 							padding={"1.23rem 0rem 1.23rem 1.23rem"}
-							text="Settings"
+							text={t("SETTINGS_MODAL.TITLE")}
 						/>
 						{renderOptionItems}
 					</Flex>

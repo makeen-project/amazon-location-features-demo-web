@@ -6,7 +6,6 @@ import React from "react";
 import { Button, Card, Flex, Text, View } from "@aws-amplify/ui-react";
 import { IconClose, IconCompass, IconGear, IconGeofence, IconInfo, IconLockSolid, IconRoute } from "@demo/assets";
 import { List, Logo } from "@demo/atomicui/atoms";
-import { LanguageSwitcher } from "@demo/atomicui/molecules";
 import { appConfig, marketingMenuOptionsData } from "@demo/core/constants";
 import { useAmplifyAuth, useAmplifyMap, useAwsIot } from "@demo/hooks";
 import { MapProviderEnum } from "@demo/types";
@@ -168,7 +167,6 @@ const Sidebar: React.FC<SidebarProps> = ({
 				</Flex>
 			</View>
 			<List listArray={sidebarData} className="verticle-list side-bar__external-menu" hideIcons />
-			<LanguageSwitcher />
 			<View className="button-wrapper">
 				{isUserAwsAccountConnected && (
 					<Button variation="primary" fontFamily="AmazonEmber-Bold" onClick={isAuthenticated ? _onLogout : _onLogin}>
