@@ -86,7 +86,9 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 	const [expandRouteOptions, setExpandRouteOptions] = useState(false);
 	const [routeOptions, setRouteOptions] = useState<RouteOptionsType>({ ...defaultRouteOptions });
 	const isDesktop = useMediaQuery("(min-width: 1024px)");
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
+	const langDir = i18n.dir();
+	const isLtr = langDir === "ltr";
 
 	const clearRoutePosition = useCallback((type: InputType) => setRoutePositions(undefined, type), [setRoutePositions]);
 
@@ -303,7 +305,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 					</Text>
 				) : (
 					<View className="expanded-route-options">
-						<Text className="text-1">Route Options</Text>
+						<Text className="text-1">{t("ROUTE_BOX.ROUTE_OPTIONS")}</Text>
 						<Text className="text-2" onClick={onClickRouteOptions}>
 							{t("ROUTE_BOX.CLOSE")}
 						</Text>
@@ -647,20 +649,21 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 					)}
 				</Flex>
 				<Flex className="from-to-container" gap={0}>
-					<Flex className="marker-container">
+					<Flex className="marker-container" order={isLtr ? 1 : 3}>
 						<IconMyLocation />
 						{[...Array(3)].map((_, index) => (
 							<View key={index} className="dashed-line" />
 						))}
 						<IconDestination />
 					</Flex>
-					<Flex className="inputs-container">
+					<Flex className="inputs-container" order={2}>
 						<input
 							data-testid="from-input"
 							placeholder={t("ROUTE_BOX.FROM") as string}
 							onFocus={() => onFocus(InputType.FROM)}
 							value={value.from}
 							onChange={e => onChangeValue(e, InputType.FROM)}
+							dir={langDir}
 						/>
 						<View className="divider" />
 						<input
@@ -669,9 +672,15 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 							onFocus={() => onFocus(InputType.TO)}
 							value={value.to}
 							onChange={e => onChangeValue(e, InputType.TO)}
+							dir={langDir}
 						/>
 					</Flex>
-					<Flex data-testid="swap-icon-container" className="swap-icon-container" onClick={onSwap}>
+					<Flex
+						data-testid="swap-icon-container"
+						className="swap-icon-container"
+						onClick={onSwap}
+						order={isLtr ? 3 : 1}
+					>
 						<IconArrowDownUp />
 					</Flex>
 				</Flex>

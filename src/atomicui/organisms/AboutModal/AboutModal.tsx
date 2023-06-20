@@ -42,7 +42,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 		() => [
 			{
 				id: AboutOptionEnum.ATTRIBUTION,
-				title: AboutOptionEnum.ATTRIBUTION,
+				title: t("ABOUT_MODAL.ATTRIBUTION"),
 				detailsComponent: (
 					<Flex gap={0} direction="column" padding="0rem 1.15rem" alignItems="center">
 						<Text className="small-text" fontFamily="AmazonEmber-Bold" marginTop="1.15rem" alignSelf="flex-start">
@@ -81,7 +81,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 			},
 			{
 				id: AboutOptionEnum.VERSION,
-				title: AboutOptionEnum.VERSION,
+				title: t("ABOUT_MODAL.VERSION"),
 				detailsComponent: (
 					<Flex gap={0} direction="column" padding="0rem 1.15rem">
 						<Text className="more-secondary-text">
@@ -96,7 +96,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 			},
 			{
 				id: AboutOptionEnum.TERMS_AND_CONDITIONS,
-				title: AboutOptionEnum.TERMS_AND_CONDITIONS,
+				title: t("ABOUT_MODAL.T&C"),
 				detailsComponent: (
 					<Flex gap={0} direction="column" padding="0rem 1.15rem" alignItems="center">
 						<Text className="more-secondary-text">

@@ -5,7 +5,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button, Card, Flex, Loader, Text, View } from "@aws-amplify/ui-react";
 import { IconArrow, IconCar, IconClose, IconDroneSolid, IconInfoSolid, IconSegment, IconWalking } from "@demo/assets";
-import { TextEl } from "@demo/atomicui/atoms";
 import { GeofenceMarker } from "@demo/atomicui/molecules";
 import { useAwsGeofence, useAwsRoute, useAwsTracker, useMediaQuery } from "@demo/hooks";
 import { useWebSocketService } from "@demo/services";
@@ -50,7 +49,9 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 	} = useAwsTracker();
 	const subscription = useWebSocketService();
 	const isDesktop = useMediaQuery("(min-width: 1024px)");
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
+	const langDir = i18n.dir();
+	const isLtr = langDir === "ltr";
 
 	useEffect(() => {
 		return () => {
@@ -173,7 +174,7 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 									{icon}
 									{trackerPoints.length > 1 && idx + 1 !== trackerPoints.length && <View className="dotted-line" />}
 								</Flex>
-								<TextEl marginLeft="1.38rem" text={`${point[1]}, ${point[0]}`} />
+								<Text marginLeft="1.38rem">{`${point[1]}, ${point[0]}`}</Text>
 							</Flex>
 						);
 					})}
@@ -251,7 +252,9 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 		<>
 			<Card className="tracking-card" left="1.62rem">
 				<Flex className="tracking-card-header">
-					<TextEl fontFamily="AmazonEmber-Medium" fontSize="1.08rem" text="Tracker" />
+					<Text fontFamily="AmazonEmber-Medium" fontSize="1.08rem">
+						{t("TRACKER_BOX.TITLE")}
+					</Text>
 					<Flex gap={0} alignItems="center">
 						<Flex className="tracking-card-close" onClick={onClose}>
 							<IconClose />
@@ -260,7 +263,9 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 				</Flex>
 				<Flex gap={0} alignItems="center" padding="1.23rem">
 					<IconInfoSolid className="icon-plus-rounded" />
-					<TextEl marginLeft="1.23rem" variation="tertiary" text={t("TRACKER_BOX.CLICK_ANY_POINT")} />
+					<Text marginLeft="1.23rem" variation="tertiary" textAlign={isLtr ? "start" : "end"}>
+						{t("TRACKER_BOX.CLICK_ANY_POINT")}
+					</Text>
 				</Flex>
 				<Flex className="marker-container">
 					{trackerTypes.map(({ type, icon }, idx) => (
@@ -296,15 +301,18 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 							{isEditingRoute ? (
 								<>
 									<View className="button" onClick={onClear}>
-										<TextEl fontFamily="AmazonEmber-Bold" color="var(--red-color)" text={t("TRACKER_BOX.CLEAR")} />
+										<Text fontFamily="AmazonEmber-Bold" color="var(--red-color)">
+											{t("TRACKER_BOX.CLEAR")}
+										</Text>
 									</View>
 									<View className="button" onClick={onSave}>
-										<TextEl
+										<Text
 											fontFamily="AmazonEmber-Bold"
 											color={trackerPoints.length >= 2 ? "var(--primary-color)" : "var(--tertiary-color)"}
 											opacity={trackerPoints.length >= 2 ? 1 : 0.3}
-											text={t("TRACKER_BOX.SAVE")}
-										/>
+										>
+											{t("TRACKER_BOX.SAVE")}
+										</Text>
 									</View>
 								</>
 							) : (

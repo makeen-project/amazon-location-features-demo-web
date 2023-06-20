@@ -17,7 +17,9 @@ interface DropdownElProps {
 const DropdownEl: React.FC<DropdownElProps> = ({ defaultOption, options, onSelect, showSelected = false }) => {
 	const [open, setOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
+	const langDir = i18n.dir();
+	const isLtr = langDir === "ltr";
 
 	const handleClickOutside = (event: MouseEvent) => {
 		if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -41,7 +43,7 @@ const DropdownEl: React.FC<DropdownElProps> = ({ defaultOption, options, onSelec
 	return (
 		<div ref={dropdownRef} className="dropdown-container">
 			<div className="trigger" onClick={() => setOpen(!open)}>
-				<p>{t(defaultOption?.label as string) || t("DROPDOWN.PLACEHOLDER")}</p>
+				<p style={{ direction: langDir }}>{t(defaultOption?.label as string) || t("DROPDOWN.PLACEHOLDER")}</p>
 				<IconArrow
 					style={{
 						transform: open ? "rotate(180deg)" : "rotate(0deg)",
@@ -57,6 +59,7 @@ const DropdownEl: React.FC<DropdownElProps> = ({ defaultOption, options, onSelec
 						<li
 							key={option.value}
 							className={showSelected && defaultOption?.value === option.value ? "selected" : ""}
+							style={{ display: "flex", justifyContent: isLtr ? "start" : "end" }}
 							onClick={() => handleClick(option)}
 						>
 							{t(option.label)}

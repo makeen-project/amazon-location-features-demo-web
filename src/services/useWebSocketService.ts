@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { AWSIoTProvider } from "@aws-amplify/pubsub";
 import { showToast } from "@demo/core/Toast";
 import { useAmplifyAuth } from "@demo/hooks";
+import i18n from "@demo/locales";
 import { ToastType } from "@demo/types";
 import { Amplify, Hub, PubSub } from "aws-amplify";
 
@@ -36,9 +37,14 @@ const useWebSocketService = () => {
 			next: data => {
 				console.info({ data });
 				if (data.value.source === "aws.geo") {
-					const msg = `${data.value.trackerEventType === "ENTER" ? "Entered" : "Exited"} ${
-						data.value.geofenceId
-					} geofence`;
+					const msg =
+						i18n.dir() === "ltr"
+							? `${
+									data.value.trackerEventType === "ENTER" ? i18n.t("SHOW_TOAST.ENTERED") : i18n.t("SHOW_TOAST.EXITED")
+							  } ${data.value.geofenceId} ${i18n.t("SHOW_TOAST.GEOFENCE")}`
+							: `${i18n.t("SHOW_TOAST.GEOFENCE")} ${data.value.geofenceId} ${
+									data.value.trackerEventType === "ENTER" ? i18n.t("SHOW_TOAST.ENTERED") : i18n.t("SHOW_TOAST.EXITED")
+							  }`;
 					showToast({ content: msg, type: ToastType.INFO });
 				}
 			},

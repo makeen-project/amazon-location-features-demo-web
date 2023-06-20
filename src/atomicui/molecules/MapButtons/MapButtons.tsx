@@ -3,7 +3,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-import { Card, Divider, Flex, Placeholder, Radio, View } from "@aws-amplify/ui-react";
+import { Card, Divider, Flex, Placeholder, Radio, Text, View } from "@aws-amplify/ui-react";
 import { IconClose, IconGeofencePlusSolid, IconInfoSolid, IconMapSolid } from "@demo/assets";
 import { TextEl } from "@demo/atomicui/atoms";
 import { appConfig } from "@demo/core/constants";
@@ -52,7 +52,9 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 	const { mapProvider: currentMapProvider, mapStyle: currentMapStyle, setMapStyle } = useAmplifyMap();
 	const { isAddingGeofence, setIsAddingGeofence } = useAwsGeofence();
 	const isAuthenticated = !!credentials?.authenticated;
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
+	const langDir = i18n.dir();
+	const isLtr = langDir === "ltr";
 
 	const handleClickOutside = useCallback(
 		(ev: MouseEvent) => {
@@ -152,19 +154,18 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 				<Card data-testid="map-styles-card" ref={stylesCardRef} className="map-styles-card">
 					<View className="triangle-pointer" />
 					<Flex className="map-styles-header">
-						<TextEl
-							margin="1.23rem 0rem"
-							fontFamily="AmazonEmber-Bold"
-							fontSize="1.23rem"
-							text={t("MAP_BUTTONS.HEADING")}
-						/>
+						<Text margin="1.23rem 0rem" fontFamily="AmazonEmber-Bold" fontSize="1.23rem">
+							{t("MAP_BUTTONS.HEADING")}
+						</Text>
 						<Flex className="map-styles-icon-close-container" onClick={() => setOpenStylesCard(false)}>
 							<IconClose />
 						</Flex>
 					</Flex>
 					<Flex className="ms-info-container">
 						<IconInfoSolid />
-						<TextEl variation="tertiary" text={t("MAP_BUTTONS.INFO")} whiteSpace="pre-line" />
+						<Text variation="tertiary" textAlign={isLtr ? "start" : "end"}>
+							{t("MAP_BUTTONS.INFO")}
+						</Text>
 					</Flex>
 					<Flex gap={0} direction="column">
 						{/* Esri */}

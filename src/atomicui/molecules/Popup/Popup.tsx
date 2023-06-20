@@ -5,7 +5,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button, Flex, Placeholder, Text, View } from "@aws-amplify/ui-react";
 import { IconCar, IconClose, IconCopyPages, IconDirections, IconInfo } from "@demo/assets";
-import { TextEl } from "@demo/atomicui/atoms";
 import { useAmplifyMap, useAwsPlace, useAwsRoute, useMediaQuery } from "@demo/hooks";
 import { DistanceUnitEnum, MapProviderEnum, MapUnitEnum, SuggestionType, TravelMode } from "@demo/types";
 
@@ -40,7 +39,9 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 	const { getRoute, setDirections, isFetchingRoute } = useAwsRoute();
 	const [longitude, latitude] = info.Place?.Geometry.Point as Position;
 	const isDesktop = useMediaQuery("(min-width: 1024px)");
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
+	const langDir = i18n.dir();
+	const isLtr = langDir === "ltr";
 
 	const geodesicDistance = useMemo(
 		() =>
@@ -122,10 +123,9 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 		if (currentLocationData?.error || isCurrentLocationDisabled) {
 			return (
 				<Flex data-testid="permission-denied-error-container" gap={3} alignItems="center">
-					<TextEl
-						variation="info"
-						text={isCurrentLocationDisabled ? t("POPUP.CURRENT_LOCATION_DISABLED") : t("POPUP.CURRENT_LOCATION_DENIED")}
-					/>
+					<Text variation="info" textAlign={isLtr ? "start" : "end"}>
+						{isCurrentLocationDisabled ? t("POPUP.CURRENT_LOCATION_DISABLED") : t("POPUP.CURRENT_LOCATION_DENIED")}
+					</Text>
 					<IconInfo
 						className="location-permission-denied-info-icon"
 						data-tooltip-id="location-permission-denied-info"
@@ -138,19 +138,23 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 		} else if (isEsriLimitation) {
 			return (
 				<Flex data-testid="esri-limitation-message-container" gap={0} direction={"column"}>
-					<TextEl variation="secondary" fontFamily="AmazonEmber-Bold" text={geodesicDistanceWithUnit} />
-					<TextEl
-						style={{ marginTop: "0px" }}
-						variation="info"
-						text={currentMapUnit === METRIC ? t("POPUP.ESRI_LIMITATION_1") : t("POPUP.ESRI_LIMITATION_2")}
-					/>
+					<Text className="bold" variation="secondary">
+						{geodesicDistanceWithUnit}
+					</Text>
+					<Text style={{ marginTop: "0px" }} variation="info" textAlign={isLtr ? "start" : "end"}>
+						{currentMapUnit === METRIC ? t("POPUP.ESRI_LIMITATION_1") : t("POPUP.ESRI_LIMITATION_2")}
+					</Text>
 				</Flex>
 			);
 		} else if (!isFetchingRoute && !routeData) {
 			return (
 				<Flex data-testid="here-message-container" gap={0} direction={"column"}>
-					<TextEl variation="secondary" fontFamily="AmazonEmber-Bold" text={geodesicDistanceWithUnit} />
-					<TextEl style={{ marginTop: "0px" }} variation="info" text={t("POPUP.ROUTE_NOT_FOUND")} />
+					<Text className="bold" variation="secondary">
+						{geodesicDistanceWithUnit}
+					</Text>
+					<Text style={{ marginTop: "0px" }} variation="info">
+						{t("POPUP.ROUTE_NOT_FOUND")}
+					</Text>
 				</Flex>
 			);
 		} else {
@@ -159,18 +163,18 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 			return (
 				<View data-testid="route-info-container" className="route-info">
 					{!isFetchingRoute && geodesicDistanceWithUnit ? (
-						<TextEl variation="secondary" fontFamily="AmazonEmber-Bold" text={geodesicDistanceWithUnit} />
+						<Text className="bold" variation="secondary">
+							{geodesicDistanceWithUnit}
+						</Text>
 					) : (
 						<Placeholder width={30} display="inline-block" />
 					)}
 					<View />
 					<IconCar />
 					{!isFetchingRoute && timeInSeconds ? (
-						<TextEl
-							variation="secondary"
-							fontFamily="AmazonEmber-Bold"
-							text={humanReadableTime(timeInSeconds * 1000)}
-						/>
+						<Text className="bold" variation="secondary">
+							{humanReadableTime(timeInSeconds * 1000)}
+						</Text>
 					) : (
 						<Placeholder width={30} display="inline-block" />
 					)}
@@ -185,7 +189,8 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 		isEsriLimitation,
 		routeData,
 		isFetchingRoute,
-		t
+		t,
+		isLtr
 	]);
 
 	const address = useMemo(() => {
@@ -218,16 +223,12 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 				</View>
 			)}
 			<View className="info-container">
-				<TextEl
-					variation="secondary"
-					fontFamily="AmazonEmber-Bold"
-					fontSize="20px"
-					lineHeight="28px"
-					text={`${info.Place?.Label?.split(",")[0]}`}
-				/>
+				<Text className="bold" variation="secondary" fontSize="20px" lineHeight="28px">{`${
+					info.Place?.Label?.split(",")[0]
+				}`}</Text>
 				<View className="address-container">
 					<View>
-						<TextEl variation="tertiary" text={address} />
+						<Text variation="tertiary">{address}</Text>
 					</View>
 					<IconCopyPages
 						data-testid="copy-icon"

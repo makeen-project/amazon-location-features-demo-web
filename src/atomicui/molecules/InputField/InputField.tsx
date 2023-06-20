@@ -43,6 +43,7 @@ const InputField: React.FC<InputFieldProps> = ({
 			<Flex className={disabled ? "input-container disabled" : "input-container"} gap={0} alignContent="center">
 				<input
 					data-testid={dataTestId || "input-field"}
+					style={{ order: dir === "ltr" ? 0 : 1 }}
 					placeholder={placeholder}
 					value={value}
 					onChange={onChange}

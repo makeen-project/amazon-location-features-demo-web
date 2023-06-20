@@ -7,12 +7,13 @@ import { Button, CheckboxField, Divider, Flex, Link, Radio, Text, View } from "@
 import {
 	IconAwsCloudFormation,
 	IconCloud,
+	IconGlobe,
 	IconMapOutlined,
 	IconPaintroller,
 	IconPeopleArrows,
 	IconShuffle
 } from "@demo/assets";
-import { DropdownEl, Modal, TextEl } from "@demo/atomicui/atoms";
+import { DropdownEl, Modal } from "@demo/atomicui/atoms";
 import { InputField } from "@demo/atomicui/molecules";
 import { appConfig, languageSwitcherData, regionsData } from "@demo/core/constants";
 import { useAmplifyAuth, useAmplifyMap, useAws, useAwsIot, usePersistedData } from "@demo/hooks";
@@ -102,6 +103,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 	const isAuthenticated = !!credentials?.authenticated;
 	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();
+	const isLtr = langDir === "ltr";
 
 	useEffect(() => {
 		const newUrl = transformCloudFormationLink(REGION_ASIA);
@@ -239,16 +241,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								checked={isAutomaticMapUnit}
 								onChange={handleAutoMapUnitChange}
 							>
-								<TextEl marginLeft="1.23rem" text={t("SETTINGS_MODAL.AUTOMATIC")} />
-								<TextEl
-									variation="tertiary"
-									marginLeft="1.23rem"
-									text={
-										currentMapUnit === IMPERIAL
-											? t("SETTINGS_MODAL.AUTOMATIC_DESC_1")
-											: t("SETTINGS_MODAL.AUTOMATIC_DESC_2")
-									}
-								/>
+								<Text marginLeft="1.23rem">{t("SETTINGS_MODAL.AUTOMATIC")}</Text>
+								<Text variation="tertiary" marginLeft="1.23rem">
+									{currentMapUnit === IMPERIAL
+										? t("SETTINGS_MODAL.AUTOMATIC_DESC_1")
+										: t("SETTINGS_MODAL.AUTOMATIC_DESC_2")}
+								</Text>
 							</Radio>
 						</Flex>
 						<Flex style={{ gap: 0, padding: "1.08rem 0rem", cursor: "pointer" }}>
@@ -258,8 +256,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								checked={!isAutomaticMapUnit && currentMapUnit === IMPERIAL}
 								onChange={() => onMapUnitChange(IMPERIAL)}
 							>
-								<TextEl marginLeft="1.23rem" text={t("SETTINGS_MODAL.IMPERIAL")} />
-								<TextEl variation="tertiary" marginLeft="1.23rem" text={t("SETTINGS_MODAL.IMPERIAL_UNITS")} />
+								<Text marginLeft="1.23rem">{t("SETTINGS_MODAL.IMPERIAL")}</Text>
+								<Text variation="tertiary" marginLeft="1.23rem">
+									{t("SETTINGS_MODAL.IMPERIAL_UNITS")}
+								</Text>
 							</Radio>
 						</Flex>
 						<Flex style={{ gap: 0, padding: "1.08rem 0rem", cursor: "pointer" }}>
@@ -269,8 +269,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								checked={!isAutomaticMapUnit && currentMapUnit === METRIC}
 								onChange={() => onMapUnitChange(METRIC)}
 							>
-								<TextEl marginLeft="1.23rem" text={t("SETTINGS_MODAL.METRIC")} />
-								<TextEl variation="tertiary" marginLeft="1.23rem" text={t("SETTINGS_MODAL.METRIC_UNITS")} />
+								<Text marginLeft="1.23rem">{t("SETTINGS_MODAL.METRIC")}</Text>
+								<Text variation="tertiary" marginLeft="1.23rem">
+									{t("SETTINGS_MODAL.METRIC_UNITS")}
+								</Text>
 							</Radio>
 						</Flex>
 					</Flex>
@@ -296,7 +298,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								checked={currentMapProvider === ESRI}
 								onChange={() => handleMapProviderChange(ESRI)}
 							>
-								<TextEl marginLeft="1.23rem" text={ESRI} />
+								<Text marginLeft="1.23rem">{ESRI}</Text>
 							</Radio>
 						</Flex>
 						{/* HERE */}
@@ -307,7 +309,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								checked={currentMapProvider === HERE}
 								onChange={() => handleMapProviderChange(HERE)}
 							>
-								<TextEl marginLeft="1.23rem" text={HERE} />
+								<Text marginLeft="1.23rem">{HERE}</Text>
 							</Radio>
 						</Flex>
 						{/* Grab */}
@@ -319,7 +321,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 									checked={currentMapProvider === GRAB}
 									onChange={() => handleMapProviderChange(GRAB)}
 								>
-									<TextEl marginLeft="1.23rem" text={`${GRAB}Maps`} />
+									<Text marginLeft="1.23rem">{`${GRAB}Maps`}</Text>
 								</Radio>
 							</Flex>
 						)}
@@ -341,7 +343,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 					>
 						{/* Esri */}
 						<Flex gap={0} direction="column" padding="0.82rem 0rem 1.23rem 0rem">
-							<TextEl fontSize="1rem" lineHeight="1.38rem" variation="tertiary" text={ESRI} />
+							<Text fontSize="1rem" lineHeight="1.38rem" variation="tertiary">
+								{ESRI}
+							</Text>
 							<Flex className="sm-styles-container">
 								{ESRI_STYLES.map(({ id, image, name }) => (
 									<Flex
@@ -351,7 +355,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 										onClick={() => handleMapStyleChange(id)}
 									>
 										<img src={image} />
-										<TextEl marginTop="0.62rem" text={t(name)} />
+										<Text marginTop="0.62rem">{t(name)}</Text>
 									</Flex>
 								))}
 							</Flex>
@@ -359,7 +363,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 						{/* HERE */}
 						<Divider className="styles-divider" />
 						<Flex gap={0} direction="column" padding="1.31rem 0rem 1.23rem 0rem">
-							<TextEl fontSize="1rem" lineHeight="1.38rem" variation="tertiary" text={HERE} />
+							<Text fontSize="1rem" lineHeight="1.38rem" variation="tertiary">
+								{HERE}
+							</Text>
 							<Flex className="sm-styles-container">
 								{HERE_STYLES.map(({ id, image, name }) => (
 									<Flex
@@ -369,7 +375,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 										onClick={() => handleMapStyleChange(id)}
 									>
 										<img src={image} />
-										<TextEl marginTop="0.62rem" text={t(name)} />
+										<Text marginTop="0.62rem">{t(name)}</Text>
 									</Flex>
 								))}
 							</Flex>
@@ -379,7 +385,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 							<>
 								<Divider className="styles-divider" />
 								<Flex gap={0} direction="column" padding="1.31rem 0rem 1.23rem 0rem">
-									<TextEl fontSize="1rem" lineHeight="1.38rem" variation="tertiary" text={`${GRAB}Maps`} />
+									<Text fontSize="1rem" lineHeight="1.38rem" variation="tertiary">{`${GRAB}Maps`}</Text>
 									<Flex className="sm-styles-container">
 										{GRAB_STYLES.map(({ id, image, name }) => (
 											<Flex
@@ -389,7 +395,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 												onClick={() => handleMapStyleChange(id)}
 											>
 												<img src={image} />
-												<TextEl marginTop="0.62rem" text={t(name)} />
+												<Text marginTop="0.62rem">{t(name)}</Text>
 											</Flex>
 										))}
 									</Flex>
@@ -403,7 +409,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 				id: SettingOptionEnum.LANGUAGE,
 				title: t("SETTINGS_MODAL.LANGUAGE"),
 				defaultValue: languageSwitcherData.find(({ value }) => value === i18n.language)?.label as string,
-				icon: <IconPaintroller />, // TODO: update from designs
+				icon: <IconGlobe />,
 				detailsComponent: (
 					<Flex
 						data-testid={`${SettingOptionEnum.UNITS}-details-component`}
@@ -422,7 +428,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 										i18n.changeLanguage(value);
 									}}
 								>
-									<TextEl marginLeft="1.23rem" text={label} />
+									<Text marginLeft="1.23rem">{label}</Text>
 								</Radio>
 							</Flex>
 						))}
@@ -481,7 +487,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								}}
 							/>
 							<Flex gap={0} direction="column" marginTop="1.23rem">
-								<Text marginTop="0.31rem" variation="tertiary" whiteSpace="pre-line">
+								<Text
+									marginTop="0.31rem"
+									variation="tertiary"
+									whiteSpace="pre-line"
+									textAlign={isLtr ? "start" : "end"}
+								>
 									{t("CONNECT_AWS_ACCOUNT_MODAL.TITLE_DESC")}
 								</Text>
 							</Flex>
@@ -489,39 +500,55 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 						<Flex className="sm-aws-cloudformation-form">
 							<Flex
 								gap={0}
-								justifyContent="flex-start"
+								justifyContent={isLtr ? "flex-start" : "flex-end"}
 								alignItems="center"
 								margin="1.85rem 0rem 1.85rem 0rem"
 								width="100%"
 							>
-								<Text className="bold" fontSize="1.08rem">
+								<Text className="bold" fontSize="1.08rem" textAlign={isLtr ? "start" : "end"} order={isLtr ? 1 : 2}>
 									{t("CONNECT_AWS_ACCOUNT_MODAL.HOW_TO")}
 								</Text>
-								<DropdownEl defaultOption={stackRegion} options={regionsData} onSelect={_onSelect} showSelected />
+								<View order={isLtr ? 2 : 1}>
+									<DropdownEl defaultOption={stackRegion} options={regionsData} onSelect={_onSelect} showSelected />
+								</View>
 							</Flex>
 							<Flex gap={0} marginBottom="1.85rem" alignSelf="flex-start">
-								<View className="step-number">
-									<TextEl fontFamily="AmazonEmber-Bold" text={t("CONNECT_AWS_ACCOUNT_MODAL.STEP_1.NUM")} />
+								<View
+									className="step-number"
+									margin={isLtr ? "0rem 1.23rem 0rem 0rem" : "0rem 0rem 0rem 1.23rem"}
+									order={isLtr ? 1 : 2}
+								>
+									<Text className="bold">{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_1.NUM")}</Text>
 								</View>
-								<View>
+								<View order={isLtr ? 2 : 1}>
 									<Flex gap={5}>
-										<Text className="bold">
+										<Text className="bold" textAlign={isLtr ? "start" : "end"}>
 											<Link href={cloudFormationLink} target="_blank">
 												{t("CONNECT_AWS_ACCOUNT_MODAL.CLICK_HERE")}
 											</Link>
 											{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_1.TITLE")}
 										</Text>
 									</Flex>
-									<TextEl className="step-two-description" text={t("CONNECT_AWS_ACCOUNT_MODAL.STEP_1.DESC")} />
+									<Text className="step-two-description" textAlign={isLtr ? "start" : "end"}>
+										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_1.DESC")}
+									</Text>
 								</View>
 							</Flex>
 							<Flex gap={0} marginBottom="1.85rem" alignSelf="flex-start">
-								<View className="step-number">
-									<TextEl fontFamily="AmazonEmber-Bold" text={t("CONNECT_AWS_ACCOUNT_MODAL.STEP_2.NUM")} />
+								<View
+									className="step-number"
+									margin={isLtr ? "0rem 1.23rem 0rem 0rem" : "0rem 0rem 0rem 1.23rem"}
+									order={isLtr ? 1 : 2}
+								>
+									<Text className="bold" textAlign={isLtr ? "start" : "end"}>
+										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_2.NUM")}
+									</Text>
 								</View>
-								<View>
-									<TextEl fontFamily="AmazonEmber-Bold" text={t("CONNECT_AWS_ACCOUNT_MODAL.STEP_2.TITLE")} />
-									<Text className="step-two-description">
+								<View order={isLtr ? 2 : 1}>
+									<Text className="bold" textAlign={isLtr ? "start" : "end"}>
+										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_2.TITLE")}
+									</Text>
+									<Text className="step-two-description" textAlign={isLtr ? "start" : "end"}>
 										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_2.DESC")}
 										<a href={HELP} target="_blank" rel="noreferrer">
 											{t("CONNECT_AWS_ACCOUNT_MODAL.LEARN_MORE")}
@@ -530,12 +557,22 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								</View>
 							</Flex>
 							<Flex gap={0} marginBottom="1.85rem" alignSelf="flex-start">
-								<View className="step-number">
-									<TextEl fontFamily="AmazonEmber-Bold" text={t("CONNECT_AWS_ACCOUNT_MODAL.STEP_3.NUM")} />
+								<View
+									className="step-number"
+									margin={isLtr ? "0rem 1.23rem 0rem 0rem" : "0rem 0rem 0rem 1.23rem"}
+									order={isLtr ? 1 : 2}
+								>
+									<Text className="bold" textAlign={isLtr ? "start" : "end"}>
+										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_3.NUM")}
+									</Text>
 								</View>
-								<View>
-									<TextEl fontFamily="AmazonEmber-Bold" text={t("CONNECT_AWS_ACCOUNT_MODAL.STEP_3.TITLE")} />
-									<TextEl className="step-two-description" text={t("CONNECT_AWS_ACCOUNT_MODAL.STEP_3.DESC")} />
+								<View order={isLtr ? 2 : 1}>
+									<Text className="bold" textAlign={isLtr ? "start" : "end"}>
+										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_3.TITLE")}
+									</Text>
+									<Text className="step-two-description" textAlign={isLtr ? "start" : "end"}>
+										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_3.DESC")}
+									</Text>
 								</View>
 							</Flex>
 							{isUserAwsAccountConnected ? (
@@ -568,7 +605,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 												key={key}
 												containerMargin="0rem 0rem 1.85rem 0rem"
 												label={key}
-												placeholder={`${t("CONNECT_AWS_ACOUNT.ENTER")} ${key}`}
+												placeholder={`${t("CONNECT_AWS_ACCOUNT_MODAL.ENTER")} ${key}`}
 												value={formValues[key as keyof ConnectFormValuesType]}
 												onChange={e => onChangeFormValues(key, e.target.value.trim())}
 												dir={langDir}
@@ -578,13 +615,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 									<Button variation="primary" width="100%" isDisabled={!isBtnEnabled} onClick={onConnect}>
 										{t("CONNECT_AWS_ACCOUNT_MODAL.CONNECT")}
 									</Button>
-									<TextEl marginTop="0.62rem" text={t("CONNECT_AWS_ACCOUNT_MODAL.AGREE")} />
+									<Text marginTop="0.62rem">{t("CONNECT_AWS_ACCOUNT_MODAL.AGREE")}</Text>
 									<View onClick={() => window.open(AWS_TERMS_AND_CONDITIONS, "_blank")}>
-										<TextEl
-											className="hyperlink"
-											fontFamily="AmazonEmber-Bold"
-											text={t("CONNECT_AWS_ACCOUNT_MODAL.T&C")}
-										/>
+										<Text className="hyperlink" fontFamily="AmazonEmber-Bold">
+											{t("CONNECT_AWS_ACCOUNT_MODAL.T&C")}
+										</Text>
 									</View>
 								</>
 							)}
@@ -620,7 +655,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			cloudFormationLink,
 			t,
 			langDir,
-			i18n
+			i18n,
+			isLtr
 		]
 	);
 
@@ -634,8 +670,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			>
 				{icon}
 				<Flex gap={0} direction="column">
-					<TextEl fontSize="1rem" lineHeight="1.38rem" text={title} />
-					{defaultValue && <TextEl fontSize="1rem" lineHeight="1.38rem" variation="tertiary" text={defaultValue} />}
+					<Text fontSize="1rem" lineHeight="1.38rem">
+						{title}
+					</Text>
+					{defaultValue && (
+						<Text fontSize="1rem" lineHeight="1.38rem" variation="tertiary">
+							{defaultValue}{" "}
+						</Text>
+					)}
 				</Flex>
 			</Flex>
 		));
@@ -646,7 +688,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
 		return (
 			<>
-				<TextEl fontSize="1rem" lineHeight="1.38rem" padding={"1.46rem 0rem 1.46rem 1.15rem"} text={optionItem.title} />
+				<Text fontSize="1rem" lineHeight="1.38rem" padding={"1.46rem 0rem 1.46rem 1.15rem"}>
+					{optionItem.title}
+				</Text>
 				<Divider className="title-divider" />
 				{optionItem.detailsComponent}
 			</>
@@ -662,13 +706,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			content={
 				<Flex className="settings-modal-content">
 					<Flex className="options-container">
-						<TextEl
-							fontFamily="AmazonEmber-Bold"
-							fontSize="1.23rem"
-							lineHeight="1.85rem"
-							padding={"1.23rem 0rem 1.23rem 1.23rem"}
-							text={t("SETTINGS_MODAL.TITLE")}
-						/>
+						<Text className="bold" fontSize="1.23rem" lineHeight="1.85rem" padding={"1.23rem 0rem 1.23rem 1.23rem"}>
+							{t("SETTINGS_MODAL.TITLE")}
+						</Text>
 						{renderOptionItems}
 					</Flex>
 					<Divider orientation="vertical" className="col-divider" />

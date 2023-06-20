@@ -1186,7 +1186,9 @@
 		"ERROR_1": "Name can only contain alphanumeric, underscore and hyphen characters",
 		"ERROR_2": "Name already exists, please enter a unique name",
 		"CLICK_ANY_POINT": "Click on any point on the map or enter the address/coordinate to create a geofence marker",
-		"SEARCH_PLACEHOLDER": "Type unique Geofence Name",
+		"SEARCH_PLACEHOLDER": "Enter address or coordinates",
+		"NAME": "Name",
+		"NAME_PLACEHOLDER": "Type unique Geofence Name",
 		"FETCHING_GEOFENCES": "fetching geofences...",
 		"HAVE_NOT_CREATED": "You haven't created any geofences",
 		"ADD_TO_VIEW": "Add a geofence to view it here!",
@@ -1197,9 +1199,14 @@
 		"GEOFENCE": "Geofence",
 		"ADD": "Add",
 		"SAVE": "Save",
-		"GO_BACK": "Go Back"
+		"GO_BACK": "Go Back",
+		"MILES": "Miles",
+		"FEET": "Feet",
+		"KILOMETERS": "Kilometers",
+		"METERS": "Meters"
 	},
 	"TRACKER_BOX": {
+		"TITLE": "Tracker",
 		"CLICK_ANY_POINT": "Click at any point on the map to start creating a tracking route",
 		"CLEAR": "Clear",
 		"SAVE": "Save",
@@ -1211,7 +1218,7 @@
 	},
 	"MAP_BUTTONS": {
 		"HEADING": "Map style",
-		"INFO": "Changing data provider also affects\nPlaces & Routes API"
+		"INFO": "Changing data provider also affects Places & Routes API"
 	},
 	"SIDEBAR": {
 		"GEOFENCE": "Geofence",
@@ -1311,6 +1318,9 @@
 	},
 	"ABOUT_MODAL": {
 		"HEADING": "About",
+		"ATTRIBUTION": "Attribution",
+		"VERSION": "Version",
+		"T&C": "Terms and Conditions",
 		"LEARN_MORE": "Learn More",
 		"ABOUT": {
 			"COPYRIGHT": "Amazon Web Services, Inc. or its affiliates. All rights reserved."
@@ -1366,6 +1376,9 @@
 		"REFRESHING_SESSION": "Refreshing your session, please wait",
 		"STACK_IS_CORRUPTED": "Stack is corrupted, switching back to default stack",
 		"SOMETHING_WENT_WRONG": "Something went wrong!",
+		"ENTERED": "Entered",
+		"EXITED": "Exited",
+		"GEOFENCE": "geofence",
 		"CURRENT_LOCATION": {
 			"ERROR_1": "Location permission denied, please enable browser location and refresh the page",
 			"ERROR_2": "Location permission unavailable, please try again",
