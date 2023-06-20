@@ -60,7 +60,8 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 		setSelectedMarker,
 		setHoveredMarker
 	} = useAwsPlace();
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
+	const langDir = i18n.dir();
 
 	useEffect(() => {
 		if (!value) {
@@ -268,6 +269,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 						inputMode="search"
 						hasSearchIcon={false}
 						label={t("SEARCH_BOX.SEARCH")}
+						dir={langDir}
 						innerStartComponent={
 							<Flex className="inner-start-component" onClick={onToggleSideMenu}>
 								<IconActionMenu />

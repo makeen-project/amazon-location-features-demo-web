@@ -100,7 +100,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 	const { detachPolicy } = useAwsIot();
 	const keyArr = Object.keys(formValues);
 	const isAuthenticated = !!credentials?.authenticated;
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
+	const langDir = i18n.dir();
 
 	useEffect(() => {
 		const newUrl = transformCloudFormationLink(REGION_ASIA);
@@ -540,6 +541,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 												placeholder={`${t("CONNECT_AWS_ACOUNT.ENTER")} ${key}`}
 												value={formValues[key as keyof ConnectFormValuesType]}
 												onChange={e => onChangeFormValues(key, e.target.value.trim())}
+												dir={langDir}
 											/>
 										);
 									})}
@@ -586,7 +588,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			_onLogout,
 			stackRegion,
 			cloudFormationLink,
-			t
+			t,
+			langDir
 		]
 	);
 

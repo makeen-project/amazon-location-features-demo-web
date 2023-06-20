@@ -61,7 +61,8 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 		isAddingGeofence,
 		setIsAddingGeofence
 	} = useAwsGeofence();
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
+	const langDir = i18n.dir();
 
 	useEffect(() => {
 		isDesktop && isCollapsed && setIsCollapsed(false);
@@ -254,6 +255,7 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 							<IconSearch />
 						</Flex>
 					}
+					dir={langDir}
 				/>
 				<View maxHeight="50vh" overflow="scroll">
 					{renderSuggestions}
@@ -395,7 +397,8 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 		current,
 		currentMapUnit,
 		isCollapsed,
-		t
+		t,
+		langDir
 	]);
 
 	const onDelete = useCallback(

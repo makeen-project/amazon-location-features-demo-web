@@ -1203,22 +1203,22 @@
 	},
 	"MAP_BUTTONS": {
 		"HEADING": "Map style",
-		"INFO": "Changing data provider also affects\nPaces & Routes API"
+		"INFO": "Changing data provider also affects\nPlaces & Routes API"
 	},
 	"SIDEBAR": {
-		"GEOFENCE": "GeoFence",
+		"GEOFENCE": "Geofence",
 		"TRACKER": "Tracker",
 		"SETTINGS": "Settings",
 		"ABOUT": "About",
 		"SIGN_OUT": "Sign out",
 		"SIGN_IN": "Sign in",
-		"CONNECT_AWS_ACCOUNT_MODAL": "Connect AWS Account",
+		"CONNECT_AWS_ACCOUNT": "Connect AWS Account",
 		"DISCONNECT_AWS_ACCOUNT": "Disconnect AWS Account"
 	},
-	"CONNECT_AWS_ACCOUNT_MODAL_MODAL": {
+	"CONNECT_AWS_ACCOUNT_MODAL": {
 		"TITLE": "Connect AWS Account",
 		"TITLE_DESC": "Connect your AWS account to enable Geofences and Trackers. This will ensure your tracking and geofencing data is only stored in your account. After you log in, all features of the Demo App will run using resources you deploy in your AWS account. Log out if you wish to continue running the Demo App using resources in AWS’s demo app account.",
-		"HOW_TO": "How to connect:",
+		"HOW_TO": "How to connect to",
 		"CLICK_HERE": "Click here",
 		"LEARN_MORE": " Learn more",
 		"STEP_1": {
