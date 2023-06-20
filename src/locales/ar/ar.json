@@ -232,89 +232,90 @@
 		}
 	},
 	"SAMPLES": {
-		"HEADING": "Samples",
-		"SUB_HEADING": "Curated code samples that showcases Amazon Location features. You can also find additional samples on the",
-		"HYPERLINK_1": "Developer Guide",
-		"HYPERLINK_2": "GitHub",
-		"HYPERLINK_3": "blog",
-		"AND": "and",
-		"RECORD_NOT_FOUND": "Record not found",
-		"PUBLISHED_ON": "Published on",
-		"UPDATED_ON": "Updated on",
-		"TAGS": "Tags",
-		"OPEN_IN_GITHUB": "Open in GitHub",
-		"COPY": "Copy",
-		"FILTERS": "Filters",
-		"CLEAR": "Clear",
-		"APPLY": "Apply",
-		"DONE": "Done",
-		"CREATE_RESOURCES": "Create resources",
-		"CLONE": "Clone",
-		"RUN": "Run",
-		"FOLLOW": "Follow: ",
-		"TESTING": "Testing",
-		"DEPLOY": "Deploy",
-		"CLEAN_UP": "Clean up",
+		"HEADING": "عينات",
+		"SUB_HEADING": "عينات التعليمات البرمجية المنسقة التي تعرض ميزات موقع Amazon. يمكنك أيضًا العثور على عينات إضافية على",
+		"HYPERLINK_1": "دليل المطور",
+		"HYPERLINK_2": "جيثب",
+		"HYPERLINK_3": "مدونة",
+		"AND": "و",
+		"SEARCH": "يبحث",
+		"RECORD_NOT_FOUND": "لم يتم العثور على السجل",
+		"PUBLISHED_ON": "نشرت على",
+		"UPDATED_ON": "تحديث في",
+		"TAGS": "العلامات",
+		"OPEN_IN_GITHUB": "مفتوح في جيثب",
+		"COPY": "ينسخ",
+		"FILTERS": "المرشحات",
+		"CLEAR": "واضح",
+		"APPLY": "يتقدم",
+		"DONE": "منتهي",
+		"CREATE_RESOURCES": "إنشاء الموارد",
+		"CLONE": "استنساخ",
+		"RUN": "يجري",
+		"FOLLOW": " :يتبع",
+		"TESTING": "اختبارات",
+		"DEPLOY": "نشر",
+		"CLEAN_UP": "تنظيف",
 		"FILTER_1": {
-			"TITLE": "Features",
+			"TITLE": "سمات",
 			"OPTION_1": {
-				"LABEL": "Maps",
-				"VALUE": "maps"
+				"LABEL": "خرائط",
+				"VALUE": "خرائط"
 			},
 			"OPTION_2": {
-				"LABEL": "Places",
-				"VALUE": "places"
+				"LABEL": "أماكن",
+				"VALUE": "أماكن"
 			},
 			"OPTION_3": {
-				"LABEL": "Routes",
-				"VALUE": "routes"
+				"LABEL": "الطرق",
+				"VALUE": "الطرق"
 			},
 			"OPTION_4": {
-				"LABEL": "Trackers",
-				"VALUE": "trackers"
+				"LABEL": "المتتبعين",
+				"VALUE": "المتتبعين"
 			},
 			"OPTION_5": {
-				"LABEL": "Geofences",
-				"VALUE": "geofences"
+				"LABEL": "الجيولوجية",
+				"VALUE": "الجيولوجية"
 			},
 			"OPTION_6": {
 				"LABEL": "GeoJSON",
 				"VALUE": "geojson"
 			},
 			"OPTION_7": {
-				"LABEL": "Cloud Formation",
-				"VALUE": "cloud formation"
+				"LABEL": "تشكيل السحابة",
+				"VALUE": "تشكيل السحابة"
 			}
 		},
 		"FILTER_2": {
-			"TITLE": "Language",
+			"TITLE": "لغة",
 			"OPTION_1": {
-				"LABEL": "HTML",
-				"VALUE": "html"
+				"LABEL": "لغة البرمجة",
+				"VALUE": "لغة البرمجة"
 			},
 			"OPTION_2": {
 				"LABEL": "CSS",
 				"VALUE": "css"
 			},
 			"OPTION_3": {
-				"LABEL": "JavaScript",
-				"VALUE": "javascript"
+				"LABEL": "جافا سكريبت",
+				"VALUE": "جافا سكريبت"
 			},
 			"OPTION_4": {
 				"LABEL": "TypeScript",
-				"VALUE": "typescript"
+				"VALUE": "TypeScript"
 			},
 			"OPTION_5": {
-				"LABEL": "Kotlin",
-				"VALUE": "kotlin"
+				"LABEL": "كوتلين",
+				"VALUE": "كوتلين"
 			},
 			"OPTION_6": {
-				"LABEL": "Swift",
-				"VALUE": "swift"
+				"LABEL": "سريع",
+				"VALUE": "سريع"
 			},
 			"OPTION_7": {
-				"LABEL": "React",
-				"VALUE": "react"
+				"LABEL": "تتفاعل",
+				"VALUE": "تتفاعل"
 			},
 			"OPTION_8": {
 				"LABEL": "Vue",
@@ -322,14 +323,14 @@
 			}
 		},
 		"FILTER_3": {
-			"TITLE": "Platform",
+			"TITLE": "منصة",
 			"OPTION_1": {
-				"LABEL": "Android",
-				"VALUE": "android"
+				"LABEL": "ذكري المظهر",
+				"VALUE": "ذكري المظهر"
 			},
 			"OPTION_2": {
-				"LABEL": "Web",
-				"VALUE": "web"
+				"LABEL": "الويب",
+				"VALUE": "الويب"
 			},
 			"OPTION_3": {
 				"LABEL": "iOS",
