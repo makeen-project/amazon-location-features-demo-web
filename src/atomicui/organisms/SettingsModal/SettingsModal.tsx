@@ -35,7 +35,7 @@ const {
 	ENV: { CF_TEMPLATE, REGION, REGION_ASIA },
 	ROUTES: { HELP },
 	MAP_RESOURCES: {
-		MAP_STYLES: { ESRI_STYLES, HERE_STYLES, GRAB_STYLES },
+		MAP_STYLES: { ESRI_STYLES, HERE_STYLES },
 		GRAB_SUPPORTED_AWS_REGIONS
 	},
 	LINKS: { AWS_TERMS_AND_CONDITIONS }
@@ -53,6 +53,8 @@ interface SettingsModalProps {
 	handleMapProviderChange: (mapProvider: MapProviderEnum) => void;
 	handleMapStyleChange: (mapStyle: EsriMapEnum | HereMapEnum | GrabMapEnum) => void;
 	handleCurrentLocationAndViewpoint: (b: boolean) => void;
+	mapButtons: JSX.Element;
+	resetSearchAndFilters: () => void;
 }
 
 const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -61,8 +63,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 	resetAppState,
 	isGrabVisible,
 	handleMapProviderChange,
-	handleMapStyleChange,
-	handleCurrentLocationAndViewpoint
+	handleCurrentLocationAndViewpoint,
+	mapButtons,
+	resetSearchAndFilters
 }) => {
 	const [selectedOption, setSelectedOption] = useState<SettingOptionEnum>(SettingOptionEnum.UNITS);
 	const {
@@ -104,15 +107,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();
 	const isLtr = langDir === "ltr";
-
-	useEffect(() => {
-		const newUrl = transformCloudFormationLink(REGION_ASIA);
-
-		if (currentMapProvider === MapProviderEnum.GRAB && cloudFormationLink !== newUrl) {
-			setCloudFormationLink(newUrl);
-			setStackRegion(defaultRegionAsia);
-		}
-	}, [currentMapProvider, cloudFormationLink]);
 
 	useEffect(() => {
 		const newUrl = transformCloudFormationLink(REGION_ASIA);
@@ -338,70 +332,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 						data-testid={`${SettingOptionEnum.MAP_STYLE}-details-component`}
 						gap={0}
 						direction="column"
-						padding="0rem 1.15rem"
 						overflow="scroll"
 					>
-						{/* Esri */}
-						<Flex gap={0} direction="column" padding="0.82rem 0rem 1.23rem 0rem">
-							<Text fontSize="1rem" lineHeight="1.38rem" variation="tertiary">
-								{ESRI}
-							</Text>
-							<Flex className="sm-styles-container">
-								{ESRI_STYLES.map(({ id, image, name }) => (
-									<Flex
-										data-testid="esri-map-style"
-										key={id}
-										className={id === currentMapStyle ? "sm-style selected" : "sm-style"}
-										onClick={() => handleMapStyleChange(id)}
-									>
-										<img src={image} />
-										<Text marginTop="0.62rem">{t(name)}</Text>
-									</Flex>
-								))}
-							</Flex>
-						</Flex>
-						{/* HERE */}
-						<Divider className="styles-divider" />
-						<Flex gap={0} direction="column" padding="1.31rem 0rem 1.23rem 0rem">
-							<Text fontSize="1rem" lineHeight="1.38rem" variation="tertiary">
-								{HERE}
-							</Text>
-							<Flex className="sm-styles-container">
-								{HERE_STYLES.map(({ id, image, name }) => (
-									<Flex
-										data-testid="here-map-style"
-										key={id}
-										className={id === currentMapStyle ? "sm-style selected" : "sm-style"}
-										onClick={() => handleMapStyleChange(id)}
-									>
-										<img src={image} />
-										<Text marginTop="0.62rem">{t(name)}</Text>
-									</Flex>
-								))}
-							</Flex>
-						</Flex>
-						{/* Grab */}
-						{isGrabVisible && (
-							<>
-								<Divider className="styles-divider" />
-								<Flex gap={0} direction="column" padding="1.31rem 0rem 1.23rem 0rem">
-									<Text fontSize="1rem" lineHeight="1.38rem" variation="tertiary">{`${GRAB}Maps`}</Text>
-									<Flex className="sm-styles-container">
-										{GRAB_STYLES.map(({ id, image, name }) => (
-											<Flex
-												data-testid="grab-map-style"
-												key={id}
-												className={id === currentMapStyle ? "sm-style selected" : "sm-style"}
-												onClick={() => handleMapStyleChange(id)}
-											>
-												<img src={image} />
-												<Text marginTop="0.62rem">{t(name)}</Text>
-											</Flex>
-										))}
-									</Flex>
-								</Flex>
-							</>
-						)}
+						{mapButtons}
 					</Flex>
 				)
 			},
@@ -637,8 +570,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			currentMapProvider,
 			handleMapProviderChange,
 			selectedMapStyle,
-			currentMapStyle,
-			handleMapStyleChange,
 			defaultRouteOptions,
 			setDefaultRouteOptions,
 			isUserAwsAccountConnected,
@@ -656,7 +587,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			t,
 			langDir,
 			i18n,
-			isLtr
+			isLtr,
+			mapButtons
 		]
 	);
 
@@ -666,7 +598,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 				data-testid={`option-item-${id}`}
 				key={id}
 				className={selectedOption === id ? "option-item selected" : "option-item"}
-				onClick={() => setSelectedOption(id)}
+				onClick={() => {
+					resetSearchAndFilters();
+					setSelectedOption(id);
+				}}
 			>
 				{icon}
 				<Flex gap={0} direction="column">
@@ -681,7 +616,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 				</Flex>
 			</Flex>
 		));
-	}, [optionItems, selectedOption]);
+	}, [optionItems, selectedOption, resetSearchAndFilters]);
 
 	const renderOptionDetails = useMemo(() => {
 		const [optionItem] = optionItems.filter(({ id }) => selectedOption === id);

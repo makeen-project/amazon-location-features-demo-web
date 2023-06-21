@@ -17,13 +17,17 @@ import {
 	HereImagery
 } from "@demo/assets";
 import {
+	AttributeEnum,
 	EsriMapEnum,
 	EsriMapStyleEnum,
 	GrabMapEnum,
 	GrabMapStyleEnum,
 	HereMapEnum,
-	HereMapStyleEnum
+	HereMapStyleEnum,
+	MapProviderEnum
 } from "@demo/types";
+
+import { TypeEnum } from "../../types/Enums";
 
 const getEnv = (key: string) => {
 	return import.meta.env[key];
@@ -118,23 +122,96 @@ const appConfig = {
 		},
 		MAP_STYLES: {
 			ESRI_STYLES: [
-				{ id: EsriMapEnum.ESRI_LIGHT, image: EsriLight, name: "SETTINGS_MODAL.LIGHT" },
-				{ id: EsriMapEnum.ESRI_STREET_MAP, image: EsriStreets, name: "SETTINGS_MODAL.STREETS" },
-				{ id: EsriMapEnum.ESRI_NAVIGATION, image: EsriNavigation, name: "SETTINGS_MODAL.NAVIGATION" },
-				{ id: EsriMapEnum.ESRI_DARK_GRAY_CANVAS, image: EsriDarkGray, name: "SETTINGS_MODAL.DARK_GRAY" },
-				{ id: EsriMapEnum.ESRI_LIGHT_GRAY_CANVAS, image: EsriLightGray, name: "SETTINGS_MODAL.LIGHT_GRAY" },
-				{ id: EsriMapEnum.ESRI_IMAGERY, image: EsriImagery, name: "SETTINGS_MODAL.IMAGERY" }
+				{
+					id: EsriMapEnum.ESRI_LIGHT,
+					image: EsriLight,
+					name: "SETTINGS_MODAL.LIGHT",
+					filters: { provider: MapProviderEnum.ESRI, attribute: [AttributeEnum.Light], type: [TypeEnum.Vector] }
+				},
+				{
+					id: EsriMapEnum.ESRI_STREET_MAP,
+					image: EsriStreets,
+					name: "SETTINGS_MODAL.STREETS",
+					filters: { provider: MapProviderEnum.ESRI, attribute: [AttributeEnum.Light], type: [TypeEnum.Vector] }
+				},
+				{
+					id: EsriMapEnum.ESRI_NAVIGATION,
+					image: EsriNavigation,
+					name: "SETTINGS_MODAL.NAVIGATION",
+					filters: { provider: MapProviderEnum.ESRI, attribute: [AttributeEnum.Light], type: [TypeEnum.Vector] }
+				},
+				{
+					id: EsriMapEnum.ESRI_DARK_GRAY_CANVAS,
+					image: EsriDarkGray,
+					name: "SETTINGS_MODAL.DARK_GRAY",
+					filters: { provider: MapProviderEnum.ESRI, attribute: [AttributeEnum.Dark], type: [TypeEnum.Vector] }
+				},
+				{
+					id: EsriMapEnum.ESRI_LIGHT_GRAY_CANVAS,
+					image: EsriLightGray,
+					name: "SETTINGS_MODAL.LIGHT_GRAY",
+					filters: { provider: MapProviderEnum.ESRI, attribute: [AttributeEnum.Dark], type: [TypeEnum.Vector] }
+				},
+				{
+					id: EsriMapEnum.ESRI_IMAGERY,
+					image: EsriImagery,
+					name: "SETTINGS_MODAL.IMAGERY",
+					filters: { provider: MapProviderEnum.ESRI, attribute: [AttributeEnum.Satellite], type: [TypeEnum.Raster] }
+				}
 			],
 			HERE_STYLES: [
-				{ id: HereMapEnum.HERE_EXPLORE, image: HereExplore, name: "SETTINGS_MODAL.EXPLORE" },
-				{ id: HereMapEnum.HERE_CONTRAST, image: HereConrast, name: "SETTINGS_MODAL.CONTRAST" },
-				{ id: HereMapEnum.HERE_EXPLORE_TRUCK, image: HereExploreTruck, name: "SETTINGS_MODAL.EXPLORE_TRUCK" },
-				{ id: HereMapEnum.HERE_HYBRID, image: HereHybrid, name: "SETTINGS_MODAL.HYBRID" },
-				{ id: HereMapEnum.HERE_IMAGERY, image: HereImagery, name: "SETTINGS_MODAL.IMAGERY" }
+				{
+					id: HereMapEnum.HERE_EXPLORE,
+					image: HereExplore,
+					name: "SETTINGS_MODAL.EXPLORE",
+					filters: { provider: MapProviderEnum.HERE, attribute: [AttributeEnum.Light], type: [TypeEnum.Vector] }
+				},
+				{
+					id: HereMapEnum.HERE_CONTRAST,
+					image: HereConrast,
+					name: "SETTINGS_MODAL.CONTRAST",
+					filters: {
+						provider: MapProviderEnum.HERE,
+						attribute: [AttributeEnum.Dark, AttributeEnum.ThreeD],
+						type: [TypeEnum.Vector]
+					}
+				},
+				{
+					id: HereMapEnum.HERE_EXPLORE_TRUCK,
+					image: HereExploreTruck,
+					name: "SETTINGS_MODAL.EXPLORE_TRUCK",
+					filters: { provider: MapProviderEnum.HERE, attribute: [AttributeEnum.Truck], type: [TypeEnum.Vector] }
+				},
+				{
+					id: HereMapEnum.HERE_HYBRID,
+					image: HereHybrid,
+					name: "SETTINGS_MODAL.HYBRID",
+					filters: {
+						provider: MapProviderEnum.HERE,
+						attribute: [AttributeEnum.Satellite],
+						type: [TypeEnum.Raster, TypeEnum.Vector]
+					}
+				},
+				{
+					id: HereMapEnum.HERE_IMAGERY,
+					image: HereImagery,
+					name: "SETTINGS_MODAL.IMAGERY",
+					filters: { provider: MapProviderEnum.HERE, attribute: [AttributeEnum.Satellite], type: [TypeEnum.Raster] }
+				}
 			],
 			GRAB_STYLES: [
-				{ id: GrabMapEnum.GRAB_STANDARD_LIGHT, image: GrabStandardLight, name: "SETTINGS_MODAL.LIGHT" },
-				{ id: GrabMapEnum.GRAB_STANDARD_DARK, image: GrabStandardDark, name: "SETTINGS_MODAL.DARK" }
+				{
+					id: GrabMapEnum.GRAB_STANDARD_LIGHT,
+					image: GrabStandardLight,
+					name: "SETTINGS_MODAL.LIGHT",
+					filters: { provider: MapProviderEnum.GRAB, attribute: [AttributeEnum.Light], type: [TypeEnum.Vector] }
+				},
+				{
+					id: GrabMapEnum.GRAB_STANDARD_DARK,
+					image: GrabStandardDark,
+					name: "SETTINGS_MODAL.DARK",
+					filters: { provider: MapProviderEnum.GRAB, attribute: [AttributeEnum.Dark], type: [TypeEnum.Vector] }
+				}
 			]
 		},
 		PLACE_INDEXES: {
