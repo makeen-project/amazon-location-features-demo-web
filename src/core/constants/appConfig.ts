@@ -125,37 +125,37 @@ const appConfig = {
 				{
 					id: EsriMapEnum.ESRI_LIGHT,
 					image: EsriLight,
-					name: "SETTINGS_MODAL.LIGHT",
+					name: "MAP_BUTTONS.LIGHT",
 					filters: { provider: MapProviderEnum.ESRI, attribute: [AttributeEnum.Light], type: [TypeEnum.Vector] }
 				},
 				{
 					id: EsriMapEnum.ESRI_STREET_MAP,
 					image: EsriStreets,
-					name: "SETTINGS_MODAL.STREETS",
+					name: "MAP_BUTTONS.STREETS",
 					filters: { provider: MapProviderEnum.ESRI, attribute: [AttributeEnum.Light], type: [TypeEnum.Vector] }
 				},
 				{
 					id: EsriMapEnum.ESRI_NAVIGATION,
 					image: EsriNavigation,
-					name: "SETTINGS_MODAL.NAVIGATION",
+					name: "MAP_BUTTONS.NAVIGATION",
 					filters: { provider: MapProviderEnum.ESRI, attribute: [AttributeEnum.Light], type: [TypeEnum.Vector] }
 				},
 				{
 					id: EsriMapEnum.ESRI_DARK_GRAY_CANVAS,
 					image: EsriDarkGray,
-					name: "SETTINGS_MODAL.DARK_GRAY",
+					name: "MAP_BUTTONS.DARK_GRAY",
 					filters: { provider: MapProviderEnum.ESRI, attribute: [AttributeEnum.Dark], type: [TypeEnum.Vector] }
 				},
 				{
 					id: EsriMapEnum.ESRI_LIGHT_GRAY_CANVAS,
 					image: EsriLightGray,
-					name: "SETTINGS_MODAL.LIGHT_GRAY",
+					name: "MAP_BUTTONS.LIGHT_GRAY",
 					filters: { provider: MapProviderEnum.ESRI, attribute: [AttributeEnum.Dark], type: [TypeEnum.Vector] }
 				},
 				{
 					id: EsriMapEnum.ESRI_IMAGERY,
 					image: EsriImagery,
-					name: "SETTINGS_MODAL.IMAGERY",
+					name: "MAP_BUTTONS.IMAGERY",
 					filters: { provider: MapProviderEnum.ESRI, attribute: [AttributeEnum.Satellite], type: [TypeEnum.Raster] }
 				}
 			],
@@ -163,13 +163,13 @@ const appConfig = {
 				{
 					id: HereMapEnum.HERE_EXPLORE,
 					image: HereExplore,
-					name: "SETTINGS_MODAL.EXPLORE",
+					name: "MAP_BUTTONS.EXPLORE",
 					filters: { provider: MapProviderEnum.HERE, attribute: [AttributeEnum.Light], type: [TypeEnum.Vector] }
 				},
 				{
 					id: HereMapEnum.HERE_CONTRAST,
 					image: HereConrast,
-					name: "SETTINGS_MODAL.CONTRAST",
+					name: "MAP_BUTTONS.CONTRAST",
 					filters: {
 						provider: MapProviderEnum.HERE,
 						attribute: [AttributeEnum.Dark, AttributeEnum.ThreeD],
@@ -179,13 +179,13 @@ const appConfig = {
 				{
 					id: HereMapEnum.HERE_EXPLORE_TRUCK,
 					image: HereExploreTruck,
-					name: "SETTINGS_MODAL.EXPLORE_TRUCK",
+					name: "MAP_BUTTONS.EXPLORE_TRUCK",
 					filters: { provider: MapProviderEnum.HERE, attribute: [AttributeEnum.Truck], type: [TypeEnum.Vector] }
 				},
 				{
 					id: HereMapEnum.HERE_HYBRID,
 					image: HereHybrid,
-					name: "SETTINGS_MODAL.HYBRID",
+					name: "MAP_BUTTONS.HYBRID",
 					filters: {
 						provider: MapProviderEnum.HERE,
 						attribute: [AttributeEnum.Satellite],
@@ -195,7 +195,7 @@ const appConfig = {
 				{
 					id: HereMapEnum.HERE_IMAGERY,
 					image: HereImagery,
-					name: "SETTINGS_MODAL.IMAGERY",
+					name: "MAP_BUTTONS.IMAGERY",
 					filters: { provider: MapProviderEnum.HERE, attribute: [AttributeEnum.Satellite], type: [TypeEnum.Raster] }
 				}
 			],
@@ -203,13 +203,13 @@ const appConfig = {
 				{
 					id: GrabMapEnum.GRAB_STANDARD_LIGHT,
 					image: GrabStandardLight,
-					name: "SETTINGS_MODAL.LIGHT",
+					name: "MAP_BUTTONS.LIGHT",
 					filters: { provider: MapProviderEnum.GRAB, attribute: [AttributeEnum.Light], type: [TypeEnum.Vector] }
 				},
 				{
 					id: GrabMapEnum.GRAB_STANDARD_DARK,
 					image: GrabStandardDark,
-					name: "SETTINGS_MODAL.DARK",
+					name: "MAP_BUTTONS.DARK",
 					filters: { provider: MapProviderEnum.GRAB, attribute: [AttributeEnum.Dark], type: [TypeEnum.Vector] }
 				}
 			]

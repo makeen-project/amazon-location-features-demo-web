@@ -275,8 +275,11 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 						marginBottom={showFilter ? 0 : "0.6rem"}
 					>
 						<SearchField
-							label="Search"
-							placeholder="Search styles"
+							data-testid="map-styles-search-field"
+							className="map-styles-search-field"
+							dir={langDir}
+							label={t("MAP_BUTTONS.SEARCH_LABEL")}
+							placeholder={t("MAP_BUTTONS.SEARCH_PLACEHOLDER") as string}
 							hasSearchButton={false}
 							hasSearchIcon={true}
 							size={"large"}
@@ -286,11 +289,9 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 								</Flex>
 							}
 							value={searchValue}
-							className="map-styles-search-field"
 							onChange={e => setSearchValue(e.target.value)}
 							onClear={() => setSearchValue("")}
 							onClick={() => !!showFilter && setShowFilter(false)}
-							data-testid="map-styles-search-field"
 						/>
 						<Flex className="filter-container">
 							<Flex
@@ -339,8 +340,8 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 							{!searchAndFilteredResults.length && (
 								<Flex width={"80%"} margin={"0 auto"}>
 									<NotFoundCard
-										title="No matching styles found"
-										text="Make sure your search is spelled correctly and try again"
+										title={t("MAP_BUTTONS.NO_STYLES_FOUND_TITLE") as string}
+										text={t("MAP_BUTTONS.NO_STYLES_FOUND_DESC") as string}
 										textFontSize="0.95rem"
 									/>
 								</Flex>
@@ -373,7 +374,7 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 														onLoad={() => setIsLoadingImg(false)}
 													/>
 												</Flex>
-												{!isLoading && <Text marginTop="0.62rem">{item.name}</Text>}
+												{!isLoading && <Text marginTop="0.62rem">{t(item.name)}</Text>}
 											</Flex>
 										</Flex>
 									)
@@ -397,7 +398,9 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 			selectedFilters,
 			setSearchValue,
 			showFilter,
-			onlyMapStyles
+			onlyMapStyles,
+			t,
+			langDir
 		]
 	);
 

@@ -324,7 +324,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			},
 			{
 				id: SettingOptionEnum.MAP_STYLE,
-				title: t("SETTINGS_MODAL.MAP_STYLE"),
+				title: t("MAP_BUTTONS.HEADING"),
 				defaultValue: t(selectedMapStyle as string) as string,
 				icon: <IconPaintroller />,
 				detailsComponent: (

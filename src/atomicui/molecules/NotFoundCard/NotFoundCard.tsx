@@ -13,13 +13,17 @@ interface IProps {
 }
 
 const NotFoundCard: React.FC<IProps> = ({ title, text, textFontSize = "1.23rem" }) => {
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
+	const langDir = i18n.dir();
+	const isLtr = langDir === "ltr";
 
 	return (
 		<View className="not-found-card">
 			<IconSearch className="nfc-search-icon" />
-			<Text className="nfc-title">{title || t("NOT_FOUND_CARD.TITLE")}</Text>
-			<Text className="nfc-text" variation="tertiary" fontSize={textFontSize}>
+			<Text className="nfc-title" textAlign={isLtr ? "start" : "end"}>
+				{title || t("NOT_FOUND_CARD.TITLE")}
+			</Text>
+			<Text className="nfc-text" variation="tertiary" fontSize={textFontSize} textAlign={isLtr ? "start" : "end"}>
 				{text || t("NOT_FOUND_CARD.DESC")}
 			</Text>
 		</View>
