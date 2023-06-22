@@ -8,7 +8,7 @@
 		"OVERVIEW": "Overview",
 		"PRODUCT": "Product",
 		"SAMPLES": "Samples",
-		"TRY_IT": "Try It",
+		"TRY_IT": "Try it",
 		"TRY_OUR_DEMO_APP": "Try our demo app"
 	},
 	"FOOTER": {
@@ -18,7 +18,7 @@
 		"FAQ": "FAQ",
 		"PRICING": "Pricing",
 		"BLOGS": "Blogs",
-		"WHAT'S_NEW": "What's New",
+		"WHAT'S_NEW": "What's new",
 		"DEVELOPERS": "Developers",
 		"DEVELOPER_GUIDES": "Developer Guides",
 		"WORKSHOP": "Workshop",
@@ -38,7 +38,7 @@
 		"CONTACT_US": "Contact Us",
 		"CONNECT_AWS_IQ": "Connect AWS IQ",
 		"GITHUB": "Github",
-		"AWS_RE:POST": "AWS re:Post",
+		"AWS_RE_POST": "AWS re:Post",
 		"STACK_OVERFLOW": "Stack Overflow",
 		"HELP": "Help",
 		"AWS_COPYRIGHT": "Amazon Web Services, Inc. or its affiliates. All rights reserved.",
