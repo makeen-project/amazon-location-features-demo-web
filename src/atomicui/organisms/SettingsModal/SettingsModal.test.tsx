@@ -1,6 +1,8 @@
 import { MapButtons } from "@demo/atomicui/molecules";
+import i18n from "@demo/locales";
 import { SettingOptionEnum } from "@demo/types";
 import { RenderResult, act, fireEvent, render, screen } from "@testing-library/react";
+import { I18nextProvider } from "react-i18next";
 
 import SettingsModal from "./SettingsModal";
 
@@ -40,17 +42,19 @@ describe("<SettingsModal />", () => {
 
 	const renderComponent = async (): Promise<RenderResult> => {
 		const renderedComponent = render(
-			<SettingsModal
-				open
-				onClose={onClose}
-				resetAppState={resetAppState}
-				isGrabVisible={false}
-				handleMapProviderChange={handleMapProviderChange}
-				handleMapStyleChange={handleMapStyleChange}
-				handleCurrentLocationAndViewpoint={handleCurrentLocationAndViewpoint}
-				resetSearchAndFilters={resetSearchAndFilters}
-				mapButtons={<MapButtons {...props} />}
-			/>
+			<I18nextProvider i18n={i18n}>
+				<SettingsModal
+					open
+					onClose={onClose}
+					resetAppState={resetAppState}
+					isGrabVisible={false}
+					handleMapProviderChange={handleMapProviderChange}
+					handleMapStyleChange={handleMapStyleChange}
+					handleCurrentLocationAndViewpoint={handleCurrentLocationAndViewpoint}
+					resetSearchAndFilters={resetSearchAndFilters}
+					mapButtons={<MapButtons {...props} />}
+				/>
+			</I18nextProvider>
 		);
 		settingsModal = await screen.findByTestId("settings-modal");
 

@@ -1,5 +1,7 @@
+import i18n from "@demo/locales";
 import { EsriMapEnum } from "@demo/types";
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render } from "@testing-library/react";
+import { I18nextProvider } from "react-i18next";
 
 import MapButtons from "./MapButtons";
 
@@ -27,60 +29,53 @@ describe("<MapButtons/>", () => {
 		resetSearchAndFilters: jest.fn()
 	};
 
-	const renderComponent = async () => {
-		render(<MapButtons {...props} />);
+	const renderComponent = () => {
+		return render(
+			<I18nextProvider i18n={i18n}>
+				<MapButtons {...props} />
+			</I18nextProvider>
+		);
 	};
 
-	test("renders map buttons container", async () => {
-		await act(async () => {
-			await renderComponent();
-		});
-		expect(screen.getByTestId("map-buttons-container")).toBeInTheDocument();
+	test("renders map buttons container", () => {
+		const { getByTestId } = renderComponent();
+		expect(getByTestId("map-buttons-container")).toBeInTheDocument();
 	});
 
-	test("renders map styles button and opens the map styles card", async () => {
+	test("renders map styles button and opens the map styles card", () => {
 		props.openStylesCard = true;
-		await act(async () => {
-			await renderComponent();
-		});
-
-		expect(screen.getByTestId("map-styles-card")).toBeInTheDocument();
+		const { getByTestId } = renderComponent();
+		expect(getByTestId("map-styles-card")).toBeInTheDocument();
 	});
 
-	test("renders geofence control button", async () => {
-		await act(async () => {
-			await renderComponent();
-		});
-		expect(screen.getByTestId("geofence-control-button")).toBeInTheDocument();
+	test("renders geofence control button", () => {
+		const { getByTestId } = renderComponent();
+		expect(getByTestId("geofence-control-button")).toBeInTheDocument();
 	});
 
 	test("searches for map styles", async () => {
-		await act(async () => {
-			await renderComponent();
-		});
-		fireEvent.click(screen.getByTestId("map-styles-button"));
+		const { getByTestId, getByPlaceholderText } = renderComponent();
+		fireEvent.click(getByTestId("map-styles-button"));
 
-		await act(async () => {
-			fireEvent.change(screen.getByPlaceholderText("Search styles"), { target: { value: "satellite" } });
+		act(() => {
+			fireEvent.change(getByPlaceholderText("Search styles"), { target: { value: "satellite" } });
 		});
 
 		expect(props.setSearchValue).toHaveBeenCalledWith("satellite");
 	});
 
-	test("updates selected filters when a filter is clicked", async () => {
+	test("updates selected filters when a filter is clicked", () => {
 		props.openStylesCard = true;
-		await act(async () => {
-			await renderComponent();
-		});
+		const { getByTestId, findByTestId } = renderComponent();
 
-		fireEvent.click(screen.getByTestId("map-styles-button"));
+		fireEvent.click(getByTestId("map-styles-button"));
 
-		await screen.findByTestId("map-styles-card");
+		findByTestId("map-styles-card");
 
-		const filterButton = screen.getByTestId("filter-icon-wrapper");
+		const filterButton = getByTestId("filter-icon-wrapper");
 		fireEvent.click(filterButton);
 
-		const filterCheckbox = screen.getByTestId("filter-checkbox-Esri") as HTMLInputElement;
+		const filterCheckbox = getByTestId("filter-checkbox-Esri") as HTMLInputElement;
 		fireEvent.click(filterCheckbox);
 
 		props.setSelectedFilters({
@@ -90,16 +85,14 @@ describe("<MapButtons/>", () => {
 		});
 	});
 
-	test("selects a map style", async () => {
-		await act(async () => {
-			await renderComponent();
-		});
-		fireEvent.click(screen.getByTestId("map-styles-button"));
+	test("selects a map style", () => {
+		const { getByTestId, findByTestId } = renderComponent();
+		fireEvent.click(getByTestId("map-styles-button"));
 
-		await screen.findByTestId("map-styles-card");
+		findByTestId("map-styles-card");
 
-		await act(async () => {
-			fireEvent.click(screen.getByTestId(`map-style-item-${EsriMapEnum.ESRI_STREET_MAP}`));
+		act(() => {
+			fireEvent.click(getByTestId(`map-style-item-${EsriMapEnum.ESRI_STREET_MAP}`));
 		});
 
 		expect(props.handleMapStyleChange).toHaveBeenCalledWith(EsriMapEnum.ESRI_STREET_MAP);

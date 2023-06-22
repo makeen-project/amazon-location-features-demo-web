@@ -115,11 +115,13 @@ jest.mock("@demo/core/constants/appConfig", () => ({
 		},
 		PLACE_INDEXES: {
 			ESRI: "location.aws.com.demo.places.Esri.PlaceIndex",
-			HERE: "location.aws.com.demo.places.HERE.PlaceIndex"
+			HERE: "location.aws.com.demo.places.HERE.PlaceIndex",
+			GRAB: "location.aws.com.demo.places.Grab.PlaceIndex"
 		},
 		ROUTE_CALCULATORS: {
 			ESRI: "location.aws.com.demo.routes.Esri.RouteCalculator",
-			HERE: "location.aws.com.demo.routes.HERE.RouteCalculator"
+			HERE: "location.aws.com.demo.routes.HERE.RouteCalculator",
+			GRAB: "location.aws.com.demo.routes.Grab.RouteCalculator"
 		},
 		GEOFENCE_COLLECTION: "location.aws.com.demo.geofences.GeofenceCollection",
 		DEVICE_ID_WEB: "web_browser_device",
