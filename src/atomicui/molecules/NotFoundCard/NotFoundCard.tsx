@@ -13,9 +13,7 @@ interface IProps {
 }
 
 const NotFoundCard: React.FC<IProps> = ({ title, text, textFontSize = "1.23rem" }) => {
-	const { t, i18n } = useTranslation();
-	const langDir = i18n.dir();
-	const isLtr = langDir === "ltr";
+	const { t } = useTranslation();
 
 	return (
 		<View className="not-found-card">
