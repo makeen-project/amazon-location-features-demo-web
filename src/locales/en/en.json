@@ -1362,7 +1362,7 @@
 	},
 	"NOT_FOUND_CARD": {
 		"TITLE": "No matching places found",
-		"DESC": "Make sure your search is spelled correctly. Try adding a city, country or postcode."
+		"DESC": "Make sure your search is spelled correctly. Try adding a city, postcode, or country."
 	},
 	"POPUP": {
 		"CURRENT_LOCATION_DISABLED": "Current location disabled",
