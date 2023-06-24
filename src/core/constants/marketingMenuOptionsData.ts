@@ -56,7 +56,7 @@ const marketingMenuOptionsData = [
 		]
 	},
 	{
-		label: "header__samples.text",
+		label: "samples.text",
 		link: SAMPLES,
 		iconBeforeLink: IconCodeMenu,
 		iconContainerClass: "menu-item-icon"
