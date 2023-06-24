@@ -33,7 +33,7 @@ export const errorHandler = (error: any, message?: string) => {
 		errors.codes.includes(error.statusCode || error.status) &&
 		errors.exceptions.includes(error.code)
 	) {
-		showToast({ content: i18n.t("SHOW_TOAST.REFRESHING_SESSION"), type: ToastType.INFO });
+		showToast({ content: i18n.t("show_toast__refreshing_session.text"), type: ToastType.INFO });
 		setTimeout(() => {
 			localStorage.setItem(SHOULD_CLEAR_CREDENTIALS, "true");
 			window.location.reload();
@@ -43,7 +43,7 @@ export const errorHandler = (error: any, message?: string) => {
 		if (!isStackCorrupted && errors.codes.includes(error.statusCode || error.status)) {
 			if (isUserAwsAccountConnected) {
 				isStackCorrupted = true;
-				showToast({ content: i18n.t("SHOW_TOAST.STACK_IS_CORRUPTED"), type: ToastType.ERROR });
+				showToast({ content: i18n.t("show_toast__stack_is_corrupted.text"), type: ToastType.ERROR });
 				setTimeout(() => {
 					localStorage.clear();
 					window.location.reload();
@@ -51,7 +51,7 @@ export const errorHandler = (error: any, message?: string) => {
 				return;
 			} else {
 				window.location.replace(ERROR_BOUNDARY);
-				showToast({ content: i18n.t("SHOW_TOAST.SOMETHING_WENT_WRONG"), type: ToastType.ERROR });
+				showToast({ content: i18n.t("show_toast__something_went_wrong.text"), type: ToastType.ERROR });
 				return;
 			}
 		}

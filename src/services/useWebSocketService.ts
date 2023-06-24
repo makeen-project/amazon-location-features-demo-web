@@ -40,10 +40,14 @@ const useWebSocketService = () => {
 					const msg =
 						i18n.dir() === "ltr"
 							? `${
-									data.value.trackerEventType === "ENTER" ? i18n.t("SHOW_TOAST.ENTERED") : i18n.t("SHOW_TOAST.EXITED")
-							  } ${data.value.geofenceId} ${i18n.t("SHOW_TOAST.GEOFENCE")}`
-							: `${i18n.t("SHOW_TOAST.GEOFENCE")} ${data.value.geofenceId} ${
-									data.value.trackerEventType === "ENTER" ? i18n.t("SHOW_TOAST.ENTERED") : i18n.t("SHOW_TOAST.EXITED")
+									data.value.trackerEventType === "ENTER"
+										? i18n.t("show_toast__entered.text")
+										: i18n.t("show_toast__exited.text")
+							  } ${data.value.geofenceId} ${i18n.t("geofence.text")}`
+							: `${i18n.t("geofence.text")} ${data.value.geofenceId} ${
+									data.value.trackerEventType === "ENTER"
+										? i18n.t("show_toast__entered.text")
+										: i18n.t("show_toast__exited.text")
 							  }`;
 					showToast({ content: msg, type: ToastType.INFO });
 				}

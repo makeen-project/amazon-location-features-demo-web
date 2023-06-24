@@ -54,16 +54,16 @@ export const getCurrentLocation = (
 
 				switch (errorObj.code) {
 					case 1:
-						errorObj.message = i18n.t("SHOW_TOAST.CURRENT_LOCATION.ERROR_1");
+						errorObj.message = i18n.t("show_toast__lpd.text");
 						break;
 					case 2:
-						errorObj.message = i18n.t("SHOW_TOAST.CURRENT_LOCATION.ERROR_2");
+						errorObj.message = i18n.t("show_toast__lpu.text");
 						break;
 					case 3:
-						errorObj.message = i18n.t("SHOW_TOAST.CURRENT_LOCATION.ERROR_3");
+						errorObj.message = i18n.t("show_toast__cl__error_3.text");
 						break;
 					default:
-						errorObj.message = i18n.t("SHOW_TOAST.CURRENT_LOCATION.ERROR_4");
+						errorObj.message = i18n.t("show_toast__lpd.text");
 				}
 
 				localStorage.setItem(GEO_LOCATION_ALLOWED, "no");
@@ -81,7 +81,7 @@ export const getCurrentLocation = (
 			POSITION_UNAVAILABLE: 2,
 			TIMEOUT: 3,
 			code: 1,
-			message: i18n.t("SHOW_TOAST.CURRENT_LOCATION.ERROR_5")
+			message: i18n.t("show_toast__cl__error_5.text")
 		} as GeolocationPositionError;
 
 		setCurrentLocation({ currentLocation: undefined, error: errorObj });
