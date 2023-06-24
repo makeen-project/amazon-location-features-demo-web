@@ -278,8 +278,8 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 							data-testid="map-styles-search-field"
 							className="map-styles-search-field"
 							dir={langDir}
-							label={t("MAP_BUTTONS.SEARCH_LABEL")}
-							placeholder={t("MAP_BUTTONS.SEARCH_PLACEHOLDER") as string}
+							label={t("search.text")}
+							placeholder={t("map_buttons__search_placeholder.text") as string}
 							hasSearchButton={false}
 							hasSearchIcon={true}
 							size={"large"}
@@ -335,8 +335,8 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 							{!searchAndFilteredResults.length && (
 								<Flex width={"80%"} margin={"0 auto"}>
 									<NotFoundCard
-										title={t("MAP_BUTTONS.NO_STYLES_FOUND_TITLE") as string}
-										text={t("MAP_BUTTONS.NO_STYLES_FOUND_DESC") as string}
+										title={t("map_buttons__no_styles_found_title.text") as string}
+										text={t("map_buttons__no_styles_found_desc.text") as string}
 										textFontSize="0.95rem"
 									/>
 								</Flex>
@@ -411,7 +411,7 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 					onClick={toggleMapStyles}
 					data-tooltip-id="map-styles-button"
 					data-tooltip-place="left"
-					data-tooltip-content={t("TOOLTIP.MAP_PROVIDER_STYLES")}
+					data-tooltip-content={t("tooltip__mps.text")}
 				>
 					<IconMapSolid />
 				</Flex>
@@ -423,7 +423,7 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 					onClick={onClickGeofence}
 					data-tooltip-id="geofence-control-button"
 					data-tooltip-place="left"
-					data-tooltip-content={t("TOOLTIP.GEOFENCE")}
+					data-tooltip-content={t("geofence.text")}
 				>
 					<IconGeofencePlusSolid />
 				</Flex>
@@ -433,7 +433,7 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 				<Card data-testid="map-styles-card" ref={stylesCardRef} className="map-styles-card">
 					<Flex className="map-styles-header">
 						<Text margin="1.23rem 0rem" fontFamily="AmazonEmber-Bold" fontSize="1.23rem">
-							{t("MAP_BUTTONS.HEADING")}
+							{t("map_style.text")}
 						</Text>
 						<Flex className="map-styles-icon-close-container" onClick={() => setOpenStylesCard(false)}>
 							<IconClose />
@@ -441,7 +441,7 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 					</Flex>
 					<Flex className="ms-info-container">
 						<Text variation="tertiary" textAlign={isLtr ? "start" : "end"}>
-							{t("MAP_BUTTONS.INFO")}
+							{t("map_buttons__info.text")}
 						</Text>
 					</Flex>
 					{mapStyles}

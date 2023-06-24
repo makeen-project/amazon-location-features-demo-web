@@ -26,14 +26,14 @@ const GrabConfirmationModal: React.FC<GrabConfirmationModalProps> = ({ open, onC
 		<ConfirmationModal
 			open={open}
 			onClose={onClose}
-			heading={t("GRAB_CONFIRMATION_MODAL.HEADING") as string}
+			heading={t("grab_cm__heading.text") as string}
 			description={
 				<Text className="small-text" variation="tertiary" marginTop="1.23rem" textAlign="center" whiteSpace="pre-line">
-					{t("GRAB_CONFIRMATION_MODAL.DESC")}
+					{t("grab_cm__desc.text")}
 				</Text>
 			}
 			onConfirm={onConfirm}
-			confirmationText={t("GRAB_CONFIRMATION_MODAL.CONFIRMATION_TEXT") as string}
+			confirmationText={t("grab_cm__heading.text") as string}
 			showLearnMore={true}
 			handleLeanMore={() => window.open(GRAB_DEVELOPER_GUIDE, "_blank")}
 		/>

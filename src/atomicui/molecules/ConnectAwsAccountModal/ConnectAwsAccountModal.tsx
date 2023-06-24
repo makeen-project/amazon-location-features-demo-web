@@ -140,16 +140,16 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 								style={{ width: "4.31rem", height: "4.31rem", minWidth: "4.31rem", minHeight: "4.31rem" }}
 							/>
 							<Text className="bold" fontSize="1.54rem" marginTop="0.46rem">
-								{t("CONNECT_AWS_ACCOUNT_MODAL.TITLE")}
+								{t("connect_aws_account.text")}
 							</Text>
 						</View>
 						<Text marginTop="0.62rem" variation="tertiary" textAlign="center" whiteSpace="pre-line">
-							{t("CONNECT_AWS_ACCOUNT_MODAL.TITLE_DESC")}
+							{t("caam__desc.text")}
 						</Text>
 						<View>
 							<Flex gap={0} justifyContent="flex-start" alignItems="center" marginTop="1rem">
 								<Text className="bold" fontSize="1.08rem" order={isLtr ? 1 : 2}>
-									{t("CONNECT_AWS_ACCOUNT_MODAL.HOW_TO")}
+									{t("caam__htct.text")}
 								</Text>
 								<View order={isLtr ? 2 : 1}>
 									<DropdownEl defaultOption={stackRegion} options={regionsData} onSelect={_onSelect} showSelected />
@@ -162,19 +162,19 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 										margin={isLtr ? "0rem 1.23rem 0rem 0rem" : "0rem 0rem 0rem 1.23rem"}
 										order={isLtr ? 1 : 2}
 									>
-										<Text className="bold">{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_1.NUM")}</Text>
+										<Text className="bold">1</Text>
 									</View>
 									<View order={isLtr ? 2 : 1}>
 										<Flex gap={5}>
 											<Text className="bold" textAlign={isLtr ? "start" : "end"}>
 												<Link href={cloudFormationLink} target="_blank">
-													{t("CONNECT_AWS_ACCOUNT_MODAL.CLICK_HERE")}
+													{t("caam__click_here.text")}
 												</Link>
-												{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_1.TITLE")}
+												{t("caam__step_1__title.text")}
 											</Text>
 										</Flex>
 										<Text className="step-two-description" textAlign={isLtr ? "start" : "end"}>
-											{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_1.DESC")}
+											{t("caam__step_1__desc.text")}
 										</Text>
 									</View>
 								</Flex>
@@ -184,16 +184,16 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 										margin={isLtr ? "0rem 1.23rem 0rem 0rem" : "0rem 0rem 0rem 1.23rem"}
 										order={isLtr ? 1 : 2}
 									>
-										<Text className="bold">{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_2.NUM")}</Text>
+										<Text className="bold">2</Text>
 									</View>
 									<View order={isLtr ? 2 : 1}>
 										<Text className="bold" textAlign={isLtr ? "start" : "end"}>
-											{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_2.TITLE")}
+											{t("caam__step_2__title.text")}
 										</Text>
 										<Text className="step-two-description" textAlign={isLtr ? "start" : "end"}>
-											{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_2.DESC")}
+											{t("caam__step_2__desc.text")}
 											<a href={HELP} target="_blank" rel="noreferrer">
-												{t("CONNECT_AWS_ACCOUNT_MODAL.LEARN_MORE")}
+												{t("learn_more.text")}
 											</a>
 										</Text>
 									</View>
@@ -204,14 +204,14 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 										margin={isLtr ? "0rem 1.23rem 0rem 0rem" : "0rem 0rem 0rem 1.23rem"}
 										order={isLtr ? 1 : 2}
 									>
-										<Text className="bold">{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_3.NUM")}</Text>
+										<Text className="bold">3</Text>
 									</View>
 									<View order={isLtr ? 2 : 1}>
 										<Text className="bold" textAlign={isLtr ? "start" : "end"}>
-											{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_3.TITLE")}
+											{t("caam__step_3__title.text")}
 										</Text>
 										<Text className="step-two-description" textAlign={isLtr ? "start" : "end"}>
-											{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_3.DESC")}
+											{t("caam__step_3__desc.text")}
 										</Text>
 									</View>
 								</Flex>
@@ -227,10 +227,10 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 							<>
 								<IconCheckMarkCircle className="icon-check-mark-circle" />
 								<Text className="bold" fontSize="1.54rem" marginTop="3.08rem">
-									{t("CONNECT_AWS_ACCOUNT_MODAL.POST_CONNECT.TITLE")}
+									{t("caam__post_connect__title.text")}
 								</Text>
 								<Text marginTop="1.23rem" variation="tertiary" whiteSpace="pre-line">
-									{t("CONNECT_AWS_ACCOUNT_MODAL.POST_CONNECT.DESC")}
+									{t("caam__post_connect__desc.text")}
 								</Text>
 								{isUserAwsAccountConnected && (
 									<Button
@@ -241,11 +241,11 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 										fontFamily="AmazonEmber-Bold"
 										onClick={_onLogin}
 									>
-										{t("CONNECT_AWS_ACCOUNT_MODAL.SIGN_IN")}
+										{t("sign_in.text")}
 									</Button>
 								)}
 								<Button className="continue-to-explore" width="100%" height="3.08rem" onClick={_onClose}>
-									{t("CONNECT_AWS_ACCOUNT_MODAL.CONTINUE_TO_DEMO")}
+									{t("caam__continue_to_demo.text")}
 								</Button>
 							</>
 						) : (
@@ -257,7 +257,7 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 											key={key}
 											containerMargin="0rem 0rem 1.85rem 0rem"
 											label={key}
-											placeholder={`${t("CONNECT_AWS_ACCOUNT_MODAL.ENTER")} ${key}`}
+											placeholder={`${t("caam__enter.text")} ${key}`}
 											value={formValues[key as keyof ConnectFormValuesType]}
 											onChange={e => onChangeFormValues(key, e.target.value.trim())}
 											dir={langDir}
@@ -272,12 +272,12 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 									isDisabled={!isBtnEnabled}
 									onClick={onConnect}
 								>
-									{t("CONNECT_AWS_ACCOUNT_MODAL.CONNECT")}
+									{t("caam__connect.text")}
 								</Button>
-								<Text marginTop="0.62rem">{t("CONNECT_AWS_ACCOUNT_MODAL.AGREE")}</Text>
+								<Text marginTop="0.62rem">{t("caam__agree.text")}</Text>
 								<View onClick={() => window.open(AWS_TERMS_AND_CONDITIONS, "_blank")}>
 									<Text className="hyperlink" fontFamily="AmazonEmber-Bold">
-										{t("CONNECT_AWS_ACCOUNT_MODAL.T&C")}
+										{t("t&c.text")}
 									</Text>
 								</View>
 							</>

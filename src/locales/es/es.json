@@ -8,7 +8,7 @@
 		"OVERVIEW": "Overview",
 		"PRODUCT": "Product",
 		"SAMPLES": "Samples",
-		"TRY_IT": "Try It",
+		"TRY_IT": "Try it",
 		"TRY_OUR_DEMO_APP": "Try our demo app"
 	},
 	"FOOTER": {
@@ -18,7 +18,7 @@
 		"FAQ": "FAQ",
 		"PRICING": "Pricing",
 		"BLOGS": "Blogs",
-		"WHAT'S_NEW": "What's New",
+		"WHAT'S_NEW": "What's new",
 		"DEVELOPERS": "Developers",
 		"DEVELOPER_GUIDES": "Developer Guides",
 		"WORKSHOP": "Workshop",
@@ -37,8 +37,8 @@
 		"COMMUNITY": "Community",
 		"CONTACT_US": "Contact Us",
 		"CONNECT_AWS_IQ": "Connect AWS IQ",
-		"GITHUB": "Github",
-		"AWS_RE:POST": "AWS re:Post",
+		"GITHUB": "GitHub",
+		"AWS_RE_POST": "AWS re:Post",
 		"STACK_OVERFLOW": "Stack Overflow",
 		"HELP": "Help",
 		"AWS_COPYRIGHT": "Amazon Web Services, Inc. or its affiliates. All rights reserved.",
@@ -238,6 +238,7 @@
 		"HYPERLINK_2": "GitHub",
 		"HYPERLINK_3": "blog",
 		"AND": "and",
+		"SEARCH": "Search",
 		"RECORD_NOT_FOUND": "Record not found",
 		"PUBLISHED_ON": "Published on",
 		"UPDATED_ON": "Updated on",
@@ -340,6 +341,7 @@
 	"HELP": {
 		"HEADING": "Demo Help",
 		"SUB_HEADING": "Detailed instructions for creating, deleting and troubleshooting the Demo app's stack.",
+		"SEARCH": "Search",
 		"ITEM_1": {
 			"TITLE": "Creation",
 			"DESC": "Running a CloudFormation template via your own AWS account to configure a stack which creates all the necessary resources.",
@@ -1152,6 +1154,13 @@
 		"DOWNLOAD": "Download",
 		"CONTINUE_TO_WEB_EXPERIENCE": "Continue to web experience"
 	},
+	"WELCOME_MODAL": {
+		"HEADING": "Welcome to\nAmazon Location Demo",
+		"TEXT_1": "By using the Amazon Location Demo App, you agree to the App's",
+		"TEXT_2": "Terms & Conditions",
+		"TEXT_3": "for use.",
+		"CONTINUE": "Continue"
+	},
 	"SEARCH_BOX": {
 		"SEARCH": "Search",
 		"SEARCH_NEARBY": "Search nearby",
@@ -1159,7 +1168,7 @@
 	},
 	"ROUTE_BOX": {
 		"MY_LOCATION": "My Location",
-		"ROUTE_OPTIONS": "Route options",
+		"ROUTE_OPTIONS": "Route Options",
 		"CLOSE": "Close",
 		"AVOID_TOLLS": "Avoid tolls",
 		"AVOID_FERRIES": "Avoid ferries",
@@ -1178,7 +1187,9 @@
 		"ERROR_1": "Name can only contain alphanumeric, underscore and hyphen characters",
 		"ERROR_2": "Name already exists, please enter a unique name",
 		"CLICK_ANY_POINT": "Click on any point on the map or enter the address/coordinate to create a geofence marker",
-		"SEARCH_PLACEHOLDER": "Type unique Geofence Name",
+		"SEARCH_PLACEHOLDER": "Enter address or coordinates",
+		"NAME": "Name",
+		"NAME_PLACEHOLDER": "Type unique Geofence Name",
 		"FETCHING_GEOFENCES": "fetching geofences...",
 		"HAVE_NOT_CREATED": "You haven't created any geofences",
 		"ADD_TO_VIEW": "Add a geofence to view it here!",
@@ -1189,9 +1200,14 @@
 		"GEOFENCE": "Geofence",
 		"ADD": "Add",
 		"SAVE": "Save",
-		"GO_BACK": "Go Back"
+		"GO_BACK": "Go Back",
+		"MILES": "Miles",
+		"FEET": "Feet",
+		"KILOMETERS": "Kilometers",
+		"METERS": "Meters"
 	},
 	"TRACKER_BOX": {
+		"TITLE": "Tracker",
 		"CLICK_ANY_POINT": "Click at any point on the map to start creating a tracking route",
 		"CLEAR": "Clear",
 		"SAVE": "Save",
@@ -1203,22 +1219,40 @@
 	},
 	"MAP_BUTTONS": {
 		"HEADING": "Map style",
-		"INFO": "Changing data provider also affects\nPaces & Routes API"
+		"INFO": "Changing data provider also affects Places & Routes API",
+		"SEARCH_LABEL": "Search",
+		"SEARCH_PLACEHOLDER": "Search styles",
+		"NO_STYLES_FOUND_TITLE": "No matching styles found",
+		"NO_STYLES_FOUND_DESC": "Make sure your search is spelled correctly and try again",
+		"LIGHT": "Light",
+		"STREETS": "Streets",
+		"NAVIGATION": "Navigation",
+		"DARK_GRAY": "Dark Gray",
+		"LIGHT_GRAY": "Light Gray",
+		"IMAGERY": "Imagery",
+		"EXPLORE": "Explore",
+		"CONTRAST": "Contrast",
+		"EXPLORE_TRUCK": "Explore Truck",
+		"HYBRID": "Hybrid",
+		"DARK": "Dark",
+		"PROVIDERS": "Providers",
+		"ATTRIBUTE": "Attribute",
+		"TYPE": "Type"
 	},
 	"SIDEBAR": {
-		"GEOFENCE": "GeoFence",
+		"GEOFENCE": "Geofence",
 		"TRACKER": "Tracker",
 		"SETTINGS": "Settings",
 		"ABOUT": "About",
 		"SIGN_OUT": "Sign out",
 		"SIGN_IN": "Sign in",
-		"CONNECT_AWS_ACCOUNT_MODAL": "Connect AWS Account",
+		"CONNECT_AWS_ACCOUNT": "Connect AWS Account",
 		"DISCONNECT_AWS_ACCOUNT": "Disconnect AWS Account"
 	},
-	"CONNECT_AWS_ACCOUNT_MODAL_MODAL": {
+	"CONNECT_AWS_ACCOUNT_MODAL": {
 		"TITLE": "Connect AWS Account",
 		"TITLE_DESC": "Connect your AWS account to enable Geofences and Trackers. This will ensure your tracking and geofencing data is only stored in your account. After you log in, all features of the Demo App will run using resources you deploy in your AWS account. Log out if you wish to continue running the Demo App using resources in AWS’s demo app account.",
-		"HOW_TO": "How to connect:",
+		"HOW_TO": "How to connect to",
 		"CLICK_HERE": "Click here",
 		"LEARN_MORE": " Learn more",
 		"STEP_1": {
@@ -1284,24 +1318,16 @@
 		"METRIC": "Metric",
 		"METRIC_UNITS": "Kilometers, kilograms",
 		"DATA_PROVIDER": "Data Provider",
-		"MAP_STYLE": "Map Style",
-		"LIGHT": "Light",
-		"STREETS": "Streets",
-		"NAVIGATION": "Navigation",
-		"DARK_GRAY": "Dark Gray",
-		"LIGHT_GRAY": "Light Gray",
-		"IMAGERY": "Imagery",
-		"EXPLORE": "Explore",
-		"CONTRAST": "Contrast",
-		"EXPLORE_TRUCK": "Explore Truck",
-		"HYBRID": "Hybrid",
-		"DARK": "Dark",
+		"LANGUAGE": "Language",
 		"DEFAULT_ROUTE_OPTIONS": "Default Route Options",
 		"AVOID_TOLLS": "Avoid tolls",
 		"AVOID_FERRIES": "Avoid ferries"
 	},
 	"ABOUT_MODAL": {
 		"HEADING": "About",
+		"ATTRIBUTION": "Attribution",
+		"VERSION": "Version",
+		"T&C": "Terms and Conditions",
 		"LEARN_MORE": "Learn More",
 		"ABOUT": {
 			"COPYRIGHT": "Amazon Web Services, Inc. or its affiliates. All rights reserved."
@@ -1336,7 +1362,7 @@
 	},
 	"NOT_FOUND_CARD": {
 		"TITLE": "No matching places found",
-		"DESC": "Make sure your search is spelled correctly. Try adding a city, country or postcode."
+		"DESC": "Make sure your search is spelled correctly. Try adding a city, postcode, or country."
 	},
 	"POPUP": {
 		"CURRENT_LOCATION_DISABLED": "Current location disabled",
@@ -1357,6 +1383,9 @@
 		"REFRESHING_SESSION": "Refreshing your session, please wait",
 		"STACK_IS_CORRUPTED": "Stack is corrupted, switching back to default stack",
 		"SOMETHING_WENT_WRONG": "Something went wrong!",
+		"ENTERED": "Entered",
+		"EXITED": "Exited",
+		"GEOFENCE": "geofence",
 		"CURRENT_LOCATION": {
 			"ERROR_1": "Location permission denied, please enable browser location and refresh the page",
 			"ERROR_2": "Location permission unavailable, please try again",

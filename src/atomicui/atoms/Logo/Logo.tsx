@@ -24,7 +24,7 @@ const Logo: React.FC<LogoProps> = ({ onClick, ...props }) => {
 			{...props}
 		>
 			<LogoSmall className="is__logo" width="32pt" height="24pt" />
-			<span className="heading">{t("AMAZON_LOCATION")}</span>
+			<span className="heading">{t("al.text")}</span>
 		</View>
 	);
 };

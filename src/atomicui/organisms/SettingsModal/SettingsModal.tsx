@@ -214,12 +214,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 		() => [
 			{
 				id: SettingOptionEnum.UNITS,
-				title: t("SETTINGS_MODAL.UNITS"),
+				title: t("settings_modal__units.text"),
 				defaultValue: isAutomaticMapUnit
-					? (t("SETTINGS_MODAL.AUTOMATIC") as string)
+					? (t("settings_modal__automatic.text") as string)
 					: currentMapUnit === MapUnitEnum.IMPERIAL
-					? (t("SETTINGS_MODAL.IMPERIAL") as string)
-					: (t("SETTINGS_MODAL.METRIC") as string),
+					? (t("settings_modal__imperial.text") as string)
+					: (t("settings_modal__metric.text") as string),
 				icon: <IconPeopleArrows />,
 				detailsComponent: (
 					<Flex
@@ -235,11 +235,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								checked={isAutomaticMapUnit}
 								onChange={handleAutoMapUnitChange}
 							>
-								<Text marginLeft="1.23rem">{t("SETTINGS_MODAL.AUTOMATIC")}</Text>
+								<Text marginLeft="1.23rem">{t("settings_modal__automatic.text")}</Text>
 								<Text variation="tertiary" marginLeft="1.23rem">
 									{currentMapUnit === IMPERIAL
-										? t("SETTINGS_MODAL.AUTOMATIC_DESC_1")
-										: t("SETTINGS_MODAL.AUTOMATIC_DESC_2")}
+										? t("settings_modal__auto_desc_1.text")
+										: t("settings_modal__auto_desc_2.text")}
 								</Text>
 							</Radio>
 						</Flex>
@@ -250,9 +250,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								checked={!isAutomaticMapUnit && currentMapUnit === IMPERIAL}
 								onChange={() => onMapUnitChange(IMPERIAL)}
 							>
-								<Text marginLeft="1.23rem">{t("SETTINGS_MODAL.IMPERIAL")}</Text>
+								<Text marginLeft="1.23rem">{t("settings_modal__imperial.text")}</Text>
 								<Text variation="tertiary" marginLeft="1.23rem">
-									{t("SETTINGS_MODAL.IMPERIAL_UNITS")}
+									{t("settings_modal__imperial_units.text")}
 								</Text>
 							</Radio>
 						</Flex>
@@ -263,9 +263,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								checked={!isAutomaticMapUnit && currentMapUnit === METRIC}
 								onChange={() => onMapUnitChange(METRIC)}
 							>
-								<Text marginLeft="1.23rem">{t("SETTINGS_MODAL.METRIC")}</Text>
+								<Text marginLeft="1.23rem">{t("settings_modal__metric.text")}</Text>
 								<Text variation="tertiary" marginLeft="1.23rem">
-									{t("SETTINGS_MODAL.METRIC_UNITS")}
+									{t("settings_modal__metric_units.text")}
 								</Text>
 							</Radio>
 						</Flex>
@@ -274,7 +274,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			},
 			{
 				id: SettingOptionEnum.DATA_PROVIDER,
-				title: t("SETTINGS_MODAL.DATA_PROVIDER"),
+				title: t("settings_modal__data_provider.text"),
 				defaultValue: currentMapProvider,
 				icon: <IconMapOutlined />,
 				detailsComponent: (
@@ -324,7 +324,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			},
 			{
 				id: SettingOptionEnum.MAP_STYLE,
-				title: t("MAP_BUTTONS.HEADING"),
+				title: t("map_style.text"),
 				defaultValue: t(selectedMapStyle as string) as string,
 				icon: <IconPaintroller />,
 				detailsComponent: (
@@ -340,7 +340,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			},
 			{
 				id: SettingOptionEnum.LANGUAGE,
-				title: t("SETTINGS_MODAL.LANGUAGE"),
+				title: t("language.text"),
 				defaultValue: languageSwitcherData.find(({ value }) => value === i18n.language)?.label as string,
 				icon: <IconGlobe />,
 				detailsComponent: (
@@ -370,7 +370,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			},
 			{
 				id: SettingOptionEnum.ROUTE_OPTIONS,
-				title: t("SETTINGS_MODAL.DEFAULT_ROUTE_OPTIONS"),
+				title: t("settings_modal__default_route_options.text"),
 				icon: <IconShuffle />,
 				detailsComponent: (
 					<Flex
@@ -382,8 +382,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 						<CheckboxField
 							data-testid="avoid-tolls"
 							className="sm-checkbox"
-							label={t("SETTINGS_MODAL.AVOID_TOLLS")}
-							name={t("SETTINGS_MODAL.AVOID_TOLLS")}
+							label={t("avoid_tolls.text")}
+							name={t("avoid_tolls.text")}
 							value="Avoid tolls"
 							checked={defaultRouteOptions.avoidTolls}
 							onChange={e => setDefaultRouteOptions({ ...defaultRouteOptions, avoidTolls: e.target.checked })}
@@ -391,8 +391,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 						<CheckboxField
 							data-testid="avoid-ferries"
 							className="sm-checkbox"
-							label={t("SETTINGS_MODAL.AVOID_FERRIES")}
-							name={t("SETTINGS_MODAL.AVOID_FERRIES")}
+							label={t("avoid_ferries.text")}
+							name={t("avoid_ferries.text")}
 							value="Avoid ferries"
 							checked={defaultRouteOptions.avoidFerries}
 							onChange={e => setDefaultRouteOptions({ ...defaultRouteOptions, avoidFerries: e.target.checked })}
@@ -402,7 +402,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			},
 			{
 				id: SettingOptionEnum.AWS_CLOUD_FORMATION,
-				title: t("CONNECT_AWS_ACCOUNT_MODAL.TITLE"),
+				title: t("connect_aws_account.text"),
 				icon: <IconCloud />,
 				detailsComponent: (
 					<Flex
@@ -426,7 +426,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 									whiteSpace="pre-line"
 									textAlign={isLtr ? "start" : "end"}
 								>
-									{t("CONNECT_AWS_ACCOUNT_MODAL.TITLE_DESC")}
+									{t("caam__desc")}
 								</Text>
 							</Flex>
 						</Flex>
@@ -439,7 +439,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								width="100%"
 							>
 								<Text className="bold" fontSize="1.08rem" textAlign={isLtr ? "start" : "end"} order={isLtr ? 1 : 2}>
-									{t("CONNECT_AWS_ACCOUNT_MODAL.HOW_TO")}
+									{t("caam__htct.text")}
 								</Text>
 								<View order={isLtr ? 2 : 1}>
 									<DropdownEl defaultOption={stackRegion} options={regionsData} onSelect={_onSelect} showSelected />
@@ -451,19 +451,19 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 									margin={isLtr ? "0rem 1.23rem 0rem 0rem" : "0rem 0rem 0rem 1.23rem"}
 									order={isLtr ? 1 : 2}
 								>
-									<Text className="bold">{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_1.NUM")}</Text>
+									<Text className="bold">1</Text>
 								</View>
 								<View order={isLtr ? 2 : 1}>
 									<Flex gap={5}>
 										<Text className="bold" textAlign={isLtr ? "start" : "end"}>
 											<Link href={cloudFormationLink} target="_blank">
-												{t("CONNECT_AWS_ACCOUNT_MODAL.CLICK_HERE")}
+												{t("caam__click_here.text")}
 											</Link>
-											{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_1.TITLE")}
+											{t("caam__step_1__title.text")}
 										</Text>
 									</Flex>
 									<Text className="step-two-description" textAlign={isLtr ? "start" : "end"}>
-										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_1.DESC")}
+										{t("caam__step_1__desc.text")}
 									</Text>
 								</View>
 							</Flex>
@@ -474,17 +474,17 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 									order={isLtr ? 1 : 2}
 								>
 									<Text className="bold" textAlign={isLtr ? "start" : "end"}>
-										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_2.NUM")}
+										2
 									</Text>
 								</View>
 								<View order={isLtr ? 2 : 1}>
 									<Text className="bold" textAlign={isLtr ? "start" : "end"}>
-										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_2.TITLE")}
+										{t("caam__step_2__title.text")}
 									</Text>
 									<Text className="step-two-description" textAlign={isLtr ? "start" : "end"}>
-										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_2.DESC")}
+										{t("caam__step_2__desc.text")}
 										<a href={HELP} target="_blank" rel="noreferrer">
-											{t("CONNECT_AWS_ACCOUNT_MODAL.LEARN_MORE")}
+											{t("learn_more.text")}
 										</a>
 									</Text>
 								</View>
@@ -496,15 +496,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 									order={isLtr ? 1 : 2}
 								>
 									<Text className="bold" textAlign={isLtr ? "start" : "end"}>
-										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_3.NUM")}
+										3
 									</Text>
 								</View>
 								<View order={isLtr ? 2 : 1}>
 									<Text className="bold" textAlign={isLtr ? "start" : "end"}>
-										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_3.TITLE")}
+										{t("caam__step_3__title.text")}
 									</Text>
 									<Text className="step-two-description" textAlign={isLtr ? "start" : "end"}>
-										{t("CONNECT_AWS_ACCOUNT_MODAL.STEP_3.DESC")}
+										{t("caam__step_3__desc.text")}
 									</Text>
 								</View>
 							</Flex>
@@ -512,7 +512,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								!isAuthenticated ? (
 									<>
 										<Button variation="primary" fontFamily="AmazonEmber-Bold" width="100%" onClick={_onLogin}>
-											{t("CONNECT_AWS_ACCOUNT_MODAL.SIGN_IN")}
+											{t("sign_in.text")}
 										</Button>
 										<Button
 											variation="primary"
@@ -522,12 +522,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 											marginTop="0.62rem"
 											onClick={onDisconnectAwsAccount}
 										>
-											{t("CONNECT_AWS_ACCOUNT_MODAL.DISCONNECT_AWS_ACCOUNT")}
+											{t("disconnect_aws_account.text")}
 										</Button>
 									</>
 								) : (
 									<Button variation="primary" fontFamily="AmazonEmber-Bold" width="100%" onClick={_onLogout}>
-										{t("CONNECT_AWS_ACCOUNT_MODAL.SIGN_OUT")}
+										{t("sign_out.text")}
 									</Button>
 								)
 							) : (
@@ -538,7 +538,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 												key={key}
 												containerMargin="0rem 0rem 1.85rem 0rem"
 												label={key}
-												placeholder={`${t("CONNECT_AWS_ACCOUNT_MODAL.ENTER")} ${key}`}
+												placeholder={`${t("caam__enter.text")} ${key}`}
 												value={formValues[key as keyof ConnectFormValuesType]}
 												onChange={e => onChangeFormValues(key, e.target.value.trim())}
 												dir={langDir}
@@ -546,12 +546,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 										);
 									})}
 									<Button variation="primary" width="100%" isDisabled={!isBtnEnabled} onClick={onConnect}>
-										{t("CONNECT_AWS_ACCOUNT_MODAL.CONNECT")}
+										{t("caam__connect.text")}
 									</Button>
-									<Text marginTop="0.62rem">{t("CONNECT_AWS_ACCOUNT_MODAL.AGREE")}</Text>
+									<Text marginTop="0.62rem">{t("caam__agree.text")}</Text>
 									<View onClick={() => window.open(AWS_TERMS_AND_CONDITIONS, "_blank")}>
 										<Text className="hyperlink" fontFamily="AmazonEmber-Bold">
-											{t("CONNECT_AWS_ACCOUNT_MODAL.T&C")}
+											{t("t&c.text")}
 										</Text>
 									</View>
 								</>
@@ -642,7 +642,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 				<Flex className="settings-modal-content">
 					<Flex className="options-container">
 						<Text className="bold" fontSize="1.23rem" lineHeight="1.85rem" padding={"1.23rem 0rem 1.23rem 1.23rem"}>
-							{t("SETTINGS_MODAL.TITLE")}
+							{t("settings.text")}
 						</Text>
 						{renderOptionItems}
 					</Flex>

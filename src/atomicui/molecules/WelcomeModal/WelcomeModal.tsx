@@ -35,17 +35,17 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onClose }) => {
 						<LogoSmall width="36px" height="36px" />
 					</Flex>
 					<Text className="bold medium-text" textAlign="center" whiteSpace="pre-line" marginBottom="1rem">
-						{t("WELCOME_MODAL.HEADING")}
+						{t("welcome_modal__heading.text")}
 					</Text>
 					<Text className="regular-text" textAlign="center" marginBottom="1rem">
-						{t("WELCOME_MODAL.TEXT_1")}{" "}
+						{t("welcome_modal__item_1.text")}{" "}
 						<a href={TERMS} target="_blank" rel="noreferrer">
-							{t("WELCOME_MODAL.TEXT_2")}
+							{t("t&c.text")}
 						</a>{" "}
-						{t("WELCOME_MODAL.TEXT_3")}
+						{t("welcome_modal__item_3.text")}
 					</Text>
 					<Button variation="primary" onClick={onClose}>
-						{t("WELCOME_MODAL.CONTINUE")}
+						{t("continue.text")}
 					</Button>
 				</Flex>
 			}

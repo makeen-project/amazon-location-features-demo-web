@@ -3,20 +3,20 @@
 
 const aboutModalData = {
 	ABOUT: {
-		VERSION: "Version",
+		VERSION: "about_modal__version.text",
 		VERSION_VALUE: "1.0.0",
 		BUILD: "",
-		COPYRIGHT: "ABOUT_MODAL.ABOUT.COPYRIGHT"
+		COPYRIGHT: "copyright.text"
 	},
 	TERMS: {
-		TERMS_PREFIX: "ABOUT_MODAL.TERMS.PREFIX",
-		TERMS_LINK_LABEL: "ABOUT_MODAL.TERMS.LINK_LABEL",
-		TERMS_SUFFIX: "ABOUT_MODAL.TERMS.SUFFIX"
+		TERMS_PREFIX: "about_modal__terms__prefix.text",
+		TERMS_LINK_LABEL: "t&c.text",
+		TERMS_SUFFIX: "about_modal__terms__suffix.text"
 	},
 	ATTRIBUTIONS: {
-		PARTNER_ATTRIBUTION_TITLE: "ABOUT_MODAL.ATTRIBUTIONS.PA_TITLE",
-		SOFTWARE_ATTRIBUTION_TITLE: "ABOUT_MODAL.ATTRIBUTIONS.SA_TITLE",
-		SOFTWARE_ATTRIBUTION_DESC: "ABOUT_MODAL.ATTRIBUTIONS.SA_DESC"
+		PARTNER_ATTRIBUTION_TITLE: "about_modal__attributions__pa.text",
+		SOFTWARE_ATTRIBUTION_TITLE: "about_modal__attributions__sa.text",
+		SOFTWARE_ATTRIBUTION_DESC: "about_modal__sa_desc.text"
 	}
 };
 

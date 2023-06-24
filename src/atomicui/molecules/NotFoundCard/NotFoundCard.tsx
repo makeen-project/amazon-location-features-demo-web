@@ -18,9 +18,9 @@ const NotFoundCard: React.FC<IProps> = ({ title, text, textFontSize = "1.23rem" 
 	return (
 		<View className="not-found-card">
 			<IconSearch className="nfc-search-icon" />
-			<Text className="nfc-title">{title || t("NOT_FOUND_CARD.TITLE")}</Text>
+			<Text className="nfc-title">{title || t("not_found_card__title.text")}</Text>
 			<Text className="nfc-text" variation="tertiary" fontSize={textFontSize}>
-				{text || t("NOT_FOUND_CARD.DESC")}
+				{text || t("not_found_card__desc.text")}
 			</Text>
 		</View>
 	);

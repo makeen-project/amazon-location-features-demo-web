@@ -172,7 +172,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 							<TextEl variation="tertiary" text={`${region}, ${country}`} />
 						</Flex>
 					) : (
-						<TextEl variation="tertiary" text={placeid && address ? address : t("SEARCH_BOX.SEARCH_NEARBY")} />
+						<TextEl variation="tertiary" text={placeid && address ? address : t("search_nearby.text")} />
 					)}
 				</View>
 			</Flex>
@@ -268,7 +268,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 						ref={autocompleteRef}
 						inputMode="search"
 						hasSearchIcon={false}
-						label={t("SEARCH_BOX.SEARCH")}
+						label={t("search.text")}
 						dir={langDir}
 						innerStartComponent={
 							<Flex className="inner-start-component" onClick={onToggleSideMenu}>
@@ -282,7 +282,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 						value={value}
 						onChange={onChange}
 						onClear={clearPoiList}
-						placeholder={t("SEARCH_BOX.SEARCH") as string}
+						placeholder={t("search.text") as string}
 						options={options || []}
 						results={options?.length || 0}
 						renderOption={renderOption}
@@ -294,7 +294,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 									<IconSearch
 										data-tooltip-id="search-button"
 										data-tooltip-place="bottom"
-										data-tooltip-content={t("TOOLTIP.SEARCH")}
+										data-tooltip-content={t("search.text")}
 									/>
 									<Tooltip id="search-button" />
 								</Flex>
@@ -309,7 +309,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 											<IconDirections
 												data-tooltip-id="directions-button"
 												data-tooltip-place="bottom"
-												data-tooltip-content={t("TOOLTIP.ROUTES")}
+												data-tooltip-content={t("routes.text")}
 											/>
 											<Tooltip id="directions-button" />
 										</>
@@ -322,7 +322,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 				{isSearching ? (
 					<Flex className="search-loader-container">
 						<Loader />
-						<TextEl margin="15px 0px 30px 0px" text={t("SEARCH_BOX.SEARCHING_FOR_SUGGESTIONS")} />
+						<TextEl margin="15px 0px 30px 0px" text={t("search_box__searching_for_suggestions.text")} />
 					</Flex>
 				) : !!value && !suggestions?.length ? (
 					<NotFoundCard />

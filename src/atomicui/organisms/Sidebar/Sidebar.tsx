@@ -47,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 	const isAuthenticated = !!credentials?.authenticated;
 	const { t } = useTranslation();
 
-	const sidebarData = marketingMenuOptionsData.filter(v => t(v.label) !== t("DEMO"));
+	const sidebarData = marketingMenuOptionsData.filter(v => t(v.label) !== t("demo.text"));
 
 	const onConnectAwsAccount = () => {
 		onCloseSidebar();
@@ -125,18 +125,18 @@ const Sidebar: React.FC<SidebarProps> = ({
 					}}
 				>
 					<IconCompass className="menu-icon" />
-					<Text>{t("DEMO")}</Text>
+					<Text>{t("demo.text")}</Text>
 				</Flex>
 				<Flex className="link-item" onClick={onClickGeofence}>
 					<IconGeofence className="menu-icon" />
-					<Text>{t("SIDEBAR.GEOFENCE")}</Text>
+					<Text>{t("geofence.text")}</Text>
 					{!isAuthenticated && (
 						<Flex className="locked-item">
 							<IconLockSolid
 								className="lock-icon"
 								data-tooltip-id="geofence-lock"
 								data-tooltip-place="top"
-								data-tooltip-content={t("TOOLTIP.SIGN_IN_REQUIRED")}
+								data-tooltip-content={t("tooltip__sign_in_required.text")}
 							/>
 							<Tooltip id="geofence-lock" />
 						</Flex>
@@ -144,14 +144,14 @@ const Sidebar: React.FC<SidebarProps> = ({
 				</Flex>
 				<Flex className="link-item" onClick={onClickTracking}>
 					<IconRoute className="menu-icon" />
-					<Text>{t("SIDEBAR.TRACKER")}</Text>
+					<Text>{t("tracker.text")}</Text>
 					{!isAuthenticated && (
 						<Flex className="locked-item">
 							<IconLockSolid
 								className="lock-icon"
 								data-tooltip-id="tracker-lock"
 								data-tooltip-place="top"
-								data-tooltip-content={t("TOOLTIP.SIGN_IN_REQUIRED")}
+								data-tooltip-content={t("tooltip__sign_in_required.text")}
 							/>
 							<Tooltip id="tracker-lock" />
 						</Flex>
@@ -159,23 +159,23 @@ const Sidebar: React.FC<SidebarProps> = ({
 				</Flex>
 				<Flex className="link-item" onClick={onClickSettings}>
 					<IconGear className="menu-icon" />
-					<Text>{t(t("SIDEBAR.SETTINGS"))}</Text>
+					<Text>{t("settings.text")}</Text>
 				</Flex>
 				<Flex className="link-item" onClick={onClickMore}>
 					<IconInfo className="menu-icon" />
-					<Text>{t("SIDEBAR.ABOUT")}</Text>
+					<Text>{t("about.text")}</Text>
 				</Flex>
 			</View>
 			<List listArray={sidebarData} className="verticle-list side-bar__external-menu" hideIcons />
 			<View className="button-wrapper">
 				{isUserAwsAccountConnected && (
 					<Button variation="primary" fontFamily="AmazonEmber-Bold" onClick={isAuthenticated ? _onLogout : _onLogin}>
-						{isAuthenticated ? t("SIDEBAR.SIGN_OUT") : t("SIDEBAR.SIGN_IN")}
+						{isAuthenticated ? t("sign_out.text") : t("sign_in.text")}
 					</Button>
 				)}
 				{!isUserAwsAccountConnected && (
 					<Button variation="primary" fontFamily="AmazonEmber-Bold" onClick={onConnectAwsAccount}>
-						{t("SIDEBAR.CONNECT_AWS_ACCOUNT")}
+						{t("connect_aws_account.text")}
 					</Button>
 				)}
 				{isUserAwsAccountConnected && !isAuthenticated && (
@@ -186,7 +186,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 						marginTop="8px"
 						onClick={onDisconnectAwsAccount}
 					>
-						{t("SIDEBAR.DISCONNECT_AWS_ACCOUNT")}
+						{t("disconnect_aws_account.text")}
 					</Button>
 				)}
 			</View>

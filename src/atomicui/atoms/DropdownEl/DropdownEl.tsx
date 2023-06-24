@@ -43,7 +43,7 @@ const DropdownEl: React.FC<DropdownElProps> = ({ defaultOption, options, onSelec
 	return (
 		<div ref={dropdownRef} className="dropdown-container">
 			<div className="trigger" onClick={() => setOpen(!open)}>
-				<p style={{ direction: langDir }}>{t(defaultOption?.label as string) || t("DROPDOWN.PLACEHOLDER")}</p>
+				<p style={{ direction: langDir }}>{t(defaultOption?.label as string) || t("dropdown__placeholder.text")}</p>
 				<IconArrow
 					style={{
 						transform: open ? "rotate(180deg)" : "rotate(0deg)",

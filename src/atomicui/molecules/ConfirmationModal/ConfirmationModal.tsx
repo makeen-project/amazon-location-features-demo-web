@@ -45,7 +45,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 			content={
 				<Flex className="confirmation-content">
 					<Text className="bold medium-text" textAlign="center">
-						{heading || t("CONFIRMATION_MODAL.HEADING")}
+						{heading || t("confirmation_modal__heading.text")}
 					</Text>
 					{typeof description === "string" ? (
 						<Text
@@ -55,7 +55,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 							textAlign="center"
 							whiteSpace="pre-line"
 						>
-							{description || t("CONFIRMATION_MODAL.DESC")}
+							{description || t("confirmation_modal__desc.text")}
 						</Text>
 					) : (
 						description
@@ -67,7 +67,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 						marginTop="2.46rem"
 						onClick={onConfirm}
 					>
-						{confirmationText || t("CONFIRMATION_MODAL.CONFIRMATION_TEXT")}
+						{confirmationText || t("continue.text")}
 					</Button>
 					{showLearnMore && (
 						<Flex
@@ -76,14 +76,14 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 							onClick={handleLeanMore}
 						>
 							<Text className="bold" fontSize="1.08rem" textAlign="center">
-								{t("CONFIRMATION_MODAL.LEARN_MORE")}
+								{t("learn_more.text")}
 							</Text>
 						</Flex>
 					)}
 					{!hideCancelButton && (
 						<Flex data-testid="confirmation-cancel-button" className="confirmation-cancel-button" onClick={onClose}>
 							<Text className="bold" fontSize="1.08rem" textAlign="center">
-								{cancelationText || t("CONFIRMATION_MODAL.CANCELATION_TEXT")}
+								{cancelationText || t("confirmation_modal__cancel.text")}
 							</Text>
 						</Flex>
 					)}

@@ -332,7 +332,7 @@ const DemoPage: React.FC = () => {
 		if (GRAB_SUPPORTED_AWS_REGIONS.includes(region)) {
 			if (isCurrentLocationDisabled) {
 				showToast({
-					content: t("SHOW_TOAST.GRAB_NOT_SUPPORTED"),
+					content: t("show_toast__grab_not_supported.text"),
 					type: ToastType.INFO
 				});
 				mapViewRef.current?.flyTo({ center: [AMAZON_HQ.SG.longitude, AMAZON_HQ.SG.latitude], zoom: 15 });
@@ -386,12 +386,12 @@ const DemoPage: React.FC = () => {
 		if (e.code === e.PERMISSION_DENIED) {
 			localStorage.setItem(GEO_LOCATION_ALLOWED, "no");
 			showToast({
-				content: t("SHOW_TOAST.LOCATION_PERMISSION_DENIED"),
+				content: t("show_toast__lpd.text"),
 				type: ToastType.ERROR
 			});
 		} else if (e.code === e.POSITION_UNAVAILABLE) {
 			showToast({
-				content: t("SHOW_TOAST.LOCATION_PERMISSION_UNAVAILABLE"),
+				content: t("show_toast__lpu.text"),
 				type: ToastType.ERROR
 			});
 		}
@@ -411,7 +411,7 @@ const DemoPage: React.FC = () => {
 				if (trackerPoints) {
 					trackerPoints.length < 25
 						? setTrackerPoints([longitude, latitude])
-						: showToast({ content: t("SHOW_TOAST.ROUTE_WAYPOINTS_RESTRICTION"), type: ToastType.WARNING });
+						: showToast({ content: t("show_toast__route_waypoint_restriction.text"), type: ToastType.WARNING });
 				} else {
 					setTrackerPoints([longitude, latitude]);
 				}
@@ -819,7 +819,7 @@ const DemoPage: React.FC = () => {
 			<TrackerInformationModal
 				open={show.trackingDisclaimerModal}
 				onClose={() => setShow(s => ({ ...s, trackingDisclaimerModal: false }))}
-				heading={t("TRACKER_INFORMTAION_MODAL.HEADING") as string}
+				heading={t("tracker_info_modal__heading.text") as string}
 				description={
 					<Text
 						className="regular-text"
@@ -828,14 +828,14 @@ const DemoPage: React.FC = () => {
 						textAlign="center"
 						whiteSpace="pre-line"
 					>
-						{t("TRACKER_INFORMTAION_MODAL.DESC")}{" "}
+						{t("tracker_info_modal__desc.text")}{" "}
 						<a
 							style={{ cursor: "pointer", color: "var(--primary-color)" }}
 							href={AMAZON_LOCATION_TERMS_AND_CONDITIONS}
 							target="_blank"
 							rel="noreferrer"
 						>
-							{t("TRACKER_INFORMTAION_MODAL.T&C")}
+							{t("t&c.text")}
 						</a>
 					</Text>
 				}

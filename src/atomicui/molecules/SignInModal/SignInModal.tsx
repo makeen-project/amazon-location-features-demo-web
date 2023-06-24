@@ -41,14 +41,14 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
 						lineHeight="28px"
 						marginTop="40px"
 						textAlign="center"
-						text={t("SIGN_IN_MODAL.TEXT_1")}
+						text={t("sign_in_modal__1.text")}
 					/>
 					<TextEl
 						variation="tertiary"
 						marginTop="16px"
 						textAlign="center"
 						whiteSpace="pre-line"
-						text={t("SIGN_IN_MODAL.TEXT_2")}
+						text={t("sign_in_modal__2.text")}
 					/>
 					<Button
 						data-testid="sign-in-button"
@@ -57,7 +57,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
 						marginTop="32px"
 						onClick={() => onLogin()}
 					>
-						{t("SIGN_IN_MODAL.SIGN_IN")}
+						{t("sign_in.text")}
 					</Button>
 					<Flex className="maybe-later-button" onClick={onClose}>
 						<TextEl
@@ -66,7 +66,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
 							fontSize="14px"
 							lineHeight="16px"
 							textAlign="center"
-							text={t("SIGN_IN_MODAL.MAYBE_LATER")}
+							text={t("sign_in_modal__maybe_later.text")}
 						/>
 					</Flex>
 				</Flex>

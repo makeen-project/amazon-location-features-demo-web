@@ -42,7 +42,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 		() => [
 			{
 				id: AboutOptionEnum.ATTRIBUTION,
-				title: t("ABOUT_MODAL.ATTRIBUTION"),
+				title: t("about_modal__attribution.text"),
 				detailsComponent: (
 					<Flex gap={0} direction="column" padding="0rem 1.15rem" alignItems="center">
 						<Text className="small-text" fontFamily="AmazonEmber-Bold" marginTop="1.15rem" alignSelf="flex-start">
@@ -59,7 +59,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 							width="100%"
 							onClick={handlePartnerLearnMore}
 						>
-							{t("ABOUT_MODAL.LEARN_MORE")}
+							{t("learn_more.text")}
 						</Button>
 						<Text className="small-text" fontFamily="AmazonEmber-Bold" marginTop="1.15rem" alignSelf="flex-start">
 							{t(SOFTWARE_ATTRIBUTION_TITLE)}
@@ -74,18 +74,18 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 							width="100%"
 							onClick={() => window.open(SOFTWARE_ATTRIBUTIONS, "_blank")}
 						>
-							{t("ABOUT_MODAL.LEARN_MORE")}
+							{t("learn_more.text")}
 						</Button>
 					</Flex>
 				)
 			},
 			{
 				id: AboutOptionEnum.VERSION,
-				title: t("ABOUT_MODAL.VERSION"),
+				title: t("about_modal__version.text"),
 				detailsComponent: (
 					<Flex gap={0} direction="column" padding="0rem 1.15rem">
 						<Text className="more-secondary-text">
-							{VERSION}: {VERSION_VALUE} {BUILD}
+							{t(VERSION)}: {VERSION_VALUE} {BUILD}
 						</Text>
 						<Text className="more-secondary-text">{`© ${new Date().getFullYear()}, ${t(COPYRIGHT)}`}</Text>
 						<Flex gap={0} direction="column" padding="0rem 3.15rem">
@@ -96,7 +96,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 			},
 			{
 				id: AboutOptionEnum.TERMS_AND_CONDITIONS,
-				title: t("ABOUT_MODAL.T&C"),
+				title: t("t&c.text"),
 				detailsComponent: (
 					<Flex gap={0} direction="column" padding="0rem 1.15rem" alignItems="center">
 						<Text className="more-secondary-text">
@@ -151,7 +151,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 				<Flex className="more-modal-content">
 					<Flex className="options-container">
 						<Text className="bold regular-text" padding={"1.23rem 0rem 1.23rem 1.23rem"}>
-							{t("ABOUT_MODAL.HEADING")}
+							{t("about.text")}
 						</Text>
 						{renderOptionItems}
 					</Flex>

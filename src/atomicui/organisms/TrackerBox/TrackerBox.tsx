@@ -253,7 +253,7 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 			<Card className="tracking-card" left="1.62rem">
 				<Flex className="tracking-card-header">
 					<Text fontFamily="AmazonEmber-Medium" fontSize="1.08rem">
-						{t("TRACKER_BOX.TITLE")}
+						{t("tracker.text")}
 					</Text>
 					<Flex gap={0} alignItems="center">
 						<Flex className="tracking-card-close" onClick={onClose}>
@@ -264,7 +264,7 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 				<Flex gap={0} alignItems="center" padding="1.23rem">
 					<IconInfoSolid className="icon-plus-rounded" />
 					<Text marginLeft="1.23rem" variation="tertiary" textAlign={isLtr ? "start" : "end"}>
-						{t("TRACKER_BOX.CLICK_ANY_POINT")}
+						{t("tracker_box__click_any_point.text")}
 					</Text>
 				</Flex>
 				<Flex className="marker-container">
@@ -283,10 +283,10 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 								data-tooltip-place="top"
 								data-tooltip-content={
 									type === TrackerType.CAR
-										? t("TOOLTIP.SIMULATE_TRACKING_CAR")
+										? t("tooltip__simulate_tracking_car.text")
 										: type === TrackerType.WALK
-										? t("TOOLTIP.SIMULATE_TRACKING_WALK")
-										: t("TOOLTIP.SIMULATE_TRACKING_DRONE")
+										? t("tooltip__simulate_tracking_walk.text")
+										: t("tooltip__simulate_tracking_drone.text")
 								}
 								marginLeft={!!idx ? "0.62rem" : "0rem"}
 								onClick={() => onTrackerMarkerChange(type)}
@@ -302,7 +302,7 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 								<>
 									<View className="button" onClick={onClear}>
 										<Text fontFamily="AmazonEmber-Bold" color="var(--red-color)">
-											{t("TRACKER_BOX.CLEAR")}
+											{t("clear.text")}
 										</Text>
 									</View>
 									<View className="button" onClick={onSave}>
@@ -311,7 +311,7 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 											color={trackerPoints.length >= 2 ? "var(--primary-color)" : "var(--tertiary-color)"}
 											opacity={trackerPoints.length >= 2 ? 1 : 0.3}
 										>
-											{t("TRACKER_BOX.SAVE")}
+											{t("save.text")}
 										</Text>
 									</View>
 								</>
@@ -328,13 +328,13 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 										{isFetchingRoute ? (
 											<Loader size="large" />
 										) : isPlaying ? (
-											t("TRACKER_BOX.PAUSE")
+											t("tracker_box__pause.text")
 										) : (
-											t("TRACKER_BOX.SIMULATE")
+											t("tracker_box__simulate.text")
 										)}
 									</Button>
 									<Button className="edit-button" variation="primary" onClick={onEdit}>
-										{t("TRACKER_BOX.EDIT")}
+										{t("tracker_box__edit.text")}
 									</Button>
 								</>
 							)}
@@ -345,7 +345,7 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 				{!!trackerPoints?.length && (
 					<Flex className="show-hide-details-container bottom-border-radius" onClick={() => setIsCollapsed(s => !s)}>
 						<Text className="text">
-							{isCollapsed ? t("TRACKER_BOX.TRACKER_DETAILS") : t("TRACKER_BOX.HIDE_DETAILS")}
+							{isCollapsed ? t("tracker_box__tracker_details.text") : t("hide_details.text")}
 						</Text>
 						<IconArrow style={{ transform: isCollapsed ? "rotate(0deg)" : "rotate(180deg)" }} />
 					</Flex>

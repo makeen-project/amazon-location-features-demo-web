@@ -124,13 +124,13 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 			return (
 				<Flex data-testid="permission-denied-error-container" gap={3} alignItems="center">
 					<Text variation="info" textAlign={isLtr ? "start" : "end"}>
-						{isCurrentLocationDisabled ? t("POPUP.CURRENT_LOCATION_DISABLED") : t("POPUP.CURRENT_LOCATION_DENIED")}
+						{isCurrentLocationDisabled ? t("popup__cl_disabled.text") : t("popup__cl_denied.text")}
 					</Text>
 					<IconInfo
 						className="location-permission-denied-info-icon"
 						data-tooltip-id="location-permission-denied-info"
 						data-tooltip-place="top"
-						data-tooltip-content={isCurrentLocationDisabled ? t("TOOLTIP.CL_GRAB") : t("TOOLTIP.CL_DENIED")}
+						data-tooltip-content={isCurrentLocationDisabled ? t("tooltip__cl_grab.text") : t("tooltip__cl_denied.text")}
 					/>
 					<Tooltip id="location-permission-denied-info" />
 				</Flex>
@@ -142,7 +142,7 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 						{geodesicDistanceWithUnit}
 					</Text>
 					<Text style={{ marginTop: "0px" }} variation="info" textAlign={isLtr ? "start" : "end"}>
-						{currentMapUnit === METRIC ? t("POPUP.ESRI_LIMITATION_1") : t("POPUP.ESRI_LIMITATION_2")}
+						{currentMapUnit === METRIC ? t("popup__esri_limitation_1.text") : t("popup__esri_limitation_2.text")}
 					</Text>
 				</Flex>
 			);
@@ -153,7 +153,7 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 						{geodesicDistanceWithUnit}
 					</Text>
 					<Text style={{ marginTop: "0px" }} variation="info">
-						{t("POPUP.ROUTE_NOT_FOUND")}
+						{t("popup__route_not_found.text")}
 					</Text>
 				</Flex>
 			);
@@ -246,7 +246,7 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 				>
 					<IconDirections />
 					<Text className="bold" variation="primary" fontSize={"0.92rem"}>
-						{t("POPUP.DIRECTIONS")}
+						{t("popup__directions.text")}
 					</Text>
 				</Button>
 			</View>

@@ -23,40 +23,40 @@ const {
 
 const marketingMenuOptionsData = [
 	{
-		label: "HEADER.OVERVIEW",
+		label: "header__overview.text",
 		link: OVERVIEW,
 		iconBeforeLink: IconCompassMenu,
 		iconContainerClass: "menu-item-icon"
 	},
 	// {
-	// 	label: "HEADER.PRODUCT",
+	// 	label: "header__product.text",
 	// 	link: PRODUCT,
 	// 	iconBeforeLink: IconCubesMenu,
 	// 	iconContainerClass: "menu-item-icon"
 	// },
 	{
-		label: "DEMO",
+		label: "demo.text",
 		link: DEMO,
 		iconBeforeLink: IconPlayMenu,
 		iconContainerClass: "menu-item-icon",
 		subMenu: [
 			{
-				label: "WEB",
+				label: "web.text",
 				link: DEMO,
 				isExternalLink: true
 			},
 			// {
-			// 	label: "IOS",
+			// 	label: "ios.text",
 			// 	link: APPLE_APP_STORE_LINK
 			// },
 			{
-				label: "ANDROID",
+				label: "android.text",
 				link: GOOGLE_PLAY_STORE_LINK
 			}
 		]
 	},
 	{
-		label: "HEADER.SAMPLES",
+		label: "header__samples.text",
 		link: SAMPLES,
 		iconBeforeLink: IconCodeMenu,
 		iconContainerClass: "menu-item-icon"
