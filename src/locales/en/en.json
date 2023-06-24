@@ -98,14 +98,14 @@
 	"map_style": {
 		"text": "Map style"
 	},
+	"samples": {
+		"text": "Samples"
+	},
 	"header__overview": {
 		"text": "Overview"
 	},
 	"header__product": {
 		"text": "Product"
-	},
-	"header__samples": {
-		"text": "Samples"
 	},
 	"header__try_it": {
 		"text": "Try it"
@@ -347,6 +347,9 @@
 	"product__maps__product_2__link": {
 		"text": "GetMapSprites"
 	},
+	"product__maps__product_3__title": {
+		"text": "Map Style"
+	},
 	"product__maps__product_3__info": {
 		"text": "Retrieves the map style descriptor from a map resource. Map style defines color and other style information for the data to define how it will look when rendered."
 	},
@@ -494,16 +497,13 @@
 	"product__trackers__product_4__link_2": {
 		"text": "BatchDeleteDevicePositionHistory"
 	},
-	"samples__heading": {
-		"text": "Samples"
-	},
 	"samples__subheading": {
 		"text": "Curated code samples that showcases Amazon Location features. You can also find additional samples on the"
 	},
 	"samples__hyperlink_1": {
 		"text": "Developer Guide"
 	},
-	"samples__hyperlink_2": {
+	"samples__hyperlink_3": {
 		"text": "blog"
 	},
 	"samples__and": {
@@ -682,6 +682,9 @@
 	},
 	"help__item_3__content_6": {
 		"text": "A confirmation popup would appear asking if you'd like to retain resources, without checking anything, click on Delete stack, after a few minutes the stack should be deleted successfully."
+	},
+	"terms__heading": {
+		"text": "Demo Terms & Conditions"
 	},
 	"terms__subheading": {
 		"text": "Terms & Conditions for Amazon Location Demo App (the “App”)"
