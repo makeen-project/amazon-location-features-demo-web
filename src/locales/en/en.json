@@ -593,6 +593,69 @@
 	"samples__filter_3__title": {
 		"text": "Platform"
 	},
+	"samples_list__s1__title": {
+		"text": "Display a map on a webpage"
+	},
+	"samples_list__s2__title": {
+		"text": "Add a marker with a popup to a web map"
+	},
+	"samples_list__s3__title": {
+		"text": "Switch map styles"
+	},
+	"samples_list__s4__title": {
+		"text": "Add a GeoJSON point to a web map"
+	},
+	"samples_list__s5__title": {
+		"text": "Add a GeoJSON line to a web map"
+	},
+	"samples_list__s6__title": {
+		"text": "Add a GeoJSON polygon to a web map"
+	},
+	"samples_list__s7__title": {
+		"text": "Display a web map using React and AWS Amplify"
+	},
+	"samples_list__s8__title": {
+		"text": "Display GeoJSON on a web map using React"
+	},
+	"samples_list__s9__title": {
+		"text": "Display markers on a web map using React"
+	},
+	"samples_list__s1__brief": {
+		"text": "This sample app shows you how to display a map on a webpage. It uses Amazon Location Service's Maps as the base map provider and MapLibre GL JS as the map rendering library."
+	},
+	"samples_list__s2__brief": {
+		"text": "This sample app shows you how to add a marker with a popup to a web map. It uses Amazon Location Service's Maps as the base map provider and MapLibre GL JS as the map rendering library."
+	},
+	"samples_list__s3__brief": {
+		"text": "This sample app shows you how to switch between different map styles. It uses Amazon Location Service's Maps as the base map provider and MapLibre GL JS as the map rendering library."
+	},
+	"samples_list__s4__brief": {
+		"text": "This sample app shows you how to add a GeoJSON point to a web map. It uses Amazon Location Service's Maps as the base map provider and MapLibre GL JS as the map rendering library."
+	},
+	"samples_list__s5__brief": {
+		"text": "This sample app shows you how to add a GeoJSON line to a web map. It uses Amazon Location Service's Maps as the base map provider and MapLibre GL JS as the map rendering library."
+	},
+	"samples_list__s6__brief": {
+		"text": "This sample app shows you how to add a GeoJSON polygon to a web map. It uses Amazon Location Service's Maps as the base map provider and MapLibre GL JS as the map rendering library."
+	},
+	"samples_list__s7__brief": {
+		"text": "This example demonstrates how to display a web map using React and AWS Amplify UI."
+	},
+	"samples_list__s8__brief": {
+		"text": "This example demonstrates how to display GeoJSON on a web map using React, AWS Amplify UI, and react-map-gl."
+	},
+	"samples_list__s9__brief": {
+		"text": "This example demonstrates how to display markers on a web map using React, AWS Amplify UI, and react-map-gl."
+	},
+	"samples_list__s7__tabs_title": {
+		"text": "React / Display a web map"
+	},
+	"samples_list__s8__tabs_title": {
+		"text": "React / Display GeoJSON on a web map"
+	},
+	"samples_list__s9__tabs_title": {
+		"text": "React / Display markers on a web map"
+	},
 	"help__heading": {
 		"text": "Demo Help"
 	},
