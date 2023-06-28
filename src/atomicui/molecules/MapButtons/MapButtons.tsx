@@ -3,7 +3,7 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { Card, CheckboxField, Divider, Flex, Placeholder, SearchField, Text } from "@aws-amplify/ui-react";
+import { Button, Card, CheckboxField, Divider, Flex, Placeholder, SearchField, Text } from "@aws-amplify/ui-react";
 import { IconClose, IconFilterFunnel, IconGeofencePlusSolid, IconMapSolid, IconSearch } from "@demo/assets";
 import { NotFoundCard } from "@demo/atomicui/molecules";
 import { appConfig } from "@demo/core/constants";
@@ -149,6 +149,14 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 		}
 	};
 
+	const resetFilters = useCallback(() => {
+		setSelectedFilters({
+			Providers: [],
+			Attribute: [],
+			Type: []
+		});
+	}, [setSelectedFilters]);
+
 	const onChangeStyle = useCallback(
 		(id: EsriMapEnum | HereMapEnum | GrabMapEnum) => {
 			if (id !== currentMapStyle) {
@@ -176,6 +184,12 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 			}, []);
 		},
 		[]
+	);
+
+	const noFilters = !(
+		!selectedFilters.Providers.length &&
+		!selectedFilters.Attribute.length &&
+		!selectedFilters.Type.length
 	);
 
 	/**
@@ -311,33 +325,47 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 									<Text as="strong" fontWeight={700} fontSize="1em">
 										{key}
 									</Text>
-									{value.map((item: string, i) => (
-										<CheckboxField
-											className="filters-checkbox"
-											size={"large"}
-											key={i}
-											label={item === GRAB ? `${item}Maps` : item}
-											name={item}
-											value={item}
-											checked={selectedFilters[key as keyof MapStyleFilterTypes].includes(item)}
-											onChange={e => handleFilterChange(e, key)}
-											data-testid={`filter-checkbox-${item}`}
-										/>
-									))}
+									{value.map((item: string, i) => {
+										if (item === GRAB && !isGrabVisible) return null;
+										return (
+											<CheckboxField
+												className="filters-checkbox"
+												size={"large"}
+												key={i}
+												label={item === GRAB ? `${item}Maps` : item}
+												name={item}
+												value={item}
+												checked={selectedFilters[key as keyof MapStyleFilterTypes].includes(item)}
+												onChange={e => handleFilterChange(e, key)}
+												data-testid={`filter-checkbox-${item}`}
+											/>
+										);
+									})}
 								</Flex>
 							))}
 						</Flex>
 					)}
 				</Flex>
 				{(!showFilter || onlyMapStyles) && (
-					<Flex gap={0} direction="column" className="maps-container">
+					<Flex gap={0} direction="column" className={isGrabVisible ? "maps-container grab-visible" : "maps-container"}>
 						<Flex gap={0} padding={onlyMapStyles ? "0 0 1.23rem" : "0 0.7rem 1.23rem 0.5rem"} wrap="wrap">
 							{!searchAndFilteredResults.length && (
-								<Flex width={"80%"} margin={"0 auto"}>
+								<Flex width={"80%"} margin={"0 auto"} direction="column">
 									<NotFoundCard
 										title={t("map_buttons__no_styles_found_title.text") as string}
-										text={t("map_buttons__no_styles_found_desc.text") as string}
-										textFontSize="0.95rem"
+										text={`${t("map_buttons__no_styles_found_desc_1.text")}${
+											noFilters ? t("map_buttons__no_styles_found_desc_2.text") : ""
+										}`}
+										textFontSize="0.93rem"
+										textMargin={"0.5rem 0"}
+										textPadding={noFilters ? "0" : undefined}
+										actionButton={
+											noFilters && (
+												<Button className="clear-filters-button" variation="link" onClick={resetFilters}>
+													{t("map_buttons__clear_filters.text")}
+												</Button>
+											)
+										}
 									/>
 								</Flex>
 							)}
@@ -394,6 +422,8 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 			setSearchValue,
 			showFilter,
 			onlyMapStyles,
+			noFilters,
+			resetFilters,
 			t,
 			langDir
 		]

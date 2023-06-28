@@ -3032,8 +3032,14 @@
 	"map_buttons__no_styles_found_title": {
 		"text": "No matching styles found"
 	},
-	"map_buttons__no_styles_found_desc": {
+	"map_buttons__no_styles_found_desc_1": {
 		"text": "Make sure your search is spelled correctly and try again"
+	},
+	"map_buttons__no_styles_found_desc_2": {
+		"text": ", make sure you have applied the appropriate filter or remove the filter and try again"
+	},
+	"map_buttons__clear_filters": {
+		"text": "Clear filters"
 	},
 	"map_buttons__light": {
 		"text": "Light"

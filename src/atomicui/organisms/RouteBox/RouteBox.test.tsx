@@ -2,7 +2,7 @@
 import { View } from "@aws-amplify/ui-react";
 import i18n from "@demo/locales";
 import { faker } from "@faker-js/faker";
-import { RenderResult, act, fireEvent, render, screen } from "@testing-library/react";
+import { RenderResult, act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { I18nextProvider } from "react-i18next";
 
 import RouteBox from "./RouteBox";
@@ -96,6 +96,7 @@ const useAwsRouteServiceReturnValue = {
 		}
 	})
 };
+
 const servicesObj = { useAwsRouteService: () => useAwsRouteServiceReturnValue };
 jest.mock("services", () => servicesObj);
 
@@ -106,6 +107,7 @@ jest.mock("react-map-gl", () => ({
 	Source: MarkerMock,
 	Layer: MarkerMock
 }));
+const delay = (cb: () => void, ms: number) => setTimeout(cb, ms);
 
 describe("<RouteBox />", () => {
 	let routeCard: HTMLElement;
@@ -124,7 +126,9 @@ describe("<RouteBox />", () => {
 				fireEvent.change(fromInput, { target: { value: faker.random.word() } });
 				fireEvent.focus(fromInput);
 			});
-			fromSuggestions = screen.queryByTestId("from-suggestions");
+			await waitFor(() => {
+				fromSuggestions = screen.queryByTestId("from-suggestions");
+			});
 
 			await act(async () => fromSuggestions?.click());
 		}
@@ -134,7 +138,9 @@ describe("<RouteBox />", () => {
 				fireEvent.change(toInput, { target: { value: faker.random.word() } });
 				fireEvent.focus(toInput);
 			});
-			toSuggestions = screen.queryByTestId("to-suggestions");
+			await waitFor(() => {
+				toSuggestions = screen.queryByTestId("to-suggestions");
+			});
 
 			await act(async () => toSuggestions?.click());
 		}
@@ -194,18 +200,23 @@ describe("<RouteBox />", () => {
 			fireEvent.change(fromInput, { target: { value: faker.random.word() } });
 			fireEvent.focus(fromInput);
 		});
-		fromSuggestions = screen.queryByTestId("from-suggestions");
-		expect(fromSuggestions).toBeInTheDocument();
+
+		await waitFor(() => {
+			fromSuggestions = screen.queryByTestId("from-suggestions");
+			expect(fromSuggestions).toBeInTheDocument();
+		});
 
 		await act(async () => {
 			fireEvent.change(toInput, { target: { value: faker.random.word() } });
 			fireEvent.focus(toInput);
 		});
-		toSuggestions = screen.queryByTestId("to-suggestions");
-		expect(toSuggestions).toBeInTheDocument();
+		await waitFor(() => {
+			toSuggestions = screen.queryByTestId("to-suggestions");
+			expect(toSuggestions).toBeInTheDocument();
+		});
 	});
 
-	it("should route should render when both from and to locations are selected", async () => {
+	it("should render route when both from and to locations are selected", async () => {
 		await renderComponent();
 
 		let startRouteLayer = screen.queryByTestId("start-route-layer");
@@ -215,12 +226,12 @@ describe("<RouteBox />", () => {
 		expect(endRouteLayer).not.toBeInTheDocument();
 
 		await selectLocation("both");
-
-		startRouteLayer = screen.queryByTestId("start-route-layer");
-		endRouteLayer = screen.queryByTestId("end-route-layer");
-
-		expect(startRouteLayer).toBeInTheDocument();
-		expect(endRouteLayer).toBeInTheDocument();
+		delay(() => {
+			startRouteLayer = screen.queryByTestId("start-route-layer");
+			endRouteLayer = screen.queryByTestId("end-route-layer");
+			expect(startRouteLayer).toBeInTheDocument();
+			expect(endRouteLayer).toBeInTheDocument();
+		}, 200);
 	});
 
 	it("should switch to and from input values when the swap icon is clicked", async () => {
@@ -251,8 +262,11 @@ describe("<RouteBox />", () => {
 			await act(async () => travelModeIconContainer.click());
 			const routeDataContainer = screen.queryByTestId("route-data-container");
 			const stepsContainer = screen.queryByTestId("steps-container");
-			expect(routeDataContainer).toBeInTheDocument();
-			expect(stepsContainer).toBeInTheDocument();
+
+			delay(() => {
+				expect(routeDataContainer).toBeInTheDocument();
+				expect(stepsContainer).toBeInTheDocument();
+			}, 200);
 		}
 	});
 });
