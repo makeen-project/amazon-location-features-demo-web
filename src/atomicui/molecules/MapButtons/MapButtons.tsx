@@ -3,17 +3,7 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import {
-	Button,
-	Card,
-	CheckboxField,
-	Divider,
-	Flex,
-	Link,
-	Placeholder,
-	SearchField,
-	Text
-} from "@aws-amplify/ui-react";
+import { Card, CheckboxField, Divider, Flex, Link, Placeholder, SearchField, Text } from "@aws-amplify/ui-react";
 import { IconClose, IconFilterFunnel, IconGeofencePlusSolid, IconMapSolid, IconSearch } from "@demo/assets";
 import { TextEl } from "@demo/atomicui/atoms";
 import { appConfig } from "@demo/core/constants";
