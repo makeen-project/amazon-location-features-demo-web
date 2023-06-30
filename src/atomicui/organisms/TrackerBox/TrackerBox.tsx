@@ -36,6 +36,7 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 	const [routeData, setRouteData] = useState<RouteDataType | undefined>(undefined);
 	const [points, setPoints] = useState<Position[] | undefined>(undefined);
 	const [trackerPos, setTrackerPos] = useState<Position | undefined>(undefined);
+	const [hideConnectionAlert, setHideConnectionAlert] = useState(false);
 	const [isCollapsed, setIsCollapsed] = useState(true);
 	const { isFetchingRoute } = useAwsRoute();
 	const { geofences, getGeofencesList } = useAwsGeofence();
@@ -47,18 +48,27 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 		trackerPoints,
 		setTrackerPoints
 	} = useAwsTracker();
-	const subscription = useWebSocketService();
-	const isDesktop = useMediaQuery("(min-width: 1024px)");
+	const { subscription, connectionState } = useWebSocketService();
+	const isConnected = useMemo(() => connectionState === "Connected", [connectionState]);
 	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();
 	const isLtr = langDir === "ltr";
 
 	useEffect(() => {
+		let flushTimeoutId: NodeJS.Timeout;
+
+		if (isConnected) {
+			flushTimeoutId = setTimeout(() => {
+				setHideConnectionAlert(true);
+			}, 3000);
+		}
+
 		return () => {
-			subscription.unsubscribe();
-			PubSub.removePluggable("AWSIoTProvider");
+			clearTimeout(flushTimeoutId);
 		};
-	}, [subscription]);
+	}, [isConnected]);
+
+	const isDesktop = useMediaQuery("(min-width: 1024px)");
 
 	const fetchGeofencesList = useCallback(async () => getGeofencesList(), [getGeofencesList]);
 
@@ -84,6 +94,8 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 		setIsEditingRoute(false);
 		setTrackerPoints(undefined);
 		setShowTrackingBox(false);
+		subscription?.unsubscribe();
+		PubSub.removePluggable("AWSIoTProvider");
 	};
 
 	const onTrackerMarkerChange = (type: TrackerType) => {
@@ -261,6 +273,21 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 						</Flex>
 					</Flex>
 				</Flex>
+				<Flex
+					className={`tracking-connection-alert slide-up ${
+						hideConnectionAlert ? "hide" : isConnected ? "success" : "info"
+					}
+					`}
+				>
+					<Flex width="100%" justifyContent="space-between" alignItems="center">
+						<Text className="notification-text">
+							{isConnected
+								? t("tracker_box__notification_service_status_1.text")
+								: t("tracker_box__notification_service_status_2.text")}{" "}
+						</Text>
+						<IconClose className="close-icon" onClick={() => setHideConnectionAlert(true)} />
+					</Flex>
+				</Flex>
 				<Flex gap={0} alignItems="center" padding="1.23rem">
 					<IconInfoSolid className="icon-plus-rounded" />
 					<Text marginLeft="1.23rem" variation="tertiary" textAlign={isLtr ? "start" : "end"}>
@@ -271,13 +298,6 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 					{trackerTypes.map(({ type, icon }, idx) => (
 						<View key={`${type}-${idx}`}>
 							<View
-								// className={
-								// 	selectedTrackerType === type
-								// 		? "icon-container selected"
-								// 		: !!trackerPoints?.length
-								// 		? "icon-container disabled"
-								// 		: "icon-container"
-								// }
 								className={selectedTrackerType === type ? "icon-container selected" : "icon-container"}
 								data-tooltip-id={type}
 								data-tooltip-place="top"
@@ -351,6 +371,7 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 					</Flex>
 				)}
 			</Card>
+			<Tooltip id="notification-services" />
 			{renderGeofenceMarkers}
 			{renderGeofences}
 			{renderTrackerPointMarkers}

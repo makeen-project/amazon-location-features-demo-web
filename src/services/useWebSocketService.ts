@@ -1,8 +1,9 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { HubPayload } from "@aws-amplify/core";
 import { AWSIoTProvider } from "@aws-amplify/pubsub";
 import { showToast } from "@demo/core/Toast";
 import { useAmplifyAuth } from "@demo/hooks";
@@ -10,19 +11,25 @@ import i18n from "@demo/locales";
 import { ToastType } from "@demo/types";
 import { Amplify, Hub, PubSub } from "aws-amplify";
 
-Hub.listen("pubsub", ({ payload: { data } }) => console.info({ connectionState: data.connectionState }));
+const RETRY_INTERVAL = 100;
 
-const useWebSocketService = () => {
+const useWebSocketService = (): { subscription: ZenObservable.Subscription | null; connectionState: string | null } => {
+	const [connectionState, setConnectionState] = useState<string>("Disconnected");
+	const [subscription, setSubscription] = useState<ZenObservable.Subscription | null>(null);
+
 	const { region, webSocketUrl, credentials } = useAmplifyAuth();
-	const url = useMemo(
-		() =>
-			webSocketUrl?.startsWith("http://") || webSocketUrl?.startsWith("https://")
-				? webSocketUrl.split("//")[1].replace("/", "")
-				: webSocketUrl,
-		[webSocketUrl]
-	);
+	const url = useMemo(() => webSocketUrl?.split("//")[1]?.replace("/", "") || webSocketUrl, [webSocketUrl]);
 
-	return useMemo(() => {
+	useEffect(() => {
+		Hub.listen("pubsub", ({ payload: { data } }: { payload: HubPayload }) => {
+			if (connectionState !== data.connectionState) {
+				setConnectionState(data.connectionState);
+			}
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const connect = useCallback(() => {
 		Amplify.addPluggable(
 			new AWSIoTProvider({
 				aws_pubsub_region: region,
@@ -30,34 +37,50 @@ const useWebSocketService = () => {
 				clientId: credentials?.identityId
 			})
 		);
+		setSubscription(
+			PubSub.subscribe(`${credentials?.identityId}/tracker`, {
+				provider: "AWSIoTProvider"
+			}).subscribe({
+				next: data => {
+					if (data.value.source === "aws.geo") {
+						showToast({
+							content:
+								i18n.dir() === "ltr"
+									? `${
+											data.value.trackerEventType === "ENTER"
+												? i18n.t("show_toast__entered.text")
+												: i18n.t("show_toast__exited.text")
+									  } ${data.value.geofenceId} ${i18n.t("geofence.text")}`
+									: `${i18n.t("geofence.text")} ${data.value.geofenceId} ${
+											data.value.trackerEventType === "ENTER"
+												? i18n.t("show_toast__entered.text")
+												: i18n.t("show_toast__exited.text")
+									  }`,
+							type: ToastType.INFO
+						});
+					}
+				},
+				error: () => {
+					setTimeout(connect, RETRY_INTERVAL);
+				},
+				complete: () => console.info("complete")
+			})
+		);
+	}, [credentials?.identityId, region, url]);
 
-		const subscription = PubSub.subscribe(`${credentials?.identityId}/tracker`, {
-			provider: "AWSIoTProvider"
-		}).subscribe({
-			next: data => {
-				console.info({ data });
-				if (data.value.source === "aws.geo") {
-					const msg =
-						i18n.dir() === "ltr"
-							? `${
-									data.value.trackerEventType === "ENTER"
-										? i18n.t("show_toast__entered.text")
-										: i18n.t("show_toast__exited.text")
-							  } ${data.value.geofenceId} ${i18n.t("geofence.text")}`
-							: `${i18n.t("geofence.text")} ${data.value.geofenceId} ${
-									data.value.trackerEventType === "ENTER"
-										? i18n.t("show_toast__entered.text")
-										: i18n.t("show_toast__exited.text")
-							  }`;
-					showToast({ content: msg, type: ToastType.INFO });
-				}
-			},
-			error: error => console.error({ error }),
-			complete: () => console.info("complete")
-		});
+	useEffect(() => {
+		if (["Disconnected", "ConnectionDisrupted", "ConnectedPendingDisconnect"].includes(connectionState)) {
+			connect();
+		}
+	}, [connect, connectionState]);
 
-		return subscription;
-	}, [region, url, credentials?.identityId]);
+	return useMemo(
+		() => ({
+			subscription,
+			connectionState
+		}),
+		[subscription, connectionState]
+	);
 };
 
 export default useWebSocketService;

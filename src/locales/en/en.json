@@ -3023,6 +3023,12 @@
 	"tracker_box__tracker_details": {
 		"text": "Tracker details"
 	},
+	"tracker_box__notification_service_status_1": {
+		"text": "Notification socket connection restored"
+	},
+	"tracker_box__notification_service_status_2": {
+		"text": "Notification socket is reconnecting"
+	},
 	"map_buttons__info": {
 		"text": "Changing data provider also affects Places & Routes API"
 	},
