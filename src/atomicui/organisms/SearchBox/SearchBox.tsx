@@ -3,7 +3,7 @@
 
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { Autocomplete, ComboBoxOption, Flex, Loader, View } from "@aws-amplify/ui-react";
+import { Autocomplete, ComboBoxOption, Flex, Placeholder, View } from "@aws-amplify/ui-react";
 import { IconActionMenu, IconClose, IconDirections, IconPin, IconSearch } from "@demo/assets";
 import { TextEl } from "@demo/atomicui/atoms";
 import { Marker, NotFoundCard, SuggestionMarker } from "@demo/atomicui/molecules";
@@ -298,8 +298,12 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 						menuSlots={{
 							LoadingIndicator: (
 								<Flex className="search-loader-container">
-									<Loader />
-									<TextEl margin="15px 0px 30px 0px" text="Searching for suggestions..." />
+									{Array.from({ length: 5 }).map((_, index) => (
+										<Flex className="skeleton-container" key={index}>
+											<Placeholder />
+											<Placeholder width="65%" />
+										</Flex>
+									))}
 								</Flex>
 							),
 							Empty:
