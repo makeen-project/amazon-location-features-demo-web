@@ -3415,5 +3415,8 @@
 	},
 	"tooltip__simulate_tracking_drone": {
 		"text": "Simulate tracking using drone as travel mode"
+	},
+	"tooltip__disabled_geofence": {
+		"text": "This geofence is not available in the Grab map provider. Please switch to another map provider to view and manage this geofence."
 	}
 }

@@ -485,11 +485,7 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 						onClick={isDisabled ? () => {} : () => onClickGeofenceItem(GeofenceId, Center, Radius)}
 						data-tooltip-id="geofence-item"
 						data-tooltip-place="bottom"
-						data-tooltip-content={
-							isDisabled
-								? "This geofence is not available in the Grab map provider. Please switch to another map provider to view and manage this geofence."
-								: ""
-						}
+						data-tooltip-content={isDisabled ? t("tooltip__disabled_geofence.text") : ""}
 					>
 						<Tooltip id="geofence-item" />
 						{isDisabled ? <IconGeofenceMarkerDisabled style={{ margin: "0rem 0.5rem" }} /> : <IconGeofenceMarker />}
@@ -507,7 +503,7 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 				);
 			}
 		},
-		[geofences, onClickGeofenceItem, currentMapProvider, onDelete]
+		[geofences, onClickGeofenceItem, currentMapProvider, onDelete, t]
 	);
 
 	const renderGeofencesList = useMemo(() => {
