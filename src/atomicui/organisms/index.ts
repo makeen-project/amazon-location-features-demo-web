@@ -8,3 +8,4 @@ export * from "./RouteBox";
 export * from "./AuthGeofenceBox";
 export * from "./SettingsModal";
 export * from "./AuthTrackerBox";
+export * from "./UnauthSimulation";

@@ -3,7 +3,14 @@ import React from "react";
 import { Divider, Flex, View } from "@aws-amplify/ui-react";
 import { IconLocateMe, IconMinus, IconZoomPlus, LogoLight } from "@demo/assets";
 import { MapButtons } from "@demo/atomicui/molecules";
-import { GeofenceBox, RouteBox, SearchBox, SettingsModal, Sidebar, TrackingBox } from "@demo/atomicui/organisms";
+import {
+	AuthGeofenceBox,
+	AuthTrackingBox,
+	RouteBox,
+	SearchBox,
+	SettingsModal,
+	Sidebar
+} from "@demo/atomicui/organisms";
 import { MapStyleFilterTypes, ShowStateType } from "@demo/types";
 import "./styles.scss";
 
@@ -40,9 +47,9 @@ const DemoPlaceholderPage: React.FC<DemoPlaceholderPageProps> = ({
 				{show.routeBox ? (
 					<RouteBox mapRef={null} setShowRouteBox={() => {}} isSideMenuExpanded={show.sidebar} />
 				) : show.geofenceBox ? (
-					<GeofenceBox mapRef={null} setShowGeofenceBox={() => {}} />
+					<AuthGeofenceBox mapRef={null} setShowGeofenceBox={() => {}} />
 				) : show.trackingBox ? (
-					<TrackingBox mapRef={null} setShowTrackingBox={() => {}} />
+					<AuthTrackingBox mapRef={null} setShowTrackingBox={() => {}} />
 				) : (
 					<SearchBox
 						mapRef={null}
