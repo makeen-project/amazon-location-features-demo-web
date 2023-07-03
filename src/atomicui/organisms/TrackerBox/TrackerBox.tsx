@@ -61,6 +61,8 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 			flushTimeoutId = setTimeout(() => {
 				setHideConnectionAlert(true);
 			}, 3000);
+		} else {
+			setHideConnectionAlert(false);
 		}
 
 		return () => {

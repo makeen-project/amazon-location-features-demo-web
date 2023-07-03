@@ -3,7 +3,7 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { Button, Card, CheckboxField, Divider, Flex, Placeholder, SearchField, Text } from "@aws-amplify/ui-react";
+import { Card, CheckboxField, Divider, Flex, Link, Placeholder, SearchField, Text } from "@aws-amplify/ui-react";
 import { IconClose, IconFilterFunnel, IconGeofencePlusSolid, IconMapSolid, IconSearch } from "@demo/assets";
 import { NotFoundCard } from "@demo/atomicui/molecules";
 import { appConfig } from "@demo/core/constants";
@@ -362,13 +362,13 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 											noFilters ? t("map_buttons__no_styles_found_desc_2.text") : ""
 										}`}
 										textFontSize="0.93rem"
-										textMargin={"0.5rem 0"}
+										textMargin={"0.6rem 0 0.9rem"}
 										textPadding={noFilters ? "0" : undefined}
 										actionButton={
 											noFilters && (
-												<Button className="clear-filters-button" variation="link" onClick={resetFilters}>
+												<Link className="clear-filters-button" onClick={resetFilters}>
 													{t("map_buttons__clear_filters.text")}
-												</Button>
+												</Link>
 											)
 										}
 									/>
