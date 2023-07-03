@@ -11,12 +11,12 @@ import { CalculateRouteRequest, Position } from "aws-sdk/clients/location";
 import { Layer, LayerProps, MapRef, Marker, Source } from "react-map-gl";
 // import { calculateGeodesicDistance } from "@demo/utils/geoCalculation";
 
-import { trackerTypes } from "./TrackerBox";
+import { trackerTypes } from "./AuthTrackerBox";
 
 const { IMPERIAL } = MapUnitEnum;
 const { MILES, KILOMETERS } = DistanceUnitEnum;
 
-interface TrackerSimulationProps {
+interface AuthTrackerSimulationProps {
 	mapRef: MapRef | null;
 	isSaved: boolean;
 	routeData?: RouteDataType;
@@ -34,7 +34,7 @@ interface TrackerSimulationProps {
 let interval: NodeJS.Timer | undefined;
 let idx = -1;
 
-const TrackerSimulation: React.FC<TrackerSimulationProps> = ({
+const AuthTrackerSimulation: React.FC<AuthTrackerSimulationProps> = ({
 	mapRef,
 	isSaved,
 	routeData,
@@ -338,4 +338,4 @@ const TrackerSimulation: React.FC<TrackerSimulationProps> = ({
 	);
 };
 
-export default TrackerSimulation;
+export default AuthTrackerSimulation;

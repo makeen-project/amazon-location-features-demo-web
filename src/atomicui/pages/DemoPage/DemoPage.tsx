@@ -15,12 +15,12 @@ import {
 } from "@demo/atomicui/molecules";
 import {
 	AboutModal,
-	GeofenceBox,
+	AuthGeofenceBox,
+	AuthTrackingBox,
 	RouteBox,
 	SearchBox,
 	SettingsModal,
-	Sidebar,
-	TrackingBox
+	Sidebar
 } from "@demo/atomicui/organisms";
 import { DemoPlaceholderPage } from "@demo/atomicui/pages";
 import { showToast } from "@demo/core";
@@ -686,12 +686,12 @@ const DemoPage: React.FC = () => {
 							isSideMenuExpanded={show.sidebar}
 						/>
 					) : show.geofenceBox ? (
-						<GeofenceBox
+						<AuthGeofenceBox
 							mapRef={mapViewRef?.current}
 							setShowGeofenceBox={b => setShow(s => ({ ...s, geofenceBox: b }))}
 						/>
 					) : show.trackingBox ? (
-						<TrackingBox
+						<AuthTrackingBox
 							mapRef={mapViewRef?.current}
 							setShowTrackingBox={b => setShow(s => ({ ...s, trackingBox: b }))}
 						/>

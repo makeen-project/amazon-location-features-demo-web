@@ -16,10 +16,10 @@ import { useTranslation } from "react-i18next";
 import { Layer, MapRef, Marker, Source } from "react-map-gl";
 import { Tooltip } from "react-tooltip";
 
-import TrackerSimulation from "./TrackerSimulation";
+import AuthTrackerSimulation from "./AuthTrackerSimulation";
 import "./styles.scss";
 
-interface TrackerBoxProps {
+interface AuthTrackerBoxProps {
 	mapRef: MapRef | null;
 	setShowTrackingBox: (b: boolean) => void;
 }
@@ -30,7 +30,7 @@ export const trackerTypes = [
 	{ type: TrackerType.DRONE, icon: <IconDroneSolid width="1.54rem" height="1.54rem" /> }
 ];
 
-const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) => {
+const AuthTrackerBox: React.FC<AuthTrackerBoxProps> = ({ mapRef, setShowTrackingBox }) => {
 	const [isSaved, setIsSaved] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [routeData, setRouteData] = useState<RouteDataType | undefined>(undefined);
@@ -376,7 +376,7 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 			{renderGeofences}
 			{renderTrackerPointMarkers}
 			{renderDottedLines}
-			<TrackerSimulation
+			<AuthTrackerSimulation
 				mapRef={mapRef}
 				isSaved={isSaved}
 				routeData={routeData}
@@ -394,4 +394,4 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 	);
 };
 
-export default TrackerBox;
+export default AuthTrackerBox;

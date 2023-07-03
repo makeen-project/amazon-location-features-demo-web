@@ -42,12 +42,12 @@ const {
 	MAP_RESOURCES: { MAX_BOUNDS }
 } = appConfig;
 
-interface GeofenceBoxProps {
+interface AuthGeofenceBoxProps {
 	mapRef: MapRef | null;
 	setShowGeofenceBox: (b: boolean) => void;
 }
 
-const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox }) => {
+const AuthGeofenceBox: React.FC<AuthGeofenceBoxProps> = ({ mapRef, setShowGeofenceBox }) => {
 	const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const [isEditing, setIsEditing] = useState(false);
 	const [value, setValue] = useState("");
@@ -656,4 +656,4 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 	);
 };
 
-export default GeofenceBox;
+export default AuthGeofenceBox;
