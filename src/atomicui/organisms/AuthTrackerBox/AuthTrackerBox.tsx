@@ -55,6 +55,7 @@ const AuthTrackerBox: React.FC<AuthTrackerBoxProps> = ({ mapRef, setShowTracking
 	const isLtr = langDir === "ltr";
 
 	useEffect(() => {
+		setHideConnectionAlert(false);
 		let flushTimeoutId: NodeJS.Timeout;
 
 		if (isConnected) {

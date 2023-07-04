@@ -109,13 +109,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 	const isLtr = langDir === "ltr";
 
 	useEffect(() => {
-		const newUrl = transformCloudFormationLink(REGION_ASIA);
-
-		if (currentMapProvider === MapProviderEnum.GRAB && cloudFormationLink !== newUrl) {
+		if (currentMapProvider === MapProviderEnum.GRAB) {
+			const newUrl = transformCloudFormationLink(REGION_ASIA);
 			setCloudFormationLink(newUrl);
 			setStackRegion(defaultRegionAsia);
 		}
-	}, [currentMapProvider, cloudFormationLink]);
+	}, [currentMapProvider]);
 
 	const handleAutoMapUnitChange = useCallback(() => {
 		setIsAutomaticMapUnit(true);
