@@ -55,6 +55,7 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 	const isLtr = langDir === "ltr";
 
 	useEffect(() => {
+		setHideConnectionAlert(false);
 		let flushTimeoutId: NodeJS.Timeout;
 
 		if (isConnected) {
