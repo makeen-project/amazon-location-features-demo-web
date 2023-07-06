@@ -75,7 +75,7 @@ i18n
 		fallbackLng: "en",
 		supportedLngs: ["en", "de", "es", "fr", "it", "pt-BR", "zh-CN", "zh-TW", "ja", "ko", "ar", "he", "hi"],
 		detection: {
-			order: ["cookie", "localStorage", "navigator", "htmlTag"],
+			order: ["queryString", "cookie", "localStorage", "navigator", "htmlTag"],
 			caches: ["cookie", "localStorage"]
 		},
 		interpolation: {
