@@ -73,7 +73,7 @@ i18n
 		debug: false,
 		resources,
 		fallbackLng: "en",
-		supportedLngs: ["en", "de", "es", "fr", "it", "pt_BR", "zh-CN", "zh-TW", "ja", "ko", "ar", "he", "hi"],
+		supportedLngs: ["en", "de", "es", "fr", "it", "pt-BR", "zh-CN", "zh-TW", "ja", "ko", "ar", "he", "hi"],
 		detection: {
 			order: ["queryString", "cookie", "localStorage", "navigator", "htmlTag"],
 			caches: ["cookie", "localStorage"]
