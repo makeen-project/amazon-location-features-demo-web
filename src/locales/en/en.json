@@ -2954,6 +2954,21 @@
 	"route_box__route_details": {
 		"text": "Route details"
 	},
+	"unauth_simulation__geofence_box_info": {
+		"text": "Add a geofence to get notified when your device enters or exits it"
+	},
+	"unauth_simulation__tracker_box_info": {
+		"text": "Enabling this feature will allow you to track your device and get notified when the device enters or exits any of your geofences"
+	},
+	"unauth_simulation__cta": {
+		"text": "Try Trackers & Geofences simulation"
+	},
+	"unauth_simulation__enable_live": {
+		"text": "Enable Live"
+	},
+	"unauth_simulation__disclaimer": {
+		"text": "Requires connection to AWS CloudFormation"
+	},
 	"geofence_box__error_1": {
 		"text": "Name can only contain alphanumeric, underscore and hyphen characters"
 	},
