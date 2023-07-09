@@ -28,8 +28,8 @@ interface SearchBoxProps {
 	onToggleSideMenu: () => void;
 	setShowRouteBox: (b: boolean) => void;
 	isRouteBoxOpen: boolean;
-	isGeofenceBoxOpen: boolean;
-	isTrackingBoxOpen: boolean;
+	isAuthGeofenceBoxOpen: boolean;
+	isAuthTrackerBoxOpen: boolean;
 	isSettingsOpen: boolean;
 	isStylesCardOpen: boolean;
 }
@@ -40,8 +40,8 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 	onToggleSideMenu,
 	setShowRouteBox,
 	isRouteBoxOpen,
-	isGeofenceBoxOpen,
-	isTrackingBoxOpen,
+	isAuthGeofenceBoxOpen,
+	isAuthTrackerBoxOpen,
 	isSettingsOpen,
 	isStylesCardOpen
 }) => {
@@ -69,11 +69,19 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 			clearPoiList();
 		}
 
-		if (isRouteBoxOpen || isGeofenceBoxOpen || isTrackingBoxOpen || isSettingsOpen || isStylesCardOpen) {
+		if (isRouteBoxOpen || isAuthGeofenceBoxOpen || isAuthTrackerBoxOpen || isSettingsOpen || isStylesCardOpen) {
 			setValue("");
 			clearPoiList();
 		}
-	}, [value, clearPoiList, isRouteBoxOpen, isGeofenceBoxOpen, isTrackingBoxOpen, isSettingsOpen, isStylesCardOpen]);
+	}, [
+		value,
+		clearPoiList,
+		isRouteBoxOpen,
+		isAuthGeofenceBoxOpen,
+		isAuthTrackerBoxOpen,
+		isSettingsOpen,
+		isStylesCardOpen
+	]);
 
 	const handleSearch = useCallback(
 		async (value: string, exact = false) => {

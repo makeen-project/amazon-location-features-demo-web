@@ -8,10 +8,6 @@
 	overflow: hidden;
 	z-index: 4;
 
-	@media only screen and (max-width: 480px) {
-		width: 75%;
-	}
-
 	.tracking-connection-alert {
 		display: flex;
 		align-items: center;
@@ -33,7 +29,7 @@
 		}
 
 		.notification-text {
-			color: var(--white-colors)
+			color: var(--white-colors);
 		}
 		.close-icon {
 			cursor: pointer;
@@ -226,17 +222,7 @@
 		}
 	}
 
-	// .tracking-card-cloud-icon {
-	// 	outline: 0;
-	// 	&.connected {
-	// 		fill: var(--grey-color);
-	// 	}
-
-	// 	&.connecting {
-	// 		fill: var(--red-color-1);
-	// 	}
-	// }
+	@media only screen and (max-width: 480px) {
+		width: 75%;
+	}
 }
-// #notification-services {
-// 	z-index: 4;
-// }

@@ -8,7 +8,7 @@ import { IconClose, IconCompass, IconGear, IconGeofence, IconInfo, IconLockSolid
 import { List, Logo } from "@demo/atomicui/atoms";
 import { appConfig, marketingMenuOptionsData } from "@demo/core/constants";
 import { useAmplifyAuth, useAmplifyMap, useAwsIot } from "@demo/hooks";
-import { MapProviderEnum } from "@demo/types";
+import { MapProviderEnum, MenuItemEnum } from "@demo/types";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
@@ -22,22 +22,26 @@ interface SidebarProps {
 	onCloseSidebar: () => void;
 	onOpenConnectAwsAccountModal: () => void;
 	onOpenSignInModal: () => void;
-	onShowGeofenceBox: () => void;
-	onShowTrackingBox: () => void;
+	onShowAuthGeofenceBox: () => void;
+	onShowAuthTrackerBox: () => void;
 	onShowSettings: () => void;
 	onShowTrackingDisclaimerModal: () => void;
 	onShowAboutModal: () => void;
+	onShowUnauthGeofenceBox: () => void;
+	onShowUnauthTrackerBox: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
 	onCloseSidebar,
 	onOpenConnectAwsAccountModal,
 	onOpenSignInModal,
-	onShowGeofenceBox,
-	onShowTrackingBox,
+	onShowAuthGeofenceBox,
+	onShowAuthTrackerBox,
 	onShowSettings,
 	onShowTrackingDisclaimerModal,
-	onShowAboutModal
+	onShowAboutModal,
+	onShowUnauthGeofenceBox,
+	onShowUnauthTrackerBox
 }) => {
 	const { isUserAwsAccountConnected, credentials, onLogin, onLogout, onDisconnectAwsAccount, setAuthTokens } =
 		useAmplifyAuth();
@@ -54,30 +58,21 @@ const Sidebar: React.FC<SidebarProps> = ({
 		onOpenConnectAwsAccountModal();
 	};
 
-	const onClickLockItem = () => {
+	const onClickMenuItem = (menuItem: MenuItemEnum) => {
+		onCloseSidebar();
+
 		if (isUserAwsAccountConnected) {
-			onCloseSidebar();
-			!isAuthenticated && onOpenSignInModal();
+			if (isAuthenticated) {
+				if (menuItem === "Geofence") {
+					onShowAuthGeofenceBox();
+				} else {
+					mapProvider === MapProviderEnum.ESRI ? onShowTrackingDisclaimerModal() : onShowAuthTrackerBox();
+				}
+			} else {
+				onOpenSignInModal();
+			}
 		} else {
-			onConnectAwsAccount();
-		}
-	};
-
-	const onClickGeofence = () => {
-		if (isAuthenticated) {
-			onCloseSidebar();
-			onShowGeofenceBox();
-		} else {
-			onClickLockItem();
-		}
-	};
-
-	const onClickTracking = () => {
-		if (isAuthenticated) {
-			onCloseSidebar();
-			mapProvider === MapProviderEnum.ESRI ? onShowTrackingDisclaimerModal() : onShowTrackingBox();
-		} else {
-			onClickLockItem();
+			menuItem === MenuItemEnum.GEOFENCE ? onShowUnauthGeofenceBox() : onShowUnauthTrackerBox();
 		}
 	};
 
@@ -127,10 +122,10 @@ const Sidebar: React.FC<SidebarProps> = ({
 					<IconCompass className="menu-icon" />
 					<Text>{t("demo.text")}</Text>
 				</Flex>
-				<Flex className="link-item" onClick={onClickGeofence}>
+				<Flex className="link-item" onClick={() => onClickMenuItem(MenuItemEnum.GEOFENCE)}>
 					<IconGeofence className="menu-icon" />
 					<Text>{t("geofence.text")}</Text>
-					{!isAuthenticated && (
+					{isUserAwsAccountConnected && !isAuthenticated && (
 						<Flex className="locked-item">
 							<IconLockSolid
 								className="lock-icon"
@@ -142,10 +137,10 @@ const Sidebar: React.FC<SidebarProps> = ({
 						</Flex>
 					)}
 				</Flex>
-				<Flex className="link-item" onClick={onClickTracking}>
+				<Flex className="link-item" onClick={() => onClickMenuItem(MenuItemEnum.TRACKER)}>
 					<IconRoute className="menu-icon" />
 					<Text>{t("tracker.text")}</Text>
-					{!isAuthenticated && (
+					{isUserAwsAccountConnected && !isAuthenticated && (
 						<Flex className="locked-item">
 							<IconLockSolid
 								className="lock-icon"

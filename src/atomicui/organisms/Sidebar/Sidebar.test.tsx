@@ -9,11 +9,13 @@ const mockProps = {
 	onCloseSidebar: jest.fn(),
 	onOpenConnectAwsAccountModal: jest.fn(),
 	onOpenSignInModal: jest.fn(),
-	onShowGeofenceBox: jest.fn(),
-	onShowTrackingBox: jest.fn(),
+	onShowAuthGeofenceBox: jest.fn(),
+	onShowAuthTrackerBox: jest.fn(),
 	onShowSettings: jest.fn(),
 	onShowTrackingDisclaimerModal: jest.fn(),
-	onShowAboutModal: jest.fn()
+	onShowAboutModal: jest.fn(),
+	onShowUnauthGeofenceBox: jest.fn(),
+	onShowUnauthTrackerBox: jest.fn()
 };
 
 describe("<Sidebar />", () => {
@@ -40,14 +42,14 @@ describe("<Sidebar />", () => {
 	it("opens the Geofence box when Geofence is clicked", () => {
 		const { getByText } = renderComponent();
 		fireEvent.click(getByText("Geofence"));
-		expect(mockProps.onShowGeofenceBox).toHaveBeenCalledTimes(0);
+		expect(mockProps.onShowAuthGeofenceBox).toHaveBeenCalledTimes(0);
 		expect(mockProps.onCloseSidebar).toHaveBeenCalledTimes(1);
 	});
 
 	it("opens the Tracker box when Tracker is clicked", () => {
 		const { getByText } = renderComponent();
 		fireEvent.click(getByText("Tracker"));
-		expect(mockProps.onShowTrackingBox).toHaveBeenCalledTimes(0);
+		expect(mockProps.onShowAuthTrackerBox).toHaveBeenCalledTimes(0);
 		expect(mockProps.onCloseSidebar).toHaveBeenCalledTimes(1);
 	});
 
