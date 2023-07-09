@@ -146,6 +146,7 @@ const DemoPage: React.FC = () => {
 		() => !isUserAwsAccountConnected || (isUserAwsAccountConnected && GRAB_SUPPORTED_AWS_REGIONS.includes(region)),
 		[isUserAwsAccountConnected, region]
 	);
+	console.log("DemoPage");
 
 	useEffect(() => {
 		autoMapUnit.selected && setAutomaticMapUnit();
