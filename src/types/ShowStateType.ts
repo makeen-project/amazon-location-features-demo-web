@@ -6,13 +6,14 @@ export type ShowStateType = {
 	routeBox: boolean;
 	signInModal: boolean;
 	connectAwsAccount: boolean;
-	geofenceBox: boolean;
-	trackingBox: boolean;
-	unAuthTrackingBox: boolean;
+	authGeofenceBox: boolean;
+	authTrackerBox: boolean;
 	settings: boolean;
 	stylesCard: boolean;
 	trackingDisclaimerModal: boolean;
 	about: boolean;
 	grabDisclaimerModal: boolean;
 	mapStyle?: GrabMapEnum;
+	unauthGeofenceBox: boolean;
+	unauthTrackerBox: boolean;
 };

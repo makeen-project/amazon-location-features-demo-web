@@ -21,7 +21,7 @@ import "./styles.scss";
 
 interface AuthTrackerBoxProps {
 	mapRef: MapRef | null;
-	setShowTrackingBox: (b: boolean) => void;
+	setShowAuthTrackerBox: (b: boolean) => void;
 }
 
 export const trackerTypes = [
@@ -30,7 +30,7 @@ export const trackerTypes = [
 	{ type: TrackerType.DRONE, icon: <IconDroneSolid width="1.54rem" height="1.54rem" /> }
 ];
 
-const AuthTrackerBox: React.FC<AuthTrackerBoxProps> = ({ mapRef, setShowTrackingBox }) => {
+const AuthTrackerBox: React.FC<AuthTrackerBoxProps> = ({ mapRef, setShowAuthTrackerBox }) => {
 	const [isSaved, setIsSaved] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [routeData, setRouteData] = useState<RouteDataType | undefined>(undefined);
@@ -96,7 +96,7 @@ const AuthTrackerBox: React.FC<AuthTrackerBoxProps> = ({ mapRef, setShowTracking
 	const onClose = () => {
 		setIsEditingRoute(false);
 		setTrackerPoints(undefined);
-		setShowTrackingBox(false);
+		setShowAuthTrackerBox(false);
 		subscription?.unsubscribe();
 		PubSub.removePluggable("AWSIoTProvider");
 	};

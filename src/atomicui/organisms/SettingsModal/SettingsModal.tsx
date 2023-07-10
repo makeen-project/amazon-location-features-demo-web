@@ -69,7 +69,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 }) => {
 	const [selectedOption, setSelectedOption] = useState<SettingOptionEnum>(SettingOptionEnum.UNITS);
 	const {
-		isAutomaticMapUnit,
+		autoMapUnit,
 		setIsAutomaticMapUnit,
 		mapUnit: currentMapUnit,
 		setMapUnit,
@@ -214,7 +214,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			{
 				id: SettingOptionEnum.UNITS,
 				title: t("settings_modal__units.text"),
-				defaultValue: isAutomaticMapUnit
+				defaultValue: autoMapUnit.selected
 					? (t("settings_modal__automatic.text") as string)
 					: currentMapUnit === MapUnitEnum.IMPERIAL
 					? (t("settings_modal__imperial.text") as string)
@@ -231,12 +231,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 							<Radio
 								data-testid="unit-automatic-radio"
 								value={"Automatic"}
-								checked={isAutomaticMapUnit}
+								checked={autoMapUnit.selected}
 								onChange={handleAutoMapUnitChange}
 							>
 								<Text marginLeft="1.23rem">{t("settings_modal__automatic.text")}</Text>
 								<Text variation="tertiary" marginLeft="1.23rem">
-									{currentMapUnit === IMPERIAL
+									{autoMapUnit.system === IMPERIAL
 										? t("settings_modal__auto_desc_1.text")
 										: t("settings_modal__auto_desc_2.text")}
 								</Text>
@@ -246,7 +246,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 							<Radio
 								data-testid="unit-imperial-radio"
 								value={IMPERIAL}
-								checked={!isAutomaticMapUnit && currentMapUnit === IMPERIAL}
+								checked={!autoMapUnit.selected && currentMapUnit === IMPERIAL}
 								onChange={() => onMapUnitChange(IMPERIAL)}
 							>
 								<Text marginLeft="1.23rem">{t("settings_modal__imperial.text")}</Text>
@@ -259,7 +259,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 							<Radio
 								data-testid="unit-metric-radio"
 								value={METRIC}
-								checked={!isAutomaticMapUnit && currentMapUnit === METRIC}
+								checked={!autoMapUnit.selected && currentMapUnit === METRIC}
 								onChange={() => onMapUnitChange(METRIC)}
 							>
 								<Text marginLeft="1.23rem">{t("settings_modal__metric.text")}</Text>
@@ -562,7 +562,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 		],
 		[
 			currentMapUnit,
-			isAutomaticMapUnit,
+			autoMapUnit,
 			isGrabVisible,
 			handleAutoMapUnitChange,
 			onMapUnitChange,

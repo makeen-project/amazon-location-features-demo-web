@@ -9,9 +9,10 @@ import {
 	RouteBox,
 	SearchBox,
 	SettingsModal,
-	Sidebar
+	Sidebar,
+	UnauthSimulation
 } from "@demo/atomicui/organisms";
-import { MapStyleFilterTypes, ShowStateType } from "@demo/types";
+import { MapStyleFilterTypes, MenuItemEnum, ShowStateType } from "@demo/types";
 import "./styles.scss";
 
 interface DemoPlaceholderPageProps {
@@ -37,19 +38,33 @@ const DemoPlaceholderPage: React.FC<DemoPlaceholderPageProps> = ({
 						onCloseSidebar={() => {}}
 						onOpenConnectAwsAccountModal={() => {}}
 						onOpenSignInModal={() => {}}
-						onShowGeofenceBox={() => {}}
-						onShowTrackingBox={() => {}}
+						onShowAuthGeofenceBox={() => {}}
+						onShowAuthTrackerBox={() => {}}
 						onShowSettings={() => {}}
 						onShowTrackingDisclaimerModal={() => {}}
 						onShowAboutModal={() => {}}
+						onShowUnauthGeofenceBox={() => {}}
+						onShowUnauthTrackerBox={() => {}}
 					/>
 				)}
 				{show.routeBox ? (
 					<RouteBox mapRef={null} setShowRouteBox={() => {}} isSideMenuExpanded={show.sidebar} />
-				) : show.geofenceBox ? (
-					<AuthGeofenceBox mapRef={null} setShowGeofenceBox={() => {}} />
-				) : show.trackingBox ? (
-					<AuthTrackingBox mapRef={null} setShowTrackingBox={() => {}} />
+				) : show.authGeofenceBox ? (
+					<AuthGeofenceBox mapRef={null} setShowAuthGeofenceBox={() => {}} />
+				) : show.authTrackerBox ? (
+					<AuthTrackingBox mapRef={null} setShowAuthTrackerBox={() => {}} />
+				) : show.unauthGeofenceBox ? (
+					<UnauthSimulation
+						from={MenuItemEnum.GEOFENCE}
+						setShowUnauthGeofenceBox={() => {}}
+						setShowUnauthTrackerBox={() => {}}
+					/>
+				) : show.unauthTrackerBox ? (
+					<UnauthSimulation
+						from={MenuItemEnum.TRACKER}
+						setShowUnauthGeofenceBox={() => {}}
+						setShowUnauthTrackerBox={() => {}}
+					/>
 				) : (
 					<SearchBox
 						mapRef={null}
@@ -57,8 +72,8 @@ const DemoPlaceholderPage: React.FC<DemoPlaceholderPageProps> = ({
 						onToggleSideMenu={() => {}}
 						setShowRouteBox={() => {}}
 						isRouteBoxOpen={show.routeBox}
-						isGeofenceBoxOpen={show.geofenceBox}
-						isTrackingBoxOpen={show.trackingBox}
+						isAuthGeofenceBoxOpen={show.authGeofenceBox}
+						isAuthTrackerBoxOpen={show.authTrackerBox}
 						isSettingsOpen={show.settings}
 						isStylesCardOpen={show.stylesCard}
 					/>

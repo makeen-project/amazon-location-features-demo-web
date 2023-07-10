@@ -149,3 +149,8 @@ export enum TypeEnum {
 	Vector = "Vector",
 	Raster = "Raster"
 }
+
+export enum MenuItemEnum {
+	GEOFENCE = "Geofence",
+	TRACKER = "Tracker"
+}

@@ -44,10 +44,10 @@ const {
 
 interface AuthGeofenceBoxProps {
 	mapRef: MapRef | null;
-	setShowGeofenceBox: (b: boolean) => void;
+	setShowAuthGeofenceBox: (b: boolean) => void;
 }
 
-const AuthGeofenceBox: React.FC<AuthGeofenceBoxProps> = ({ mapRef, setShowGeofenceBox }) => {
+const AuthGeofenceBox: React.FC<AuthGeofenceBoxProps> = ({ mapRef, setShowAuthGeofenceBox }) => {
 	const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const [isEditing, setIsEditing] = useState(false);
 	const [value, setValue] = useState("");
@@ -110,7 +110,7 @@ const AuthGeofenceBox: React.FC<AuthGeofenceBoxProps> = ({ mapRef, setShowGeofen
 
 	const onClose = () => {
 		resetAll();
-		setShowGeofenceBox(false);
+		setShowAuthGeofenceBox(false);
 	};
 
 	const handleSearch = useCallback(

@@ -32,7 +32,8 @@ export {
 	TravelMode,
 	UserAgentEnum,
 	AttributeEnum,
-	TypeEnum
+	TypeEnum,
+	MenuItemEnum
 } from "./Enums";
 export type { RouteDataType } from "./RouteDataType";
 export type { CirclePropertiesType, CircleDrawEventType, CircleFeatureType } from "./CircleDrawControlTypes";
