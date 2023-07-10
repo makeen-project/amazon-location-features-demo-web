@@ -72,6 +72,8 @@ i18n
 	.init({
 		debug: false,
 		resources,
+		ns: ["translation"],
+		defaultNS: "translation",
 		fallbackLng: "en",
 		supportedLngs: ["en", "de", "es", "fr", "it", "pt-BR", "zh-CN", "zh-TW", "ja", "ko", "ar", "he", "hi"],
 		detection: {
