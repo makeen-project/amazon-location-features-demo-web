@@ -1,6 +1,6 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
-import { Button, Card, Flex } from "@aws-amplify/ui-react";
+import { Button, Card, Flex, Text } from "@aws-amplify/ui-react";
 import {
 	IconBackArrow,
 	IconBell,
@@ -12,20 +12,17 @@ import {
 } from "@demo/assets";
 import { ReactComponent as Simulation } from "@demo/assets/graphics/simulation.svg";
 import { DropdownEl, TextEl } from "@demo/atomicui/atoms";
-import { IconicInfoCard, NotificationsBox } from "@demo/atomicui/molecules";
+import { ConfirmationModal, IconicInfoCard, NotificationsBox } from "@demo/atomicui/molecules";
 import { SelectOption } from "@demo/types";
 import "./start-styles.scss";
 
-interface UnauthSimulationProps {
-	setShowTrackingBox: (b: boolean) => void;
-}
-
-const UnauthSimulation: FC<UnauthSimulationProps> = ({ setShowTrackingBox }) => {
+const StartUnauthSimulation = () => {
 	const [routeSelectedValue, setRouteSelectedValue] = useState<SelectOption | null>(null);
 	const [busSelectedValue, setBusSelectedValue] = useState<SelectOption>();
 	const [startSimulation, setStartSimulation] = useState(false);
 	const [isNotifications, setIsNotifications] = useState(false);
 	const [routes, setRoutes] = useState<SelectOption[]>([]);
+	const [confirmCloseSimulation, setConfirmCloseSimulation] = useState(false);
 	// const { subscription } = useWebSocketService();
 
 	useEffect(() => {
@@ -45,7 +42,7 @@ const UnauthSimulation: FC<UnauthSimulationProps> = ({ setShowTrackingBox }) => 
 	}, [routeSelectedValue]);
 
 	const onClose = useCallback(() => {
-		setShowTrackingBox(false);
+		// setShowTrackingBox(false);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -192,115 +189,141 @@ const UnauthSimulation: FC<UnauthSimulationProps> = ({ setShowTrackingBox }) => 
 	}, []);
 
 	return (
-		<Card className="unauthSimulation-card" left="1.62rem" overflow="visible">
-			{!startSimulation ? (
-				<>
-					<Flex justifyContent="flex-end" padding="0.6rem">
-						<Flex className="card-close">
-							<IconClose className="close-icon" width={20} height={20} onClick={onClose} />
-						</Flex>
-					</Flex>
-					<StartSimulation />
-				</>
-			) : (
-				<Flex className="simulation-container" direction="column" gap="0">
-					<Flex className="simulation-header" justifyContent="space-between">
-						<Flex alignItems="center" padding="0.6rem">
-							<IconBackArrow
-								className="back-icon"
-								cursor="pointer"
-								width={20}
-								height={20}
-								onClick={() => setStartSimulation(false)}
-							/>
-							<TextEl
-								className="simulation-title"
-								fontSize="14px"
-								textAlign="center"
-								text="Tracking and Geofence simulation"
-								fontFamily="AmazonEmber-Medium"
-							/>
-						</Flex>
-						<Flex
-							padding="0.6rem"
-							className={isNotifications ? "bell-icon-container bell-active" : "bell-icon-container"}
-							onClick={() => setIsNotifications(n => !n)}
-							position="relative"
-						>
-							<IconBell className="bell-icon" width={20} height={20} />
-							{!isNotifications && <span className="notification-bubble" />}
-						</Flex>
-					</Flex>
-					<Flex gap="0" direction="column" width="100%">
-						{!isNotifications ? (
-							<Flex padding="1.3rem" direction="column" gap="0">
-								<TextEl fontSize="12px" fontFamily="AmazonEmber-Bold" text="Routes notifications" />
-								<Flex className="routes-notification-container" marginTop="0.5rem">
-									<DropdownEl
-										defaultOption={routes}
-										options={routesArray}
-										onSelect={value => value && setRouteSelectedValue(value)}
-										label={!!routes.length ? `${routes.length} routes selected` : "Select a route"}
-										arrowIconColor={"var(--tertiary-color)"}
-										showSelected
-										bordered
-										isCheckbox
-									/>
-									<Button variation="primary">Pause</Button>
-								</Flex>
-								<Flex className="bus-container">
-									<TextEl fontSize="12px" fontFamily="AmazonEmber-Bold" text="Tracking history" />
-									<DropdownEl
-										defaultOption={busSelectedValue}
-										options={buses}
-										onSelect={value => value && setBusSelectedValue(value)}
-										label={!!busSelectedValue ? `${busSelectedValue?.label}` : "Select a Bus"}
-										showSelected
-										isRadioBox
-									/>
-								</Flex>
-								<Flex gap="0">
-									<Flex direction="column" gap="0" marginTop="2rem">
-										{trackingHistory.map((_, i) => (
-											<Flex key={i} className="tracking-icon-container" gap="0">
-												{i === 0 || i === trackingHistory.length - 1 ? (
-													<IconGeofenceMarkerDisabled className="geofence-icon" width={22} height={22} />
-												) : (
-													<IconSegment width={15} height={15} />
-												)}
-												{i !== trackingHistory.length - 1 && (
-													<Flex direction="column" gap="0.4rem" margin="0.6rem 0">
-														<Flex className="bubble-icon" />
-														<Flex className="bubble-icon" />
-														<Flex className="bubble-icon" />
-													</Flex>
-												)}
-											</Flex>
-										))}
-									</Flex>
-									<Flex direction="column" gap="0" paddingLeft="1.5rem">
-										{trackingHistory.map((track, i) => (
-											<IconicInfoCard
-												key={i}
-												title={track.title}
-												description={track.description || ""}
-												subDescription={track.subDescription}
-												textContainerMarginLeft="0"
-												cardMargin="0.6rem 0"
-												cardAlignItems="center"
-											/>
-										))}
-									</Flex>
-								</Flex>
+		<>
+			<Card className="unauthSimulation-card" left="1.62rem" overflow={startSimulation ? "visible" : "hidden"}>
+				{!startSimulation ? (
+					<>
+						<Flex justifyContent="flex-end" padding="0.6rem">
+							<Flex className="card-close">
+								<IconClose className="close-icon" width={20} height={20} onClick={onClose} />
 							</Flex>
-						) : (
-							<NotificationsBox notification={mockNotification} />
-						)}
+						</Flex>
+						<StartSimulation />
+					</>
+				) : (
+					<Flex className="simulation-container" direction="column" gap="0">
+						<Flex className="simulation-header" justifyContent="space-between">
+							<Flex alignItems="center" padding="0.6rem">
+								<IconBackArrow
+									className="back-icon"
+									cursor="pointer"
+									width={20}
+									height={20}
+									onClick={() => setConfirmCloseSimulation(true)}
+								/>
+								<TextEl
+									className="simulation-title"
+									fontSize="14px"
+									textAlign="center"
+									text="Tracking and Geofence simulation"
+									fontFamily="AmazonEmber-Medium"
+								/>
+							</Flex>
+							<Flex
+								padding="0.6rem"
+								className={isNotifications ? "bell-icon-container bell-active" : "bell-icon-container"}
+								onClick={() => setIsNotifications(n => !n)}
+								position="relative"
+							>
+								<IconBell className="bell-icon" width={20} height={20} />
+								{!isNotifications && <span className="notification-bubble" />}
+							</Flex>
+						</Flex>
+						<Flex gap="0" direction="column" width="100%">
+							{!isNotifications ? (
+								<Flex padding="1.3rem" direction="column" gap="0">
+									<TextEl fontSize="12px" fontFamily="AmazonEmber-Bold" text="Routes notifications" />
+									<Flex className="routes-notification-container" marginTop="0.5rem">
+										<DropdownEl
+											defaultOption={routes}
+											options={routesArray}
+											onSelect={value => value && setRouteSelectedValue(value)}
+											label={!!routes.length ? `${routes.length} routes selected` : "Select a route"}
+											arrowIconColor={"var(--tertiary-color)"}
+											showSelected
+											bordered
+											isCheckbox
+										/>
+										<Button variation="primary">Pause</Button>
+									</Flex>
+									<Flex className="bus-container">
+										<TextEl fontSize="12px" fontFamily="AmazonEmber-Bold" text="Tracking history" />
+										<DropdownEl
+											defaultOption={busSelectedValue}
+											options={buses}
+											onSelect={value => value && setBusSelectedValue(value)}
+											label={!!busSelectedValue ? `${busSelectedValue?.label}` : "Select a Bus"}
+											showSelected
+											isRadioBox
+										/>
+									</Flex>
+									<Flex gap="0">
+										<Flex direction="column" gap="0" marginTop="2rem">
+											{trackingHistory.map((_, i) => (
+												<Flex key={i} className="tracking-icon-container" gap="0">
+													{i === 0 || i === trackingHistory.length - 1 ? (
+														<IconGeofenceMarkerDisabled className="geofence-icon" width={22} height={22} />
+													) : (
+														<IconSegment width={15} height={15} />
+													)}
+													{i !== trackingHistory.length - 1 && (
+														<Flex direction="column" gap="0.4rem" margin="0.6rem 0">
+															<Flex className="bubble-icon" />
+															<Flex className="bubble-icon" />
+															<Flex className="bubble-icon" />
+														</Flex>
+													)}
+												</Flex>
+											))}
+										</Flex>
+										<Flex direction="column" gap="0" paddingLeft="1.5rem">
+											{trackingHistory.map((track, i) => (
+												<IconicInfoCard
+													key={i}
+													title={track.title}
+													description={track.description || ""}
+													subDescription={track.subDescription}
+													textContainerMarginLeft="0"
+													cardMargin="0.6rem 0"
+													cardAlignItems="center"
+												/>
+											))}
+										</Flex>
+									</Flex>
+								</Flex>
+							) : (
+								<NotificationsBox notification={mockNotification} />
+							)}
+						</Flex>
 					</Flex>
-				</Flex>
-			)}
-		</Card>
+				)}
+			</Card>
+			<Flex className="confirmation-modal-container">
+				<ConfirmationModal
+					open={confirmCloseSimulation}
+					onClose={() => {
+						setStartSimulation(false);
+						setConfirmCloseSimulation(false);
+					}}
+					heading="Exit simulation"
+					description={
+						<Text
+							className="small-text"
+							variation="tertiary"
+							marginTop="1.23rem"
+							textAlign="center"
+							whiteSpace="pre-line"
+						>
+							Are you sure you want to exit Trackers and Geofences simulation?
+						</Text>
+					}
+					onConfirm={() => setConfirmCloseSimulation(false)}
+					confirmationText={"Stay in simulation"}
+					cancelationText={"Exit"}
+				/>
+			</Flex>
+		</>
 	);
 };
 
-export default UnauthSimulation;
+export default StartUnauthSimulation;

@@ -92,7 +92,7 @@
 				}
 			}
 
-		 .bubble-icon {
+			.bubble-icon {
 				width: 4px;
 				height: 4px;
 				background-color: var(--primary-color);
@@ -113,5 +113,24 @@
 				background-color: red;
 			}
 		}
+	}
+}
+
+.confirmation-modal-container {
+	.amplify-flex.modal-container {
+		.confirmation-modal {
+			height: 35% !important;
+		}
+	}
+
+	.amplify-text.amplify-text--tertiary.small-text {
+		padding: 0 1rem;
+		font-size: 13px;
+		font-family: "AmazonEmber-Regular";
+		font-weight: 400;
+	}
+
+	.amplify-button.amplify-field-group__control.amplify-button--primary {
+		height: 3rem;
 	}
 }
