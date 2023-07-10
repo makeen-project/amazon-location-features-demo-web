@@ -1,4 +1,4 @@
-import i18n from "@demo/locales";
+import i18n from "@demo/i18n";
 import { render, screen } from "@testing-library/react";
 import { I18nextProvider } from "react-i18next";
 

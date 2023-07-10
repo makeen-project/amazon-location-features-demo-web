@@ -69,7 +69,7 @@ import "./styles.scss";
 const {
 	PERSIST_STORAGE_KEYS: { SHOULD_CLEAR_CREDENTIALS, GEO_LOCATION_ALLOWED },
 	ROUTES: { DEMO },
-	MAP_RESOURCES: { MAX_BOUNDS, AMAZON_HQ, GRAB_SUPPORTED_AWS_REGIONS, MAP_ITEMS },
+	MAP_RESOURCES: { MAX_BOUNDS, AMAZON_HQ, GRAB_SUPPORTED_AWS_REGIONS },
 	LINKS: { AMAZON_LOCATION_TERMS_AND_CONDITIONS }
 } = appConfig;
 const initShow = {
@@ -112,12 +112,7 @@ const DemoPage: React.FC = () => {
 		handleCurrentSession,
 		switchToAsiaRegionStack,
 		isUserAwsAccountConnected,
-		switchToDefaultRegionStack,
-		identityPoolId,
-		userPoolId,
-		userPoolClientId,
-		userDomain,
-		configureAmplify
+		switchToDefaultRegionStack
 	} = useAmplifyAuth();
 	const { locationClient, createLocationClient, iotClient, createIotClient, resetStore: resetAwsStore } = useAws();
 	const { attachPolicy } = useAwsIot();
@@ -151,43 +146,6 @@ const DemoPage: React.FC = () => {
 		() => !isUserAwsAccountConnected || (isUserAwsAccountConnected && GRAB_SUPPORTED_AWS_REGIONS.includes(region)),
 		[isUserAwsAccountConnected, region]
 	);
-
-	const amplifyConfig = useMemo(
-		() => ({
-			Auth:
-				userPoolId && userPoolClientId && userDomain
-					? {
-							identityPoolId,
-							region,
-							userPoolId,
-							userPoolWebClientId: userPoolClientId,
-							oauth: {
-								domain: userDomain,
-								scope: ["email", "openid", "profile"],
-								redirectSignIn: `${window.location.origin}${DEMO}`,
-								redirectSignOut: `${window.location.origin}${DEMO}?sign_out=true`,
-								responseType: "code"
-							}
-					  }
-					: {
-							identityPoolId,
-							region
-					  },
-			geo: {
-				AmazonLocationService: {
-					maps: {
-						items: MAP_ITEMS,
-						default: EsriMapEnum.ESRI_LIGHT
-					},
-					region
-				}
-			}
-		}),
-		[identityPoolId, region, userPoolId, userPoolClientId, userDomain]
-	);
-
-	/* Configure Auth and Geo via amplify */
-	configureAmplify(amplifyConfig);
 
 	useEffect(() => {
 		autoMapUnit.selected && setAutomaticMapUnit();

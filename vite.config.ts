@@ -27,6 +27,7 @@ export default defineConfig(() => {
 				"@demo/theme": path.resolve(__dirname, "./src/theme"),
 				"@demo/utils": path.resolve(__dirname, "./src/utils"),
 				"@demo/locales": path.resolve(__dirname, "./src/locales"),
+				"@demo/i18n": path.resolve(__dirname, "./src/i18n.ts"),
 				"./runtimeConfig": "./runtimeConfig.browser"
 			}
 		},

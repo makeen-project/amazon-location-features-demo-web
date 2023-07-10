@@ -1,23 +1,22 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
+import { default as arTranslations } from "@demo/locales/ar/ar.json";
+import { default as deTranslations } from "@demo/locales/de/de.json";
+import { default as enTranslations } from "@demo/locales/en/en.json";
+import { default as esTranslations } from "@demo/locales/es/es.json";
+import { default as frTranslations } from "@demo/locales/fr/fr.json";
+import { default as heTranslations } from "@demo/locales/he/he.json";
+import { default as hiTranslations } from "@demo/locales/hi/hi.json";
+import { default as itTranslations } from "@demo/locales/it/it.json";
+import { default as jaTranslations } from "@demo/locales/ja/ja.json";
+import { default as koTranslations } from "@demo/locales/ko/ko.json";
+import { default as ptbrTranslations } from "@demo/locales/pt-BR/pt-BR.json";
+import { default as zhcnTranslations } from "@demo/locales/zh-CN/zh-CN.json";
+import { default as zhtwTranslations } from "@demo/locales/zh-TW/zh-TW.json";
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
-
-import { default as arTranslations } from "./ar/ar.json";
-import { default as deTranslations } from "./de/de.json";
-import { default as enTranslations } from "./en/en.json";
-import { default as esTranslations } from "./es/es.json";
-import { default as frTranslations } from "./fr/fr.json";
-import { default as heTranslations } from "./he/he.json";
-import { default as hiTranslations } from "./hi/hi.json";
-import { default as itTranslations } from "./it/it.json";
-import { default as jaTranslations } from "./ja/ja.json";
-import { default as koTranslations } from "./ko/ko.json";
-import { default as ptbrTranslations } from "./pt-BR/pt-BR.json";
-import { default as zhcnTranslations } from "./zh-CN/zh-CN.json";
-import { default as zhtwTranslations } from "./zh-TW/zh-TW.json";
 
 const resources = {
 	en: {
