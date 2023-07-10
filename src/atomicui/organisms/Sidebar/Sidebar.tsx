@@ -24,6 +24,7 @@ interface SidebarProps {
 	onOpenSignInModal: () => void;
 	onShowGeofenceBox: () => void;
 	onShowTrackingBox: () => void;
+	onShowUnAuthTrackingBox: () => void;
 	onShowSettings: () => void;
 	onShowTrackingDisclaimerModal: () => void;
 	onShowAboutModal: () => void;
@@ -35,6 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 	onOpenSignInModal,
 	onShowGeofenceBox,
 	onShowTrackingBox,
+	onShowUnAuthTrackingBox,
 	onShowSettings,
 	onShowTrackingDisclaimerModal,
 	onShowAboutModal
@@ -73,11 +75,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 	};
 
 	const onClickTracking = () => {
+		onCloseSidebar();
 		if (isAuthenticated) {
-			onCloseSidebar();
 			mapProvider === MapProviderEnum.ESRI ? onShowTrackingDisclaimerModal() : onShowTrackingBox();
 		} else {
-			onClickLockItem();
+			onShowUnAuthTrackingBox();
+			// onClickLockItem();
 		}
 	};
 
@@ -145,7 +148,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 				<Flex className="link-item" onClick={onClickTracking}>
 					<IconRoute className="menu-icon" />
 					<Text>{t("tracker.text")}</Text>
-					{!isAuthenticated && (
+					{/* {!isAuthenticated && (
 						<Flex className="locked-item">
 							<IconLockSolid
 								className="lock-icon"
@@ -155,7 +158,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 							/>
 							<Tooltip id="tracker-lock" />
 						</Flex>
-					)}
+					)} */}
 				</Flex>
 				<Flex className="link-item" onClick={onClickSettings}>
 					<IconGear className="menu-icon" />

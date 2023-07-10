@@ -12,6 +12,7 @@ interface TextElProps extends TextProps {
 	lineHeight?: string;
 	letterSpacing?: string;
 	text: string;
+	onClick?: () => void;
 }
 
 const TextEl: React.FC<TextElProps> = ({
@@ -21,6 +22,7 @@ const TextEl: React.FC<TextElProps> = ({
 	letterSpacing = "0px",
 	variation = "secondary",
 	text,
+	onClick,
 	...rest
 }) => {
 	return (
@@ -32,6 +34,7 @@ const TextEl: React.FC<TextElProps> = ({
 			lineHeight={lineHeight}
 			letterSpacing={letterSpacing}
 			variation={variation}
+			onClick={onClick}
 		>
 			{text}
 		</Text>

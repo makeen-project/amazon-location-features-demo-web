@@ -20,7 +20,8 @@ import {
 	RouteBox,
 	SearchBox,
 	SettingsModal,
-	Sidebar
+	Sidebar,
+	UnauthSimulation
 } from "@demo/atomicui/organisms";
 import { DemoPlaceholderPage } from "@demo/atomicui/pages";
 import { showToast } from "@demo/core";
@@ -80,6 +81,7 @@ const initShow = {
 	connectAwsAccount: false,
 	geofenceBox: false,
 	trackingBox: false,
+	unAuthTrackingBox: false,
 	settings: false,
 	stylesCard: false,
 	trackingDisclaimerModal: false,
@@ -674,6 +676,7 @@ const DemoPage: React.FC = () => {
 							onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
 							onShowGeofenceBox={() => setShow(s => ({ ...s, geofenceBox: true }))}
 							onShowTrackingBox={() => setShow(s => ({ ...s, trackingBox: true }))}
+							onShowUnAuthTrackingBox={() => setShow(s => ({ ...s, unAuthTrackingBox: true }))}
 							onShowSettings={() => setShow(s => ({ ...s, settings: true }))}
 							onShowTrackingDisclaimerModal={() => setShow(s => ({ ...s, trackingDisclaimerModal: true }))}
 							onShowAboutModal={() => setShow(s => ({ ...s, about: true }))}
@@ -695,6 +698,8 @@ const DemoPage: React.FC = () => {
 							mapRef={mapViewRef?.current}
 							setShowTrackingBox={b => setShow(s => ({ ...s, trackingBox: b }))}
 						/>
+					) : show.unAuthTrackingBox ? (
+						<UnauthSimulation setShowTrackingBox={b => setShow(s => ({ ...s, unAuthTrackingBox: b }))} />
 					) : (
 						<SearchBox
 							mapRef={mapViewRef?.current}

@@ -8,6 +8,7 @@ export type ShowStateType = {
 	connectAwsAccount: boolean;
 	geofenceBox: boolean;
 	trackingBox: boolean;
+	unAuthTrackingBox: boolean;
 	settings: boolean;
 	stylesCard: boolean;
 	trackingDisclaimerModal: boolean;

@@ -14,3 +14,5 @@ export * from "./SignInModal";
 export * from "./ConfirmationModal";
 export * from "./WelcomeModal";
 export * from "./GrabConfirmationModal";
+export * from "./IconicInfoCard";
+export * from "./NotificationsBox";

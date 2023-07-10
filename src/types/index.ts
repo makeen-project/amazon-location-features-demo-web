@@ -40,3 +40,4 @@ export type { SettingOptionItemType } from "./SettingOptionItemType";
 export type { RouteOptionsType } from "./RouteOptionsType";
 export type { HelpAccordionType } from "./HelpType";
 export type { ShowStateType } from "./ShowStateType";
+export type { SelectOption } from "./SelectOption";
