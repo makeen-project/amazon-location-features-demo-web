@@ -28,13 +28,13 @@
 		"mapbox-gl-draw-circle": "^1.1.2",
 		"ngeohash": "^0.6.3",
 		"ramda": "^0.28.0",
-		"react": "^17.0.2",
-		"react-dom": "^17.0.2",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
 		"react-i18next": "^13.0.1",
 		"react-router-dom": "^6.4.3",
 		"react-toastify": "^9.1.1",
 		"react-tooltip": "^5.10.0",
-		"zustand": "^4.1.4"
+		"zustand": "^4.3.7"
 	},
 	"devDependencies": {
 		"@faker-js/faker": "^7.6.0",
@@ -45,8 +45,8 @@
 		"@types/ngeohash": "^0.6.4",
 		"@types/node": "^18.11.9",
 		"@types/ramda": "^0.28.18",
-		"@types/react": "^17.0.0",
-		"@types/react-dom": "^17.0.0",
+		"@types/react": "^18.0.17",
+		"@types/react-dom": "^18.0.6",
 		"@types/zen-observable": "^0.8.3",
 		"@typescript-eslint/eslint-plugin": "5.33.1",
 		"@typescript-eslint/parser": "5.33.1",
