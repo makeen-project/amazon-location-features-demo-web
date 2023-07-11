@@ -12,7 +12,7 @@ import { AuthTokensType, ConnectFormValuesType, ToastType } from "@demo/types";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { Amplify, Auth } from "aws-amplify";
 import AWS from "aws-sdk";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const {
 	ENV: { IDENTITY_POOL_ID, REGION, IDENTITY_POOL_ID_ASIA, REGION_ASIA },
@@ -26,7 +26,7 @@ const useAmplifyAuth = () => {
 	const { getCurrentUserCredentials, login, logout, fetchHostedUi, getCurrentSession } = useAmplifyAuthService();
 	const { resetStore: resetAwsStore } = useAws();
 	const { resetStore: resetAmplifyMapStore } = useAmplifyMap();
-	// const { t } = useTranslation();
+	const { t } = useTranslation();
 
 	const methods = useMemo(
 		() => ({
@@ -34,7 +34,7 @@ const useAmplifyAuth = () => {
 				try {
 					Amplify.configure(config);
 				} catch (error) {
-					errorHandler(error, "ERROR_HANDLER.FAILED_CONFIGURE_AMPLIFY" as string);
+					errorHandler(error, t("ERROR_HANDLER.FAILED_CONFIGURE_AMPLIFY") as string);
 				}
 			},
 			validateIdentityPoolIdAndRegion: (IdentityPoolId: string, successCb?: () => void) => {
@@ -47,7 +47,7 @@ const useAmplifyAuth = () => {
 						if (err) {
 							console.error({ err });
 							showToast({
-								content: "SHOW_TOAST.FAILED_TO_CONNECT_1",
+								content: t("SHOW_TOAST.FAILED_TO_CONNECT_1"),
 								type: ToastType.ERROR
 							});
 						} else {
@@ -69,13 +69,13 @@ const useAmplifyAuth = () => {
 					} else {
 						console.error({ error: res });
 						showToast({
-							content: "SHOW_TOAST.FAILED_TO_CONNECT_2",
+							content: t("SHOW_TOAST.FAILED_TO_CONNECT_2"),
 							type: ToastType.ERROR
 						});
 					}
 				} catch (error) {
 					console.error({ error });
-					errorHandler(error, "ERROR_HANDLER.FAILED_CONNECT_1" as string);
+					errorHandler(error, t("ERROR_HANDLER.FAILED_CONNECT_1") as string);
 				}
 			},
 			validateUserPoolId: (config: unknown, successCb?: () => void) => {
@@ -83,7 +83,7 @@ const useAmplifyAuth = () => {
 					Auth.configure(config);
 					successCb && successCb();
 				} catch (error) {
-					errorHandler(error, "ERROR_HANDLER.FAILED_CONNECT_2" as string);
+					errorHandler(error, t("ERROR_HANDLER.FAILED_CONNECT_2") as string);
 				}
 			},
 			validateFormValues: (
@@ -155,7 +155,7 @@ const useAmplifyAuth = () => {
 						window.location.replace(ERROR_BOUNDARY);
 					}
 				} catch (error) {
-					errorHandler(error, "ERROR_HANDLER.FAILED_FETCH_CREDS" as string);
+					errorHandler(error, t("ERROR_HANDLER.FAILED_FETCH_CREDS") as string);
 				}
 			},
 			clearCredentials: () => {
@@ -188,7 +188,7 @@ const useAmplifyAuth = () => {
 					setState({ authTokens: undefined });
 					await login();
 				} catch (error) {
-					errorHandler(error, "ERROR_HANDLER.FAILED_SIGN_IN" as string);
+					errorHandler(error, t("ERROR_HANDLER.FAILED_SIGN_IN") as string);
 				}
 			},
 			onLogout: async () => {
@@ -196,7 +196,7 @@ const useAmplifyAuth = () => {
 					await logout();
 					setState({ authTokens: undefined });
 				} catch (error) {
-					errorHandler(error, "ERROR_HANDLER.FAILED_SIGN_OUT" as string);
+					errorHandler(error, t("ERROR_HANDLER.FAILED_SIGN_OUT") as string);
 				}
 			},
 			onDisconnectAwsAccount: () => {
@@ -252,8 +252,8 @@ const useAmplifyAuth = () => {
 			logout,
 			getCurrentSession,
 			resetAmplifyMapStore,
-			resetAwsStore
-			// t
+			resetAwsStore,
+			t
 		]
 	);
 
