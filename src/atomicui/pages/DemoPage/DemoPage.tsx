@@ -118,14 +118,12 @@ const DemoPage: React.FC = () => {
 	const { attachPolicy } = useAwsIot();
 	const {
 		mapProvider: currentMapProvider,
+		mapStyle: currentMapStyle,
+		currentLocationData,
 		setMapProvider,
 		setMapStyle,
 		isCurrentLocationDisabled,
-		setIsCurrentLocationDisabled
-	} = useAmplifyMap();
-	const {
-		mapStyle: currentMapStyle,
-		currentLocationData,
+		setIsCurrentLocationDisabled,
 		setCurrentLocation,
 		viewpoint,
 		setViewpoint,
