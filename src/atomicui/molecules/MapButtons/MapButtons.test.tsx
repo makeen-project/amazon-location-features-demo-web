@@ -1,6 +1,6 @@
 import i18n from "@demo/locales";
 import { EsriMapEnum } from "@demo/types";
-import { act, fireEvent, render } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { I18nextProvider } from "react-i18next";
 
 import MapButtons from "./MapButtons";
@@ -37,34 +37,40 @@ describe("<MapButtons/>", () => {
 		);
 	};
 
-	test("renders map buttons container", () => {
+	test("renders map buttons container", async () => {
 		const { getByTestId } = renderComponent();
-		expect(getByTestId("map-buttons-container")).toBeInTheDocument();
+		await waitFor(() => {
+			expect(getByTestId("map-buttons-container")).toBeInTheDocument();
+		});
 	});
 
-	test("renders map styles button and opens the map styles card", () => {
+	test("renders map styles button and opens the map styles card", async () => {
 		props.openStylesCard = true;
 		const { getByTestId } = renderComponent();
-		expect(getByTestId("map-styles-card")).toBeInTheDocument();
+		await waitFor(() => {
+			expect(getByTestId("map-styles-card")).toBeInTheDocument();
+		});
 	});
 
-	test("renders geofence control button", () => {
+	test("renders geofence control button", async () => {
 		const { getByTestId } = renderComponent();
-		expect(getByTestId("geofence-control-button")).toBeInTheDocument();
+		await waitFor(() => {
+			expect(getByTestId("geofence-control-button")).toBeInTheDocument();
+		});
 	});
 
 	test("searches for map styles", async () => {
 		const { getByTestId, getByPlaceholderText } = renderComponent();
 		fireEvent.click(getByTestId("map-styles-button"));
 
-		act(() => {
+		await waitFor(() => {
 			fireEvent.change(getByPlaceholderText("Search styles"), { target: { value: "satellite" } });
 		});
 
 		expect(props.setSearchValue).toHaveBeenCalledWith("satellite");
 	});
 
-	test("updates selected filters when a filter is clicked", () => {
+	test("updates selected filters when a filter is clicked", async () => {
 		props.openStylesCard = true;
 		const { getByTestId, findByTestId } = renderComponent();
 
@@ -85,13 +91,13 @@ describe("<MapButtons/>", () => {
 		});
 	});
 
-	test("selects a map style", () => {
+	test("selects a map style", async () => {
 		const { getByTestId, findByTestId } = renderComponent();
 		fireEvent.click(getByTestId("map-styles-button"));
 
 		findByTestId("map-styles-card");
 
-		act(() => {
+		await waitFor(() => {
 			fireEvent.click(getByTestId(`map-style-item-${EsriMapEnum.ESRI_STREET_MAP}`));
 		});
 
