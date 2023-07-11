@@ -696,7 +696,7 @@ const DemoPage: React.FC = () => {
 					) : show.authTrackerBox ? (
 						<AuthTrackingBox
 							mapRef={mapViewRef?.current}
-							setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackingBox: b }))}
+							setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
 						/>
 					) : show.unauthGeofenceBox ? (
 						<UnauthSimulation

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 
 import { Button, Card, Flex, Text } from "@aws-amplify/ui-react";
 import {
@@ -12,18 +12,23 @@ import {
 } from "@demo/assets";
 import { ReactComponent as Simulation } from "@demo/assets/graphics/simulation.svg";
 import { DropdownEl, TextEl } from "@demo/atomicui/atoms";
-import { ConfirmationModal, IconicInfoCard, NotificationsBox } from "@demo/atomicui/molecules";
+import { ConfirmationModal, IconicInfoCard, NotificationsBox, WebsocketBanner } from "@demo/atomicui/molecules";
 import { SelectOption } from "@demo/types";
-import "./start-styles.scss";
+import "./styles.scss";
+import { PubSub } from "aws-amplify";
 
-const StartUnauthSimulation = () => {
+interface IProps {
+	onClose: () => void;
+}
+
+const StartUnauthSimulation: FC<IProps> = ({ onClose }) => {
 	const [routeSelectedValue, setRouteSelectedValue] = useState<SelectOption | null>(null);
 	const [busSelectedValue, setBusSelectedValue] = useState<SelectOption>();
 	const [startSimulation, setStartSimulation] = useState(false);
 	const [isNotifications, setIsNotifications] = useState(false);
 	const [routes, setRoutes] = useState<SelectOption[]>([]);
 	const [confirmCloseSimulation, setConfirmCloseSimulation] = useState(false);
-	// const { subscription } = useWebSocketService();
+	const { subscription, Connection } = WebsocketBanner();
 
 	useEffect(() => {
 		if (routeSelectedValue !== null) {
@@ -41,10 +46,11 @@ const StartUnauthSimulation = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [routeSelectedValue]);
 
-	const onClose = useCallback(() => {
-		// setShowTrackingBox(false);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	const onCloseHandler = () => {
+		subscription?.unsubscribe();
+		PubSub.removePluggable("AWSIoTProvider");
+		onClose();
+	};
 
 	const mockNotification = [
 		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
@@ -193,9 +199,9 @@ const StartUnauthSimulation = () => {
 			<Card className="unauthSimulation-card" left="1.62rem" overflow={startSimulation ? "visible" : "hidden"}>
 				{!startSimulation ? (
 					<>
-						<Flex justifyContent="flex-end" padding="0.6rem">
+						<Flex justifyContent="flex-end" padding="0.77rem">
 							<Flex className="card-close">
-								<IconClose className="close-icon" width={20} height={20} onClick={onClose} />
+								<IconClose className="close-icon" width={20} height={20} onClick={onCloseHandler} />
 							</Flex>
 						</Flex>
 						<StartSimulation />
@@ -209,7 +215,13 @@ const StartUnauthSimulation = () => {
 									cursor="pointer"
 									width={20}
 									height={20}
-									onClick={() => setConfirmCloseSimulation(true)}
+									onClick={() => {
+										if (isNotifications) {
+											setIsNotifications(false);
+										} else {
+											setConfirmCloseSimulation(true);
+										}
+									}}
 								/>
 								<TextEl
 									className="simulation-title"
@@ -230,6 +242,7 @@ const StartUnauthSimulation = () => {
 							</Flex>
 						</Flex>
 						<Flex gap="0" direction="column" width="100%">
+							{Connection}
 							{!isNotifications ? (
 								<Flex padding="1.3rem" direction="column" gap="0">
 									<TextEl fontSize="12px" fontFamily="AmazonEmber-Bold" text="Routes notifications" />
@@ -301,10 +314,7 @@ const StartUnauthSimulation = () => {
 			<Flex className="confirmation-modal-container">
 				<ConfirmationModal
 					open={confirmCloseSimulation}
-					onClose={() => {
-						setStartSimulation(false);
-						setConfirmCloseSimulation(false);
-					}}
+					onClose={onCloseHandler}
 					heading="Exit simulation"
 					description={
 						<Text

@@ -76,7 +76,12 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 					</Flex>
 				</Card>
 			) : (
-				<StartUnauthSimulation />
+				<StartUnauthSimulation
+					onClose={() => {
+						setShowStartUnauthSimulation(false);
+						handleClose();
+					}}
+				/>
 			)}
 		</>
 	);
