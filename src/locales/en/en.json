@@ -101,6 +101,15 @@
 	"samples": {
 		"text": "Samples"
 	},
+	"simulation": {
+		"text": "Simulation"
+	},
+	"notifications": {
+		"text": "Notifications"
+	},
+	"exit": {
+		"text": "Exit"
+	},
 	"header__overview": {
 		"text": "Overview"
 	},
@@ -2968,6 +2977,60 @@
 	},
 	"unauth_simulation__disclaimer": {
 		"text": "Requires connection to AWS CloudFormation"
+	},
+	"start_unauth_simulation__heading": {
+		"text": "Tackers and Geofences"
+	},
+	"start_unauth_simulation__desc": {
+		"text": "Enter the tracking simulation to view the path across Vancouver streets that crosses geofence"
+	},
+	"start_unauth_simulation__info1_desc": {
+		"text": "Visualize your history on the map"
+	},
+	"start_unauth_simulation__info2_desc": {
+		"text": "Define virtual boundaries around a specific area to detect entry and exit events"
+	},
+	"start_unauth_simulation__info3_desc": {
+		"text": "Get geofence messages when you enter and leave locations"
+	},
+	"start_unauth_simulation__start_simulation": {
+		"text": "Start Simulation"
+	},
+	"start_unauth_simulation__t&g_simulation": {
+		"text": "Tracking and Geofence simulation"
+	},
+	"start_unauth_simulation__routes_notifications": {
+		"text": "Routes notifications"
+	},
+	"start_unauth_simulation__routes_selected": {
+		"text": "routes selected"
+	},
+	"start_unauth_simulation__select_route": {
+		"text": "Select a route"
+	},
+	"start_unauth_simulation__tracking_history": {
+		"text": "Tracking history"
+	},
+	"start_unauth_simulation__select_bus": {
+		"text": "Select a Bus"
+	},
+	"start_unauth_simulation__exit_simulation": {
+		"text": "Exit simulation"
+	},
+	"start_unauth_simulation__exit_simulation_desc": {
+		"text": "Are you sure you want to exit Trackers and Geofences simulation?"
+	},
+	"start_unauth_simulation__stay_in_simulation": {
+		"text": "Stay in simulation"
+	},
+	"notifications_box__geofences_notifications": {
+		"text": "Geofences notifications"
+	},
+	"notifications_box__clear_notifications": {
+		"text": "Clear notifications"
+	},
+	"notifications_box__no_new_notifications": {
+		"text": "No new notifications"
 	},
 	"geofence_box__error_1": {
 		"text": "Name can only contain alphanumeric, underscore and hyphen characters"

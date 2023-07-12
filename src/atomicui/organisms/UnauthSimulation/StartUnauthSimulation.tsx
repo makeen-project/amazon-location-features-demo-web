@@ -8,14 +8,101 @@ import {
 	IconGeofence,
 	IconGeofenceMarkerDisabled,
 	IconRadar,
-	IconSegment
+	IconSegment,
+	Simulation
 } from "@demo/assets";
-import { ReactComponent as Simulation } from "@demo/assets/graphics/simulation.svg";
 import { DropdownEl } from "@demo/atomicui/atoms";
 import { ConfirmationModal, IconicInfoCard, NotificationsBox, WebsocketBanner } from "@demo/atomicui/molecules";
 import { SelectOption } from "@demo/types";
 import { PubSub } from "aws-amplify";
+import { useTranslation } from "react-i18next";
 import "./styles.scss";
+
+const mockNotification = [
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
+	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" }
+];
+
+const trackingHistory = [
+	{ title: "Bus stop number 1", description: "50.54943, 30.21989", subDescription: "11:42 pm" },
+	{ title: "Bus stop number 2", description: null, subDescription: "11:45 pm" },
+	{ title: "Bus stop number 3", description: null, subDescription: "11:48 pm" },
+	{ title: "Bus stop number 4", description: null, subDescription: "11:51 pm" },
+	{ title: "Bus stop number 5", description: null, subDescription: "11:54 pm" },
+	{ title: "Bus stop number 6", description: "50.54948, 30.21994", subDescription: "11:57 pm" }
+];
+
+const buses = [
+	{ value: "Bus 01", label: "bus_01" },
+	{ value: "Bus 02", label: "bus_02" },
+	{ value: "Bus 03", label: "bus_03" },
+	{ value: "Bus 04", label: "bus_04" },
+	{ value: "Bus 05", label: "bus_05" },
+	{ value: "Bus 06", label: "bus_06" },
+	{ value: "Bus 07", label: "bus_07" },
+	{ value: "Bus 08", label: "bus_08" },
+	{ value: "Bus 09", label: "bus_09" },
+	{ value: "Bus 10", label: "bus_10" }
+];
+
+const routesArray = [
+	{ value: "route 01", label: "route_01" },
+	{ value: "route 02", label: "route_02" },
+	{ value: "route 03", label: "route_03" },
+	{ value: "route 04", label: "route_04" },
+	{ value: "route 05", label: "route_05" },
+	{ value: "route 06", label: "route_06" },
+	{ value: "route 07", label: "route_07" },
+	{ value: "route 08", label: "route_08" },
+	{ value: "route 09", label: "route_09" },
+	{ value: "route 10", label: "route_10" }
+];
 
 interface IProps {
 	onClose: () => void;
@@ -29,6 +116,7 @@ const StartUnauthSimulation: React.FC<IProps> = ({ onClose }) => {
 	const [routes, setRoutes] = useState<SelectOption[]>([]);
 	const [confirmCloseSimulation, setConfirmCloseSimulation] = useState(false);
 	const { subscription, Connection } = WebsocketBanner();
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		if (routeSelectedValue !== null) {
@@ -52,95 +140,9 @@ const StartUnauthSimulation: React.FC<IProps> = ({ onClose }) => {
 		onClose();
 	};
 
-	const mockNotification = [
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
-		{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" }
-	];
-
-	const trackingHistory = [
-		{ title: "Bus stop number 1", description: "50.54943, 30.21989", subDescription: "11:42 pm" },
-		{ title: "Bus stop number 2", description: null, subDescription: "11:45 pm" },
-		{ title: "Bus stop number 3", description: null, subDescription: "11:48 pm" },
-		{ title: "Bus stop number 4", description: null, subDescription: "11:51 pm" },
-		{ title: "Bus stop number 5", description: null, subDescription: "11:54 pm" },
-		{ title: "Bus stop number 6", description: "50.54948, 30.21994", subDescription: "11:57 pm" }
-	];
-
-	const buses = [
-		{ value: "Bus 01", label: "bus_01" },
-		{ value: "Bus 02", label: "bus_02" },
-		{ value: "Bus 03", label: "bus_03" },
-		{ value: "Bus 04", label: "bus_04" },
-		{ value: "Bus 05", label: "bus_05" },
-		{ value: "Bus 06", label: "bus_06" },
-		{ value: "Bus 07", label: "bus_07" },
-		{ value: "Bus 08", label: "bus_08" },
-		{ value: "Bus 09", label: "bus_09" },
-		{ value: "Bus 10", label: "bus_10" }
-	];
-
-	const routesArray = [
-		{ value: "route 01", label: "route_01" },
-		{ value: "route 02", label: "route_02" },
-		{ value: "route 03", label: "route_03" },
-		{ value: "route 04", label: "route_04" },
-		{ value: "route 05", label: "route_05" },
-		{ value: "route 06", label: "route_06" },
-		{ value: "route 07", label: "route_07" },
-		{ value: "route 08", label: "route_08" },
-		{ value: "route 09", label: "route_09" },
-		{ value: "route 10", label: "route_10" }
-	];
-
 	const StartSimulation = useCallback(() => {
 		return (
-			<Flex position="relative">
+			<Flex position="relative" height="47rem">
 				<Flex className="start-simulation-container">
 					<Flex justifyContent="center">
 						<Simulation className="simulation-icon" />
@@ -148,38 +150,38 @@ const StartUnauthSimulation: React.FC<IProps> = ({ onClose }) => {
 					<Flex className="text-container">
 						<Flex direction="column">
 							<Text color={"var(--grey-color)"} fontSize="1.08rem" textAlign="center" variation="tertiary">
-								Simulation
+								{t("simulation.text")}
 							</Text>
 							<Text fontSize="1.8rem" textAlign="center" variation="secondary" fontFamily="AmazonEmber-Medium">
-								Tackers and Geofences
+								{t("start_unauth_simulation__heading.text")}
 							</Text>
 							<Text color="var(--grey-color)" fontSize="1rem" textAlign="center" variation="tertiary">
-								Enter the tracking simulation to view the path across Vancouver streets that crosses geofence
+								{t("start_unauth_simulation__desc.text")}
 							</Text>
 						</Flex>
 						<IconicInfoCard
 							IconComponent={<IconRadar className="primary-icon" width={24} height={24} />}
-							title="Tackers"
-							description="Visualize your history on the map"
+							title={t("trackers.text")}
+							description={t("start_unauth_simulation__info1_desc.text")}
 						/>
 						<IconicInfoCard
 							IconComponent={<IconGeofence className="primary-icon geofence-icon" width={40} height={26} />}
-							title="Geofences"
-							description="Define virtual boundaries around a specific area to detect entry and exit events"
+							title={t("geofences.text")}
+							description={t("start_unauth_simulation__info2_desc.text")}
 						/>
 						<IconicInfoCard
 							IconComponent={<IconBell className="primary-icon" width={30} height={25} />}
-							title="Notifications"
-							description="Get geofence messages when you enter and leave locations"
+							title={t("notifications.text")}
+							description={t("start_unauth_simulation__info3_desc.text")}
 						/>
 						<Button variation="primary" padding="0.8rem 0" onClick={() => setStartSimulation(true)}>
-							Start Simulation
+							{t("start_unauth_simulation__start_simulation.text")}
 						</Button>
 					</Flex>
 				</Flex>
 			</Flex>
 		);
-	}, []);
+	}, [t]);
 
 	return (
 		<>
@@ -211,7 +213,7 @@ const StartUnauthSimulation: React.FC<IProps> = ({ onClose }) => {
 									}}
 								/>
 								<Text className="medium" fontSize="1.08rem" textAlign="center" color={"var(--grey-color)"}>
-									Tracking and Geofence simulation
+									{t("start_unauth_simulation__t&g_simulation.text")}
 								</Text>
 							</Flex>
 							<Flex
@@ -229,30 +231,38 @@ const StartUnauthSimulation: React.FC<IProps> = ({ onClose }) => {
 							{!isNotifications ? (
 								<Flex padding="1.3rem" direction="column" gap="0">
 									<Text className="bold" fontSize="0.92rem">
-										Routes notifications
+										{t("start_unauth_simulation__routes_notifications.text")}
 									</Text>
 									<Flex className="routes-notification-container" marginTop="0.5rem">
 										<DropdownEl
 											defaultOption={routes}
 											options={routesArray}
 											onSelect={value => value && setRouteSelectedValue(value)}
-											label={!!routes.length ? `${routes.length} routes selected` : "Select a route"}
+											label={
+												!!routes.length
+													? `${routes.length} ${t("start_unauth_simulation__routes_selected.text")}`
+													: t("start_unauth_simulation__select_route.text")
+											}
 											arrowIconColor={"var(--tertiary-color)"}
 											showSelected
 											bordered
 											isCheckbox
 										/>
-										<Button variation="primary">Pause</Button>
+										<Button variation="primary">{t("tracker_box__pause.text")}</Button>
 									</Flex>
 									<Flex className="bus-container">
 										<Text className="bold" fontSize="0.92rem">
-											Tracking history
+											{t("start_unauth_simulation__tracking_history.text")}
 										</Text>
 										<DropdownEl
 											defaultOption={busSelectedValue}
 											options={buses}
 											onSelect={value => value && setBusSelectedValue(value)}
-											label={!!busSelectedValue ? `${busSelectedValue?.label}` : "Select a Bus"}
+											label={
+												!!busSelectedValue
+													? `${busSelectedValue?.label}`
+													: t("start_unauth_simulation__select_bus.text")
+											}
 											showSelected
 											isRadioBox
 										/>
@@ -302,7 +312,7 @@ const StartUnauthSimulation: React.FC<IProps> = ({ onClose }) => {
 				<ConfirmationModal
 					open={confirmCloseSimulation}
 					onClose={onCloseHandler}
-					heading="Exit simulation"
+					heading={t("start_unauth_simulation__exit_simulation.text")}
 					description={
 						<Text
 							className="small-text"
@@ -311,12 +321,12 @@ const StartUnauthSimulation: React.FC<IProps> = ({ onClose }) => {
 							textAlign="center"
 							whiteSpace="pre-line"
 						>
-							Are you sure you want to exit Trackers and Geofences simulation?
+							{t("start_unauth_simulation__exit_simulation_desc.text")}
 						</Text>
 					}
 					onConfirm={() => setConfirmCloseSimulation(false)}
-					confirmationText={"Stay in simulation"}
-					cancelationText={"Exit"}
+					confirmationText={t("start_unauth_simulation__stay_in_simulation.text")}
+					cancelationText={t("exit.text")}
 				/>
 			</Flex>
 		</>
