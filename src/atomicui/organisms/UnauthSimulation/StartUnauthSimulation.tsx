@@ -140,7 +140,7 @@ const StartUnauthSimulation: React.FC<IProps> = ({ onClose }) => {
 
 	const StartSimulation = useCallback(() => {
 		return (
-			<Flex position="relative" height="45.3rem">
+			<Flex position="relative">
 				<Flex className="start-simulation-container">
 					<Flex justifyContent="center">
 						<Simulation className="simulation-icon" />
@@ -150,13 +150,7 @@ const StartUnauthSimulation: React.FC<IProps> = ({ onClose }) => {
 							<Text color={"var(--grey-color)"} fontSize="1.08rem" textAlign="center" variation="tertiary">
 								Simulation
 							</Text>
-							<Text
-								color={"var(--grey-color)"}
-								fontSize="1.8rem"
-								textAlign="center"
-								variation="secondary"
-								fontFamily="AmazonEmber-Medium"
-							>
+							<Text fontSize="1.8rem" textAlign="center" variation="secondary" fontFamily="AmazonEmber-Medium">
 								Tackers and Geofences
 							</Text>
 							<Text color="var(--grey-color)" fontSize="1rem" textAlign="center" variation="tertiary">
