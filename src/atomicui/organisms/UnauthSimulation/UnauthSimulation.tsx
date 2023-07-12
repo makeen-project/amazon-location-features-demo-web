@@ -32,9 +32,9 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 	return (
 		<>
 			{!showStartUnauthSimulation ? (
-				<Card data-testId="unauth-simulation-card" className="unauth-simulation-card" left={21}>
+				<Card data-testid="unauth-simulation-card" className="unauth-simulation-card" left={21}>
 					<Flex
-						data-testId="unauth-simulation-card-header-close"
+						data-testid="unauth-simulation-card-header-close"
 						className="unauth-simulation-card-header"
 						onClick={handleClose}
 					>
@@ -51,7 +51,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 								: t("unauth_simulation__tracker_box_info.text")}
 						</Text>
 						<Button
-							data-testId="unauth-simulation-cta"
+							data-testid="unauth-simulation-cta"
 							variation="primary"
 							marginTop="1.5rem"
 							isFullWidth
@@ -62,7 +62,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 					</Flex>
 					<Flex className="unauth-simulation-card-footer">
 						<Text
-							data-testId="unauth-simulation-enable-live"
+							data-testid="unauth-simulation-enable-live"
 							className="small-text"
 							color="var(--primary-color)"
 							style={{ cursor: "pointer" }}

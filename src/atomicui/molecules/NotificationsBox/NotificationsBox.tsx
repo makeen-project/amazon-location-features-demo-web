@@ -1,8 +1,7 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Flex } from "@aws-amplify/ui-react";
+import { Flex, Text } from "@aws-amplify/ui-react";
 import { IconBellSolid, IconGeofenceMarkerDisabled } from "@demo/assets";
-import { TextEl } from "@demo/atomicui/atoms";
 import { format } from "date-fns";
 
 import { IconicInfoCard } from "../IconicInfoCard";
@@ -12,7 +11,7 @@ interface IProps {
 	notification: { title: string; createdAt: string }[];
 }
 
-const NotificationsBox: FC<IProps> = ({ notification }) => {
+const NotificationsBox: React.FC<IProps> = ({ notification }) => {
 	const [notificationList, setNotificationList] = useState<{ title: string; createdAt: string }[]>([]);
 	useEffect(() => {
 		setNotificationList(notification);
@@ -22,22 +21,18 @@ const NotificationsBox: FC<IProps> = ({ notification }) => {
 	return (
 		<Flex width="100%" className="notifications-box-container" direction="column" gap="0">
 			<Flex justifyContent="space-between" width="100%" padding="0.5rem 1.2rem">
-				<TextEl
+				<Text className="medium" fontSize="0.95rem" textAlign="center" variation="secondary">
+					Geofences notifications
+				</Text>
+				<Text
+					className="medium clear-notifications"
 					fontSize="0.95rem"
 					textAlign="center"
 					variation="secondary"
-					fontFamily="AmazonEmber-Medium"
-					text="Geofences notifications"
-				/>
-				<TextEl
-					className="clear-notifications"
-					fontSize="0.95rem"
-					textAlign="center"
-					variation="secondary"
-					fontFamily="AmazonEmber-Medium"
-					text="Clear notifications"
 					onClick={() => setNotificationList([])}
-				/>
+				>
+					Clear notifications
+				</Text>
 			</Flex>
 			<Flex className="notification-list" direction="column" gap="0">
 				{!!notificationList.length ? (
@@ -57,13 +52,9 @@ const NotificationsBox: FC<IProps> = ({ notification }) => {
 				) : (
 					<Flex className="no-notifications" direction="column" gap="0">
 						<IconBellSolid />
-						<TextEl
-							fontSize="0.95rem"
-							textAlign="center"
-							variation="secondary"
-							fontFamily="AmazonEmber-Medium"
-							text="No new notifications"
-						/>
+						<Text className="medium" fontSize="0.95rem" textAlign="center" variation="secondary">
+							No new notifications
+						</Text>
 					</Flex>
 				)}
 			</Flex>

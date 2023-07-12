@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { Button, Card, Flex, Text } from "@aws-amplify/ui-react";
 import {
@@ -11,17 +11,17 @@ import {
 	IconSegment
 } from "@demo/assets";
 import { ReactComponent as Simulation } from "@demo/assets/graphics/simulation.svg";
-import { DropdownEl, TextEl } from "@demo/atomicui/atoms";
+import { DropdownEl } from "@demo/atomicui/atoms";
 import { ConfirmationModal, IconicInfoCard, NotificationsBox, WebsocketBanner } from "@demo/atomicui/molecules";
 import { SelectOption } from "@demo/types";
-import "./styles.scss";
 import { PubSub } from "aws-amplify";
+import "./styles.scss";
 
 interface IProps {
 	onClose: () => void;
 }
 
-const StartUnauthSimulation: FC<IProps> = ({ onClose }) => {
+const StartUnauthSimulation: React.FC<IProps> = ({ onClose }) => {
 	const [routeSelectedValue, setRouteSelectedValue] = useState<SelectOption | null>(null);
 	const [busSelectedValue, setBusSelectedValue] = useState<SelectOption>();
 	const [startSimulation, setStartSimulation] = useState(false);
@@ -147,28 +147,21 @@ const StartUnauthSimulation: FC<IProps> = ({ onClose }) => {
 					</Flex>
 					<Flex className="text-container">
 						<Flex direction="column">
-							<TextEl
-								className="simulation-title"
-								fontSize="14px"
-								textAlign="center"
-								variation="tertiary"
-								text="Simulation"
-							/>
-							<TextEl
-								className="simulation"
+							<Text color={"var(--grey-color)"} fontSize="1.08rem" textAlign="center" variation="tertiary">
+								Simulation
+							</Text>
+							<Text
+								color={"var(--grey-color)"}
 								fontSize="1.8rem"
 								textAlign="center"
 								variation="secondary"
 								fontFamily="AmazonEmber-Medium"
-								text="Tackers and Geofences"
-							/>
-							<TextEl
-								className="simulation-title"
-								fontSize="13px"
-								textAlign="center"
-								variation="tertiary"
-								text="Enter the tracking simulation to view the path across Vancouver streets that crosses geofence"
-							/>
+							>
+								Tackers and Geofences
+							</Text>
+							<Text color="var(--grey-color)" fontSize="1rem" textAlign="center" variation="tertiary">
+								Enter the tracking simulation to view the path across Vancouver streets that crosses geofence
+							</Text>
 						</Flex>
 						<IconicInfoCard
 							IconComponent={<IconRadar className="primary-icon" width={24} height={24} />}
@@ -223,13 +216,9 @@ const StartUnauthSimulation: FC<IProps> = ({ onClose }) => {
 										}
 									}}
 								/>
-								<TextEl
-									className="simulation-title"
-									fontSize="14px"
-									textAlign="center"
-									text="Tracking and Geofence simulation"
-									fontFamily="AmazonEmber-Medium"
-								/>
+								<Text className="medium" fontSize="1.08rem" textAlign="center" color={"var(--grey-color)"}>
+									Tracking and Geofence simulation
+								</Text>
 							</Flex>
 							<Flex
 								padding="0.6rem"
@@ -245,7 +234,9 @@ const StartUnauthSimulation: FC<IProps> = ({ onClose }) => {
 							{Connection}
 							{!isNotifications ? (
 								<Flex padding="1.3rem" direction="column" gap="0">
-									<TextEl fontSize="12px" fontFamily="AmazonEmber-Bold" text="Routes notifications" />
+									<Text className="bold" fontSize="0.92rem">
+										Routes notifications
+									</Text>
 									<Flex className="routes-notification-container" marginTop="0.5rem">
 										<DropdownEl
 											defaultOption={routes}
@@ -260,7 +251,9 @@ const StartUnauthSimulation: FC<IProps> = ({ onClose }) => {
 										<Button variation="primary">Pause</Button>
 									</Flex>
 									<Flex className="bus-container">
-										<TextEl fontSize="12px" fontFamily="AmazonEmber-Bold" text="Tracking history" />
+										<Text className="bold" fontSize="0.92rem">
+											Tracking history
+										</Text>
 										<DropdownEl
 											defaultOption={busSelectedValue}
 											options={buses}
