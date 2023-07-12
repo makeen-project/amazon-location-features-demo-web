@@ -5,9 +5,8 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button, Card, Flex, Loader, Text, View } from "@aws-amplify/ui-react";
 import { IconArrow, IconCar, IconClose, IconDroneSolid, IconInfoSolid, IconSegment, IconWalking } from "@demo/assets";
-import { GeofenceMarker } from "@demo/atomicui/molecules";
+import { GeofenceMarker, WebsocketBanner } from "@demo/atomicui/molecules";
 import { useAwsGeofence, useAwsRoute, useAwsTracker, useMediaQuery } from "@demo/hooks";
-import { useWebSocketService } from "@demo/services";
 import { RouteDataType, TrackerType } from "@demo/types";
 import * as turf from "@turf/turf";
 import { PubSub } from "aws-amplify";
@@ -36,7 +35,6 @@ const AuthTrackerBox: React.FC<AuthTrackerBoxProps> = ({ mapRef, setShowAuthTrac
 	const [routeData, setRouteData] = useState<RouteDataType | undefined>(undefined);
 	const [points, setPoints] = useState<Position[] | undefined>(undefined);
 	const [trackerPos, setTrackerPos] = useState<Position | undefined>(undefined);
-	const [hideConnectionAlert, setHideConnectionAlert] = useState(false);
 	const [isCollapsed, setIsCollapsed] = useState(true);
 	const { isFetchingRoute } = useAwsRoute();
 	const { geofences, getGeofencesList } = useAwsGeofence();
@@ -48,28 +46,10 @@ const AuthTrackerBox: React.FC<AuthTrackerBoxProps> = ({ mapRef, setShowAuthTrac
 		trackerPoints,
 		setTrackerPoints
 	} = useAwsTracker();
-	const { subscription, connectionState } = useWebSocketService();
-	const isConnected = useMemo(() => connectionState === "Connected", [connectionState]);
+	const { subscription, Connection } = WebsocketBanner();
 	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();
 	const isLtr = langDir === "ltr";
-
-	useEffect(() => {
-		setHideConnectionAlert(false);
-		let flushTimeoutId: NodeJS.Timeout;
-
-		if (isConnected) {
-			flushTimeoutId = setTimeout(() => {
-				setHideConnectionAlert(true);
-			}, 3000);
-		} else {
-			setHideConnectionAlert(false);
-		}
-
-		return () => {
-			clearTimeout(flushTimeoutId);
-		};
-	}, [isConnected]);
 
 	const isDesktop = useMediaQuery("(min-width: 1024px)");
 
@@ -276,21 +256,7 @@ const AuthTrackerBox: React.FC<AuthTrackerBoxProps> = ({ mapRef, setShowAuthTrac
 						</Flex>
 					</Flex>
 				</Flex>
-				<Flex
-					className={`tracking-connection-alert slide-up ${
-						hideConnectionAlert ? "hide" : isConnected ? "success" : "info"
-					}
-					`}
-				>
-					<Flex width="100%" justifyContent="space-between" alignItems="center">
-						<Text className="notification-text">
-							{isConnected
-								? t("tracker_box__notification_service_status_1.text")
-								: t("tracker_box__notification_service_status_2.text")}{" "}
-						</Text>
-						<IconClose className="close-icon" onClick={() => setHideConnectionAlert(true)} />
-					</Flex>
-				</Flex>
+				{Connection}
 				<Flex gap={0} alignItems="center" padding="1.23rem">
 					<IconInfoSolid className="icon-plus-rounded" />
 					<Text marginLeft="1.23rem" variation="tertiary" textAlign={isLtr ? "start" : "end"}>

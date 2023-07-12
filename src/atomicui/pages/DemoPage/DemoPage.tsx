@@ -671,13 +671,13 @@ const DemoPage: React.FC = () => {
 							onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
 							onOpenConnectAwsAccountModal={() => setShow(s => ({ ...s, connectAwsAccount: true }))}
 							onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
-							onShowAuthGeofenceBox={() => setShow(s => ({ ...s, authGeofenceBox: true }))}
-							onShowAuthTrackerBox={() => setShow(s => ({ ...s, authTrackerBox: true }))}
 							onShowSettings={() => setShow(s => ({ ...s, settings: true }))}
 							onShowTrackingDisclaimerModal={() => setShow(s => ({ ...s, trackingDisclaimerModal: true }))}
 							onShowAboutModal={() => setShow(s => ({ ...s, about: true }))}
 							onShowUnauthGeofenceBox={() => setShow(s => ({ ...s, unauthGeofenceBox: true }))}
 							onShowUnauthTrackerBox={() => setShow(s => ({ ...s, unauthTrackerBox: true }))}
+							onShowAuthGeofenceBox={() => setShow(s => ({ ...s, authGeofenceBox: true }))}
+							onShowAuthTrackerBox={() => setShow(s => ({ ...s, authTrackingBox: true }))}
 						/>
 					)}
 					{show.routeBox ? (
@@ -694,7 +694,7 @@ const DemoPage: React.FC = () => {
 					) : show.authTrackerBox ? (
 						<AuthTrackingBox
 							mapRef={mapViewRef?.current}
-							setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackingBox: b }))}
+							setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
 						/>
 					) : show.unauthGeofenceBox ? (
 						<UnauthSimulation

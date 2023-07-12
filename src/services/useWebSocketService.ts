@@ -17,7 +17,7 @@ const useWebSocketService = (): { subscription: ZenObservable.Subscription | nul
 	const [connectionState, setConnectionState] = useState<string>("Disconnected");
 	const [subscription, setSubscription] = useState<ZenObservable.Subscription | null>(null);
 
-	const { region, webSocketUrl, credentials } = useAmplifyAuth();
+	const { region, webSocketUrl, credentials, isUserAwsAccountConnected } = useAmplifyAuth();
 	const url = useMemo(() => webSocketUrl?.split("//")[1]?.replace("/", "") || webSocketUrl, [webSocketUrl]);
 
 	useEffect(() => {
@@ -69,10 +69,13 @@ const useWebSocketService = (): { subscription: ZenObservable.Subscription | nul
 	}, [credentials?.identityId, region, url]);
 
 	useEffect(() => {
-		if (["Disconnected", "ConnectionDisrupted", "ConnectedPendingDisconnect"].includes(connectionState)) {
+		if (
+			isUserAwsAccountConnected &&
+			["Disconnected", "ConnectionDisrupted", "ConnectedPendingDisconnect"].includes(connectionState)
+		) {
 			connect();
 		}
-	}, [connect, connectionState]);
+	}, [connect, connectionState, isUserAwsAccountConnected]);
 
 	return useMemo(
 		() => ({

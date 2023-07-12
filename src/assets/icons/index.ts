@@ -90,3 +90,5 @@ export { ReactComponent as LogoSmall } from "./logo.svg";
 export { ReactComponent as LogoDark } from "./LogoDark.svg";
 export { ReactComponent as LogoLight } from "./LogoLight.svg";
 export { ReactComponent as IconTickCircle } from "./tick-circle.svg";
+export { ReactComponent as IconBellSolid } from "./icon-bell-solid.svg";
+export { ReactComponent as IconRadar } from "./icon-radar.svg";
