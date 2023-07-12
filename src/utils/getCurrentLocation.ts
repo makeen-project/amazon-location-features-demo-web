@@ -4,7 +4,7 @@
 import { showToast } from "@demo/core";
 
 import { appConfig } from "@demo/core/constants";
-import i18n from "@demo/i18n";
+import i18n from "@demo/locales/i18n";
 import { CurrentLocationDataType, MapProviderEnum, ToastType, ViewPointType } from "@demo/types";
 import * as R from "ramda";
 

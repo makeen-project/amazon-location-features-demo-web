@@ -1,4 +1,4 @@
-import i18n from "@demo/i18n";
+import i18n from "@demo/locales/i18n";
 import { EsriMapEnum } from "@demo/types";
 import { act, fireEvent, render } from "@testing-library/react";
 import { I18nextProvider } from "react-i18next";

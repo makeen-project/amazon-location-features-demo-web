@@ -7,7 +7,7 @@ import { HubPayload } from "@aws-amplify/core";
 import { AWSIoTProvider } from "@aws-amplify/pubsub";
 import { showToast } from "@demo/core/Toast";
 import { useAmplifyAuth } from "@demo/hooks";
-import i18n from "@demo/i18n";
+import i18n from "@demo/locales/i18n";
 import { ToastType } from "@demo/types";
 import { Amplify, Hub, PubSub } from "aws-amplify";
 
