@@ -1,6 +1,15 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
+export enum EventTypeEnum {
+	SESSION_START = "SESSION_START",
+	SESSION_END = "SESSION_END",
+	VIEW_PAGE = "VIEW_PAGE",
+	LEAVE_PAGE = "LEAVE_PAGE",
+	APPLICATION_CRASHED = "APPLICATION_CRASHED",
+	SAMPLE_CLICKED = "SAMPLE_CLICKED"
+}
+
 export enum TravelMode {
 	CAR = "Car",
 	WALKING = "Walking",
