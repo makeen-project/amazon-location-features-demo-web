@@ -7,10 +7,9 @@ import {
 	UpdateEndpointRequest
 } from "@aws-sdk/client-pinpoint";
 
+import { appConfig } from "@demo/core/constants";
+import RecordInput from "@demo/types/RecordInput";
 import { browserName, fullBrowserVersion, isAndroid, isDesktop, isIOS } from "react-device-detect";
-import RecordInput from "types/RecordInput";
-
-import { appConfig } from "core/constants";
 
 import { uuid } from "./uuid";
 

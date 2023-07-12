@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
-import { EventTypeEnum } from "types/Enums";
+import { EventTypeEnum } from "@demo/types/Enums";
 
-import { record } from "utils/analyticsUtils";
+import { record } from "@demo/utils/analyticsUtils";
 
 const usePinpointAnalytics = (pageName: string) => {
 	useEffect(() => {
