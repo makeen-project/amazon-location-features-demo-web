@@ -425,7 +425,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 									whiteSpace="pre-line"
 									textAlign={isLtr ? "start" : "end"}
 								>
-									{t("caam__desc")}
+									{t("caam__desc.text")}
 								</Text>
 							</Flex>
 						</Flex>
