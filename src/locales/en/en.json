@@ -794,9 +794,6 @@
 	"sa__ad__1": {
 		"text": "** @types/react-lottie; version MIT -- https://www.npmjs.com/package/@types/react-lottie"
 	},
-	"sa__ad__2": {
-		"text": "------"
-	},
 	"sa__ad__3": {
 		"text": "** aws-android-sdk; version 2.59.0 -- https://github.com/aws-amplify/aws-sdk-android"
 	},
@@ -902,9 +899,6 @@
 	"sa__ad__37": {
 		"text": "The original legal notice is below.  Note: we are continuing to modify it by adding the names of new contributors, but at any given time, the list may be out of date."
 	},
-	"sa__ad__38": {
-		"text": "---"
-	},
 	"sa__ad__39": {
 		"text": "Legal Notices"
 	},
@@ -943,9 +937,6 @@
 	},
 	"sa__ad__51": {
 		"text": "[OpenFst COPYING file ends here]"
-	},
-	"sa__ad__52": {
-		"text": "-------------------------------------------------------------------------"
 	},
 	"sa__ad__53": {
 		"text": "Apache License\nVersion 2.0, January 2004\nhttp://www.apache.org/licenses/"
@@ -1265,9 +1256,6 @@
 	"sa__ad__158": {
 		"text": "The licenses for these third party components are included in License file."
 	},
-	"sa__ad__159": {
-		"text": "------"
-	},
 	"sa__ad__160": {
 		"text": "** aws-sdk-js; version v2.720.0 -- https://github.com/aws/aws-sdk-js"
 	},
@@ -1370,9 +1358,6 @@
 	"sa__ad__193": {
 		"text": "* For aws-sdk-js see also this required NOTICE: Copyright 2012-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved."
 	},
-	"sa__ad__194": {
-		"text": "------"
-	},
 	"sa__ad__195": {
 		"text": "** amplify-android/core; version 2.0.0 -- https://github.com/aws-amplify/amplify-android/tree/main/core"
 	},
@@ -1457,9 +1442,6 @@
 	"sa__ad__222": {
 		"text": "* For amplify-android/core see also this required NOTICE: No copyright notice"
 	},
-	"sa__ad__223": {
-		"text": "------"
-	},
 	"sa__ad__224": {
 		"text": "** typescript; version ^4.9.3 -- https://www.typescriptlang.org/"
 	},
@@ -1540,9 +1522,6 @@
 	},
 	"sa__ad__250": {
 		"text": "* For typescript see also this required NOTICE: Copyright (c) Microsoft Corporation. All rights reserved."
-	},
-	"sa__ad__251": {
-		"text": "------"
 	},
 	"sa__ad__252": {
 		"text": "** aws-amplify/ui-react; version 3.5.11 -- https://www.npmjs.com/package/@aws-amplify/ui-react\n** aws-amplify; version 6.5.0 -- https://www.npmjs.com/package/aws-amplify\n** aws-sdk; version 2.1248.0 -- https://github.com/aws/aws-sdk-ruby/tree/master/gems/aws-sdk\n** AWS SDK for iOS; version 2.30.1 -- https://aws.amazon.com/mobile/sdk/\n** AndroidX Core-ktx; version 1.8.0 -- https://developer.android.com/jetpack/androidx/releases/core\n** AndroidX Appcompat; version 1.5.1 -- https://developer.android.com/jetpack/androidx/releases/appcompat#1.4.2\n** Material Components for Android; version 1.7.0 -- https://github.com/material-components/material-components-android\n** AndroidX ConstraintLayout; version 2.1.4 -- https://developer.android.com/jetpack/androidx/releases/constraintlayout\n** AndroidxTestExtJunit; version 1.1.3 -- https://developer.android.com/reference/androidx/test/ext/junit/runners/package-summary\n** AndroidxTestEspressoCore; version 3.4.0 -- https://developer.android.com/training/testing/set-up-project\n** Hilt Android; version 2.42 -- https://github.com/google/dagger\n** AndroidX Preference; version 1.2.0 -- https://developer.android.com/jetpack/androidx/releases/preference#1.1.0"
@@ -1886,9 +1865,6 @@
 	"sa__ad__365": {
 		"text": "* For AndroidX Preference see also this required NOTICE:\nCopyright © 2008 Google Inc. All Rights Reserved."
 	},
-	"sa__ad__366": {
-		"text": "------"
-	},
 	"sa__ad__367": {
 		"text": "** AndroidxActivityKtx; version 1.5.1 -- https://developer.android.com/jetpack/androidx/releases/activity#1.3.1"
 	},
@@ -1903,9 +1879,6 @@
 	},
 	"sa__ad__371": {
 		"text": "* For AndroidxActivityKtx see also this required NOTICE:\nCopyright (C) 2018 The Android Open Source Project"
-	},
-	"sa__ad__372": {
-		"text": "------"
 	},
 	"sa__ad__373": {
 		"text": "** @typescript-eslint/parser; version ^5.33.1 -- https://github.com/typescript-eslint/typescript-eslint\nCopyright JS Foundation and other contributors, https://js.foundation"
@@ -1927,9 +1900,6 @@
 	},
 	"sa__ad__379": {
 		"text": "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-	},
-	"sa__ad__380": {
-		"text": "------"
 	},
 	"sa__ad__381": {
 		"text": "** MapLibre GL Native; version 5.13.0 -- https://github.com/maplibre/maplibre-gl-native-distribution"
@@ -1967,9 +1937,6 @@
 	"sa__ad__392": {
 		"text": "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
 	},
-	"sa__ad__393": {
-		"text": "------"
-	},
 	"sa__ad__394": {
 		"text": "** eslint-plugin-flowtype; version ^8.0.3 -- https://www.npmjs.com/package/eslint-plugin-flowtype"
 	},
@@ -1999,9 +1966,6 @@
 	},
 	"sa__ad__403": {
 		"text": "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL ANUARY BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-	},
-	"sa__ad__404": {
-		"text": "------"
 	},
 	"sa__ad__405": {
 		"text": "** junit; version 4.13.2 -- https://junit.org/junit4/\nNo copyright notice"
@@ -2147,9 +2111,6 @@
 	"sa__ad__452": {
 		"text": "This Agreement is governed by the laws of the State of New York and the intellectual property laws of the United States of America. No party to this Agreement will bring a legal action under this Agreement more than one year after the cause of action arose. Each party waives its rights to a jury trial in any resulting litigation."
 	},
-	"sa__ad__453": {
-		"text": "------"
-	},
 	"sa__ad__454": {
 		"text": "** @types/mapbox__mapbox-gl-draw; version ^1.3.3 -- https://www.npmjs.com/package/@types/mapbox__mapbox-gl-draw"
 	},
@@ -2171,9 +2132,6 @@
 	"sa__ad__460": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__461": {
-		"text": "------"
-	},
 	"sa__ad__462": {
 		"text": "** stylelint-prettier; version ^2.0.0 -- https://www.npmjs.com/package/stylelint-prettier\nCopyright © 2018 Ben Scott"
 	},
@@ -2188,9 +2146,6 @@
 	},
 	"sa__ad__466": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__467": {
-		"text": "------"
 	},
 	"sa__ad__468": {
 		"text": "** stylelint-order; version ^5.0.0 -- https://www.npmjs.com/package/stylelint-order\nCopyright 2016–present Aleks Hudochenkov aleks@hudochenkov.com"
@@ -2209,9 +2164,6 @@
 	},
 	"sa__ad__473": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__474": {
-		"text": "------"
 	},
 	"sa__ad__475": {
 		"text": "** @tanstack/react-query; version 4.22.0 -- https://www.npmjs.com/package/@tanstack/react-query\n© 2023 Tanner Linsley"
@@ -2261,9 +2213,6 @@
 	"sa__ad__490": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__491": {
-		"text": "------"
-	},
 	"sa__ad__492": {
 		"text": "** @turf/turf; version 6.5.0 -- http://turfjs.org \nCopyright (c) 2019 Morgan Herlocker\nThe MIT License (MIT)"
 	},
@@ -2278,9 +2227,6 @@
 	},
 	"sa__ad__496": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__497": {
-		"text": "------"
 	},
 	"sa__ad__498": {
 		"text": "** @types/node; version ^18.11.9 -- https://github.com/DefinitelyTyped/DefinitelyTyped\nCopyright (c) Microsoft Corporation. All rights reserved."
@@ -2306,9 +2252,6 @@
 	"sa__ad__505": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__506": {
-		"text": "------"
-	},
 	"sa__ad__507": {
 		"text": "** sass; version ^1.57.1 -- https://github.com/sass/dart-sass\nCopyright (c) 2016, Google Inc."
 	},
@@ -2323,9 +2266,6 @@
 	},
 	"sa__ad__511": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__512": {
-		"text": "------"
 	},
 	"sa__ad__513": {
 		"text": "** @typescript-eslint/eslint-plugin; version ^5.33.1 -- https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin\nCopyright (c) 2019 TypeScript ESLint and other contributors"
@@ -2345,9 +2285,6 @@
 	"sa__ad__518": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__519": {
-		"text": "------"
-	},
 	"sa__ad__520": {
 		"text": "** eslint-plugin-import; version ^2.26.0 -- https://github.com/import-js/eslint-plugin-import\nCopyright (c) 2015 Ben Mosher"
 	},
@@ -2365,9 +2302,6 @@
 	},
 	"sa__ad__525": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__526": {
-		"text": "------"
 	},
 	"sa__ad__527": {
 		"text": "** react-tooltip; version ^5.8.3 -- https://github.com/wwayne/react-tooltip\nCopyright (c) 2015 Wang Zixiao"
@@ -2387,9 +2321,6 @@
 	"sa__ad__532": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__533": {
-		"text": "------"
-	},
 	"sa__ad__534": {
 		"text": "** vite-plugin-eslint; version ^1.7.0 -- https://www.npmjs.com/package/vite-plugin-eslint\nCopyright (c) 2021-present Xiang Gao\n^2.2.1"
 	},
@@ -2408,9 +2339,6 @@
 	"sa__ad__539": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__540": {
-		"text": "------"
-	},
 	"sa__ad__541": {
 		"text": "** react-toastify; version ^9.1.1 -- https://github.com/fkhadra/react-toastify\nCopyright (c) 2020 Fadi Khadra"
 	},
@@ -2428,9 +2356,6 @@
 	},
 	"sa__ad__546": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__547": {
-		"text": "------"
 	},
 	"sa__ad__548": {
 		"text": "** react-lottie; version ^1.2.3 -- https://www.npmjs.com/package/react-lottie\nUnknown"
@@ -2456,9 +2381,6 @@
 	"sa__ad__555": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__556": {
-		"text": "------"
-	},
 	"sa__ad__557": {
 		"text": "** stylelint-config-airbnb; version ^0.0.0 -- https://www.npmjs.com/package/stylelint-config-airbnb\nCopyright (c) 2015 Airbnb"
 	},
@@ -2473,9 +2395,6 @@
 	},
 	"sa__ad__561": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__562": {
-		"text": "------"
 	},
 	"sa__ad__563": {
 		"text": "** stylelint-config-prettier; version ^9.0.4 -- https://www.npmjs.com/package/stylelint-config-prettier\nCopyright (c) Shannon Moeller <me@shannonmoeller.com> (shannonmoeller.com)\nCopyright (c) Hugo Dias <mail@hugodias.me> (https://hugodias.me)\nCopyright (c) 2017 Simon Lydell"
@@ -2495,9 +2414,6 @@
 	"sa__ad__568": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__569": {
-		"text": "------"
-	},
 	"sa__ad__570": {
 		"text": "** react-html-parser; version ^2.0.2 -- https://github.com/peternewnham/react-html-parser\nCopyright (c) 2016-present Peter Newnham"
 	},
@@ -2515,9 +2431,6 @@
 	},
 	"sa__ad__575": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__576": {
-		"text": "------"
 	},
 	"sa__ad__577": {
 		"text": "** vite-plugin-svgr; version ^2.2.1 -- https://www.npmjs.com/package/vite-plugin-svgr\nCopyright (c) 2021 Rongjian Zhang"
@@ -2537,9 +2450,6 @@
 	"sa__ad__582": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__583": {
-		"text": "------"
-	},
 	"sa__ad__584": {
 		"text": "** @vitejs/plugin-react; version 2.0.1 -- https://github.com/vitejs/vite/tree/main/packages/plugin-react\nCopyright (c) 2019-present, Yuxi (Evan) You and Vite contributors\n** vite; version ^3.1.0 -- https://github.com/vitejs/vite\nCopyright (c) 2019-present, Yuxi (Evan) You and Vite contributors"
 	},
@@ -2557,9 +2467,6 @@
 	},
 	"sa__ad__589": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__590": {
-		"text": "------"
 	},
 	"sa__ad__591": {
 		"text": "** prettier; version ^2.5.1 -- https://prettier.io/\nCopyright © James Long and contributors"
@@ -2585,9 +2492,6 @@
 	"sa__ad__598": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__599": {
-		"text": "------"
-	},
 	"sa__ad__600": {
 		"text": "** eslint; version 8.22.0 -- https://eslint.org/\nCopyright OpenJS Foundation and other contributors, <www.openjsf.org>"
 	},
@@ -2602,9 +2506,6 @@
 	},
 	"sa__ad__604": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__605": {
-		"text": "------"
 	},
 	"sa__ad__606": {
 		"text": "** eslint-config-prettier; version 8.5.0 -- https://github.com/prettier/eslint-config-prettier\nCopyright (c) 2017, 2018, 2019, 2020, 2021, 2022 Simon Lydell and contributors"
@@ -2624,9 +2525,6 @@
 	"sa__ad__611": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__612": {
-		"text": "------"
-	},
 	"sa__ad__613": {
 		"text": "** stylelint-config-standard; version ^29.0.0 -- https://github.com/stylelint/stylelint-config-standard\nCopyright (c) 2015 - present stylelint authors"
 	},
@@ -2645,9 +2543,6 @@
 	"sa__ad__618": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__619": {
-		"text": "------"
-	},
 	"sa__ad__620": {
 		"text": "** SnapKit; version 5.6.0 -- http://snapkit.io/\nCopyright (c) 2011-Present SnapKit Team - https://github.com/SnapKit"
 	},
@@ -2662,9 +2557,6 @@
 	},
 	"sa__ad__624": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__625": {
-		"text": "------"
 	},
 	"sa__ad__626": {
 		"text": "** ramda; version ^0.28.0 -- https://github.com/ramda/ramda\nCopyright (c) 2013-2020 Scott Sauyet and Michael Hurley"
@@ -2684,9 +2576,6 @@
 	"sa__ad__631": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__632": {
-		"text": "------"
-	},
 	"sa__ad__633": {
 		"text": "** eslint-plugin-prettier; version ^4.2.1 -- https://github.com/prettier/eslint-plugin-prettier\nCopyright © 2017 Andres Suarez and Teddy Katz"
 	},
@@ -2704,9 +2593,6 @@
 	},
 	"sa__ad__638": {
 		"text": "THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__639": {
-		"text": "------"
 	},
 	"sa__ad__640": {
 		"text": "** ngeohash; version 0.6.3 -- https://www.npmjs.com/package/ngeohash\nunknown"
@@ -2726,9 +2612,6 @@
 	"sa__ad__645": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__646": {
-		"text": "------"
-	},
 	"sa__ad__647": {
 		"text": "** react-visibility-sensor; version 5.1.1 -- https://www.npmjs.com/package/react-visibility-sensor\nCopyright (c) 2014 Josh Johnston"
 	},
@@ -2746,9 +2629,6 @@
 	},
 	"sa__ad__652": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__653": {
-		"text": "------"
 	},
 	"sa__ad__654": {
 		"text": "** react-syntax-highlighter; version ^15.5.0 -- https://github.com/conorhastings/react-syntax-highlighter\nCopyright (c) 2019 Conor Hastings"
@@ -2768,9 +2648,6 @@
 	"sa__ad__659": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__660": {
-		"text": "------"
-	},
 	"sa__ad__661": {
 		"text": "** eslint-plugin-react-hooks; version ^4.6.0 -- github.com/facebook/react\nCopyright (c) Meta Platforms, Inc. and affiliates."
 	},
@@ -2788,9 +2665,6 @@
 	},
 	"sa__ad__666": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__667": {
-		"text": "------"
 	},
 	"sa__ad__668": {
 		"text": "** eslint-plugin-react; version ^7.30.1 -- https://github.com/yannickcr/eslint-plugin-react\nCopyright (c) 2014 Yannick Croissant"
@@ -2810,9 +2684,6 @@
 	"sa__ad__673": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 	},
-	"sa__ad__674": {
-		"text": "------"
-	},
 	"sa__ad__675": {
 		"text": "** react-dom; version ^18.2.0 -- https://github.com/facebook/react\nCopyright (c) Facebook, Inc. and its affiliates."
 	},
@@ -2830,9 +2701,6 @@
 	},
 	"sa__ad__680": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__681": {
-		"text": "------"
 	},
 	"sa__ad__682": {
 		"text": "** zustand; version ^4.1.4 -- https://github.com/pmndrs/zustand\nCopyright (c) 2019 Paul Henschel"
@@ -2857,9 +2725,6 @@
 	},
 	"sa__ad__689": {
 		"text": "THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-	},
-	"sa__ad__690": {
-		"text": "------"
 	},
 	"sa__ad__691": {
 		"text": "** stylelint; version ^14.15.0 -- https://github.com/stylelint/stylelint\nCopyright (c) 2015 - present Maxime Thirouin, David Clark & Richard Hallows"

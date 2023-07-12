@@ -3,8 +3,7 @@
 
 import { useMemo } from "react";
 
-import { showToast } from "@demo/core/Toast";
-import { appConfig } from "@demo/core/constants";
+import { appConfig, showToast } from "@demo/core";
 import { useAmplifyMap, useAws } from "@demo/hooks";
 import { useAmplifyAuthService } from "@demo/services";
 import { useAmplifyAuthStore } from "@demo/stores";

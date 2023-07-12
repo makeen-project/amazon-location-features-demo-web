@@ -24,10 +24,9 @@ import {
 	GrabMapStyleEnum,
 	HereMapEnum,
 	HereMapStyleEnum,
-	MapProviderEnum
+	MapProviderEnum,
+	TypeEnum
 } from "@demo/types";
-
-import { TypeEnum } from "../../types/Enums";
 
 const getEnv = (key: string) => {
 	return import.meta.env[key];
