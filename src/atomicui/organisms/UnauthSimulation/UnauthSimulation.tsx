@@ -335,7 +335,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 																<IconSegment width={15} height={15} />
 															)}
 															{i !== trackingHistory.length - 1 && (
-																<Flex direction="column" gap="0.4rem" margin="0.6rem 0">
+																<Flex direction="column" gap="0.5rem" margin="0.7rem 0">
 																	<Flex className="bubble-icon" />
 																	<Flex className="bubble-icon" />
 																	<Flex className="bubble-icon" />
