@@ -37,8 +37,16 @@
 			}
 		}
 
-		&.dropdown-true {
+		&.bordered.dropdown-true {
 			border-color: var(--primary-color);
+		}
+
+		&.bordered.dropdown-false {
+			background-color: var(--grey-color-4);
+			border: 1px solid var(--grey-color-3);
+			p {
+				color: var(--tertiary-color);
+			}
 		}
 
 		p {
