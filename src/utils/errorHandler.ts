@@ -4,7 +4,7 @@
 import { showToast } from "@demo/core/Toast";
 
 import { appConfig } from "@demo/core/constants";
-import i18n from "@demo/locales";
+import i18n from "@demo/locales/i18n";
 import { ToastType } from "@demo/types";
 
 const {

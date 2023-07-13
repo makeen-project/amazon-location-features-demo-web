@@ -1,7 +1,6 @@
-import React, { FC, ReactElement } from "react";
+import React, { ReactElement } from "react";
 
-import { Flex } from "@aws-amplify/ui-react";
-import { TextEl } from "@demo/atomicui/atoms";
+import { Flex, Text } from "@aws-amplify/ui-react";
 
 interface IconicInfoCardProps {
 	IconComponent?: ReactElement;
@@ -13,7 +12,7 @@ interface IconicInfoCardProps {
 	subDescription?: string;
 }
 
-const IconicInfoCard: FC<IconicInfoCardProps> = ({
+const IconicInfoCard: React.FC<IconicInfoCardProps> = ({
 	IconComponent,
 	title,
 	description,
@@ -26,10 +25,16 @@ const IconicInfoCard: FC<IconicInfoCardProps> = ({
 		<Flex direction="row" gap="large" margin={cardMargin} alignItems={cardAlignItems} justifyContent="flex-start">
 			{IconComponent}
 			<Flex direction="column" gap={subDescription ? 0 : "3px"} marginLeft={textContainerMarginLeft}>
-				<TextEl fontSize="1rem" variation="secondary" fontFamily="AmazonEmber-Regular" text={title} />
-				<TextEl className="simulation-title" fontSize="13px" variation="tertiary" text={description} />
+				<Text fontSize="1rem" variation="secondary">
+					{title}
+				</Text>
+				<Text color={"var(--grey-color)"} fontSize="1rem" variation="tertiary">
+					{description}
+				</Text>
 				{subDescription && (
-					<TextEl className="simulation-title" fontSize="13px" variation="tertiary" text={subDescription} />
+					<Text color="var(--grey-color)" fontSize="1rem" variation="tertiary">
+						{subDescription}
+					</Text>
 				)}
 			</Flex>
 		</Flex>

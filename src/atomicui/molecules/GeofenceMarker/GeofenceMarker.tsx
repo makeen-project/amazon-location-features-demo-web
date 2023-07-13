@@ -3,9 +3,8 @@
 
 import React from "react";
 
-import { View } from "@aws-amplify/ui-react";
+import { Text, View } from "@aws-amplify/ui-react";
 import { IconGeofenceMarker } from "@demo/assets";
-import { TextEl } from "@demo/atomicui/atoms";
 import { Marker } from "react-map-gl";
 
 interface GeofenceMarkerProps {
@@ -46,7 +45,7 @@ const GeofenceMarker: React.FC<GeofenceMarkerProps> = ({
 					left: "35px"
 				}}
 			>
-				<TextEl fontFamily="AmazonEmber-Bold" text={description} />
+				<Text className="bold">{description}</Text>
 			</View>
 		</Marker>
 	);

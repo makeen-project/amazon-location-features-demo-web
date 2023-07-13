@@ -34,7 +34,7 @@
 		"react-router-dom": "^6.4.3",
 		"react-toastify": "^9.1.1",
 		"react-tooltip": "^5.10.0",
-		"zustand": "^4.1.4"
+		"zustand": "^4.3.9"
 	},
 	"devDependencies": {
 		"@faker-js/faker": "^7.6.0",
@@ -81,7 +81,8 @@
 	},
 	"jest": {
 		"moduleNameMapper": {
-			"^@demo/(.*)$": "<rootDir>/src/$1"
+			"^@demo/(.*)$": "<rootDir>/src/$1",
+			"\\.(css|scss)$": "<rootDir>/__mocks__/styleMock.ts"
 		},
 		"collectCoverageFrom": [
 			"**/*.{js,jsx,ts,tsx}",

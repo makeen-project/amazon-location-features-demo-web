@@ -3,9 +3,8 @@
 
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { Autocomplete, ComboBoxOption, Flex, Loader, View } from "@aws-amplify/ui-react";
+import { Autocomplete, ComboBoxOption, Flex, Loader, Text, View } from "@aws-amplify/ui-react";
 import { IconActionMenu, IconClose, IconDirections, IconPin, IconSearch } from "@demo/assets";
-import { TextEl } from "@demo/atomicui/atoms";
 import { Marker, NotFoundCard, SuggestionMarker } from "@demo/atomicui/molecules";
 import { useAmplifyMap, useAwsPlace } from "@demo/hooks";
 import { DistanceUnitEnum, MapUnitEnum, SuggestionType } from "@demo/types";
@@ -183,15 +182,15 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 			<Flex key={id} className="option-container" onMouseOver={() => setHover(option)}>
 				{!placeid ? <IconSearch /> : <IconPin />}
 				<View className="option-details">
-					<TextEl text={title} />
+					<Text>{title}</Text>
 					{geodesicDistanceWithUnit ? (
 						<Flex gap={0} alignItems="center">
-							<TextEl variation="tertiary" text={geodesicDistanceWithUnit} />
+							<Text variation="tertiary">{geodesicDistanceWithUnit}</Text>
 							<View className="separator" />
-							<TextEl variation="tertiary" text={`${region}, ${country}`} />
+							<Text variation="tertiary">{`${region}, ${country}`}</Text>
 						</Flex>
 					) : (
-						<TextEl variation="tertiary" text={placeid && address ? address : t("search_nearby.text")} />
+						<Text variation="tertiary">{placeid && address ? address : t("search_nearby.text")}</Text>
 					)}
 				</View>
 			</Flex>
@@ -311,7 +310,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 							LoadingIndicator: (
 								<Flex className="search-loader-container">
 									<Loader />
-									<TextEl margin="15px 0px 30px 0px" text={t("search_box__searching_for_suggestions.text")} />
+									<Text margin="1.15rem 0rem 2.31rem 0rem">{t("search_box__searching_for_suggestions.text")}</Text>
 								</Flex>
 							),
 							Empty:
