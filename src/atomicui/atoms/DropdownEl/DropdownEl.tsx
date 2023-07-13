@@ -67,7 +67,7 @@ const DropdownEl: React.FC<DropdownElProps> = ({
 				}
 				onClick={() => setOpen(!open)}
 			>
-				<p style={{ direction: langDir }} className="dropdown-label">
+				<p className="dropdown-label">
 					{label || t((defaultOption as SelectOption)?.label as string) || t("dropdown__placeholder.text")}
 				</p>
 				<IconArrow
@@ -87,7 +87,7 @@ const DropdownEl: React.FC<DropdownElProps> = ({
 								<li
 									key={i}
 									style={{ display: "flex", justifyContent: isLtr ? "start" : "end" }}
-									onClick={() => handleClick(option)}
+									onChange={() => handleClick(option)}
 									className="radio-li"
 								>
 									<RadioGroupField
@@ -114,7 +114,7 @@ const DropdownEl: React.FC<DropdownElProps> = ({
 									key={option.value}
 									className={showSelected && (defaultOption as SelectOption)?.value === option.value ? "selected" : ""}
 									style={{ display: "flex", justifyContent: isLtr ? "start" : "end" }}
-									onClick={() => handleClick(option)}
+									onChange={() => handleClick(option)}
 								>
 									{isCheckbox ? (
 										<CheckboxField
@@ -123,6 +123,9 @@ const DropdownEl: React.FC<DropdownElProps> = ({
 											name={option.value}
 											value={option.value}
 											size="large"
+											checked={(defaultOption as SelectOption[]).some(
+												(item: SelectOption) => item.value === option.value
+											)}
 										/>
 									) : (
 										<>{t(option.label)}</>
