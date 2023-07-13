@@ -5,6 +5,8 @@ import { useMemo } from "react";
 
 import { useAwsGeofenceService } from "@demo/services";
 import { useAmplifyAuthStore, useAwsGeofenceStore } from "@demo/stores";
+import { EventTypeEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { GeofenceGeometry, Position } from "aws-sdk/clients/location";
 import { useTranslation } from "react-i18next";
@@ -24,7 +26,9 @@ const useAwsGeofence = () => {
 					setState({ isFetchingGeofences: true });
 					const res = await geofenceService.listGeofences();
 					setState({ geofences: res?.Entries });
+					record([{ EventType: EventTypeEnum.GET_GEOFENCES_LIST_SUCCESSFUL, Attributes: {} }]);
 				} catch (error) {
+					record([{ EventType: EventTypeEnum.GET_GEOFENCES_LIST_FAILED, Attributes: {} }]);
 					errorHandler(error, t("ERROR_HANDLER.FAILED_FETCH_GEOFENCES") as string);
 				} finally {
 					setState({ isFetchingGeofences: false });
@@ -35,7 +39,9 @@ const useAwsGeofence = () => {
 					setState({ isCreatingGeofence: true });
 					const res = await geofenceService.putGeofence(GeofenceId, Geometry);
 					res && methods.getGeofencesList();
+					record([{ EventType: EventTypeEnum.GEOFENCE_CREATION_SUCCESSFUL, Attributes: {} }]);
 				} catch (error) {
+					record([{ EventType: EventTypeEnum.GEOFENCE_CREATION_FAILED, Attributes: {} }]);
 					errorHandler(error, t("ERROR_HANDLER.FAILED_CREATE_GEOFENCES") as string);
 				} finally {
 					setState({ isCreatingGeofence: false });
@@ -46,7 +52,9 @@ const useAwsGeofence = () => {
 					setState({ isDeletingGeofence: true });
 					const res = await geofenceService.deleteGeofence(GeofenceId);
 					res && methods.getGeofencesList();
+					record([{ EventType: EventTypeEnum.GEOFENCE_DELETION_SUCCESSFUL, Attributes: {} }]);
 				} catch (error) {
+					record([{ EventType: EventTypeEnum.GEOFENCE_DELETION_FAILED, Attributes: {} }]);
 					errorHandler(error, t("ERROR_HANDLER.FAILED_DELETE_GEOFENCES") as string);
 				} finally {
 					setState({ isDeletingGeofence: false });

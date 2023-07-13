@@ -37,6 +37,7 @@ import {
 	useMediaQuery,
 	usePersistedData
 } from "@demo/hooks";
+import usePinpointAnalytics from "@demo/hooks/usePinpointAnalytics";
 import {
 	EsriMapEnum,
 	GrabMapEnum,
@@ -46,6 +47,8 @@ import {
 	ShowStateType,
 	ToastType
 } from "@demo/types";
+import { EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { getCurrentLocation } from "@demo/utils/getCurrentLocation";
 import { Signer } from "aws-amplify";
@@ -91,6 +94,7 @@ let interval: NodeJS.Timer | undefined;
 let timeout: NodeJS.Timer | undefined;
 
 const DemoPage: React.FC = () => {
+	const pinpointAnalytics = usePinpointAnalytics("DemoPage");
 	const [show, setShow] = React.useState<ShowStateType>(initShow);
 	const [height, setHeight] = React.useState(window.innerHeight);
 	const [searchValue, setSearchValue] = React.useState("");
@@ -508,7 +512,7 @@ const DemoPage: React.FC = () => {
 	);
 
 	const onMapProviderChange = useCallback(
-		(mapProvider: MapProviderEnum) => {
+		(mapProvider: MapProviderEnum, triggeredBy: TriggeredByEnum) => {
 			setShow(s => ({ ...s, gridLoader: true }));
 
 			if (mapProvider === MapProviderEnum.GRAB) {
@@ -534,6 +538,10 @@ const DemoPage: React.FC = () => {
 
 				resetAppState();
 			}
+
+			record([
+				{ EventType: EventTypeEnum.MAP_PROVIDER_CHANGE, Attributes: { provider: String(mapProvider), triggeredBy } }
+			]);
 
 			setTimeout(() => {
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -704,6 +712,7 @@ const DemoPage: React.FC = () => {
 						/>
 					)}
 					<MapButtons
+						renderedUpon={TriggeredByEnum.DEMO_PAGE}
 						openStylesCard={show.stylesCard}
 						setOpenStylesCard={b => setShow(s => ({ ...s, stylesCard: b }))}
 						onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
@@ -789,11 +798,11 @@ const DemoPage: React.FC = () => {
 				resetAppState={resetAppState}
 				isGrabVisible={isGrabVisible}
 				handleMapProviderChange={onMapProviderChange}
-				handleMapStyleChange={onMapStyleChange}
 				handleCurrentLocationAndViewpoint={handleCurrentLocationAndViewpoint}
 				resetSearchAndFilters={handleResetCallback}
 				mapButtons={
 					<MapButtons
+						renderedUpon={TriggeredByEnum.SETTINGS_MODAL}
 						openStylesCard={show.stylesCard}
 						setOpenStylesCard={b => setShow(s => ({ ...s, stylesCard: b }))}
 						onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}

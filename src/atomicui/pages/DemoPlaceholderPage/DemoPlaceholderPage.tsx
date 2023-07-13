@@ -4,6 +4,7 @@ import { Divider, Flex, View } from "@aws-amplify/ui-react";
 import { IconLocateMe, IconMinus, IconZoomPlus, LogoLight } from "@demo/assets";
 import { MapButtons } from "@demo/atomicui/molecules";
 import { GeofenceBox, RouteBox, SearchBox, SettingsModal, Sidebar, TrackingBox } from "@demo/atomicui/organisms";
+import usePinpointAnalytics from "@demo/hooks/usePinpointAnalytics";
 import { MapStyleFilterTypes, ShowStateType } from "@demo/types";
 import "./styles.scss";
 
@@ -22,6 +23,8 @@ const DemoPlaceholderPage: React.FC<DemoPlaceholderPageProps> = ({
 	searchValue,
 	selectedFilters
 }) => {
+	const pinpointAnalytics = usePinpointAnalytics("DemoPlaceholderPage");
+
 	return (
 		<View style={{ height }}>
 			<View className={"loader-container"}>
@@ -57,6 +60,7 @@ const DemoPlaceholderPage: React.FC<DemoPlaceholderPageProps> = ({
 					/>
 				)}
 				<MapButtons
+					renderedUpon={"Demo Page"}
 					openStylesCard={show.stylesCard}
 					setOpenStylesCard={() => {}}
 					onCloseSidebar={() => {}}
@@ -88,10 +92,10 @@ const DemoPlaceholderPage: React.FC<DemoPlaceholderPageProps> = ({
 				resetAppState={() => {}}
 				isGrabVisible={isGrabVisible}
 				handleMapProviderChange={() => {}}
-				handleMapStyleChange={() => {}}
 				handleCurrentLocationAndViewpoint={() => {}}
 				mapButtons={
 					<MapButtons
+						renderedUpon={"Settings Modal"}
 						openStylesCard={show.stylesCard}
 						setOpenStylesCard={() => {}}
 						onCloseSidebar={() => {}}

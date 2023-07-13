@@ -8,6 +8,8 @@ import { useAmplifyMap, useAws } from "@demo/hooks";
 import { useAmplifyAuthService } from "@demo/services";
 import { useAmplifyAuthStore } from "@demo/stores";
 import { AuthTokensType, ConnectFormValuesType, ToastType } from "@demo/types";
+import { EventTypeEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { Amplify, Auth } from "aws-amplify";
 import AWS from "aws-sdk";
@@ -45,12 +47,14 @@ const useAmplifyAuth = () => {
 					err => {
 						if (err) {
 							console.error({ err });
+							record([{ EventType: EventTypeEnum.AWS_ACCOUNT_CONNECTION_FAILED, Attributes: {} }]);
 							showToast({
 								content: t("SHOW_TOAST.FAILED_TO_CONNECT_1"),
 								type: ToastType.ERROR
 							});
 						} else {
 							successCb && successCb();
+							record([{ EventType: EventTypeEnum.AWS_ACCOUNT_CONNECTION_SUCCESSFUL, Attributes: {} }]);
 						}
 					}
 				);
@@ -186,7 +190,9 @@ const useAmplifyAuth = () => {
 				try {
 					setState({ authTokens: undefined });
 					await login();
+					record([{ EventType: EventTypeEnum.SIGN_IN_SUCCESSFUL, Attributes: {} }]);
 				} catch (error) {
+					record([{ EventType: EventTypeEnum.SIGN_IN_FAILED, Attributes: {} }]);
 					errorHandler(error, t("ERROR_HANDLER.FAILED_SIGN_IN") as string);
 				}
 			},
@@ -194,7 +200,9 @@ const useAmplifyAuth = () => {
 				try {
 					await logout();
 					setState({ authTokens: undefined });
+					record([{ EventType: EventTypeEnum.SIGN_OUT_SUCCESSFUL, Attributes: {} }]);
 				} catch (error) {
+					record([{ EventType: EventTypeEnum.SIGN_OUT_FAILED, Attributes: {} }]);
 					errorHandler(error, t("ERROR_HANDLER.FAILED_SIGN_OUT") as string);
 				}
 			},

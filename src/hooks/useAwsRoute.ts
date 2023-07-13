@@ -6,6 +6,8 @@ import { useMemo } from "react";
 import { useAwsRouteService } from "@demo/services";
 import { useAmplifyMapStore, useAwsRouteStore } from "@demo/stores";
 import { InputType, RouteDataType, SuggestionType } from "@demo/types";
+import { EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { CalculateRouteRequest, Position } from "aws-sdk/clients/location";
 import { useTranslation } from "react-i18next";
@@ -20,7 +22,7 @@ const useAwsRoute = () => {
 
 	const methods = useMemo(
 		() => ({
-			getRoute: async (params: CalculateRouteRequest) => {
+			getRoute: async (params: CalculateRouteRequest, triggeredBy: TriggeredByEnum) => {
 				try {
 					setState({ isFetchingRoute: true });
 					const routeData = await routesService.calculateRoute(params, mapStore.mapProvider);
@@ -29,6 +31,23 @@ const useAwsRoute = () => {
 					errorHandler(error, t("ERROR_HANDLER.FAILED_CALCULATE_ROUTE") as string);
 				} finally {
 					setState({ isFetchingRoute: false });
+
+					const recordAttributes: { [key: string]: string } = {
+						travelMode: params.TravelMode || "N/A",
+						distanceUnit: params.DistanceUnit || "N/A",
+						triggeredBy: String(triggeredBy)
+					};
+
+					const modeOptions = {
+						...(params.CarModeOptions ? params.CarModeOptions : {}),
+						...(params.TruckModeOptions ? params.TruckModeOptions : {})
+					};
+
+					for (const [key, value] of Object.entries(modeOptions)) {
+						recordAttributes[key] = String(value);
+					}
+
+					record([{ EventType: EventTypeEnum.ROUTE_SEARCH, Attributes: recordAttributes }]);
 				}
 			},
 			setRoutePositions: (p: Position | undefined, type: InputType) => {

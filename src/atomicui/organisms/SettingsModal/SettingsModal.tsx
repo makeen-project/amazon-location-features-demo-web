@@ -20,13 +20,13 @@ import { useAmplifyAuth, useAmplifyMap, useAws, useAwsIot, usePersistedData } fr
 import {
 	ConnectFormValuesType,
 	EsriMapEnum,
-	GrabMapEnum,
-	HereMapEnum,
 	MapProviderEnum,
 	MapUnitEnum,
 	SettingOptionEnum,
 	SettingOptionItemType
 } from "@demo/types";
+import { EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { transformCloudFormationLink } from "@demo/utils/transformCloudFormationLink";
 import { useTranslation } from "react-i18next";
 import "./styles.scss";
@@ -50,8 +50,7 @@ interface SettingsModalProps {
 	onClose: () => void;
 	resetAppState: () => void;
 	isGrabVisible: boolean;
-	handleMapProviderChange: (mapProvider: MapProviderEnum) => void;
-	handleMapStyleChange: (mapStyle: EsriMapEnum | HereMapEnum | GrabMapEnum) => void;
+	handleMapProviderChange: (mapProvider: MapProviderEnum, triggeredBy: TriggeredByEnum) => void;
 	handleCurrentLocationAndViewpoint: (b: boolean) => void;
 	mapButtons: JSX.Element;
 	resetSearchAndFilters: () => void;
@@ -119,6 +118,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 	const handleAutoMapUnitChange = useCallback(() => {
 		setIsAutomaticMapUnit(true);
 		resetAppState();
+		record([{ EventType: EventTypeEnum.MAP_UNIT_CHANGE, Attributes: { type: "Automatic" } }]);
 	}, [setIsAutomaticMapUnit, resetAppState]);
 
 	const onMapUnitChange = useCallback(
@@ -126,6 +126,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			setIsAutomaticMapUnit(false);
 			setMapUnit(mapUnit);
 			resetAppState();
+
+			record([{ EventType: EventTypeEnum.MAP_UNIT_CHANGE, Attributes: { type: String(mapUnit) } }]);
 		},
 		[setIsAutomaticMapUnit, setMapUnit, resetAppState]
 	);
@@ -209,6 +211,26 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 		setStackRegion(option);
 	};
 
+	const handleLanguageChange = useCallback(
+		(e: { target: { value: string } }) => {
+			record([
+				{
+					EventType: EventTypeEnum.LANGUAGE_CHANGE,
+					Attributes: { language: e.target.value, triggeredBy: TriggeredByEnum.SETTINGS_MODAL }
+				}
+			]);
+			i18n.changeLanguage(e.target.value);
+		},
+		[i18n]
+	);
+
+	const handleRouteOptionChange = useCallback(
+		(e: { target: { checked: boolean } }, routeOption: string) => {
+			setDefaultRouteOptions({ ...defaultRouteOptions, [routeOption]: e.target.checked });
+		},
+		[defaultRouteOptions, setDefaultRouteOptions]
+	);
+
 	const optionItems: Array<SettingOptionItemType> = useMemo(
 		() => [
 			{
@@ -289,7 +311,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								data-testid="data-provider-esri-radio"
 								value={ESRI}
 								checked={currentMapProvider === ESRI}
-								onChange={() => handleMapProviderChange(ESRI)}
+								onChange={() => handleMapProviderChange(ESRI, TriggeredByEnum.SETTINGS_MODAL)}
 							>
 								<Text marginLeft="1.23rem">{ESRI}</Text>
 							</Radio>
@@ -300,7 +322,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								data-testid="data-provider-here-radio"
 								value={HERE}
 								checked={currentMapProvider === HERE}
-								onChange={() => handleMapProviderChange(HERE)}
+								onChange={() => handleMapProviderChange(HERE, TriggeredByEnum.SETTINGS_MODAL)}
 							>
 								<Text marginLeft="1.23rem">{HERE}</Text>
 							</Radio>
@@ -312,7 +334,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 									data-testid="data-provider-grab-radio"
 									value={GRAB}
 									checked={currentMapProvider === GRAB}
-									onChange={() => handleMapProviderChange(GRAB)}
+									onChange={() => handleMapProviderChange(GRAB, TriggeredByEnum.SETTINGS_MODAL)}
 								>
 									<Text marginLeft="1.23rem">{`${GRAB}Maps`}</Text>
 								</Radio>
@@ -356,9 +378,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 									data-testid="unit-automatic-radio"
 									value={value}
 									checked={i18n.language === value}
-									onChange={({ target: { value } }) => {
-										i18n.changeLanguage(value);
-									}}
+									onChange={handleLanguageChange}
 								>
 									<Text marginLeft="1.23rem">{label}</Text>
 								</Radio>
@@ -385,7 +405,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 							name={t("avoid_tolls.text")}
 							value="Avoid tolls"
 							checked={defaultRouteOptions.avoidTolls}
-							onChange={e => setDefaultRouteOptions({ ...defaultRouteOptions, avoidTolls: e.target.checked })}
+							onChange={e => handleRouteOptionChange(e, "avoidTolls")}
 						/>
 						<CheckboxField
 							data-testid="avoid-ferries"
@@ -394,7 +414,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 							name={t("avoid_ferries.text")}
 							value="Avoid ferries"
 							checked={defaultRouteOptions.avoidFerries}
-							onChange={e => setDefaultRouteOptions({ ...defaultRouteOptions, avoidFerries: e.target.checked })}
+							onChange={e => handleRouteOptionChange(e, "avoidFerries")}
 						/>
 					</Flex>
 				)
@@ -570,7 +590,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			handleMapProviderChange,
 			selectedMapStyle,
 			defaultRouteOptions,
-			setDefaultRouteOptions,
 			isUserAwsAccountConnected,
 			onDisconnectAwsAccount,
 			onConnect,
@@ -587,7 +606,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			langDir,
 			i18n,
 			isLtr,
-			mapButtons
+			mapButtons,
+			handleLanguageChange,
+			handleRouteOptionChange
 		]
 	);
 

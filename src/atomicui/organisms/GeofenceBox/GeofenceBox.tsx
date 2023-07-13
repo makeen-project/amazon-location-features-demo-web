@@ -28,6 +28,7 @@ import {
 	SuggestionType,
 	ToastType
 } from "@demo/types";
+import { TriggeredByEnum } from "@demo/types/Enums";
 import { ListGeofenceResponseEntry, Place, Position } from "aws-sdk/clients/location";
 import { useTranslation } from "react-i18next";
 import { LngLat, MapRef } from "react-map-gl";
@@ -123,7 +124,14 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 				}
 
 				timeoutIdRef.current = setTimeout(async () => {
-					await search(value, { longitude, latitude }, exact, sg => setSuggestions(sg));
+					await search(
+						value,
+						{ longitude, latitude },
+						exact,
+						sg => setSuggestions(sg),
+						TriggeredByEnum.GEOFENCE_MODULE,
+						"Autocomplete"
+					);
 				}, 200);
 			}
 		},

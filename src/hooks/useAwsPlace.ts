@@ -7,6 +7,8 @@ import { useAmplifyMap } from "@demo/hooks";
 import { useAwsPlaceService } from "@demo/services";
 import { useAwsPlaceStore } from "@demo/stores";
 import { ClustersType, SuggestionType, ViewPointType } from "@demo/types";
+import { EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { calculateClusters, getHash, getPrecision, isGeoString } from "@demo/utils/geoCalculation";
 import { Position } from "aws-sdk/clients/location";
@@ -108,7 +110,14 @@ const useAwsPlace = () => {
 					setState({ isSearching: false });
 				}
 			},
-			search: async (value: string, viewpoint: ViewPointType, exact?: boolean, cb?: (sg: SuggestionType[]) => void) => {
+			search: async (
+				value: string,
+				viewpoint: ViewPointType,
+				exact: boolean,
+				cb: ((sg: SuggestionType[]) => void) | undefined,
+				triggeredBy: TriggeredByEnum,
+				action: string
+			) => {
 				if (isGeoString(value)) {
 					await methods.searchPlacesByCoordinates(value, viewpoint, cb);
 				} else if (exact) {
@@ -116,6 +125,19 @@ const useAwsPlace = () => {
 				} else if (value?.length) {
 					await methods.searchPlaceSuggestions(value, viewpoint, cb);
 				}
+
+				record([
+					{
+						EventType: EventTypeEnum.PLACE_SEARCH,
+						Attributes: {
+							value,
+							exact: String(exact),
+							type: isGeoString(value) ? "Coordinates" : "Text",
+							triggeredBy,
+							action
+						}
+					}
+				]);
 			},
 			setZoom: (zoom: number) => {
 				setState(s => {

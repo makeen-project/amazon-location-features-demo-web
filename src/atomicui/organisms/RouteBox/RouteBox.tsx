@@ -31,6 +31,7 @@ import {
 	SuggestionType,
 	TravelMode
 } from "@demo/types";
+import { TriggeredByEnum } from "@demo/types/Enums";
 import { humanReadableTime } from "@demo/utils/dateTimeUtils";
 import { CalculateRouteRequest, LineString, Place, Position } from "aws-sdk/clients/location";
 import { useTranslation } from "react-i18next";
@@ -195,7 +196,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 						  }
 						: undefined
 			};
-			const rd = await getRoute(params as CalculateRouteRequest);
+			const rd = await getRoute(params as CalculateRouteRequest, TriggeredByEnum.ROUTE_MODULE);
 			rd && setRouteData({ ...rd, travelMode: travelMode as TravelMode });
 		}
 	}, [getDestDept, currentMapUnit, travelMode, routeOptions, getRoute, setRouteData]);
@@ -244,7 +245,7 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 	};
 
 	const handleSearch = useCallback(
-		async (value: string, exact = false, type: InputType) => {
+		async (value: string, exact = false, type: InputType, action: string) => {
 			setIsSearching(true);
 
 			if (value.length >= 3) {
@@ -255,11 +256,18 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 				}
 
 				timeoutIdRef.current = setTimeout(async () => {
-					await search(value, { longitude, latitude }, exact, sg => {
-						type === InputType.FROM
-							? setSuggestions({ ...suggestions, from: sg })
-							: setSuggestions({ ...suggestions, to: sg });
-					});
+					await search(
+						value,
+						{ longitude, latitude },
+						exact,
+						sg => {
+							type === InputType.FROM
+								? setSuggestions({ ...suggestions, from: sg })
+								: setSuggestions({ ...suggestions, to: sg });
+						},
+						TriggeredByEnum.ROUTE_MODULE,
+						action
+					);
 				}, 200);
 			}
 			setIsSearching(false);
@@ -288,10 +296,10 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 	const onChangeValue = (e: ChangeEvent<HTMLInputElement>, type: InputType) => {
 		if (type === InputType.FROM) {
 			setValue({ ...value, from: e.target.value });
-			handleSearch(e.target.value, false, InputType.FROM);
+			handleSearch(e.target.value, false, InputType.FROM, "From search autocomplete");
 		} else {
 			setValue({ ...value, to: e.target.value });
-			handleSearch(e.target.value, false, InputType.TO);
+			handleSearch(e.target.value, false, InputType.TO, "To search autocomplete");
 		}
 	};
 
@@ -368,8 +376,8 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 	const onSelectSuggestion = async ({ PlaceId, Text = "", Place }: SuggestionType, type: InputType) => {
 		if (!PlaceId && Text) {
 			type === InputType.FROM
-				? await handleSearch(Text, true, InputType.FROM)
-				: await handleSearch(Text, true, InputType.TO);
+				? await handleSearch(Text, true, InputType.FROM, "From suggestion select")
+				: await handleSearch(Text, true, InputType.TO, "To suggestion select");
 		} else if (!PlaceId && !Text) {
 			if (type === InputType.FROM) {
 				if (suggestions.from) {

@@ -9,6 +9,7 @@ import { TextEl } from "@demo/atomicui/atoms";
 import { Marker, NotFoundCard, SuggestionMarker } from "@demo/atomicui/molecules";
 import { useAmplifyMap, useAwsPlace } from "@demo/hooks";
 import { DistanceUnitEnum, MapUnitEnum, SuggestionType } from "@demo/types";
+import { TriggeredByEnum } from "@demo/types/Enums";
 import { calculateGeodesicDistance } from "@demo/utils/geoCalculation";
 import { uuid } from "@demo/utils/uuid";
 import { Units } from "@turf/turf";
@@ -76,7 +77,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 	}, [value, clearPoiList, isRouteBoxOpen, isGeofenceBoxOpen, isTrackingBoxOpen, isSettingsOpen, isStylesCardOpen]);
 
 	const handleSearch = useCallback(
-		async (value: string, exact = false) => {
+		async (value: string, exact = false, action: string) => {
 			const { lng: longitude, lat: latitude } = mapRef?.getCenter() as LngLat;
 			const vp = { longitude, latitude };
 
@@ -85,7 +86,14 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 			}
 
 			timeoutIdRef.current = setTimeout(async () => {
-				await search(value, { longitude: vp.longitude, latitude: vp.latitude }, exact);
+				await search(
+					value,
+					{ longitude: vp.longitude, latitude: vp.latitude },
+					exact,
+					undefined,
+					TriggeredByEnum.PLACES_SEARCH,
+					action
+				);
 			}, 200);
 		},
 		[mapRef, search]
@@ -101,7 +109,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 
 	const selectSuggestion = async ({ text, label, placeid }: ComboBoxOption) => {
 		if (!placeid) {
-			await handleSearch(text || label, true);
+			await handleSearch(text || label, true, "Suggestion selected");
 		} else {
 			const selectedMarker = suggestions?.find(
 				(i: SuggestionType) => i.PlaceId === placeid || i.Place?.Label === placeid
@@ -126,13 +134,13 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 	const onChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
 		clearPoiList();
 		setValue(value);
-		handleSearch(value);
+		handleSearch(value, false, "Autocomplete");
 	};
 
 	const onSearch = () => {
 		if (!!value) {
 			clearPoiList();
-			handleSearch(value);
+			handleSearch(value, false, "Search icon click");
 			autocompleteRef?.current?.focus();
 		}
 	};
@@ -289,7 +297,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 						size="large"
 						onFocus={() => setIsFocused(true)}
 						onBlur={() => setIsFocused(false)}
-						onSubmit={e => handleSearch(e, true)}
+						onSubmit={e => handleSearch(e, true, "Enter button")}
 						value={value}
 						onChange={onChange}
 						onClear={clearPoiList}
