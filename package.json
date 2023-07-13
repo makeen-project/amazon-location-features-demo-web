@@ -82,7 +82,8 @@
 	},
 	"jest": {
 		"moduleNameMapper": {
-			"^@demo/(.*)$": "<rootDir>/src/$1"
+			"^@demo/(.*)$": "<rootDir>/src/$1",
+			"\\.(css|scss)$": "<rootDir>/__mocks__/styleMock.ts"
 		},
 		"collectCoverageFrom": [
 			"**/*.{js,jsx,ts,tsx}",
