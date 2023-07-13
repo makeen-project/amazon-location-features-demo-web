@@ -72,7 +72,6 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 	useEffect(() => {
 		if (isOverflowing && isDesktop) {
 			const targetElement = document.getElementsByClassName("left-col")[0];
-			console.log({ targetElement });
 
 			window.addEventListener("wheel", () => {
 				clearTimeout(scrollTimeout);
