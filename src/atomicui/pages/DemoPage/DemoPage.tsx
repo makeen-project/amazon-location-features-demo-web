@@ -16,7 +16,7 @@ import {
 import {
 	AboutModal,
 	AuthGeofenceBox,
-	AuthTrackingBox,
+	AuthTrackerBox,
 	RouteBox,
 	SearchBox,
 	SettingsModal,
@@ -402,7 +402,14 @@ const DemoPage: React.FC = () => {
 		if (lngLat) {
 			const { lat: latitude, lng: longitude } = lngLat;
 
-			if (!show.routeBox && !show.authGeofenceBox && !show.settings && !isEditingRoute) {
+			if (
+				!show.routeBox &&
+				!show.authGeofenceBox &&
+				!show.settings &&
+				!isEditingRoute &&
+				!show.unauthGeofenceBox &&
+				!show.unauthTrackerBox
+			) {
 				marker && setMarker(undefined);
 				selectedMarker && setSelectedMarker(undefined);
 				setTimeout(() => setMarker({ latitude, longitude }), 0);
@@ -655,6 +662,8 @@ const DemoPage: React.FC = () => {
 				maxBounds={
 					currentMapProvider === MapProviderEnum.GRAB
 						? (MAX_BOUNDS.GRAB as LngLatBoundsLike)
+						: show.unauthGeofenceBox || show.unauthTrackerBox
+						? (MAX_BOUNDS.VANCOUVER as LngLatBoundsLike)
 						: (MAX_BOUNDS.DEFAULT as LngLatBoundsLike)
 				}
 				onClick={handleMapClick}
@@ -692,21 +701,16 @@ const DemoPage: React.FC = () => {
 							setShowAuthGeofenceBox={b => setShow(s => ({ ...s, authGeofenceBox: b }))}
 						/>
 					) : show.authTrackerBox ? (
-						<AuthTrackingBox
+						<AuthTrackerBox
 							mapRef={mapViewRef?.current}
 							setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
 						/>
-					) : show.unauthGeofenceBox ? (
+					) : show.unauthGeofenceBox || show.unauthTrackerBox ? (
 						<UnauthSimulation
-							from={MenuItemEnum.GEOFENCE}
+							from={show.unauthGeofenceBox ? MenuItemEnum.GEOFENCE : MenuItemEnum.TRACKER}
 							setShowUnauthGeofenceBox={b => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
 							setShowUnauthTrackerBox={b => setShow(s => ({ ...s, unauthTrackerBox: b }))}
-						/>
-					) : show.unauthTrackerBox ? (
-						<UnauthSimulation
-							from={MenuItemEnum.TRACKER}
-							setShowUnauthGeofenceBox={b => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
-							setShowUnauthTrackerBox={b => setShow(s => ({ ...s, unauthTrackerBox: b }))}
+							setShowConnectAwsAccountModal={b => setShow(s => ({ ...s, connectAwsAccount: b }))}
 						/>
 					) : (
 						<SearchBox

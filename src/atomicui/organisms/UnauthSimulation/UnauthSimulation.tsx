@@ -110,12 +110,14 @@ interface UnauthGeofenceBoxProps {
 	from: MenuItemEnum;
 	setShowUnauthGeofenceBox: (b: boolean) => void;
 	setShowUnauthTrackerBox: (b: boolean) => void;
+	setShowConnectAwsAccountModal: (b: boolean) => void;
 }
 
 const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 	from,
 	setShowUnauthGeofenceBox,
-	setShowUnauthTrackerBox
+	setShowUnauthTrackerBox,
+	setShowConnectAwsAccountModal
 }) => {
 	const [showStartUnauthSimulation, setShowStartUnauthSimulation] = useState(false);
 	const [routeSelectedValue, setRouteSelectedValue] = useState<SelectOption | null>(null);
@@ -148,7 +150,10 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 
 	const handleCta = () => setShowStartUnauthSimulation(true);
 
-	const handleEnableLive = () => {};
+	const handleEnableLive = () => {
+		handleClose();
+		setShowConnectAwsAccountModal(true);
+	};
 
 	const onCloseHandler = () => {
 		subscription?.unsubscribe();

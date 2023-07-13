@@ -5,7 +5,7 @@ import { IconLocateMe, IconMinus, IconZoomPlus, LogoLight } from "@demo/assets";
 import { MapButtons } from "@demo/atomicui/molecules";
 import {
 	AuthGeofenceBox,
-	AuthTrackingBox,
+	AuthTrackerBox,
 	RouteBox,
 	SearchBox,
 	SettingsModal,
@@ -52,18 +52,13 @@ const DemoPlaceholderPage: React.FC<DemoPlaceholderPageProps> = ({
 				) : show.authGeofenceBox ? (
 					<AuthGeofenceBox mapRef={null} setShowAuthGeofenceBox={() => {}} />
 				) : show.authTrackerBox ? (
-					<AuthTrackingBox mapRef={null} setShowAuthTrackerBox={() => {}} />
-				) : show.unauthGeofenceBox ? (
+					<AuthTrackerBox mapRef={null} setShowAuthTrackerBox={() => {}} />
+				) : show.unauthGeofenceBox || show.unauthTrackerBox ? (
 					<UnauthSimulation
-						from={MenuItemEnum.GEOFENCE}
+						from={show.unauthGeofenceBox ? MenuItemEnum.GEOFENCE : MenuItemEnum.TRACKER}
 						setShowUnauthGeofenceBox={() => {}}
 						setShowUnauthTrackerBox={() => {}}
-					/>
-				) : show.unauthTrackerBox ? (
-					<UnauthSimulation
-						from={MenuItemEnum.TRACKER}
-						setShowUnauthGeofenceBox={() => {}}
-						setShowUnauthTrackerBox={() => {}}
+						setShowConnectAwsAccountModal={() => {}}
 					/>
 				) : (
 					<SearchBox
