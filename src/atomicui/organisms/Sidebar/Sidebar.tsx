@@ -164,12 +164,17 @@ const Sidebar: React.FC<SidebarProps> = ({
 			<List listArray={sidebarData} className="verticle-list side-bar__external-menu" hideIcons />
 			<View className="button-wrapper">
 				{isUserAwsAccountConnected && (
-					<Button variation="primary" fontFamily="AmazonEmber-Bold" onClick={isAuthenticated ? _onLogout : _onLogin}>
+					<Button
+						variation="primary"
+						fontFamily="AmazonEmber-Bold"
+						textAlign="center"
+						onClick={isAuthenticated ? _onLogout : _onLogin}
+					>
 						{isAuthenticated ? t("sign_out.text") : t("sign_in.text")}
 					</Button>
 				)}
 				{!isUserAwsAccountConnected && (
-					<Button variation="primary" fontFamily="AmazonEmber-Bold" onClick={onConnectAwsAccount}>
+					<Button variation="primary" fontFamily="AmazonEmber-Bold" textAlign="center" onClick={onConnectAwsAccount}>
 						{t("connect_aws_account.text")}
 					</Button>
 				)}
@@ -179,6 +184,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 						fontFamily="AmazonEmber-Bold"
 						className="disconnect-button"
 						marginTop="8px"
+						textAlign="center"
 						onClick={onDisconnectAwsAccount}
 					>
 						{t("disconnect_aws_account.text")}

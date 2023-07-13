@@ -8,7 +8,7 @@ import { IconAwsCloudFormation, IconCheckMarkCircle } from "@demo/assets";
 import { DropdownEl, Modal } from "@demo/atomicui/atoms";
 import { InputField } from "@demo/atomicui/molecules";
 import { appConfig, regionsData } from "@demo/core/constants";
-import { useAmplifyAuth, useAmplifyMap, useAws } from "@demo/hooks";
+import { useAmplifyAuth, useAmplifyMap, useAws, useMediaQuery } from "@demo/hooks";
 import { ConnectFormValuesType, EsriMapEnum, MapProviderEnum } from "@demo/types";
 import { transformCloudFormationLink } from "@demo/utils/transformCloudFormationLink";
 import { useTranslation } from "react-i18next";
@@ -22,6 +22,7 @@ const {
 } = appConfig;
 const defaultRegion = regionsData.find(option => option.value === REGION) as { value: string; label: string };
 const defaultRegionAsia = regionsData.find(option => option.value === REGION_ASIA) as { value: string; label: string };
+let scrollTimeout: NodeJS.Timer | undefined;
 
 interface ConnectAwsAccountModalProps {
 	open: boolean;
@@ -57,6 +58,8 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();
 	const isLtr = langDir === "ltr";
+	const isOverflowing = ["de", "es", "fr", "it", "pt-BR"].includes(i18n.language);
+	const isDesktop = useMediaQuery("(min-width: 1024px)");
 
 	useEffect(() => {
 		if (currentMapProvider === MapProviderEnum.GRAB) {
@@ -65,6 +68,24 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 			setStackRegion(defaultRegionAsia);
 		}
 	}, [currentMapProvider]);
+
+	useEffect(() => {
+		if (isOverflowing && isDesktop) {
+			const targetElement = document.getElementsByClassName("left-col")[0];
+
+			window.addEventListener("wheel", () => {
+				clearTimeout(scrollTimeout);
+
+				// remove the hideScroll class while user is scrolling
+				targetElement?.classList.remove("hideScroll");
+
+				scrollTimeout = setTimeout(() => {
+					// add the hideScroll class 1 second after user stops scrolling
+					targetElement?.classList.add("hideScroll");
+				}, 800);
+			});
+		}
+	}, [open, isOverflowing, isDesktop]);
 
 	const _onClose = () => {
 		onClose();
@@ -133,7 +154,16 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 			className="connect-aws-account-modal"
 			content={
 				<Flex className="content-container">
-					<Flex className="left-col">
+					<Flex
+						className="left-col"
+						style={
+							isDesktop
+								? isOverflowing
+									? { justifyContent: "none", overflowY: "auto" }
+									: { justifyContent: "center" }
+								: {}
+						}
+					>
 						<View className="title-container">
 							<IconAwsCloudFormation
 								style={{ width: "4.31rem", height: "4.31rem", minWidth: "4.31rem", minHeight: "4.31rem" }}
