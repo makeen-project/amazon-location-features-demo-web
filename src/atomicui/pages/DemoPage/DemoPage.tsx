@@ -35,9 +35,9 @@ import {
 	useAwsRoute,
 	useAwsTracker,
 	useMediaQuery,
-	usePersistedData
+	usePersistedData,
+	useRecordViewPage
 } from "@demo/hooks";
-import usePinpointAnalytics from "@demo/hooks/usePinpointAnalytics";
 import {
 	EsriMapEnum,
 	GrabMapEnum,
@@ -94,7 +94,7 @@ let interval: NodeJS.Timer | undefined;
 let timeout: NodeJS.Timer | undefined;
 
 const DemoPage: React.FC = () => {
-	const pinpointAnalytics = usePinpointAnalytics("DemoPage");
+	const pinpointAnalytics = useRecordViewPage("DemoPage");
 	const [show, setShow] = React.useState<ShowStateType>(initShow);
 	const [height, setHeight] = React.useState(window.innerHeight);
 	const [searchValue, setSearchValue] = React.useState("");

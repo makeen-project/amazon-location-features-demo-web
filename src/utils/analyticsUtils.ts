@@ -3,8 +3,7 @@ import {
 	PinpointClient,
 	PutEventsCommand,
 	PutEventsRequest,
-	UpdateEndpointCommand,
-	UpdateEndpointRequest
+	UpdateEndpointCommand
 } from "@aws-sdk/client-pinpoint";
 
 import { appConfig } from "@demo/core/constants";
@@ -14,9 +13,12 @@ import { browserName, fullBrowserVersion, isAndroid, isDesktop, isIOS } from "re
 import { uuid } from "./uuid";
 
 const {
-	ENV: { PINPOINT_REGION, PINPOINT_APPLICATION_ID, PINPOINT_ACCESS_KEY_ID, PINPOINT_SECRET_ACCESS_KEY }
+	ENV: { PINPOINT_REGION, PINPOINT_APPLICATION_ID, PINPOINT_ACCESS_KEY_ID, PINPOINT_SECRET_ACCESS_KEY },
+	PERSIST_STORAGE_KEYS: { LOCAL_STORAGE_PREFIX, AMPLIFY_AUTH_DATA }
 } = appConfig;
+const amplifyAuthDataLocalStorageKey = `${LOCAL_STORAGE_PREFIX}${AMPLIFY_AUTH_DATA}`;
 
+let isEndpointCreated = false;
 const uniqueIdKey = "uniqueIdKey";
 const sessionId = uuid.randomUUID();
 let uniqueId = localStorage.getItem(uniqueIdKey);
@@ -35,17 +37,66 @@ const pinClient = new PinpointClient({
 	region: PINPOINT_REGION
 });
 
-export const createEndpoint: (zxc: UpdateEndpointRequest) => void = async input => {
+export const createEndpoint = async () => {
+	const jsonValue = await fetch("https://api.country.is/");
+	const value = await jsonValue.json();
+
+	let platformType = "Other";
+
+	if (isAndroid) {
+		platformType = "Android";
+	} else if (isDesktop) {
+		platformType = "Desktop";
+	} else if (isIOS) {
+		platformType = "IOS";
+	}
+
+	const input = {
+		ApplicationId: PINPOINT_APPLICATION_ID,
+		EndpointId: uniqueId!,
+		EndpointRequest: {
+			Location: {
+				Country: value.country
+			},
+
+			Demographic: {
+				Model: browserName,
+				ModelVersion: fullBrowserVersion,
+
+				Platform: `Web (${platformType})`
+			},
+			User: {
+				UserAttributes: {},
+				UserId: `${PINPOINT_REGION}:${uuid.randomUUID()}`
+			}
+		}
+	};
+
 	const putEventsCommand = new UpdateEndpointCommand(input);
 	await pinClient.send(putEventsCommand);
+	isEndpointCreated = true;
 };
 
 export const record: (input: RecordInput[]) => void = async input => {
+	if (!isEndpointCreated) {
+		await createEndpoint();
+	}
+
 	const eventId = uuid.randomUUID();
+
+	const authLocalStorageKeyString = localStorage.getItem(amplifyAuthDataLocalStorageKey) as string;
+	const {
+		state: { isUserAwsAccountConnected, credentials }
+	} = JSON.parse(authLocalStorageKeyString);
 
 	const events = input.reduce((result, value) => {
 		const extValue = {
 			...value,
+			Attributes: {
+				...value.Attributes,
+				userAWSAccountConnectionStatus: !!isUserAwsAccountConnected ? "Connected" : "Not connected",
+				userAuthenticationStatus: !!credentials.authenticated ? "Authenticated" : "Unauthenticated"
+			},
 			Session: {
 				Id: sessionId,
 				StartTimestamp: "2023-07-10T15:34:03.711Z"
@@ -75,40 +126,3 @@ export const record: (input: RecordInput[]) => void = async input => {
 	const putEventsCommand = new PutEventsCommand(commandInput);
 	await pinClient.send(putEventsCommand);
 };
-
-fetch("https://api.country.is/").then(jsonValue =>
-	jsonValue.json().then(value => {
-		let platformType = "Other";
-
-		if (isAndroid) {
-			platformType = "Android";
-		} else if (isDesktop) {
-			platformType = "Desktop";
-		} else if (isIOS) {
-			platformType = "IOS";
-		}
-
-		createEndpoint({
-			ApplicationId: PINPOINT_APPLICATION_ID,
-			EndpointId: uniqueId!,
-			EndpointRequest: {
-				Location: {
-					Country: value.country
-				},
-
-				Demographic: {
-					AppVersion: "0.0.1",
-
-					Model: browserName,
-					ModelVersion: fullBrowserVersion,
-
-					Platform: `Web (${platformType})`
-				},
-				User: {
-					UserAttributes: {},
-					UserId: `${PINPOINT_REGION}:${uuid.randomUUID()}`
-				}
-			}
-		});
-	})
-);

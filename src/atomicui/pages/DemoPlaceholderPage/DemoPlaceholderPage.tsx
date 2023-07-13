@@ -4,7 +4,7 @@ import { Divider, Flex, View } from "@aws-amplify/ui-react";
 import { IconLocateMe, IconMinus, IconZoomPlus, LogoLight } from "@demo/assets";
 import { MapButtons } from "@demo/atomicui/molecules";
 import { GeofenceBox, RouteBox, SearchBox, SettingsModal, Sidebar, TrackingBox } from "@demo/atomicui/organisms";
-import usePinpointAnalytics from "@demo/hooks/usePinpointAnalytics";
+import { useRecordViewPage } from "@demo/hooks";
 import { MapStyleFilterTypes, ShowStateType } from "@demo/types";
 import "./styles.scss";
 
@@ -23,7 +23,7 @@ const DemoPlaceholderPage: React.FC<DemoPlaceholderPageProps> = ({
 	searchValue,
 	selectedFilters
 }) => {
-	const pinpointAnalytics = usePinpointAnalytics("DemoPlaceholderPage");
+	const pinpointAnalytics = useRecordViewPage("DemoPlaceholderPage");
 
 	return (
 		<View style={{ height }}>
