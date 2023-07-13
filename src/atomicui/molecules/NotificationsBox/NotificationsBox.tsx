@@ -9,9 +9,10 @@ import "./styles.scss";
 
 interface IProps {
 	notification: { title: string; createdAt: string }[];
+	maxHeight?: number;
 }
 
-const NotificationsBox: React.FC<IProps> = ({ notification }) => {
+const NotificationsBox: React.FC<IProps> = ({ notification, maxHeight = 30 }) => {
 	const [notificationList, setNotificationList] = useState<{ title: string; createdAt: string }[]>([]);
 	const { t } = useTranslation();
 
@@ -27,7 +28,7 @@ const NotificationsBox: React.FC<IProps> = ({ notification }) => {
 					{t("notifications_box__geofences_notifications.text")}
 				</Text>
 				<Text
-					className="medium clear-notifications"
+					className={`medium clear-notifications ${!notificationList.length ? "empty" : ""}`}
 					fontSize="0.95rem"
 					textAlign="center"
 					variation="secondary"
@@ -36,7 +37,13 @@ const NotificationsBox: React.FC<IProps> = ({ notification }) => {
 					{t("notifications_box__clear_notifications.text")}
 				</Text>
 			</Flex>
-			<Flex className="notification-list" direction="column" gap="0">
+			<Flex
+				className={!!notificationList.length ? "notification-list" : "notification-list empty"}
+				direction="column"
+				gap="0"
+				maxHeight={!notificationList.length ? `${maxHeight + 3}rem` : `${maxHeight}rem`}
+				minHeight={!notificationList.length ? `${maxHeight}rem` : "auto"}
+			>
 				{!!notificationList.length ? (
 					notificationList?.map((item, index) => (
 						<Flex key={index} direction="column" width="100%" gap="0">
@@ -53,8 +60,8 @@ const NotificationsBox: React.FC<IProps> = ({ notification }) => {
 					))
 				) : (
 					<Flex className="no-notifications" direction="column" gap="0">
-						<IconBellSolid />
-						<Text className="medium" fontSize="0.95rem" textAlign="center" variation="secondary">
+						<IconBellSolid width={36} height={36} />
+						<Text className="regular" fontSize="0.95rem" textAlign="center" variation="secondary" marginTop="1.2rem">
 							{t("notifications_box__no_new_notifications.text")}
 						</Text>
 					</Flex>

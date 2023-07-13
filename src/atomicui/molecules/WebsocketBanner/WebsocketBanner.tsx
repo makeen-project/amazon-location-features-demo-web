@@ -29,12 +29,12 @@ const WebsocketBanner = () => {
 	return useMemo(
 		() => ({
 			subscription,
+			isHidden: hideConnectionAlert,
 			Connection: (
 				<Flex
 					className={`tracking-connection-alert slide-up ${
 						hideConnectionAlert ? "hide" : isConnected ? "success" : "info"
-					}
-					`}
+					}`}
 				>
 					<Flex width="100%" justifyContent="space-between" alignItems="center">
 						<Text className="notification-text">

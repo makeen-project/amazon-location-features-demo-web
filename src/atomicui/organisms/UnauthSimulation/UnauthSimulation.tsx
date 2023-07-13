@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Button, Card, Flex, Text } from "@aws-amplify/ui-react";
 import {
@@ -18,6 +18,7 @@ import { ConfirmationModal, IconicInfoCard, NotificationsBox, WebsocketBanner } 
 import { MenuItemEnum, SelectOption } from "@demo/types";
 import { PubSub } from "aws-amplify";
 import { useTranslation } from "react-i18next";
+
 import "./styles.scss";
 
 const mockNotification = [
@@ -94,16 +95,16 @@ const buses = [
 ];
 
 const routesArray = [
-	{ value: "route 01", label: "route_01" },
-	{ value: "route 02", label: "route_02" },
-	{ value: "route 03", label: "route_03" },
-	{ value: "route 04", label: "route_04" },
-	{ value: "route 05", label: "route_05" },
-	{ value: "route 06", label: "route_06" },
-	{ value: "route 07", label: "route_07" },
-	{ value: "route 08", label: "route_08" },
-	{ value: "route 09", label: "route_09" },
-	{ value: "route 10", label: "route_10" }
+	{ label: "route 01", value: "route_01" },
+	{ label: "route 02", value: "route_02" },
+	{ label: "route 03", value: "route_03" },
+	{ label: "route 04", value: "route_04" },
+	{ label: "route 05", value: "route_05" },
+	{ label: "route 06", value: "route_06" },
+	{ label: "route 07", value: "route_07" },
+	{ label: "route 08", value: "route_08" },
+	{ label: "route 09", value: "route_09" },
+	{ label: "route 10", value: "route_10" }
 ];
 
 interface UnauthGeofenceBoxProps {
@@ -118,30 +119,24 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 	setShowUnauthTrackerBox
 }) => {
 	const [showStartUnauthSimulation, setShowStartUnauthSimulation] = useState(false);
-	const [routeSelectedValue, setRouteSelectedValue] = useState<SelectOption | null>(null);
 	const [busSelectedValue, setBusSelectedValue] = useState<SelectOption>();
 	const [startSimulation, setStartSimulation] = useState(false);
 	const [isNotifications, setIsNotifications] = useState(false);
 	const [routes, setRoutes] = useState<SelectOption[]>([]);
 	const [confirmCloseSimulation, setConfirmCloseSimulation] = useState(false);
-	const { subscription, Connection } = WebsocketBanner();
+	const { subscription, Connection, isHidden } = WebsocketBanner();
 	const { t } = useTranslation();
 
-	useEffect(() => {
-		if (routeSelectedValue !== null) {
-			let updatedRoutes = [...routes];
-			const exists = updatedRoutes.some(route => route.value === routeSelectedValue.value);
-
+	const updateRoutes = useCallback((selectedRoute: SelectOption) => {
+		setRoutes(currentRoutes => {
+			const exists = currentRoutes.some(route => route.value === selectedRoute.value);
 			if (exists) {
-				updatedRoutes = updatedRoutes.filter(route => route.value !== routeSelectedValue.value);
+				return currentRoutes.filter(route => route.value !== selectedRoute.value);
 			} else {
-				updatedRoutes.push(routeSelectedValue);
+				return [...currentRoutes, selectedRoute];
 			}
-
-			setRoutes(updatedRoutes);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [routeSelectedValue]);
+		});
+	}, []);
 
 	const handleClose = () =>
 		from === MenuItemEnum.GEOFENCE ? setShowUnauthGeofenceBox(false) : setShowUnauthTrackerBox(false);
@@ -261,7 +256,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 						) : (
 							<Flex className="simulation-container" direction="column" gap="0">
 								<Flex className="simulation-header" justifyContent="space-between">
-									<Flex alignItems="center" padding="0.6rem">
+									<Flex alignItems="center" padding="0.6rem 0 0.6rem 1.2rem">
 										<IconBackArrow
 											className="back-icon"
 											cursor="pointer"
@@ -275,7 +270,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 												}
 											}}
 										/>
-										<Text className="medium" fontSize="1.08rem" textAlign="center">
+										<Text className="medium" fontSize="1.08rem" textAlign="center" marginLeft="0.5rem">
 											{t("start_unauth_simulation__t&g_simulation.text")}
 										</Text>
 									</Flex>
@@ -292,7 +287,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 								<Flex gap="0" direction="column" width="100%">
 									{Connection}
 									{!isNotifications ? (
-										<Flex padding="1.3rem" direction="column" gap="0">
+										<Flex padding="1.3rem" direction="column" gap="0" height={isHidden ? "" : ""}>
 											<Text className="bold" fontSize="0.92rem">
 												{t("start_unauth_simulation__routes_notifications.text")}
 											</Text>
@@ -300,11 +295,11 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 												<DropdownEl
 													defaultOption={routes}
 													options={routesArray}
-													onSelect={value => value && setRouteSelectedValue(value)}
+													onSelect={value => value && updateRoutes(value)}
 													label={
 														!!routes.length
 															? `${routes.length} ${t("start_unauth_simulation__routes_selected.text")}`
-															: t("start_unauth_simulation__select_route.text")
+															: (t("start_unauth_simulation__select_route.text") as string)
 													}
 													arrowIconColor={"var(--tertiary-color)"}
 													showSelected
@@ -324,7 +319,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 													label={
 														!!busSelectedValue
 															? `${busSelectedValue?.label}`
-															: t("start_unauth_simulation__select_bus.text")
+															: (t("start_unauth_simulation__select_bus.text") as string)
 													}
 													showSelected
 													isRadioBox
@@ -340,7 +335,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 																<IconSegment width={15} height={15} />
 															)}
 															{i !== trackingHistory.length - 1 && (
-																<Flex direction="column" gap="0.4rem" margin="0.6rem 0">
+																<Flex direction="column" gap="0.5rem" margin="0.7rem 0">
 																	<Flex className="bubble-icon" />
 																	<Flex className="bubble-icon" />
 																	<Flex className="bubble-icon" />
@@ -365,7 +360,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 											</Flex>
 										</Flex>
 									) : (
-										<NotificationsBox notification={mockNotification} />
+										<NotificationsBox maxHeight={isHidden ? 55.5 : 53} notification={mockNotification} />
 									)}
 								</Flex>
 							</Flex>
@@ -375,7 +370,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 						<ConfirmationModal
 							open={confirmCloseSimulation}
 							onClose={onCloseHandler}
-							heading={t("start_unauth_simulation__exit_simulation.text")}
+							heading={t("start_unauth_simulation__exit_simulation.text") as string}
 							description={
 								<Text
 									className="small-text"
@@ -388,8 +383,8 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 								</Text>
 							}
 							onConfirm={() => setConfirmCloseSimulation(false)}
-							confirmationText={t("start_unauth_simulation__stay_in_simulation.text")}
-							cancelationText={t("exit.text")}
+							confirmationText={t("start_unauth_simulation__stay_in_simulation.text") as string}
+							cancelationText={t("exit.text") as string}
 						/>
 					</Flex>
 				</>
