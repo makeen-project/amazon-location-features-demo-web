@@ -12,6 +12,8 @@ const useRecordViewPage = (pageName: string) => {
 
 		return () => record([{ EventType: EventTypeEnum.LEAVE_PAGE, Attributes: { path, pageName } }]);
 	}, [pageName]);
+
+	return {};
 };
 
 export default useRecordViewPage;

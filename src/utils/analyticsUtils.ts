@@ -7,9 +7,11 @@ import {
 } from "@aws-sdk/client-pinpoint";
 
 import { appConfig } from "@demo/core/constants";
+import { EventTypeEnum } from "@demo/types/Enums";
 import RecordInput from "@demo/types/RecordInput";
 import { browserName, fullBrowserVersion, isAndroid, isDesktop, isIOS } from "react-device-detect";
 
+import debounce from "./debounce";
 import { uuid } from "./uuid";
 
 const {
@@ -20,7 +22,7 @@ const amplifyAuthDataLocalStorageKey = `${LOCAL_STORAGE_PREFIX}${AMPLIFY_AUTH_DA
 
 let isEndpointCreated = false;
 const uniqueIdKey = "uniqueIdKey";
-const sessionId = uuid.randomUUID();
+let session: { [key: string]: string } = {};
 let uniqueId = localStorage.getItem(uniqueIdKey);
 
 if (!uniqueId) {
@@ -37,7 +39,7 @@ const pinClient = new PinpointClient({
 	region: PINPOINT_REGION
 });
 
-export const createEndpoint = async () => {
+const createEndpoint = async () => {
 	const jsonValue = await fetch("https://api.country.is/");
 	const value = await jsonValue.json();
 
@@ -82,6 +84,10 @@ export const record: (input: RecordInput[]) => void = async input => {
 		await createEndpoint();
 	}
 
+	if (!session.id) {
+		startSession();
+	}
+
 	const eventId = uuid.randomUUID();
 
 	const authLocalStorageKeyString = localStorage.getItem(amplifyAuthDataLocalStorageKey) as string;
@@ -93,15 +99,16 @@ export const record: (input: RecordInput[]) => void = async input => {
 		const extValue = {
 			...value,
 			Attributes: {
-				...value.Attributes,
 				userAWSAccountConnectionStatus: !!isUserAwsAccountConnected ? "Connected" : "Not connected",
-				userAuthenticationStatus: !!credentials.authenticated ? "Authenticated" : "Unauthenticated"
+				userAuthenticationStatus: !!credentials.authenticated ? "Authenticated" : "Unauthenticated",
+				...(value.Attributes || {})
 			},
 			Session: {
-				Id: sessionId,
-				StartTimestamp: "2023-07-10T15:34:03.711Z"
+				Id: session.id,
+				StartTimestamp: session.startTimestamp,
+				...(value.Session || {})
 			},
-			Timestamp: new Date().toISOString()
+			Timestamp: new Date().toUTCString()
 		};
 
 		result[eventId] = extValue;
@@ -125,4 +132,40 @@ export const record: (input: RecordInput[]) => void = async input => {
 
 	const putEventsCommand = new PutEventsCommand(commandInput);
 	await pinClient.send(putEventsCommand);
+};
+
+const startSession = async () => {
+	session.id = uuid.randomUUID();
+	session.startTimestamp = new Date().toUTCString();
+	await record([{ EventType: EventTypeEnum.SESSION_START, Attributes: {} }]);
+};
+
+const stopSession = async () => {
+	await record([
+		{
+			EventType: EventTypeEnum.SESSION_STOP,
+			Attributes: {},
+			Session: {
+				Id: session.id,
+				StartTimestamp: session.startTimestamp,
+				StopTimestamp: new Date().toUTCString()
+			}
+		}
+	]);
+	session = {};
+};
+
+const stopSessionIn30Minutes = debounce(stopSession, 1000 * 60 * 30);
+
+export const initiateAnalytics = () => {
+	startSession();
+
+	addEventListener("mousedown", () => {
+		// create session whenever user becomes active
+		if (!session.id) {
+			startSession();
+		}
+
+		stopSessionIn30Minutes();
+	});
 };

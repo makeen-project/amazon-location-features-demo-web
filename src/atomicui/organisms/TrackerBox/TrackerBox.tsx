@@ -392,6 +392,7 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 				trackerPos={trackerPos}
 				setTrackerPos={setTrackerPos}
 				isDesktop={isDesktop}
+				trackerPointsLength={trackerPoints?.length || 0}
 			/>
 		</>
 	);

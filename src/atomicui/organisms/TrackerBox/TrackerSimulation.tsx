@@ -6,7 +6,8 @@ import React, { useCallback, useEffect, useMemo } from "react";
 // import { IconTrackerIntersect } from "@demo/assets";
 import { useAmplifyMap, useAwsGeofence, useAwsRoute, useAwsTracker, usePersistedData } from "@demo/hooks";
 import { DistanceUnitEnum, MapUnitEnum, RouteDataType, TrackerType, TravelMode } from "@demo/types";
-import { TriggeredByEnum } from "@demo/types/Enums";
+import { EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import * as turf from "@turf/turf";
 import { CalculateRouteRequest, Position } from "aws-sdk/clients/location";
 import { Layer, LayerProps, MapRef, Marker, Source } from "react-map-gl";
@@ -30,6 +31,7 @@ interface TrackerSimulationProps {
 	trackerPos?: Position;
 	setTrackerPos: (tp?: Position) => void;
 	isDesktop: boolean;
+	trackerPointsLength: number;
 }
 
 let interval: NodeJS.Timer | undefined;
@@ -47,7 +49,8 @@ const TrackerSimulation: React.FC<TrackerSimulationProps> = ({
 	setPoints,
 	trackerPos,
 	setTrackerPos,
-	isDesktop
+	isDesktop,
+	trackerPointsLength
 }) => {
 	const { mapUnit: currentMapUnit } = useAmplifyMap();
 	const { getRoute } = useAwsRoute();
@@ -148,8 +151,28 @@ const TrackerSimulation: React.FC<TrackerSimulationProps> = ({
 			idx = -1;
 			clearInterval(interval);
 			selectedTrackerType === TrackerType.DRONE ? calculatePath() : calculateRoute();
+
+			record([
+				{
+					EventType: EventTypeEnum.TRACKER_SAVED,
+					Attributes: {
+						trackerType: selectedTrackerType,
+						numberOfTrackerPoints: String(trackerPointsLength)
+					}
+				}
+			]);
 		}
-	}, [isSaved, routeData, setIsPlaying, setTrackerPos, setPoints, selectedTrackerType, calculatePath, calculateRoute]);
+	}, [
+		isSaved,
+		routeData,
+		setIsPlaying,
+		setTrackerPos,
+		setPoints,
+		selectedTrackerType,
+		calculatePath,
+		calculateRoute,
+		trackerPointsLength
+	]);
 
 	useEffect(() => {
 		if (routeData && !points) {

@@ -23,7 +23,7 @@ const DemoPlaceholderPage: React.FC<DemoPlaceholderPageProps> = ({
 	searchValue,
 	selectedFilters
 }) => {
-	const pinpointAnalytics = useRecordViewPage("DemoPlaceholderPage");
+	const {} = useRecordViewPage("DemoPlaceholderPage");
 
 	return (
 		<View style={{ height }}>

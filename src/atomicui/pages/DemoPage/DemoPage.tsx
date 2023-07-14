@@ -94,7 +94,7 @@ let interval: NodeJS.Timer | undefined;
 let timeout: NodeJS.Timer | undefined;
 
 const DemoPage: React.FC = () => {
-	const pinpointAnalytics = useRecordViewPage("DemoPage");
+	const {} = useRecordViewPage("DemoPage");
 	const [show, setShow] = React.useState<ShowStateType>(initShow);
 	const [height, setHeight] = React.useState(window.innerHeight);
 	const [searchValue, setSearchValue] = React.useState("");
