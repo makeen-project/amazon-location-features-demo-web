@@ -2867,7 +2867,7 @@
 	"start_unauth_simulation__routes_notifications": {
 		"text": "Routes notifications"
 	},
-	"start_unauth_simulation__routes_selected": {
+	"start_unauth_simulation__routes_active": {
 		"text": "routes active"
 	},
 	"start_unauth_simulation__select_route": {

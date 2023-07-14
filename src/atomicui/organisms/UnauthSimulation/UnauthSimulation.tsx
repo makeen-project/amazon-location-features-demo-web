@@ -303,7 +303,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 													onSelect={value => value && updateRoutes(value)}
 													label={
 														!!routes.length
-															? `${routes.length} ${t("start_unauth_simulation__routes_selected.text")}`
+															? `${routes.length} ${t("start_unauth_simulation__routes_active.text")}`
 															: (t("start_unauth_simulation__select_route.text") as string)
 													}
 													arrowIconColor={"var(--tertiary-color)"}
