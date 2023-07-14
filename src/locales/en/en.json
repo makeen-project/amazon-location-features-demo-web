@@ -3323,6 +3323,9 @@
 	"error_handler__failed_calculate_route": {
 		"text": "Failed to calculate route"
 	},
+	"error_handler__failed_fetch_samples_list": {
+		"text": "Failed to fetch samples list"
+	},
 	"tooltip__mps": {
 		"text": "Map provider and styles"
 	},
