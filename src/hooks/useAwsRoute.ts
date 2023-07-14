@@ -26,7 +26,7 @@ const useAwsRoute = () => {
 					const routeData = await routesService.calculateRoute(params, mapStore.mapProvider);
 					return routeData;
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_CALCULATE_ROUTE") as string);
+					errorHandler(error, t("error_handler__failed_calculate_route.text") as string);
 				} finally {
 					setState({ isFetchingRoute: false });
 				}

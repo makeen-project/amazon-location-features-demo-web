@@ -2867,8 +2867,8 @@
 	"start_unauth_simulation__routes_notifications": {
 		"text": "Routes notifications"
 	},
-	"start_unauth_simulation__routes_selected": {
-		"text": "routes selected"
+	"start_unauth_simulation__routes_active": {
+		"text": "routes active"
 	},
 	"start_unauth_simulation__select_route": {
 		"text": "Select a route"
@@ -3322,6 +3322,9 @@
 	},
 	"error_handler__failed_calculate_route": {
 		"text": "Failed to calculate route"
+	},
+	"error_handler__failed_fetch_samples_list": {
+		"text": "Failed to fetch samples list"
 	},
 	"tooltip__mps": {
 		"text": "Map provider and styles"
