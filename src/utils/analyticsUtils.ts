@@ -73,8 +73,8 @@ const createEndpoint = async () => {
 				Platform: `Web (${platformType})`
 			},
 			User: {
-				UserAttributes: { ip: value.ip },
-				UserId: `${credentials.authenticated ? credentials.identityId : "annonymous"}`
+				UserAttributes: {},
+				UserId: `${credentials.authenticated ? credentials.identityId : "anonymous"}`
 			}
 		}
 	};
