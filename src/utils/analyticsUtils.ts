@@ -19,15 +19,15 @@ const {
 	PERSIST_STORAGE_KEYS: { LOCAL_STORAGE_PREFIX, AMPLIFY_AUTH_DATA }
 } = appConfig;
 const amplifyAuthDataLocalStorageKey = `${LOCAL_STORAGE_PREFIX}${AMPLIFY_AUTH_DATA}`;
+const endpointIdKey = `${LOCAL_STORAGE_PREFIX}_analytics_endpointId`;
 
 let isEndpointCreated = false;
-const uniqueIdKey = "uniqueIdKey";
 let session: { [key: string]: string } = {};
-let uniqueId = localStorage.getItem(uniqueIdKey);
+let endpointId = localStorage.getItem(endpointIdKey);
 
-if (!uniqueId) {
-	uniqueId = uuid.randomUUID();
-	localStorage.setItem(uniqueIdKey, uniqueId);
+if (!endpointId) {
+	endpointId = uuid.randomUUID();
+	localStorage.setItem(endpointIdKey, endpointId);
 }
 
 //Set the MediaConvert Service Object
@@ -43,6 +43,11 @@ const createEndpoint = async () => {
 	const jsonValue = await fetch("https://api.country.is/");
 	const value = await jsonValue.json();
 
+	const authLocalStorageKeyString = localStorage.getItem(amplifyAuthDataLocalStorageKey) as string;
+	const {
+		state: { credentials }
+	} = JSON.parse(authLocalStorageKeyString);
+
 	let platformType = "Other";
 
 	if (isAndroid) {
@@ -55,7 +60,7 @@ const createEndpoint = async () => {
 
 	const input = {
 		ApplicationId: PINPOINT_APPLICATION_ID,
-		EndpointId: uniqueId!,
+		EndpointId: endpointId!,
 		EndpointRequest: {
 			Location: {
 				Country: value.country
@@ -68,8 +73,8 @@ const createEndpoint = async () => {
 				Platform: `Web (${platformType})`
 			},
 			User: {
-				UserAttributes: {},
-				UserId: `${PINPOINT_REGION}:${uuid.randomUUID()}`
+				UserAttributes: { ip: value.ip },
+				UserId: `${credentials.authenticated ? credentials.identityId : "annonymous"}`
 			}
 		}
 	};
@@ -85,7 +90,7 @@ export const record: (input: RecordInput[]) => void = async input => {
 	}
 
 	if (!session.id) {
-		startSession();
+		await startSession();
 	}
 
 	const eventId = uuid.randomUUID();
@@ -122,7 +127,7 @@ export const record: (input: RecordInput[]) => void = async input => {
 		EventsRequest: {
 			// EventsRequest
 			BatchItem: {
-				[uniqueId!]: {
+				[endpointId!]: {
 					Endpoint: {},
 					Events: events
 				}
@@ -138,6 +143,7 @@ const startSession = async () => {
 	session.id = uuid.randomUUID();
 	session.startTimestamp = new Date().toUTCString();
 	await record([{ EventType: EventTypeEnum.SESSION_START, Attributes: {} }]);
+	stopSessionIn30Minutes();
 };
 
 const stopSession = async () => {
@@ -157,15 +163,15 @@ const stopSession = async () => {
 
 const stopSessionIn30Minutes = debounce(stopSession, 1000 * 60 * 30);
 
-export const initiateAnalytics = () => {
-	startSession();
+export const initiateAnalytics = async () => {
+	await startSession();
 
 	addEventListener("mousedown", () => {
 		// create session whenever user becomes active
 		if (!session.id) {
 			startSession();
+		} else {
+			stopSessionIn30Minutes();
 		}
-
-		stopSessionIn30Minutes();
 	});
 };
