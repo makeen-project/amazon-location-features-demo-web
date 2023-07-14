@@ -39,6 +39,12 @@ export enum EventTypeEnum {
 	GEO_EVENT_TRIGGERED = "GEO_EVENT_TRIGGERED"
 }
 
+export enum AnalyticsSessionStatus {
+	CREATED = "CREATED",
+	NOT_CREATED = "NOT_CREATED",
+	IN_PROGRESS = "IN_PROGRESS"
+}
+
 export enum TriggeredByEnum {
 	ROUTE_MODULE = "ROUTE_MODULE",
 	TRACKER_SIMULATION_MODULE = "TRACKER_SIMULATION_MODULE",

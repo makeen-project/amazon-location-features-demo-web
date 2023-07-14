@@ -7,11 +7,12 @@ import {
 } from "@aws-sdk/client-pinpoint";
 
 import { appConfig } from "@demo/core/constants";
-import { EventTypeEnum } from "@demo/types/Enums";
+import { AnalyticsSessionStatus, EventTypeEnum } from "@demo/types/Enums";
 import RecordInput from "@demo/types/RecordInput";
 import { browserName, fullBrowserVersion, isAndroid, isDesktop, isIOS } from "react-device-detect";
 
 import debounce from "./debounce";
+import sleep from "./sleep";
 import { uuid } from "./uuid";
 
 const {
@@ -22,7 +23,11 @@ const amplifyAuthDataLocalStorageKey = `${LOCAL_STORAGE_PREFIX}${AMPLIFY_AUTH_DA
 const endpointIdKey = `${LOCAL_STORAGE_PREFIX}_analytics_endpointId`;
 
 let isEndpointCreated = false;
-let session: { [key: string]: string } = {};
+let session: {
+	id?: string;
+	startTimestamp?: string;
+	creationStatus: AnalyticsSessionStatus;
+} = { creationStatus: AnalyticsSessionStatus.NOT_CREATED };
 let endpointId = localStorage.getItem(endpointIdKey);
 
 if (!endpointId) {
@@ -40,6 +45,8 @@ const pinClient = new PinpointClient({
 });
 
 const createEndpoint = async () => {
+	isEndpointCreated = true;
+
 	const jsonValue = await fetch("https://api.country.is/");
 	const value = await jsonValue.json();
 
@@ -80,8 +87,12 @@ const createEndpoint = async () => {
 	};
 
 	const putEventsCommand = new UpdateEndpointCommand(input);
-	await pinClient.send(putEventsCommand);
-	isEndpointCreated = true;
+
+	try {
+		await pinClient.send(putEventsCommand);
+	} catch {
+		isEndpointCreated = false;
+	}
 };
 
 export const record: (input: RecordInput[]) => void = async input => {
@@ -89,8 +100,13 @@ export const record: (input: RecordInput[]) => void = async input => {
 		await createEndpoint();
 	}
 
-	if (!session.id) {
-		await startSession();
+	while (session.creationStatus !== AnalyticsSessionStatus.CREATED) {
+		if (session.creationStatus === AnalyticsSessionStatus.NOT_CREATED) {
+			await startSession();
+		}
+
+		// sleep in both NOT_CREATED amd IN_PROGRESS case
+		await sleep(5000);
 	}
 
 	const eventId = uuid.randomUUID();
@@ -101,6 +117,8 @@ export const record: (input: RecordInput[]) => void = async input => {
 	} = JSON.parse(authLocalStorageKeyString);
 
 	const events = input.reduce((result, value) => {
+		console.log("-->EventType", value.EventType);
+
 		const extValue = {
 			...value,
 			Attributes: {
@@ -140,10 +158,12 @@ export const record: (input: RecordInput[]) => void = async input => {
 };
 
 const startSession = async () => {
+	session.creationStatus = AnalyticsSessionStatus.IN_PROGRESS;
 	session.id = uuid.randomUUID();
 	session.startTimestamp = new Date().toUTCString();
 	await record([{ EventType: EventTypeEnum.SESSION_START, Attributes: {} }]);
 	stopSessionIn30Minutes();
+	session.creationStatus = AnalyticsSessionStatus.CREATED;
 };
 
 const stopSession = async () => {
@@ -152,13 +172,13 @@ const stopSession = async () => {
 			EventType: EventTypeEnum.SESSION_STOP,
 			Attributes: {},
 			Session: {
-				Id: session.id,
-				StartTimestamp: session.startTimestamp,
+				Id: session.id!,
+				StartTimestamp: session.startTimestamp!,
 				StopTimestamp: new Date().toUTCString()
 			}
 		}
 	]);
-	session = {};
+	session = { creationStatus: AnalyticsSessionStatus.NOT_CREATED };
 };
 
 const stopSessionIn30Minutes = debounce(stopSession, 1000 * 60 * 30);
@@ -168,7 +188,7 @@ export const initiateAnalytics = async () => {
 
 	addEventListener("mousedown", () => {
 		// create session whenever user becomes active
-		if (!session.id) {
+		if (session.creationStatus !== AnalyticsSessionStatus.CREATED) {
 			startSession();
 		} else {
 			stopSessionIn30Minutes();
