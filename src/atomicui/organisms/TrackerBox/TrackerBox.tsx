@@ -9,6 +9,8 @@ import { GeofenceMarker } from "@demo/atomicui/molecules";
 import { useAwsGeofence, useAwsRoute, useAwsTracker, useMediaQuery } from "@demo/hooks";
 import { useWebSocketService } from "@demo/services";
 import { RouteDataType, TrackerType } from "@demo/types";
+import { EventTypeEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import * as turf from "@turf/turf";
 import { PubSub } from "aws-amplify";
 import { Position } from "aws-sdk/clients/location";
@@ -113,6 +115,16 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 		if (trackerPoints && trackerPoints.length >= 2) {
 			setIsEditingRoute(false);
 			setIsSaved(true);
+
+			record([
+				{
+					EventType: EventTypeEnum.TRACKER_SAVED,
+					Attributes: {
+						trackerType: selectedTrackerType,
+						numberOfTrackerPoints: String(trackerPoints.length)
+					}
+				}
+			]);
 		}
 	};
 
@@ -392,7 +404,6 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 				trackerPos={trackerPos}
 				setTrackerPos={setTrackerPos}
 				isDesktop={isDesktop}
-				trackerPointsLength={trackerPoints?.length || 0}
 			/>
 		</>
 	);

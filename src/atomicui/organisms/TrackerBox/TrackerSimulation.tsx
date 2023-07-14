@@ -31,7 +31,6 @@ interface TrackerSimulationProps {
 	trackerPos?: Position;
 	setTrackerPos: (tp?: Position) => void;
 	isDesktop: boolean;
-	trackerPointsLength: number;
 }
 
 let interval: NodeJS.Timer | undefined;
@@ -49,8 +48,7 @@ const TrackerSimulation: React.FC<TrackerSimulationProps> = ({
 	setPoints,
 	trackerPos,
 	setTrackerPos,
-	isDesktop,
-	trackerPointsLength
+	isDesktop
 }) => {
 	const { mapUnit: currentMapUnit } = useAmplifyMap();
 	const { getRoute } = useAwsRoute();
@@ -151,28 +149,8 @@ const TrackerSimulation: React.FC<TrackerSimulationProps> = ({
 			idx = -1;
 			clearInterval(interval);
 			selectedTrackerType === TrackerType.DRONE ? calculatePath() : calculateRoute();
-
-			record([
-				{
-					EventType: EventTypeEnum.TRACKER_SAVED,
-					Attributes: {
-						trackerType: selectedTrackerType,
-						numberOfTrackerPoints: String(trackerPointsLength)
-					}
-				}
-			]);
 		}
-	}, [
-		isSaved,
-		routeData,
-		setIsPlaying,
-		setTrackerPos,
-		setPoints,
-		selectedTrackerType,
-		calculatePath,
-		calculateRoute,
-		trackerPointsLength
-	]);
+	}, [isSaved, routeData, setIsPlaying, setTrackerPos, setPoints, selectedTrackerType, calculatePath, calculateRoute]);
 
 	useEffect(() => {
 		if (routeData && !points) {

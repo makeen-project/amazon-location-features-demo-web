@@ -81,7 +81,7 @@ const createEndpoint = async () => {
 			},
 			User: {
 				UserAttributes: {},
-				UserId: `${credentials.authenticated ? credentials.identityId : "anonymous"}`
+				UserId: `${credentials.authenticated ? credentials.identityId : `AnonymousUser:${endpointId}`}`
 			}
 		}
 	};
