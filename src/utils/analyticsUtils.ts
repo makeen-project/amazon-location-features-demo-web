@@ -100,13 +100,17 @@ export const record: (input: RecordInput[]) => void = async input => {
 		await createEndpoint();
 	}
 
-	while (session.creationStatus !== AnalyticsSessionStatus.CREATED) {
-		if (session.creationStatus === AnalyticsSessionStatus.NOT_CREATED) {
-			await startSession();
-		}
+	const eventTypes = input.map(x => x.EventType);
 
-		// sleep in both NOT_CREATED amd IN_PROGRESS case
-		await sleep(5000);
+	if (!eventTypes.includes(EventTypeEnum.SESSION_START) && !eventTypes.includes(EventTypeEnum.SESSION_STOP)) {
+		while (session.creationStatus !== AnalyticsSessionStatus.CREATED) {
+			if (session.creationStatus === AnalyticsSessionStatus.NOT_CREATED) {
+				await startSession();
+			}
+
+			// sleep in both NOT_CREATED and IN_PROGRESS case (wait until the session event is created)
+			await sleep(5000);
+		}
 	}
 
 	const eventId = uuid.randomUUID();
@@ -117,8 +121,6 @@ export const record: (input: RecordInput[]) => void = async input => {
 	} = JSON.parse(authLocalStorageKeyString);
 
 	const events = input.reduce((result, value) => {
-		console.log("-->EventType", value.EventType);
-
 		const extValue = {
 			...value,
 			Attributes: {
