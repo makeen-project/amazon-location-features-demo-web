@@ -103,7 +103,7 @@
 			box-shadow: none;
 			border: 1px solid var(--grey-color-5);
 			li {
-				padding: 0.5rem 0.5rem;
+				padding: 0;
 				.option-checkbox {
 					width: 100%;
 					.amplify-flex.amplify-checkbox {
@@ -115,6 +115,20 @@
 						font-size: 14px;
 						font-weight: 500;
 						margin-left: 0.5rem;
+					}
+				}
+
+				.amplify-flex.amplify-radiogroup {
+					width: 100%;
+					.amplify-flex.amplify-radio {
+						width: 100%;
+						padding: 1rem;
+					}
+					.amplify-flex.amplify-radio.radio-option-end {
+						justify-content: flex-end;
+					}
+					.amplify-flex.amplify-radio.radio-option {
+						justify-content: flex-start;
 					}
 				}
 
@@ -136,7 +150,7 @@
 				.option-checkbox {
 					width: 100%;
 					.amplify-flex.amplify-checkbox {
-						padding: 8px 16px;
+						padding: 1rem 16px;
 						width: 100%;
 						justify-content: left;
 					}
@@ -177,6 +191,10 @@
 			cursor: pointer;
 			padding: 8px 16px;
 			user-select: none;
+
+			&:hover {
+				background-color: var(--primary-alpha-light-color);
+			}
 
 			@media only screen and (min-width: 1024px) {
 				&:hover {

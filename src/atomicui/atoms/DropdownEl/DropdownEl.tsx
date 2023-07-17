@@ -94,10 +94,12 @@ const DropdownEl: React.FC<DropdownElProps> = ({
 										label=""
 										name="radioBox"
 										defaultValue={(defaultOption as SelectOption)?.value}
-										style={{ width: "100%", gap: 0, padding: "0.5rem" }}
+										style={{ width: "100%", gap: 0 }}
 									>
 										<Radio
-											className={(defaultOption as SelectOption)?.value === option.value ? "radio-option-selected" : ""}
+											className={`${isLtr ? "radio-option-end" : "radio-option"} ${
+												(defaultOption as SelectOption)?.value === option.value ? "radio-option-selected" : ""
+											}`}
 											size="large"
 											value={option.value}
 										>
@@ -114,7 +116,8 @@ const DropdownEl: React.FC<DropdownElProps> = ({
 									key={option.value}
 									className={showSelected && (defaultOption as SelectOption)?.value === option.value ? "selected" : ""}
 									style={{ display: "flex", justifyContent: isLtr ? "start" : "end" }}
-									onChange={() => handleClick(option)}
+									onChange={() => isCheckbox && handleClick(option)}
+									onClick={() => !isCheckbox && handleClick(option)}
 								>
 									{isCheckbox ? (
 										<CheckboxField
