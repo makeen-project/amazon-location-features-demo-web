@@ -17,9 +17,17 @@ interface GrabConfirmationModalProps {
 	open: boolean;
 	onClose: () => void;
 	onConfirm: () => void;
+	showDoNotAskAgainCheckbox?: boolean;
+	onConfirmationCheckboxOnChange?: (e: boolean) => void;
 }
 
-const GrabConfirmationModal: React.FC<GrabConfirmationModalProps> = ({ open, onClose, onConfirm }) => {
+const GrabConfirmationModal: React.FC<GrabConfirmationModalProps> = ({
+	open,
+	onClose,
+	onConfirm,
+	showDoNotAskAgainCheckbox,
+	onConfirmationCheckboxOnChange
+}) => {
 	const { t } = useTranslation();
 
 	return (
@@ -36,6 +44,11 @@ const GrabConfirmationModal: React.FC<GrabConfirmationModalProps> = ({ open, onC
 			confirmationText={t("grab_cm__heading.text") as string}
 			showLearnMore={true}
 			handleLeanMore={() => window.open(GRAB_DEVELOPER_GUIDE, "_blank")}
+			showConfirmationCheckbox={showDoNotAskAgainCheckbox}
+			confirmationCheckboxLabel={"Don't ask me again"}
+			confirmationCheckboxValue={"Don't ask me again"}
+			confirmationCheckboxName="confirmationCheckboxName"
+			confirmationCheckboxOnChange={onConfirmationCheckboxOnChange}
 		/>
 	);
 };

@@ -16,6 +16,9 @@ const usePersistedData = () => {
 			setShowAppDownloadNotification: (showAppDownloadNotification: boolean) => {
 				setState({ showAppDownloadNotification });
 			},
+			setDoNotAskGrabDisclaimerModal: (doNotAskGrabDisclaimerModal: boolean) => {
+				setState({ doNotAskGrabDisclaimerModal });
+			},
 			setShowWelcomeModal: (showWelcomeModal: boolean) => {
 				setState({ showWelcomeModal });
 			},
