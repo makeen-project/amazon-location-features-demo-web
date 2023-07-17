@@ -45,8 +45,8 @@ const GrabConfirmationModal: React.FC<GrabConfirmationModalProps> = ({
 			showLearnMore={true}
 			handleLeanMore={() => window.open(GRAB_DEVELOPER_GUIDE, "_blank")}
 			showConfirmationCheckbox={showDoNotAskAgainCheckbox}
-			confirmationCheckboxLabel={"Don't ask me again"}
-			confirmationCheckboxValue={"Don't ask me again"}
+			confirmationCheckboxLabel={t("grab_cm__checkbox.text")}
+			confirmationCheckboxValue={t("grab_cm__checkbox.text")}
 			confirmationCheckboxName="confirmationCheckboxName"
 			confirmationCheckboxOnChange={onConfirmationCheckboxOnChange}
 		/>

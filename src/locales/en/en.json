@@ -3194,6 +3194,9 @@
 	"grab_cm__desc": {
 		"text": "Grab provides Maps, Routes and Place search in Malaysia, Philippines, Thailand, Singapore, Vietnam, Indonesia, Myanmar, and Cambodia.\nWhile car and motorcycle routes are available across the above countries, the bicycle and walking routes are supported in only key cities such as Singapore, Jakarta, Manila, Klang Valley, Bangkok, Ho Chi Minh City, and Hanoi."
 	},
+	"grab_cm__checkbox": {
+		"text": "Don't ask again"
+	},
 	"tracker_info_modal__heading": {
 		"text": "Enable Tracker"
 	},
