@@ -17,13 +17,20 @@ import { DropdownEl } from "@demo/atomicui/atoms";
 import { ConfirmationModal, IconicInfoCard, NotificationsBox, WebsocketBanner } from "@demo/atomicui/molecules";
 import { appConfig, busRoutesData } from "@demo/core";
 import { useAmplifyMap } from "@demo/hooks";
-import { MenuItemEnum, SelectOption } from "@demo/types";
+import {
+	MenuItemEnum,
+	SelectOption,
+	TrackingHistoryItemtype,
+	TrackingHistoryType,
+	TrackingHistoryTypeEnum
+} from "@demo/types";
 import { PubSub } from "aws-amplify";
+import { format, parseISO } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { MapRef } from "react-map-gl";
 
-import "./styles.scss";
 import UnauthRouteSimulation from "./UnauthRouteSimulation";
+import "./styles.scss";
 
 const {
 	MAP_RESOURCES: {
@@ -81,17 +88,7 @@ const mockNotification = [
 	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
 	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" }
 ];
-
-const trackingHistory = [
-	{ title: "Bus stop number 1", description: "50.54943, 30.21989", subDescription: "11:42 pm" },
-	{ title: "Bus stop number 2", description: null, subDescription: "11:45 pm" },
-	{ title: "Bus stop number 3", description: null, subDescription: "11:48 pm" },
-	{ title: "Bus stop number 4", description: null, subDescription: "11:51 pm" },
-	{ title: "Bus stop number 5", description: null, subDescription: "11:54 pm" },
-	{ title: "Bus stop number 6", description: "50.54948, 30.21994", subDescription: "11:57 pm" }
-];
-
-const newTrackingHistory = {
+const initialTrackingHistory: TrackingHistoryType = {
 	bus_route_01: [],
 	bus_route_02: [],
 	bus_route_03: [],
@@ -103,7 +100,6 @@ const newTrackingHistory = {
 	bus_route_09: [],
 	bus_route_10: []
 };
-
 const busRoutesDropdown = [
 	{ value: "bus_route_01", label: "Bus 01 Macdonald" },
 	{ value: "bus_route_02", label: "Bus 02 Main" },
@@ -134,6 +130,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 }) => {
 	const [showStartUnauthSimulation, setShowStartUnauthSimulation] = useState(false);
 	const [startSimulation, setStartSimulation] = useState(false);
+	const [trackingHistory, setTrackingHistory] = useState<TrackingHistoryType>(initialTrackingHistory);
 	const [selectedRoutes, setSelectedRoutes] = useState<SelectOption[]>([busRoutesDropdown[0]]);
 	const [busSelectedValue, setBusSelectedValue] = useState<SelectOption>(busRoutesDropdown[0]);
 	const [isNotifications, setIsNotifications] = useState(false);
@@ -142,6 +139,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 	const { currentLocationData } = useAmplifyMap();
 	const { subscription, Connection, isHidden } = WebsocketBanner();
 	const { t } = useTranslation();
+	console.log({ trackingHistory });
 
 	useEffect(() => {
 		mapRef?.zoomTo(2);
@@ -250,6 +248,12 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 					coordinates={coordinates}
 					isPlaying={isPlaying}
 					disabled={!selectedRoutesIds.includes(id)}
+					updateTrackingHistory={(id: string, newTrackingHistory: TrackingHistoryItemtype) =>
+						setTrackingHistory(prevState => ({
+							...prevState,
+							[id]: [...prevState[id], newTrackingHistory]
+						}))
+					}
 				/>
 			)),
 		[isPlaying, selectedRoutesIds]
@@ -389,14 +393,14 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 											</Flex>
 											<Flex gap="0">
 												<Flex direction="column" gap="0" marginTop="2rem">
-													{trackingHistory.map((_, i) => (
-														<Flex key={i} className="tracking-icon-container" gap="0">
-															{i === 0 || i === trackingHistory.length - 1 ? (
+													{trackingHistory[busSelectedValue.value].map(({ type }, idx) => (
+														<Flex key={idx} className="tracking-icon-container" gap="0">
+															{type === TrackingHistoryTypeEnum.BUS_STOP ? (
 																<IconGeofenceMarkerDisabled className="geofence-icon" width={22} height={22} />
 															) : (
 																<IconSegment width={15} height={15} />
 															)}
-															{i !== trackingHistory.length - 1 && (
+															{idx !== trackingHistory[busSelectedValue.value].length - 1 && (
 																<Flex direction="column" gap="0.5rem" margin="0.7rem 0">
 																	<Flex className="bubble-icon" />
 																	<Flex className="bubble-icon" />
@@ -407,17 +411,19 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 													))}
 												</Flex>
 												<Flex direction="column" gap="0" paddingLeft="1.5rem">
-													{trackingHistory.map((track, i) => (
-														<IconicInfoCard
-															key={i}
-															title={track.title}
-															description={track.description || ""}
-															subDescription={track.subDescription}
-															textContainerMarginLeft="0"
-															cardMargin="0.6rem 0"
-															cardAlignItems="center"
-														/>
-													))}
+													{trackingHistory[busSelectedValue.value].map(
+														({ title, description, subDescription }, idx) => (
+															<IconicInfoCard
+																key={idx}
+																title={title}
+																description={description || ""}
+																subDescription={format(parseISO(subDescription), "hh:mm aa")}
+																textContainerMarginLeft="0"
+																cardMargin="0.6rem 0"
+																cardAlignItems="center"
+															/>
+														)
+													)}
 												</Flex>
 											</Flex>
 										</Flex>

@@ -154,3 +154,8 @@ export enum MenuItemEnum {
 	GEOFENCE = "Geofence",
 	TRACKER = "Tracker"
 }
+
+export enum TrackingHistoryTypeEnum {
+	TRACKER = "tracker",
+	BUS_STOP = "bus_stop"
+}

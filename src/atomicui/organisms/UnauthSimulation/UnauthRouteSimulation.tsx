@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { View } from "@aws-amplify/ui-react";
 import { IconCar } from "@demo/assets";
+import { TrackingHistoryItemtype, TrackingHistoryTypeEnum } from "@demo/types";
 import { Layer, LayerProps, Marker, Source } from "react-map-gl";
 
 interface UnauthRouteSimulationProps {
@@ -11,6 +12,7 @@ interface UnauthRouteSimulationProps {
 	coordinates: number[][];
 	isPlaying: boolean;
 	disabled: boolean;
+	updateTrackingHistory: (id: string, newTrackingHistory: TrackingHistoryItemtype) => void;
 }
 
 const UnauthRouteSimulation: React.FC<UnauthRouteSimulationProps> = ({
@@ -19,7 +21,8 @@ const UnauthRouteSimulation: React.FC<UnauthRouteSimulationProps> = ({
 	// geofenceCollection,
 	coordinates,
 	isPlaying,
-	disabled
+	disabled,
+	updateTrackingHistory
 }) => {
 	const [idx, setIdx] = useState(0);
 	const [trackerPos, setTrackerPos] = useState(coordinates[0]);
@@ -34,7 +37,15 @@ const UnauthRouteSimulation: React.FC<UnauthRouteSimulationProps> = ({
 
 		if (isPlaying && !disabled) {
 			if (idx < coordinates.length) {
+				// Update tracker position
 				setTrackerPos(coordinates[idx]);
+				// Update tracking history, for geofence add "Bus stop number 1" to title and bus stop coords to description
+				updateTrackingHistory(id, {
+					type: TrackingHistoryTypeEnum.TRACKER,
+					title: `${coordinates[idx][0]}, ${coordinates[idx][1]}`,
+					description: null,
+					subDescription: new Date().toISOString()
+				});
 				// increment idx after 1 second
 				timeoutId.current = setTimeout(() => setIdx(idx + 1), 1000);
 			} else {
@@ -52,7 +63,7 @@ const UnauthRouteSimulation: React.FC<UnauthRouteSimulationProps> = ({
 
 		// Removed coordinates from dependencies to prevent resetting idx when coordinates change
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isPlaying, idx]);
+	}, [isPlaying, disabled, idx, id]);
 
 	const renderRoute = useMemo(() => {
 		const passedLineJson:
