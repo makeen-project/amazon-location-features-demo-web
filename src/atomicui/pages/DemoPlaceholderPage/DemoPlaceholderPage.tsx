@@ -55,6 +55,7 @@ const DemoPlaceholderPage: React.FC<DemoPlaceholderPageProps> = ({
 					<AuthTrackerBox mapRef={null} setShowAuthTrackerBox={() => {}} />
 				) : show.unauthGeofenceBox || show.unauthTrackerBox ? (
 					<UnauthSimulation
+						mapRef={null}
 						from={show.unauthGeofenceBox ? MenuItemEnum.GEOFENCE : MenuItemEnum.TRACKER}
 						setShowUnauthGeofenceBox={() => {}}
 						setShowUnauthTrackerBox={() => {}}

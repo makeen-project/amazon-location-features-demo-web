@@ -707,6 +707,7 @@ const DemoPage: React.FC = () => {
 						/>
 					) : show.unauthGeofenceBox || show.unauthTrackerBox ? (
 						<UnauthSimulation
+							mapRef={mapViewRef?.current}
 							from={show.unauthGeofenceBox ? MenuItemEnum.GEOFENCE : MenuItemEnum.TRACKER}
 							setShowUnauthGeofenceBox={b => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
 							setShowUnauthTrackerBox={b => setShow(s => ({ ...s, unauthTrackerBox: b }))}
