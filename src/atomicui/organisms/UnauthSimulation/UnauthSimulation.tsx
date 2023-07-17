@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button, Card, Flex, Text } from "@aws-amplify/ui-react";
 import {
@@ -15,11 +15,21 @@ import {
 } from "@demo/assets";
 import { DropdownEl } from "@demo/atomicui/atoms";
 import { ConfirmationModal, IconicInfoCard, NotificationsBox, WebsocketBanner } from "@demo/atomicui/molecules";
+import { appConfig, busRoutesData } from "@demo/core";
+import { useAmplifyMap } from "@demo/hooks";
 import { MenuItemEnum, SelectOption } from "@demo/types";
 import { PubSub } from "aws-amplify";
 import { useTranslation } from "react-i18next";
+import { MapRef } from "react-map-gl";
 
 import "./styles.scss";
+import UnauthRouteSimulation from "./UnauthRouteSimulation";
+
+const {
+	MAP_RESOURCES: {
+		AMAZON_HQ: { US }
+	}
+} = appConfig;
 
 const mockNotification = [
 	{ title: "Bus 01: Approaching *geofence name*", createdAt: "2023-07-07T10:07:31.410Z" },
@@ -81,33 +91,34 @@ const trackingHistory = [
 	{ title: "Bus stop number 6", description: "50.54948, 30.21994", subDescription: "11:57 pm" }
 ];
 
-const buses = [
-	{ value: "Bus 01", label: "bus_01" },
-	{ value: "Bus 02", label: "bus_02" },
-	{ value: "Bus 03", label: "bus_03" },
-	{ value: "Bus 04", label: "bus_04" },
-	{ value: "Bus 05", label: "bus_05" },
-	{ value: "Bus 06", label: "bus_06" },
-	{ value: "Bus 07", label: "bus_07" },
-	{ value: "Bus 08", label: "bus_08" },
-	{ value: "Bus 09", label: "bus_09" },
-	{ value: "Bus 10", label: "bus_10" }
-];
+const newTrackingHistory = {
+	bus_route_01: [],
+	bus_route_02: [],
+	bus_route_03: [],
+	bus_route_04: [],
+	bus_route_05: [],
+	bus_route_06: [],
+	bus_route_07: [],
+	bus_route_08: [],
+	bus_route_09: [],
+	bus_route_10: []
+};
 
-const routesArray = [
-	{ label: "route 01", value: "route_01" },
-	{ label: "route 02", value: "route_02" },
-	{ label: "route 03", value: "route_03" },
-	{ label: "route 04", value: "route_04" },
-	{ label: "route 05", value: "route_05" },
-	{ label: "route 06", value: "route_06" },
-	{ label: "route 07", value: "route_07" },
-	{ label: "route 08", value: "route_08" },
-	{ label: "route 09", value: "route_09" },
-	{ label: "route 10", value: "route_10" }
+const busRoutesDropdown = [
+	{ value: "bus_route_01", label: "Bus 01 Macdonald" },
+	{ value: "bus_route_02", label: "Bus 02 Main" },
+	{ value: "bus_route_03", label: "Bus 03 Robson" },
+	{ value: "bus_route_04", label: "Bus 04 Davie" },
+	{ value: "bus_route_05", label: "Bus 05 Fraser" },
+	{ value: "bus_route_06", label: "Bus 06 Granville" },
+	{ value: "bus_route_07", label: "Bus 07 Downtown, Oak" },
+	{ value: "bus_route_08", label: "Bus 08 Victoria" },
+	{ value: "bus_route_09", label: "Bus 09 Knight" },
+	{ value: "bus_route_10", label: "Bus 10 UBC" }
 ];
 
 interface UnauthGeofenceBoxProps {
+	mapRef: MapRef | null;
 	from: MenuItemEnum;
 	setShowUnauthGeofenceBox: (b: boolean) => void;
 	setShowUnauthTrackerBox: (b: boolean) => void;
@@ -115,30 +126,58 @@ interface UnauthGeofenceBoxProps {
 }
 
 const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
+	mapRef,
 	from,
 	setShowUnauthGeofenceBox,
 	setShowUnauthTrackerBox,
 	setShowConnectAwsAccountModal
 }) => {
 	const [showStartUnauthSimulation, setShowStartUnauthSimulation] = useState(false);
-	const [busSelectedValue, setBusSelectedValue] = useState<SelectOption>();
 	const [startSimulation, setStartSimulation] = useState(false);
+	const [selectedRoutes, setSelectedRoutes] = useState<SelectOption[]>([busRoutesDropdown[0]]);
+	const [busSelectedValue, setBusSelectedValue] = useState<SelectOption>(busRoutesDropdown[0]);
 	const [isNotifications, setIsNotifications] = useState(false);
-	const [routes, setRoutes] = useState<SelectOption[]>([]);
 	const [confirmCloseSimulation, setConfirmCloseSimulation] = useState(false);
+	const [isPlaying, setIsPlaying] = useState(true);
+	const { currentLocationData } = useAmplifyMap();
 	const { subscription, Connection, isHidden } = WebsocketBanner();
 	const { t } = useTranslation();
 
-	const updateRoutes = useCallback((selectedRoute: SelectOption) => {
-		setRoutes(currentRoutes => {
-			const exists = currentRoutes.some(route => route.value === selectedRoute.value);
+	useEffect(() => {
+		mapRef?.zoomTo(2);
+
+		return () => {
+			currentLocationData?.currentLocation
+				? mapRef?.flyTo({
+						center: [currentLocationData.currentLocation.longitude, currentLocationData.currentLocation.latitude],
+						zoom: 15
+				  })
+				: mapRef?.flyTo({
+						center: [US.longitude, US.latitude],
+						zoom: 15
+				  });
+		};
+	}, [mapRef, currentLocationData]);
+
+	const selectedRoutesIds = useMemo(() => selectedRoutes.map(route => route.value), [selectedRoutes]);
+
+	const updateSelectedRoutes = useCallback(
+		(selectedRoute: SelectOption) => {
+			let routes = [...selectedRoutes];
+			const exists = routes.some(route => route.value === selectedRoute.value);
+
 			if (exists) {
-				return currentRoutes.filter(route => route.value !== selectedRoute.value);
+				routes = routes.length === 1 ? routes : routes.filter(route => route.value !== selectedRoute.value);
 			} else {
-				return [...currentRoutes, selectedRoute];
+				routes.push(selectedRoute);
+				setIsPlaying(false);
+				setTimeout(() => setIsPlaying(true), 500);
 			}
-		});
-	}, []);
+
+			setSelectedRoutes(routes);
+		},
+		[selectedRoutes]
+	);
 
 	const handleClose = () =>
 		from === MenuItemEnum.GEOFENCE ? setShowUnauthGeofenceBox(false) : setShowUnauthTrackerBox(false);
@@ -199,6 +238,22 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 			</Flex>
 		);
 	}, [t]);
+
+	const renderRoutes = useMemo(
+		() =>
+			busRoutesData.map(({ id, name, geofenceCollection, coordinates }) => (
+				<UnauthRouteSimulation
+					key={id}
+					id={id}
+					name={name}
+					geofenceCollection={geofenceCollection}
+					coordinates={coordinates}
+					isPlaying={isPlaying}
+					disabled={!selectedRoutesIds.includes(id)}
+				/>
+			)),
+		[isPlaying, selectedRoutesIds]
+	);
 
 	return (
 		<>
@@ -298,12 +353,12 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 											</Text>
 											<Flex className="routes-notification-container" marginTop="0.5rem">
 												<DropdownEl
-													defaultOption={routes}
-													options={routesArray}
-													onSelect={value => value && updateRoutes(value)}
+													defaultOption={selectedRoutes}
+													options={busRoutesDropdown}
+													onSelect={value => value && updateSelectedRoutes(value)}
 													label={
-														!!routes.length
-															? `${routes.length} ${t("start_unauth_simulation__routes_active.text")}`
+														!!selectedRoutes.length
+															? `${selectedRoutes.length} ${t("start_unauth_simulation__routes_active.text")}`
 															: (t("start_unauth_simulation__select_route.text") as string)
 													}
 													arrowIconColor={"var(--tertiary-color)"}
@@ -311,7 +366,9 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 													bordered
 													isCheckbox
 												/>
-												<Button variation="primary">{t("tracker_box__pause.text")}</Button>
+												<Button variation="primary" onClick={() => setIsPlaying(!isPlaying)}>
+													{isPlaying ? t("tracker_box__pause.text") : t("tracker_box__simulate.text")}
+												</Button>
 											</Flex>
 											<Flex className="bus-container">
 												<Text className="bold" fontSize="0.92rem">
@@ -319,7 +376,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 												</Text>
 												<DropdownEl
 													defaultOption={busSelectedValue}
-													options={buses}
+													options={busRoutesDropdown}
 													onSelect={value => value && setBusSelectedValue(value)}
 													label={
 														!!busSelectedValue
@@ -368,6 +425,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 										<NotificationsBox maxHeight={isHidden ? 55.5 : 53} notification={mockNotification} />
 									)}
 								</Flex>
+								{renderRoutes}
 							</Flex>
 						)}
 					</Card>
