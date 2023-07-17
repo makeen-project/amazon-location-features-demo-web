@@ -81,7 +81,7 @@ const createEndpoint = async () => {
 			},
 			User: {
 				UserAttributes: {},
-				UserId: `${credentials.authenticated ? credentials.identityId : `AnonymousUser:${endpointId}`}`
+				UserId: `${credentials?.authenticated ? credentials.identityId : `AnonymousUser:${endpointId}`}`
 			}
 		}
 	};
@@ -125,7 +125,7 @@ export const record: (input: RecordInput[]) => void = async input => {
 			...value,
 			Attributes: {
 				userAWSAccountConnectionStatus: !!isUserAwsAccountConnected ? "Connected" : "Not connected",
-				userAuthenticationStatus: !!credentials.authenticated ? "Authenticated" : "Unauthenticated",
+				userAuthenticationStatus: !!credentials?.authenticated ? "Authenticated" : "Unauthenticated",
 				...(value.Attributes || {})
 			},
 			Session: {
