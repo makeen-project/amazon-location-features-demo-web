@@ -70,6 +70,17 @@ export enum InputType {
 	TO = "to"
 }
 
+export enum SearchActionsEnum {
+	AUTOCOMPLETE = "Autocomplete",
+	FROM_SEARCH_AUTOCOMPLETE = "From search autocomplete",
+	TO_SEARCH_AUTOCOMPLETE = "To search autocomplete",
+	FROM_SUGGESTION_SELECT = "From suggestion select",
+	TO_SUGGESTION_SELECT = "To suggestion select",
+	SEARCH_ICON_CLICK = "Search icon click",
+	SUGGESTION_SELECTED = "Suggestion selected",
+	ENTER_BUTTON = "Enter button"
+}
+
 export enum LocationErrorMessage {
 	DENIED = "Permission denied, please enable browser location and refresh the page",
 	UNAVAILABLE = "Permission unavailable, please check that your location services are enabled.",

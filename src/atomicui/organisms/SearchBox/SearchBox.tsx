@@ -9,7 +9,7 @@ import { TextEl } from "@demo/atomicui/atoms";
 import { Marker, NotFoundCard, SuggestionMarker } from "@demo/atomicui/molecules";
 import { useAmplifyMap, useAwsPlace } from "@demo/hooks";
 import { DistanceUnitEnum, MapUnitEnum, SuggestionType } from "@demo/types";
-import { TriggeredByEnum } from "@demo/types/Enums";
+import { SearchActionsEnum, TriggeredByEnum } from "@demo/types/Enums";
 import { calculateGeodesicDistance } from "@demo/utils/geoCalculation";
 import { uuid } from "@demo/utils/uuid";
 import { Units } from "@turf/turf";
@@ -109,7 +109,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 
 	const selectSuggestion = async ({ text, label, placeid }: ComboBoxOption) => {
 		if (!placeid) {
-			await handleSearch(text || label, true, "Suggestion selected");
+			await handleSearch(text || label, true, SearchActionsEnum.SUGGESTION_SELECTED);
 		} else {
 			const selectedMarker = suggestions?.find(
 				(i: SuggestionType) => i.PlaceId === placeid || i.Place?.Label === placeid
@@ -134,13 +134,13 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 	const onChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
 		clearPoiList();
 		setValue(value);
-		handleSearch(value, false, "Autocomplete");
+		handleSearch(value, false, SearchActionsEnum.AUTOCOMPLETE);
 	};
 
 	const onSearch = () => {
 		if (!!value) {
 			clearPoiList();
-			handleSearch(value, false, "Search icon click");
+			handleSearch(value, false, SearchActionsEnum.SEARCH_ICON_CLICK);
 			autocompleteRef?.current?.focus();
 		}
 	};
@@ -297,7 +297,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 						size="large"
 						onFocus={() => setIsFocused(true)}
 						onBlur={() => setIsFocused(false)}
-						onSubmit={e => handleSearch(e, true, "Enter button")}
+						onSubmit={e => handleSearch(e, true, SearchActionsEnum.ENTER_BUTTON)}
 						value={value}
 						onChange={onChange}
 						onClear={clearPoiList}

@@ -18,7 +18,10 @@ VITE_AWS_REGION_ASIA<br />
 VITE_AWS_CF_TEMPLATE<br />
 VITE_APPLE_APP_STORE_LINK<br />
 VITE_GOOGLE_PLAY_STORE_LINK<br />
-
+VITE_PINPOINT_REGION<br />
+VITE_PINPOINT_APPLICATION_ID<br />
+VITE_PINPOINT_ACCESS_KEY_ID<br />
+VITE_PINPOINT_SECRET_ACCESS_KEY<br />
 ## Configure
 
 > git clone https://github.com/aws-geospatial/amazon-location-features-demo-web.git<br />

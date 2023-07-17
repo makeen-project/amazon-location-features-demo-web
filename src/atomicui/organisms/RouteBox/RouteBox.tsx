@@ -31,7 +31,7 @@ import {
 	SuggestionType,
 	TravelMode
 } from "@demo/types";
-import { TriggeredByEnum } from "@demo/types/Enums";
+import { SearchActionsEnum, TriggeredByEnum } from "@demo/types/Enums";
 import { humanReadableTime } from "@demo/utils/dateTimeUtils";
 import { CalculateRouteRequest, LineString, Place, Position } from "aws-sdk/clients/location";
 import { useTranslation } from "react-i18next";
@@ -296,10 +296,10 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 	const onChangeValue = (e: ChangeEvent<HTMLInputElement>, type: InputType) => {
 		if (type === InputType.FROM) {
 			setValue({ ...value, from: e.target.value });
-			handleSearch(e.target.value, false, InputType.FROM, "From search autocomplete");
+			handleSearch(e.target.value, false, InputType.FROM, SearchActionsEnum.FROM_SEARCH_AUTOCOMPLETE);
 		} else {
 			setValue({ ...value, to: e.target.value });
-			handleSearch(e.target.value, false, InputType.TO, "To search autocomplete");
+			handleSearch(e.target.value, false, InputType.TO, SearchActionsEnum.TO_SEARCH_AUTOCOMPLETE);
 		}
 	};
 
@@ -376,8 +376,8 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 	const onSelectSuggestion = async ({ PlaceId, Text = "", Place }: SuggestionType, type: InputType) => {
 		if (!PlaceId && Text) {
 			type === InputType.FROM
-				? await handleSearch(Text, true, InputType.FROM, "From suggestion select")
-				: await handleSearch(Text, true, InputType.TO, "To suggestion select");
+				? await handleSearch(Text, true, InputType.FROM, SearchActionsEnum.FROM_SUGGESTION_SELECT)
+				: await handleSearch(Text, true, InputType.TO, SearchActionsEnum.TO_SUGGESTION_SELECT);
 		} else if (!PlaceId && !Text) {
 			if (type === InputType.FROM) {
 				if (suggestions.from) {
