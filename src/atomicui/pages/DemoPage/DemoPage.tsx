@@ -98,6 +98,7 @@ const DemoPage: React.FC = () => {
 	const [show, setShow] = React.useState<ShowStateType>(initShow);
 	const [height, setHeight] = React.useState(window.innerHeight);
 	const [searchValue, setSearchValue] = React.useState("");
+	const [doNotAskGrabDisclaimer, setDoNotAskGrabDisclaimer] = React.useState(false);
 	const [selectedFilters, setSelectedFilters] = React.useState<MapStyleFilterTypes>({
 		Providers: [],
 		Attribute: [],
@@ -140,7 +141,8 @@ const DemoPage: React.FC = () => {
 	const { routeData, directions, resetStore: resetAwsRouteStore, setRouteData } = useAwsRoute();
 	const { resetStore: resetAwsGeofenceStore } = useAwsGeofence();
 	const { isEditingRoute, trackerPoints, setTrackerPoints, resetStore: resetAwsTrackingStore } = useAwsTracker();
-	const { showWelcomeModal, setShowWelcomeModal } = usePersistedData();
+	const { showWelcomeModal, setShowWelcomeModal, doNotAskGrabDisclaimerModal, setDoNotAskGrabDisclaimerModal } =
+		usePersistedData();
 	const isDesktop = useMediaQuery("(min-width: 1024px)");
 	const { t } = useTranslation();
 	const shouldClearCredentials = localStorage.getItem(SHOULD_CLEAR_CREDENTIALS) === "true";
@@ -518,13 +520,49 @@ const DemoPage: React.FC = () => {
 		[currentLocationData, setViewpoint, setZoom, setIsCurrentLocationDisabled, isCurrentLocationDisabled]
 	);
 
+	const handleGrabMapChange = useCallback(
+		(mapStyle?: GrabMapEnum) => {
+			if (doNotAskGrabDisclaimerModal) setDoNotAskGrabDisclaimerModal(!doNotAskGrabDisclaimer);
+			else setShow(s => ({ ...s, grabDisclaimerModal: false }));
+
+			if (!isUserAwsAccountConnected) {
+				switchToAsiaRegionStack();
+				resetAwsStore();
+			}
+
+			setMapProvider(MapProviderEnum.GRAB);
+			setMapStyle(
+				(typeof mapStyle === "string" ? mapStyle : undefined) ||
+					(show.mapStyle ? show.mapStyle : GrabMapEnum.GRAB_STANDARD_LIGHT)
+			);
+			setShow(s => ({ ...s, gridLoader: true }));
+			resetAppState();
+			handleCurrentLocationAndViewpoint();
+		},
+		[
+			doNotAskGrabDisclaimerModal,
+			setDoNotAskGrabDisclaimerModal,
+			doNotAskGrabDisclaimer,
+			isUserAwsAccountConnected,
+			setMapProvider,
+			setMapStyle,
+			show.mapStyle,
+			resetAppState,
+			handleCurrentLocationAndViewpoint,
+			switchToAsiaRegionStack,
+			resetAwsStore
+		]
+	);
+
 	const onMapProviderChange = useCallback(
 		(mapProvider: MapProviderEnum) => {
 			setShow(s => ({ ...s, gridLoader: true }));
 
 			if (mapProvider === MapProviderEnum.GRAB) {
-				/* Switching from different map provider and style to Grab map provider and style */
-				setShow(s => ({ ...s, grabDisclaimerModal: true }));
+				if (doNotAskGrabDisclaimerModal) {
+					/* Switching from different map provider and style to Grab map provider and style */
+					setShow(s => ({ ...s, grabDisclaimerModal: true }));
+				} else handleGrabMapChange();
 			} else {
 				if (currentMapProvider === MapProviderEnum.GRAB) {
 					/* Switching from Grab map provider to different map provider and style */
@@ -557,15 +595,17 @@ const DemoPage: React.FC = () => {
 			}, 3000);
 		},
 		[
+			doNotAskGrabDisclaimerModal,
+			handleGrabMapChange,
 			currentMapProvider,
+			resetAppState,
 			isUserAwsAccountConnected,
-			switchToDefaultRegionStack,
-			resetAwsStore,
-			setIsCurrentLocationDisabled,
 			setMapProvider,
 			setMapStyle,
 			handleCurrentLocationAndViewpoint,
-			resetAppState,
+			switchToDefaultRegionStack,
+			resetAwsStore,
+			setIsCurrentLocationDisabled,
 			setAttributionText
 		]
 	);
@@ -596,8 +636,20 @@ const DemoPage: React.FC = () => {
 					setMapStyle(mapStyle);
 					handleCurrentLocationAndViewpoint(false);
 				} else if (mapProviderFromStyle === MapProviderEnum.GRAB) {
-					/* Switching from different map provider and style to Grab map provider and style */
-					setTimeout(() => setShow(s => ({ ...s, grabDisclaimerModal: true, mapStyle: mapStyle as GrabMapEnum })), 0);
+					if (doNotAskGrabDisclaimerModal) {
+						/* Switching from different map provider and style to Grab map provider and style */
+						setTimeout(
+							() =>
+								setShow(s => ({
+									...s,
+									grabDisclaimerModal: true,
+									mapStyle: mapStyle as GrabMapEnum
+								})),
+							0
+						);
+					} else {
+						handleGrabMapChange(mapStyle as GrabMapEnum);
+					}
 				} else {
 					/* Switching between Esri and HERE map provider and style */
 					setMapProvider(mapProviderFromStyle);
@@ -616,33 +668,11 @@ const DemoPage: React.FC = () => {
 			setIsCurrentLocationDisabled,
 			handleCurrentLocationAndViewpoint,
 			setMapProvider,
-			resetAppState
+			resetAppState,
+			doNotAskGrabDisclaimerModal,
+			handleGrabMapChange
 		]
 	);
-
-	const handleGrabMapChange = useCallback(() => {
-		setShow(s => ({ ...s, grabDisclaimerModal: false }));
-
-		if (!isUserAwsAccountConnected) {
-			switchToAsiaRegionStack();
-			resetAwsStore();
-		}
-
-		setMapProvider(MapProviderEnum.GRAB);
-		setMapStyle(show.mapStyle ? show.mapStyle : GrabMapEnum.GRAB_STANDARD_LIGHT);
-		setShow(s => ({ ...s, gridLoader: true }));
-		resetAppState();
-		handleCurrentLocationAndViewpoint();
-	}, [
-		isUserAwsAccountConnected,
-		switchToAsiaRegionStack,
-		resetAwsStore,
-		setMapProvider,
-		setMapStyle,
-		show,
-		resetAppState,
-		handleCurrentLocationAndViewpoint
-	]);
 
 	return !!credentials?.identityId ? (
 		<View style={{ height }}>
@@ -866,6 +896,8 @@ const DemoPage: React.FC = () => {
 				open={show.grabDisclaimerModal}
 				onClose={() => setShow(s => ({ ...s, grabDisclaimerModal: false, mapStyle: undefined }))}
 				onConfirm={handleGrabMapChange}
+				showDoNotAskAgainCheckbox
+				onConfirmationCheckboxOnChange={setDoNotAskGrabDisclaimer}
 			/>
 			<Flex className="logo-stroke-container">
 				{currentMapStyle.toLowerCase().includes("dark") ? <LogoDark /> : <LogoLight />}
