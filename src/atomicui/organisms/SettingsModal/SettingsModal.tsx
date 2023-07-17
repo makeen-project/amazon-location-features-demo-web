@@ -215,7 +215,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 		(e: { target: { value: string } }) => {
 			record([
 				{
-					EventType: EventTypeEnum.LANGUAGE_CHANGE,
+					EventType: EventTypeEnum.LANGUAGE_CHANGED,
 					Attributes: { language: e.target.value, triggeredBy: TriggeredByEnum.SETTINGS_MODAL }
 				}
 			]);
@@ -227,6 +227,17 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 	const handleRouteOptionChange = useCallback(
 		(e: { target: { checked: boolean } }, routeOption: string) => {
 			setDefaultRouteOptions({ ...defaultRouteOptions, [routeOption]: e.target.checked });
+
+			record([
+				{
+					EventType: EventTypeEnum.ROUTE_OPTION_CHANGED,
+					Attributes: {
+						option: routeOption,
+						status: e.target.checked ? "on" : "off",
+						triggeredBy: TriggeredByEnum.SETTINGS_MODAL
+					}
+				}
+			]);
 		},
 		[defaultRouteOptions, setDefaultRouteOptions]
 	);

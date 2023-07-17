@@ -47,7 +47,9 @@ const useAmplifyAuth = () => {
 					err => {
 						if (err) {
 							console.error({ err });
-							record([{ EventType: EventTypeEnum.AWS_ACCOUNT_CONNECTION_FAILED, Attributes: {} }]);
+							record([
+								{ EventType: EventTypeEnum.AWS_ACCOUNT_CONNECTION_FAILED, Attributes: { error: JSON.stringify(err) } }
+							]);
 							showToast({
 								content: t("show_toast__failed_to_connect_1.text"),
 								type: ToastType.ERROR
@@ -190,9 +192,8 @@ const useAmplifyAuth = () => {
 				try {
 					setState({ authTokens: undefined });
 					await login();
-					record([{ EventType: EventTypeEnum.SIGN_IN_SUCCESSFUL, Attributes: {} }]);
 				} catch (error) {
-					record([{ EventType: EventTypeEnum.SIGN_IN_FAILED, Attributes: {} }]);
+					record([{ EventType: EventTypeEnum.SIGN_IN_FAILED, Attributes: { error: JSON.stringify(error) } }]);
 					errorHandler(error, t("error_handler__failed_sign_in.text") as string);
 				}
 			},
@@ -202,7 +203,7 @@ const useAmplifyAuth = () => {
 					setState({ authTokens: undefined });
 					record([{ EventType: EventTypeEnum.SIGN_OUT_SUCCESSFUL, Attributes: {} }]);
 				} catch (error) {
-					record([{ EventType: EventTypeEnum.SIGN_OUT_FAILED, Attributes: {} }]);
+					record([{ EventType: EventTypeEnum.SIGN_OUT_FAILED, Attributes: { error: JSON.stringify(error) } }]);
 					errorHandler(error, t("error_handler__failed_sign_out.text") as string);
 				}
 			},
