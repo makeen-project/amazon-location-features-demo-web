@@ -338,7 +338,7 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 										if (item === GRAB && !isGrabVisible) return null;
 										return (
 											<CheckboxField
-												className="filters-checkbox"
+												className="custom-checkbox"
 												size={"large"}
 												key={i}
 												label={item === GRAB ? `${item}Maps` : item}
