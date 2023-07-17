@@ -35,7 +35,7 @@ const useAmplifyAuth = () => {
 				try {
 					Amplify.configure(config);
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_CONFIGURE_AMPLIFY") as string);
+					errorHandler(error, t("error_handler__failed_configure_amplify.text") as string);
 				}
 			},
 			validateIdentityPoolIdAndRegion: (IdentityPoolId: string, successCb?: () => void) => {
@@ -49,7 +49,7 @@ const useAmplifyAuth = () => {
 							console.error({ err });
 							record([{ EventType: EventTypeEnum.AWS_ACCOUNT_CONNECTION_FAILED, Attributes: {} }]);
 							showToast({
-								content: t("SHOW_TOAST.FAILED_TO_CONNECT_1"),
+								content: t("show_toast__failed_to_connect_1.text"),
 								type: ToastType.ERROR
 							});
 						} else {
@@ -72,13 +72,13 @@ const useAmplifyAuth = () => {
 					} else {
 						console.error({ error: res });
 						showToast({
-							content: t("SHOW_TOAST.FAILED_TO_CONNECT_2"),
+							content: t("failed_to_connect_ud_up.text"),
 							type: ToastType.ERROR
 						});
 					}
 				} catch (error) {
 					console.error({ error });
-					errorHandler(error, t("ERROR_HANDLER.FAILED_CONNECT_1") as string);
+					errorHandler(error, t("failed_to_connect_ud_up.text") as string);
 				}
 			},
 			validateUserPoolId: (config: unknown, successCb?: () => void) => {
@@ -86,7 +86,7 @@ const useAmplifyAuth = () => {
 					Auth.configure(config);
 					successCb && successCb();
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_CONNECT_2") as string);
+					errorHandler(error, t("error_handler__failed_connect_2.text") as string);
 				}
 			},
 			validateFormValues: (
@@ -158,7 +158,7 @@ const useAmplifyAuth = () => {
 						window.location.replace(ERROR_BOUNDARY);
 					}
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_FETCH_CREDS") as string);
+					errorHandler(error, t("error_handler__failed_fetch_creds.text") as string);
 				}
 			},
 			clearCredentials: () => {
@@ -193,7 +193,7 @@ const useAmplifyAuth = () => {
 					record([{ EventType: EventTypeEnum.SIGN_IN_SUCCESSFUL, Attributes: {} }]);
 				} catch (error) {
 					record([{ EventType: EventTypeEnum.SIGN_IN_FAILED, Attributes: {} }]);
-					errorHandler(error, t("ERROR_HANDLER.FAILED_SIGN_IN") as string);
+					errorHandler(error, t("error_handler__failed_sign_in.text") as string);
 				}
 			},
 			onLogout: async () => {
@@ -203,7 +203,7 @@ const useAmplifyAuth = () => {
 					record([{ EventType: EventTypeEnum.SIGN_OUT_SUCCESSFUL, Attributes: {} }]);
 				} catch (error) {
 					record([{ EventType: EventTypeEnum.SIGN_OUT_FAILED, Attributes: {} }]);
-					errorHandler(error, t("ERROR_HANDLER.FAILED_SIGN_OUT") as string);
+					errorHandler(error, t("error_handler__failed_sign_out.text") as string);
 				}
 			},
 			onDisconnectAwsAccount: () => {

@@ -37,14 +37,14 @@ const useAmplifyMap = () => {
 				try {
 					return mapsService.getDefaultMap();
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_FETCH_DEFAULT_MAP") as string);
+					errorHandler(error, t("error_handler__failed_fetch_default_map.text") as string);
 				}
 			},
 			getAvailableMaps: () => {
 				try {
 					return mapsService.getAvailableMaps();
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_FETCH_AVAILABLE_MAP") as string);
+					errorHandler(error, t("error_handler__failed_fetch_available_map.text") as string);
 				}
 			},
 			setCurrentLocation: (currentLocationData: CurrentLocationDataType) => {

@@ -23,7 +23,7 @@ const useAws = () => {
 					const locationClient = createLocationClient(credentials, region);
 					setState({ locationClient });
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_CREATE_LOCATION_CLIENT") as string);
+					errorHandler(error, t("error_handler__failed_create_location_client.text") as string);
 				}
 			},
 			createIotClient: (credentials: ICredentials, region: string) => {
@@ -31,7 +31,7 @@ const useAws = () => {
 					const iotClient = createIotClient(credentials, region);
 					setState({ iotClient });
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_CREATE_IOT_CLIENT") as string);
+					errorHandler(error, t("error_handler__failed_create_iot_client.text") as string);
 				}
 			},
 			resetStore: () => {

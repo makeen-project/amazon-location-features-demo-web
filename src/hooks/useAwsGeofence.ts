@@ -29,7 +29,7 @@ const useAwsGeofence = () => {
 					record([{ EventType: EventTypeEnum.GET_GEOFENCES_LIST_SUCCESSFUL, Attributes: {} }]);
 				} catch (error) {
 					record([{ EventType: EventTypeEnum.GET_GEOFENCES_LIST_FAILED, Attributes: {} }]);
-					errorHandler(error, t("ERROR_HANDLER.FAILED_FETCH_GEOFENCES") as string);
+					errorHandler(error, t("error_handler__failed_fetch_geofences.text") as string);
 				} finally {
 					setState({ isFetchingGeofences: false });
 				}
@@ -42,7 +42,7 @@ const useAwsGeofence = () => {
 					record([{ EventType: EventTypeEnum.GEOFENCE_CREATION_SUCCESSFUL, Attributes: {} }]);
 				} catch (error) {
 					record([{ EventType: EventTypeEnum.GEOFENCE_CREATION_FAILED, Attributes: {} }]);
-					errorHandler(error, t("ERROR_HANDLER.FAILED_CREATE_GEOFENCES") as string);
+					errorHandler(error, t("error_handler__failed_create_geofences.text") as string);
 				} finally {
 					setState({ isCreatingGeofence: false });
 				}
@@ -55,7 +55,7 @@ const useAwsGeofence = () => {
 					record([{ EventType: EventTypeEnum.GEOFENCE_DELETION_SUCCESSFUL, Attributes: {} }]);
 				} catch (error) {
 					record([{ EventType: EventTypeEnum.GEOFENCE_DELETION_FAILED, Attributes: {} }]);
-					errorHandler(error, t("ERROR_HANDLER.FAILED_DELETE_GEOFENCES") as string);
+					errorHandler(error, t("error_handler__failed_delete_geofences.text") as string);
 				} finally {
 					setState({ isDeletingGeofence: false });
 				}
@@ -64,7 +64,7 @@ const useAwsGeofence = () => {
 				try {
 					await geofenceService.evaluateGeofence(Position, authStore.credentials!.identityId);
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_EVALUATE_GEOFENCES") as string);
+					errorHandler(error, t("error_handler__failed_evaluate_geofences.text") as string);
 				}
 			},
 			setIsAddingGeofence: (isAddingGeofence: boolean) => {

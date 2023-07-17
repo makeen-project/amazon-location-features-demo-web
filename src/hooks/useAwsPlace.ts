@@ -38,7 +38,7 @@ const useAwsPlace = () => {
 					});
 					setViewpoint(viewpoint);
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_SEARCH_PLACE_SUGGESTIONS") as string);
+					errorHandler(error, t("error_handler__failed_search_place_suggestions.text") as string);
 				} finally {
 					setState({ isSearching: false });
 				}
@@ -49,7 +49,7 @@ const useAwsPlace = () => {
 					const data = await placesService.getPlaceById(placeId);
 					return data;
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_FETCH_PLACE_ID") as string);
+					errorHandler(error, t("error_handler__failed_fetch_place_id.text") as string);
 				} finally {
 					setState({ isFetchingPlaceData: false });
 				}
@@ -75,7 +75,7 @@ const useAwsPlace = () => {
 					});
 					setViewpoint(viewpoint);
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_SEARCH_PLACE_TEXT") as string);
+					errorHandler(error, t("error_handler__failed_search_place_text.text") as string);
 				} finally {
 					setState({ isSearching: false });
 				}
@@ -84,7 +84,7 @@ const useAwsPlace = () => {
 				try {
 					return await placesService.getPlaceByCoordinates(input);
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_FETCH_PLACE_COORDS") as string);
+					errorHandler(error, t("error_handler__failed_fetch_place_coords.text") as string);
 				}
 			},
 			searchPlacesByCoordinates: async (
@@ -105,7 +105,7 @@ const useAwsPlace = () => {
 					setState({ bound: undefined });
 					setViewpoint(vPoint);
 				} catch (error) {
-					errorHandler(error, t("ERROR_HANDLER.FAILED_SEARCH_PLACE_COORDS") as string);
+					errorHandler(error, t("error_handler__failed_search_place_coords.text") as string);
 				} finally {
 					setState({ isSearching: false });
 				}
@@ -169,7 +169,7 @@ const useAwsPlace = () => {
 						const pd = await placesService.getPlaceById(selectedMarker.PlaceId);
 						coords = pd?.Place.Geometry.Point;
 					} catch (error) {
-						errorHandler(error, t("ERROR_HANDLER.FAILED_FETCH_PLACE_ID_MARKER") as string);
+						errorHandler(error, t("error_handler__failed_fetch_place_id_marker.text") as string);
 					}
 				}
 
