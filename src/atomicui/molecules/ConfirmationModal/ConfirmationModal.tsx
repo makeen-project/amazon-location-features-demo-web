@@ -3,7 +3,7 @@
 
 import React from "react";
 
-import { Button, Flex, Text } from "@aws-amplify/ui-react";
+import { Button, CheckboxField, Flex, Text } from "@aws-amplify/ui-react";
 import { Modal } from "@demo/atomicui/atoms";
 import { useTranslation } from "react-i18next";
 import "./styles.scss";
@@ -19,6 +19,11 @@ interface ConfirmationModalProps {
 	handleLeanMore?: () => void;
 	hideCancelButton?: boolean;
 	cancelationText?: string;
+	showConfirmationCheckbox?: boolean;
+	confirmationCheckboxLabel?: string;
+	confirmationCheckboxValue?: string;
+	confirmationCheckboxName?: string;
+	confirmationCheckboxOnChange?: (e: boolean) => void;
 }
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
@@ -31,9 +36,15 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 	showLearnMore = false,
 	handleLeanMore = () => {},
 	hideCancelButton = false,
-	cancelationText
+	cancelationText = "Cancel",
+	showConfirmationCheckbox,
+	confirmationCheckboxLabel = "Don't ask me again",
+	confirmationCheckboxValue = "",
+	confirmationCheckboxName = "doNotAskAgain",
+	confirmationCheckboxOnChange = () => {}
 }) => {
 	const { t } = useTranslation();
+	const [isConfirmationChecked, setIsConfirmationChecked] = React.useState(false);
 
 	return (
 		<Modal
@@ -60,11 +71,26 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 					) : (
 						description
 					)}
+					{showConfirmationCheckbox && (
+						<CheckboxField
+							className="custom-checkbox confirmation-checkbox"
+							size="large"
+							label={confirmationCheckboxLabel}
+							name={confirmationCheckboxName || "confirmationCheckboxName"}
+							value={confirmationCheckboxValue}
+							checked={isConfirmationChecked}
+							onChange={e => {
+								setIsConfirmationChecked(e.target.checked);
+								confirmationCheckboxOnChange(e.target.checked);
+							}}
+							marginTop="2rem"
+						/>
+					)}
 					<Button
 						data-testid="confirmation-button"
 						variation="primary"
 						fontFamily="AmazonEmber-Bold"
-						marginTop="2.46rem"
+						marginTop={showConfirmationCheckbox ? "2rem" : "2.46rem"}
 						onClick={onConfirm}
 					>
 						{confirmationText || t("continue.text")}
