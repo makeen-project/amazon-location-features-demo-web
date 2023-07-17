@@ -95,9 +95,10 @@
 		}
 
 		&.radioBox {
-			left: 0;
+			left: auto;
+			right: 0;
 			height: auto;
-			width: 100%;
+			width: max-content;
 			max-height: 30rem;
 			border-radius: 4px;
 			box-shadow: none;
@@ -143,6 +144,7 @@
 			height: auto;
 			width: 100%;
 			border-radius: 4px;
+			max-height: 40rem;
 			box-shadow: none;
 			border: 1px solid var(--grey-color-5);
 			li {
