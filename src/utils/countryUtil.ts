@@ -1,3 +1,5 @@
+import sleep from "./sleep";
+
 let failCount = 0;
 
 export const getCountryCodeByIp: () => Promise<string> = async () => {
@@ -16,6 +18,7 @@ export const getCountryCodeByIp: () => Promise<string> = async () => {
 		if (failCount === 3) {
 			throw error;
 		} else {
+			sleep(1000);
 			return await getCountryCodeByIp();
 		}
 	}

@@ -133,7 +133,7 @@ export const record: (input: RecordInput[]) => void = async input => {
 				StartTimestamp: session.startTimestamp,
 				...(value.Session || {})
 			},
-			Timestamp: new Date().toUTCString()
+			Timestamp: new Date().toISOString()
 		};
 
 		result[eventId] = extValue;
@@ -162,7 +162,7 @@ export const record: (input: RecordInput[]) => void = async input => {
 const startSession = async () => {
 	session.creationStatus = AnalyticsSessionStatus.IN_PROGRESS;
 	session.id = uuid.randomUUID();
-	session.startTimestamp = new Date().toUTCString();
+	session.startTimestamp = new Date().toISOString();
 	await record([{ EventType: EventTypeEnum.SESSION_START, Attributes: {} }]);
 	stopSessionIn30Minutes();
 	session.creationStatus = AnalyticsSessionStatus.CREATED;
@@ -176,7 +176,7 @@ const stopSession = async () => {
 			Session: {
 				Id: session.id!,
 				StartTimestamp: session.startTimestamp!,
-				StopTimestamp: new Date().toUTCString()
+				StopTimestamp: new Date().toISOString()
 			}
 		}
 	]);
