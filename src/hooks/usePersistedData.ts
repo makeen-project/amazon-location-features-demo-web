@@ -4,7 +4,7 @@
 import { useMemo } from "react";
 
 import { usePersistedDataStore } from "@demo/stores";
-import { RouteOptionsType } from "@demo/types";
+import { RouteOptionsType, SettingOptionEnum } from "@demo/types";
 
 const usePersistedData = () => {
 	const store = usePersistedDataStore();
@@ -13,6 +13,9 @@ const usePersistedData = () => {
 
 	const methods = useMemo(
 		() => ({
+			setSettingsOptions: (settingsOptions: SettingOptionEnum) => {
+				setState({ settingsOptions });
+			},
 			setShowAppDownloadNotification: (showAppDownloadNotification: boolean) => {
 				setState({ showAppDownloadNotification });
 			},

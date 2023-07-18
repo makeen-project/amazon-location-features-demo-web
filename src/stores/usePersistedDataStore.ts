@@ -2,7 +2,7 @@
 /* SPDX-License-Identifier: MIT-0 */
 
 import { appConfig } from "@demo/core/constants";
-import { IStateProps, RouteOptionsType } from "@demo/types";
+import { IStateProps, RouteOptionsType, SettingOptionEnum } from "@demo/types";
 
 import createStore from "./createStore";
 
@@ -16,13 +16,15 @@ interface PersistedDataStoreProps {
 	showWelcomeModal: boolean;
 	doNotAskGrabDisclaimerModal: boolean;
 	defaultRouteOptions: RouteOptionsType;
+	settingsOptions: SettingOptionEnum;
 }
 
 const initialState: IStateProps<PersistedDataStoreProps> = {
 	showAppDownloadNotification: true,
 	showWelcomeModal: true,
 	doNotAskGrabDisclaimerModal: true,
-	defaultRouteOptions: { avoidFerries: true, avoidTolls: true }
+	defaultRouteOptions: { avoidFerries: true, avoidTolls: true },
+	settingsOptions: SettingOptionEnum.UNITS
 };
 
 export default createStore<PersistedDataStoreProps>(initialState, true, localStorageKey);

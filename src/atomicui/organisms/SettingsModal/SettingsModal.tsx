@@ -67,7 +67,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 	mapButtons,
 	resetSearchAndFilters
 }) => {
-	const [selectedOption, setSelectedOption] = useState<SettingOptionEnum>(SettingOptionEnum.UNITS);
 	const {
 		autoMapUnit,
 		setIsAutomaticMapUnit,
@@ -78,7 +77,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 		setMapProvider,
 		setMapStyle
 	} = useAmplifyMap();
-	const { defaultRouteOptions, setDefaultRouteOptions } = usePersistedData();
+	const { defaultRouteOptions, setDefaultRouteOptions, setSettingsOptions, settingsOptions } = usePersistedData();
 	const [formValues, setFormValues] = useState<ConnectFormValuesType>({
 		IdentityPoolId: "",
 		UserDomain: "",
@@ -596,10 +595,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			<Flex
 				data-testid={`option-item-${id}`}
 				key={id}
-				className={selectedOption === id ? "option-item selected" : "option-item"}
+				className={settingsOptions === id ? "option-item selected" : "option-item"}
 				onClick={() => {
 					resetSearchAndFilters();
-					setSelectedOption(id);
+					setSettingsOptions(id);
 				}}
 			>
 				{icon}
@@ -615,10 +614,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 				</Flex>
 			</Flex>
 		));
-	}, [optionItems, selectedOption, resetSearchAndFilters]);
+	}, [optionItems, settingsOptions, resetSearchAndFilters, setSettingsOptions]);
 
 	const renderOptionDetails = useMemo(() => {
-		const [optionItem] = optionItems.filter(({ id }) => selectedOption === id);
+		const [optionItem] = optionItems.filter(({ id }) => settingsOptions === id);
 
 		return (
 			<>
@@ -629,13 +628,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 				{optionItem.detailsComponent}
 			</>
 		);
-	}, [optionItems, selectedOption]);
+	}, [optionItems, settingsOptions]);
 
 	return (
 		<Modal
 			data-testid="settings-modal"
 			open={open}
-			onClose={onClose}
+			onClose={() => {
+				setSettingsOptions(SettingOptionEnum.UNITS);
+				onClose();
+			}}
 			className="settings-modal"
 			content={
 				<Flex className="settings-modal-content">
