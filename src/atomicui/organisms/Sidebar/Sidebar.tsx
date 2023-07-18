@@ -63,20 +63,19 @@ const Sidebar: React.FC<SidebarProps> = ({
 	const onClickMenuItem = (menuItem: MenuItemEnum) => {
 		onCloseSidebar();
 
-		if (currentMapProvider === MapProviderEnum.GRAB) {
-			// show informative modal to switch to Esri or HERE
-			onshowUnauthSimulationDisclaimerModal();
-		} else {
-			if (isUserAwsAccountConnected) {
-				if (isAuthenticated) {
-					if (menuItem === MenuItemEnum.GEOFENCE) {
-						onShowAuthGeofenceBox();
-					} else {
-						currentMapProvider === MapProviderEnum.ESRI ? onShowTrackingDisclaimerModal() : onShowAuthTrackerBox();
-					}
+		if (isUserAwsAccountConnected) {
+			if (isAuthenticated) {
+				if (menuItem === MenuItemEnum.GEOFENCE) {
+					onShowAuthGeofenceBox();
 				} else {
-					onOpenSignInModal();
+					currentMapProvider === MapProviderEnum.ESRI ? onShowTrackingDisclaimerModal() : onShowAuthTrackerBox();
 				}
+			} else {
+				onOpenSignInModal();
+			}
+		} else {
+			if (currentMapProvider === MapProviderEnum.GRAB) {
+				onshowUnauthSimulationDisclaimerModal();
 			} else {
 				menuItem === MenuItemEnum.GEOFENCE ? onShowUnauthGeofenceBox() : onShowUnauthTrackerBox();
 			}
