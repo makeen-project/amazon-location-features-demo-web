@@ -388,7 +388,11 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 											<Flex
 												data-testid={`map-style-item-${item.id}`}
 												className={item.id === currentMapStyle ? "mb-style-container selected" : "mb-style-container"}
-												onClick={() => onChangeStyle(item.id)}
+												onClick={e => {
+													e.preventDefault();
+													e.stopPropagation();
+													onChangeStyle(item.id);
+												}}
 												width="100%"
 											>
 												<Flex gap={0} position="relative">

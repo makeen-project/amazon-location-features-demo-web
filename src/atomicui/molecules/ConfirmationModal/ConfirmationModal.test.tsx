@@ -11,14 +11,14 @@ describe("<ConfirmationModal />", () => {
 		onConfirm: () => void;
 		description: string | React.ReactNode;
 		showLearnMore: boolean;
-		handleLeanMore: () => {};
+		handleLearnMore: () => {};
 	} = {
 		open: false,
 		onClose: jest.fn(),
 		onConfirm: jest.fn(),
 		description: "description",
 		showLearnMore: true,
-		handleLeanMore: jest.fn()
+		handleLearnMore: jest.fn()
 	};
 
 	const renderComponent = () => {
@@ -57,6 +57,6 @@ describe("<ConfirmationModal />", () => {
 		const { getByTestId } = renderComponent();
 		const learnMoreButton = getByTestId("confirmation-learn-more-button");
 		act(() => learnMoreButton.click());
-		expect(props.handleLeanMore).toBeCalled();
+		expect(props.handleLearnMore).toBeCalled();
 	});
 });

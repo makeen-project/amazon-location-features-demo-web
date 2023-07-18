@@ -139,7 +139,6 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 	const { currentLocationData } = useAmplifyMap();
 	const { subscription, Connection, isHidden } = WebsocketBanner();
 	const { t } = useTranslation();
-	console.log({ trackingHistory });
 
 	useEffect(() => {
 		mapRef?.zoomTo(2);

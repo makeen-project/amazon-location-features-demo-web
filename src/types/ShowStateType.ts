@@ -16,4 +16,6 @@ export type ShowStateType = {
 	mapStyle?: GrabMapEnum;
 	unauthGeofenceBox: boolean;
 	unauthTrackerBox: boolean;
+	unauthSimulationDisclaimerModal: boolean;
+	unauthSimulationExitModal: boolean;
 };

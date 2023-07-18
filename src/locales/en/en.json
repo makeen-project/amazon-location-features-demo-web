@@ -2843,6 +2843,15 @@
 	"unauth_simulation__disclaimer": {
 		"text": "Requires connection to AWS CloudFormation"
 	},
+	"unauth_simulation__disclaimer_modal_heading": {
+		"text": "Change Data Provider"
+	},
+	"unauth_simulation__disclaimer_modal_desc": {
+		"text": "GrabMaps doesn't support simulation, please change data provider to Esri or HERE to use Geofence or Tracker features."
+	},
+	"unauth_simulation__disclaimer_modal_confirmation": {
+		"text": "Switch to Esri"
+	},
 	"start_unauth_simulation__heading": {
 		"text": "Tackers and Geofences"
 	},
@@ -2887,6 +2896,9 @@
 	},
 	"start_unauth_simulation__stay_in_simulation": {
 		"text": "Stay in simulation"
+	},
+	"start_unauth_simulation__exit_modal_desc": {
+		"text": "GrabMaps doesn't support simulation, exit simulation to change map style?"
 	},
 	"notifications_box__geofences_notifications": {
 		"text": "Geofences notifications"
@@ -3196,6 +3208,9 @@
 	},
 	"grab_cm__checkbox": {
 		"text": "Don't ask again"
+	},
+	"grab_cm__unauth_simulaiton": {
+		"text": "This will exit simulaiton, since GrabMaps doesn't support simulation."
 	},
 	"tracker_info_modal__heading": {
 		"text": "Enable Tracker"

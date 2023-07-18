@@ -11,6 +11,8 @@ import {
 	MapButtons,
 	SignInModal,
 	ConfirmationModal as TrackerInformationModal,
+	ConfirmationModal as UnauthSimulationDisclaimerModal,
+	ConfirmationModal as UnauthSimulationExitModal,
 	WelcomeModal
 } from "@demo/atomicui/molecules";
 import {
@@ -89,7 +91,9 @@ const initShow = {
 	grabDisclaimerModal: false,
 	mapStyle: undefined,
 	unauthGeofenceBox: false,
-	unauthTrackerBox: false
+	unauthTrackerBox: false,
+	unauthSimulationDisclaimerModal: false,
+	unauthSimulationExitModal: false
 };
 let interval: NodeJS.Timer | undefined;
 let timeout: NodeJS.Timer | undefined;
@@ -636,8 +640,8 @@ const DemoPage: React.FC = () => {
 					setMapStyle(mapStyle);
 					handleCurrentLocationAndViewpoint(false);
 				} else if (mapProviderFromStyle === MapProviderEnum.GRAB) {
+					/* Switching from different map provider and style to Grab map provider and style */
 					if (doNotAskGrabDisclaimerModal) {
-						/* Switching from different map provider and style to Grab map provider and style */
 						setTimeout(
 							() =>
 								setShow(s => ({
@@ -648,7 +652,9 @@ const DemoPage: React.FC = () => {
 							0
 						);
 					} else {
-						handleGrabMapChange(mapStyle as GrabMapEnum);
+						show.unauthGeofenceBox || show.unauthTrackerBox
+							? setShow(s => ({ ...s, unauthSimulationExitModal: true, mapStyle: mapStyle as GrabMapEnum }))
+							: handleGrabMapChange(mapStyle as GrabMapEnum);
 					}
 				} else {
 					/* Switching between Esri and HERE map provider and style */
@@ -656,7 +662,7 @@ const DemoPage: React.FC = () => {
 					setMapStyle(mapStyle);
 				}
 
-				resetAppState();
+				!show.unauthGeofenceBox && !show.unauthTrackerBox && resetAppState();
 			}
 		},
 		[
@@ -670,7 +676,9 @@ const DemoPage: React.FC = () => {
 			setMapProvider,
 			resetAppState,
 			doNotAskGrabDisclaimerModal,
-			handleGrabMapChange
+			handleGrabMapChange,
+			show.unauthGeofenceBox,
+			show.unauthTrackerBox
 		]
 	);
 
@@ -717,6 +725,9 @@ const DemoPage: React.FC = () => {
 							onShowUnauthTrackerBox={() => setShow(s => ({ ...s, unauthTrackerBox: true }))}
 							onShowAuthGeofenceBox={() => setShow(s => ({ ...s, authGeofenceBox: true }))}
 							onShowAuthTrackerBox={() => setShow(s => ({ ...s, authTrackingBox: true }))}
+							onshowUnauthSimulationDisclaimerModal={() =>
+								setShow(s => ({ ...s, unauthSimulationDisclaimerModal: true }))
+							}
 						/>
 					)}
 					{show.routeBox ? (
@@ -895,9 +906,34 @@ const DemoPage: React.FC = () => {
 			<GrabConfirmationModal
 				open={show.grabDisclaimerModal}
 				onClose={() => setShow(s => ({ ...s, grabDisclaimerModal: false, mapStyle: undefined }))}
-				onConfirm={handleGrabMapChange}
+				onConfirm={() => {
+					(show.unauthGeofenceBox || show.unauthTrackerBox) &&
+						setShow(s => ({ ...s, unauthGeofenceBox: false, unauthTrackerBox: false }));
+					setTimeout(() => handleGrabMapChange(), 0);
+				}}
 				showDoNotAskAgainCheckbox
 				onConfirmationCheckboxOnChange={setDoNotAskGrabDisclaimer}
+				isUnauthSimulationOpen={show.unauthGeofenceBox || show.unauthTrackerBox}
+			/>
+			<UnauthSimulationDisclaimerModal
+				open={show.unauthSimulationDisclaimerModal}
+				onClose={() => setShow(s => ({ ...s, unauthSimulationDisclaimerModal: false }))}
+				heading={t("unauth_simulation__disclaimer_modal_heading.text")}
+				description={t("unauth_simulation__disclaimer_modal_desc.text")}
+				confirmationText={t("unauth_simulation__disclaimer_modal_confirmation.text")}
+				onConfirm={() => onMapProviderChange(MapProviderEnum.ESRI)}
+			/>
+			<UnauthSimulationExitModal
+				open={show.unauthSimulationExitModal}
+				onClose={() => setShow(s => ({ ...s, unauthSimulationExitModal: false }))}
+				heading={t("start_unauth_simulation__exit_simulation.text")}
+				description={t("start_unauth_simulation__exit_modal_desc.text")}
+				confirmationText={t("start_unauth_simulation__exit_simulation.text")}
+				onConfirm={() => {
+					setShow(s => ({ ...s, unauthSimulationExitModal: false, unauthGeofenceBox: false, unauthTrackerBox: false }));
+					setTimeout(() => handleGrabMapChange(show.mapStyle as GrabMapEnum), 0);
+				}}
+				cancelationText={t("start_unauth_simulation__stay_in_simulation.text")}
 			/>
 			<Flex className="logo-stroke-container">
 				{currentMapStyle.toLowerCase().includes("dark") ? <LogoDark /> : <LogoLight />}

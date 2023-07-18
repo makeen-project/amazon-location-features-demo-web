@@ -45,6 +45,7 @@ const DemoPlaceholderPage: React.FC<DemoPlaceholderPageProps> = ({
 						onShowAboutModal={() => {}}
 						onShowUnauthGeofenceBox={() => {}}
 						onShowUnauthTrackerBox={() => {}}
+						onshowUnauthSimulationDisclaimerModal={() => {}}
 					/>
 				)}
 				{show.routeBox ? (

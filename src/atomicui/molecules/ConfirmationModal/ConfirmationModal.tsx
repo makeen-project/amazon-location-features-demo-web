@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import "./styles.scss";
 
 interface ConfirmationModalProps {
+	className?: string;
 	open: boolean;
 	onClose: () => void;
 	heading?: string;
@@ -16,7 +17,7 @@ interface ConfirmationModalProps {
 	onConfirm: () => void;
 	confirmationText?: string;
 	showLearnMore?: boolean;
-	handleLeanMore?: () => void;
+	handleLearnMore?: () => void;
 	hideCancelButton?: boolean;
 	cancelationText?: string;
 	showConfirmationCheckbox?: boolean;
@@ -27,6 +28,7 @@ interface ConfirmationModalProps {
 }
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
+	className = "",
 	open,
 	onClose,
 	heading,
@@ -34,13 +36,13 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 	onConfirm,
 	confirmationText,
 	showLearnMore = false,
-	handleLeanMore = () => {},
+	handleLearnMore = () => {},
 	hideCancelButton = false,
-	cancelationText = "Cancel",
+	cancelationText,
 	showConfirmationCheckbox,
-	confirmationCheckboxLabel = "Don't ask me again",
-	confirmationCheckboxValue = "",
-	confirmationCheckboxName = "doNotAskAgain",
+	confirmationCheckboxLabel,
+	confirmationCheckboxValue,
+	confirmationCheckboxName,
 	confirmationCheckboxOnChange = () => {}
 }) => {
 	const { t } = useTranslation();
@@ -51,7 +53,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 			data-testid="confirmation-modal-container"
 			open={open}
 			onClose={onClose}
-			className="confirmation-modal"
+			className={`confirmation-modal ${className}`}
 			hideCloseIcon
 			content={
 				<Flex className="confirmation-content">
@@ -75,9 +77,9 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 						<CheckboxField
 							className="custom-checkbox confirmation-checkbox"
 							size="large"
-							label={confirmationCheckboxLabel}
-							name={confirmationCheckboxName || "confirmationCheckboxName"}
-							value={confirmationCheckboxValue}
+							label={confirmationCheckboxLabel || ""}
+							name={confirmationCheckboxName || ""}
+							value={confirmationCheckboxValue || ""}
 							checked={isConfirmationChecked}
 							onChange={e => {
 								setIsConfirmationChecked(e.target.checked);
@@ -99,7 +101,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 						<Flex
 							data-testid="confirmation-learn-more-button"
 							className="confirmation-learn-more-button"
-							onClick={handleLeanMore}
+							onClick={handleLearnMore}
 						>
 							<Text className="bold" fontSize="1.08rem" textAlign="center">
 								{t("learn_more.text")}
