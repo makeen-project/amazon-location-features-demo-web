@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Ref, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Button, Card, Flex, Text } from "@aws-amplify/ui-react";
 import {
@@ -139,6 +139,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 	const { currentLocationData } = useAmplifyMap();
 	const { subscription, Connection, isHidden } = WebsocketBanner();
 	const { t } = useTranslation();
+	const trackingHistoryRef: Ref<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		mapRef?.zoomTo(2);
@@ -306,7 +307,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 				</Card>
 			) : (
 				<>
-					<Card className="unauthSimulation-card" left="1.62rem" overflow={startSimulation ? "visible" : "hidden"}>
+					<Card className="unauthSimulation-card" left="1.62rem" overflow={startSimulation ? "inherit" : "hidden"}>
 						{!startSimulation ? (
 							<>
 								<Flex justifyContent="flex-end" padding="0.77rem">
@@ -350,7 +351,19 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 								<Flex gap="0" direction="column" width="100%">
 									{Connection}
 									{!isNotifications ? (
-										<Flex padding="1.3rem" direction="column" gap="0" height={isHidden ? "" : ""}>
+										<Flex
+											padding="1.3rem"
+											direction="column"
+											gap="0"
+											maxHeight={isHidden ? "82vh" : "79vh"}
+											overflow={
+												!trackingHistory[busSelectedValue.value].length ||
+												(trackingHistoryRef?.current?.offsetHeight || 0) < 560
+													? "visible"
+													: "hidden"
+											}
+											ref={trackingHistoryRef}
+										>
 											<Text className="bold" fontSize="0.92rem">
 												{t("start_unauth_simulation__routes_notifications.text")}
 											</Text>
@@ -390,7 +403,12 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 													isRadioBox
 												/>
 											</Flex>
-											<Flex gap="0">
+											{!trackingHistory[busSelectedValue.value].length && (
+												<Flex className="no-tracking-history">
+													No Tracking History has been recorded for this bus yet.
+												</Flex>
+											)}
+											<Flex gap="0" overflow="scroll">
 												<Flex direction="column" gap="0" marginTop="2rem">
 													{trackingHistory[busSelectedValue.value].map(({ type }, idx) => (
 														<Flex key={idx} className="tracking-icon-container" gap="0">
@@ -427,7 +445,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 											</Flex>
 										</Flex>
 									) : (
-										<NotificationsBox maxHeight={isHidden ? 55.5 : 53} notification={mockNotification} />
+										<NotificationsBox maxHeight={isHidden ? 76.4 : 73.4} notification={mockNotification} />
 									)}
 								</Flex>
 								{renderRoutes}

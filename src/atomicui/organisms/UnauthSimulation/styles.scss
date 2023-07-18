@@ -58,8 +58,8 @@
 	width: 27.69rem;
 	position: absolute;
 	top: 1.62rem;
-	overflow: hidden;
 	z-index: 4;
+	max-height: 90vh;
 
 	.card-close {
 		position: relative;
@@ -131,6 +131,13 @@
 			> button {
 				width: 40%;
 			}
+		}
+		.no-tracking-history {
+			min-height: 20rem;
+			align-items: center;
+			padding: 0 4rem;
+			text-align: center;
+			color: var(--grey-color);
 		}
 		.tracking-icon-container {
 			flex-direction: column;

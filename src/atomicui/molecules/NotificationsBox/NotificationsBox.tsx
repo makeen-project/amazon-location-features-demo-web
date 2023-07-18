@@ -22,7 +22,7 @@ const NotificationsBox: React.FC<IProps> = ({ notification, maxHeight = 30 }) =>
 	}, []);
 
 	return (
-		<Flex width="100%" className="notifications-box-container" direction="column" gap="0">
+		<Flex width="100%" className="notifications-box-container" direction="column" gap="0" paddingBottom="1.2rem">
 			<Flex justifyContent="space-between" width="100%" padding="0.5rem 1.2rem">
 				<Text className="medium" fontSize="0.95rem" textAlign="center" variation="secondary">
 					{t("notifications_box__geofences_notifications.text")}
@@ -41,8 +41,7 @@ const NotificationsBox: React.FC<IProps> = ({ notification, maxHeight = 30 }) =>
 				className={!!notificationList.length ? "notification-list" : "notification-list empty"}
 				direction="column"
 				gap="0"
-				maxHeight={!notificationList.length ? `${maxHeight + 3}rem` : `${maxHeight}rem`}
-				minHeight={!notificationList.length ? `${maxHeight}rem` : "auto"}
+				height={`${maxHeight}vh`}
 			>
 				{!!notificationList.length ? (
 					notificationList?.map((item, index) => (
