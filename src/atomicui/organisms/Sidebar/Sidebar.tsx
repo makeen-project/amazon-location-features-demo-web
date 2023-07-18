@@ -69,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 		} else {
 			if (isUserAwsAccountConnected) {
 				if (isAuthenticated) {
-					if (menuItem === "Geofence") {
+					if (menuItem === MenuItemEnum.GEOFENCE) {
 						onShowAuthGeofenceBox();
 					} else {
 						currentMapProvider === MapProviderEnum.ESRI ? onShowTrackingDisclaimerModal() : onShowAuthTrackerBox();
