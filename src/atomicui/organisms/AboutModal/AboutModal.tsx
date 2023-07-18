@@ -42,18 +42,18 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 				id: AboutOptionEnum.ATTRIBUTION,
 				title: AboutOptionEnum.ATTRIBUTION,
 				detailsComponent: (
-					<Flex gap={0} direction="column" padding="0rem 1.15rem" alignItems="center">
+					<Flex gap={0} direction="column" padding="0rem 1.23rem" alignItems="center">
 						<Text className="small-text" fontFamily="AmazonEmber-Bold" marginTop="1.15rem" alignSelf="flex-start">
 							{PARTNER_ATTRIBUTION_TITLE}
 						</Text>
-						<Text className="more-secondary-text" marginTop="1.15rem">
+						<Text className="more-tertiary-text" marginTop="1.15rem">
 							{attributionText}
 						</Text>
 						<Button
 							data-testid="learn-more-button-partner-attribution"
 							className="learn-more-button"
 							variation="primary"
-							marginTop="1.15rem"
+							margin="1.15rem 0 3rem 0"
 							width="100%"
 							onClick={handlePartnerLearnMore}
 						>
@@ -62,7 +62,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ open, onClose }) => {
 						<Text className="small-text" fontFamily="AmazonEmber-Bold" marginTop="1.15rem" alignSelf="flex-start">
 							{SOFTWARE_ATTRIBUTION_TITLE}
 						</Text>
-						<Text className="more-secondary-text" marginTop="1.15rem" alignSelf="flex-start">
+						<Text className="more-tertiary-text" marginTop="1.15rem" alignSelf="flex-start">
 							{SOFTWARE_ATTRIBUTION_DESC}
 						</Text>
 						<Button
