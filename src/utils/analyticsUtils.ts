@@ -11,6 +11,7 @@ import { AnalyticsSessionStatus, EventTypeEnum } from "@demo/types/Enums";
 import RecordInput from "@demo/types/RecordInput";
 import { browserName, fullBrowserVersion, isAndroid, isDesktop, isIOS } from "react-device-detect";
 
+import { getCountryCodeByIp } from "./countryUtil";
 import debounce from "./debounce";
 import sleep from "./sleep";
 import { uuid } from "./uuid";
@@ -47,8 +48,7 @@ const pinClient = new PinpointClient({
 const createEndpoint = async () => {
 	isEndpointCreated = true;
 
-	const jsonValue = await fetch("https://api.country.is/");
-	const value = await jsonValue.json();
+	const country = await getCountryCodeByIp();
 
 	const authLocalStorageKeyString = localStorage.getItem(amplifyAuthDataLocalStorageKey) as string;
 	const {
@@ -70,7 +70,7 @@ const createEndpoint = async () => {
 		EndpointId: endpointId!,
 		EndpointRequest: {
 			Location: {
-				Country: value.country
+				Country: country
 			},
 
 			Demographic: {
