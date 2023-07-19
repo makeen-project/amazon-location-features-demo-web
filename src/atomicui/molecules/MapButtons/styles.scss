@@ -76,7 +76,7 @@
 	position: absolute;
 	top: 1.54rem;
 	right: 5.38rem;
-	z-index: 4;
+	z-index: 3;
 	.amplify-flex.map-styles-header {
 		gap: 0;
 		padding: 0rem 1.23rem;
@@ -96,6 +96,12 @@
 					}
 				}
 			}
+		}
+	}
+
+	@media only screen and (max-width: 950px) {
+		& {
+			z-index: 4;
 		}
 	}
 
