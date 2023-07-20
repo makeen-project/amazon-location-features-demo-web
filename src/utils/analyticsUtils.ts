@@ -25,11 +25,6 @@ const amplifyAuthDataLocalStorageKey = `${LOCAL_STORAGE_PREFIX}${AMPLIFY_AUTH_DA
 const endpointIdKey = `${LOCAL_STORAGE_PREFIX}${ANALYTICS_ENDPOINT_ID}`;
 const analyticsCredsKey = `${LOCAL_STORAGE_PREFIX}${ANALYTICS_CREDS}`;
 
-let session: {
-	id?: string;
-	startTimestamp?: string;
-	creationStatus: AnalyticsSessionStatus;
-} = { creationStatus: AnalyticsSessionStatus.NOT_CREATED };
 let endpointId = localStorage.getItem(endpointIdKey);
 
 if (!endpointId) {
@@ -37,8 +32,18 @@ if (!endpointId) {
 	localStorage.setItem(endpointIdKey, endpointId);
 }
 
-let pinClient: PinpointClient;
+const authLocalStorageKeyString = localStorage.getItem(amplifyAuthDataLocalStorageKey) as string;
+const credentials = JSON.parse(authLocalStorageKeyString || "{}")?.state?.credentials;
+let userId = `${credentials?.authenticated ? credentials.identityId : `AnonymousUser:${endpointId}`}`;
+
 let analyticsCreds = JSON.parse(localStorage.getItem(analyticsCredsKey) || "{}");
+
+let pinClient: PinpointClient;
+let session: {
+	id?: string;
+	startTimestamp?: string;
+	creationStatus: AnalyticsSessionStatus;
+} = { creationStatus: AnalyticsSessionStatus.NOT_CREATED };
 
 const validateAndSetAnalyticsCreds = async (forceRefreshCreds = false) => {
 	const isExpired = !analyticsCreds.expiration || new Date(analyticsCreds.expiration) <= new Date();
@@ -74,13 +79,8 @@ const sendEvent = async (command: any, shouldRetryAfterFailure = true) => {
 	}
 };
 
-const createEndpoint = async () => {
+const createOrUpdateEndpoint = async () => {
 	const country = await getCountryCodeByIp();
-
-	const authLocalStorageKeyString = localStorage.getItem(amplifyAuthDataLocalStorageKey) as string;
-	const {
-		state: { credentials }
-	} = JSON.parse(authLocalStorageKeyString);
 
 	let platformType = "Other";
 
@@ -96,20 +96,9 @@ const createEndpoint = async () => {
 		ApplicationId: PINPOINT_APPLICATION_ID,
 		EndpointId: endpointId!,
 		EndpointRequest: {
-			Location: {
-				Country: country
-			},
-
-			Demographic: {
-				Model: browserName,
-				ModelVersion: fullBrowserVersion,
-
-				Platform: `Web (${platformType})`
-			},
-			User: {
-				UserAttributes: {},
-				UserId: `${credentials?.authenticated ? credentials.identityId : `AnonymousUser:${endpointId}`}`
-			}
+			Location: { Country: country },
+			Demographic: { Model: browserName, ModelVersion: fullBrowserVersion, Platform: `Web (${platformType})` },
+			User: { UserAttributes: {}, UserId: userId }
 		}
 	};
 
@@ -132,25 +121,27 @@ export const record: (input: RecordInput[]) => void = async input => {
 	}
 
 	const eventId = uuid.randomUUID();
-
 	const authLocalStorageKeyString = localStorage.getItem(amplifyAuthDataLocalStorageKey) as string;
-	const {
-		state: { isUserAwsAccountConnected, credentials }
-	} = JSON.parse(authLocalStorageKeyString);
+	const authLocalStorage = JSON.parse(authLocalStorageKeyString || "{}");
+	const { credentials, isUserAwsAccountConnected } = authLocalStorage?.state || {};
+
+	const _userId = `${credentials?.authenticated ? credentials.identityId : `AnonymousUser:${endpointId}`}`;
+
+	// incase user id has changed, update endpoint
+	if (userId !== _userId) {
+		userId = _userId;
+		await createOrUpdateEndpoint();
+	}
 
 	const events = input.reduce((result, value) => {
 		const extValue = {
 			...value,
 			Attributes: {
-				userAWSAccountConnectionStatus: !!isUserAwsAccountConnected ? "Connected" : "Not connected",
-				userAuthenticationStatus: !!credentials?.authenticated ? "Authenticated" : "Unauthenticated",
+				userAWSAccountConnectionStatus: isUserAwsAccountConnected ? "Connected" : "Not connected",
+				userAuthenticationStatus: credentials?.authenticated ? "Authenticated" : "Unauthenticated",
 				...(value.Attributes || {})
 			},
-			Session: {
-				Id: session.id,
-				StartTimestamp: session.startTimestamp,
-				...(value.Session || {})
-			},
+			Session: { Id: session.id, StartTimestamp: session.startTimestamp, ...(value.Session || {}) },
 			Timestamp: new Date().toISOString()
 		};
 
@@ -160,17 +151,8 @@ export const record: (input: RecordInput[]) => void = async input => {
 	}, {} as { [key: string]: Event });
 
 	const commandInput: PutEventsRequest = {
-		// PutEventsRequest
 		ApplicationId: PINPOINT_APPLICATION_ID,
-		EventsRequest: {
-			// EventsRequest
-			BatchItem: {
-				[endpointId!]: {
-					Endpoint: {},
-					Events: events
-				}
-			}
-		}
+		EventsRequest: { BatchItem: { [endpointId!]: { Endpoint: {}, Events: events } } }
 	};
 
 	const putEventsCommand = new PutEventsCommand(commandInput);
@@ -179,7 +161,7 @@ export const record: (input: RecordInput[]) => void = async input => {
 
 const startSession = async () => {
 	session.creationStatus = AnalyticsSessionStatus.IN_PROGRESS;
-	await createEndpoint();
+	await createOrUpdateEndpoint();
 	session.id = uuid.randomUUID();
 	session.startTimestamp = new Date().toISOString();
 	await record([{ EventType: EventTypeEnum.SESSION_START, Attributes: {} }]);
