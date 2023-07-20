@@ -6,6 +6,7 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc && vite build",
+		"translate": "node extra/translation-script/translate.js",
 		"preview": "vite preview",
 		"stylelint-check": "stylelint-config-prettier-check",
 		"cypress": "cypress run --browser chrome --headed",

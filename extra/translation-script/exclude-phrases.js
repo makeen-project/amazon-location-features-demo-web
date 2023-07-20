@@ -1,0 +1,31 @@
+const excludedPhrases = [
+	"Amazon Location",
+	"Amazon Web",
+	"AWS",
+	"Esri",
+	"Here",
+	"Grab",
+	"GrabMaps",
+	"Light",
+	"Dark",
+	"Streets",
+	"Navigation",
+	"Dark Gray",
+	"Light Gray",
+	"Imagery",
+	"Explore",
+	"Contrast",
+	"Explore Truck",
+	"Hybrid",
+	"Vector",
+	"Raster",
+	"3D",
+	"Satellite",
+	"Web",
+	"iOS",
+	"Android",
+	"JavaScript",
+	"React"
+];
+
+module.exports = { excludedPhrases };
