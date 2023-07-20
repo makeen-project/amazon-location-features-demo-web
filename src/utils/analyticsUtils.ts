@@ -41,7 +41,7 @@ let pinClient: PinpointClient;
 let analyticsCreds = JSON.parse(localStorage.getItem(analyticsCredsKey) || "{}");
 
 const validateAndSetAnalyticsCreds = async (forceRefreshCreds = false) => {
-	const isExpired = !analyticsCreds.expiration || new Date() <= new Date(analyticsCreds.expiration);
+	const isExpired = !analyticsCreds.expiration || new Date(analyticsCreds.expiration) <= new Date();
 
 	if (isExpired || forceRefreshCreds) {
 		analyticsCreds = await fromCognitoIdentityPool({
