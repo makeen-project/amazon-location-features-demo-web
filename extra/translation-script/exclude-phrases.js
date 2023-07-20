@@ -1,6 +1,9 @@
 const excludedPhrases = [
 	"Amazon Location",
 	"Amazon Web",
+	"Amazon Web Services",
+	"Amazon",
+	"Amazon.com",
 	"AWS",
 	"Esri",
 	"Here",
