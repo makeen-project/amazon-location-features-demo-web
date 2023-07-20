@@ -53,7 +53,9 @@ const appConfig = {
 		AMPLIFY_MAP_DATA: "AmplifyMapData",
 		PERSISTED_DATA: "PersistedData",
 		GEO_LOCATION_ALLOWED: "GeoLocationAllowed",
-		SHOULD_CLEAR_CREDENTIALS: "ShouldClearCredentials"
+		SHOULD_CLEAR_CREDENTIALS: "ShouldClearCredentials",
+		ANALYTICS_ENDPOINT_ID: "analyticsEndpointId",
+		ANALYTICS_CREDS: "analyticsCreds"
 	},
 	ROUTES: {
 		DEFAULT: "/",

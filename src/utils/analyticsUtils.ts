@@ -5,6 +5,7 @@ import {
 	PutEventsRequest,
 	UpdateEndpointCommand
 } from "@aws-sdk/client-pinpoint";
+import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 
 import { appConfig } from "@demo/core/constants";
 import { AnalyticsSessionStatus, EventTypeEnum } from "@demo/types/Enums";
@@ -17,13 +18,13 @@ import sleep from "./sleep";
 import { uuid } from "./uuid";
 
 const {
-	ENV: { PINPOINT_REGION, PINPOINT_APPLICATION_ID, PINPOINT_ACCESS_KEY_ID, PINPOINT_SECRET_ACCESS_KEY },
-	PERSIST_STORAGE_KEYS: { LOCAL_STORAGE_PREFIX, AMPLIFY_AUTH_DATA }
+	ENV: { REGION, IDENTITY_POOL_ID, PINPOINT_REGION, PINPOINT_APPLICATION_ID },
+	PERSIST_STORAGE_KEYS: { LOCAL_STORAGE_PREFIX, AMPLIFY_AUTH_DATA, ANALYTICS_ENDPOINT_ID, ANALYTICS_CREDS }
 } = appConfig;
 const amplifyAuthDataLocalStorageKey = `${LOCAL_STORAGE_PREFIX}${AMPLIFY_AUTH_DATA}`;
-const endpointIdKey = `${LOCAL_STORAGE_PREFIX}_analytics_endpointId`;
+const endpointIdKey = `${LOCAL_STORAGE_PREFIX}${ANALYTICS_ENDPOINT_ID}`;
+const analyticsCredsKey = `${LOCAL_STORAGE_PREFIX}${ANALYTICS_CREDS}`;
 
-let isEndpointCreated = false;
 let session: {
 	id?: string;
 	startTimestamp?: string;
@@ -36,18 +37,44 @@ if (!endpointId) {
 	localStorage.setItem(endpointIdKey, endpointId);
 }
 
-//Set the MediaConvert Service Object
-const pinClient = new PinpointClient({
-	credentials: {
-		accessKeyId: PINPOINT_ACCESS_KEY_ID,
-		secretAccessKey: PINPOINT_SECRET_ACCESS_KEY
-	},
-	region: PINPOINT_REGION
-});
+let pinClient: PinpointClient;
+let analyticsCreds = JSON.parse(localStorage.getItem(analyticsCredsKey) || "{}");
+
+const validateAndSetAnalyticsCreds = async (forceRefreshCreds = false) => {
+	const isExpired = !analyticsCreds.expiration || new Date() <= new Date(analyticsCreds.expiration);
+
+	if (isExpired || forceRefreshCreds) {
+		analyticsCreds = await fromCognitoIdentityPool({
+			identityPoolId: IDENTITY_POOL_ID,
+			clientConfig: { region: REGION }
+		})();
+		localStorage.setItem(analyticsCredsKey, JSON.stringify(analyticsCreds));
+		pinClient = new PinpointClient({ credentials: analyticsCreds, region: PINPOINT_REGION });
+	}
+
+	if (!pinClient) {
+		pinClient = new PinpointClient({ credentials: analyticsCreds, region: PINPOINT_REGION });
+	}
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const sendEvent = async (command: any, shouldRetryAfterFailure = true) => {
+	try {
+		await validateAndSetAnalyticsCreds();
+		await pinClient.send(command);
+	} catch (error) {
+		console.error("error: ", error);
+		if (shouldRetryAfterFailure) {
+			// just incase someone tempers with the creds in localstorage
+			await validateAndSetAnalyticsCreds(true);
+			await sendEvent(command, false);
+		} else {
+			throw error;
+		}
+	}
+};
 
 const createEndpoint = async () => {
-	isEndpointCreated = true;
-
 	const country = await getCountryCodeByIp();
 
 	const authLocalStorageKeyString = localStorage.getItem(amplifyAuthDataLocalStorageKey) as string;
@@ -87,29 +114,20 @@ const createEndpoint = async () => {
 	};
 
 	const putEventsCommand = new UpdateEndpointCommand(input);
-
-	try {
-		await pinClient.send(putEventsCommand);
-	} catch {
-		isEndpointCreated = false;
-	}
+	await sendEvent(putEventsCommand);
 };
 
 export const record: (input: RecordInput[]) => void = async input => {
-	if (!isEndpointCreated) {
-		await createEndpoint();
-	}
-
 	const eventTypes = input.map(x => x.EventType);
 
 	if (!eventTypes.includes(EventTypeEnum.SESSION_START) && !eventTypes.includes(EventTypeEnum.SESSION_STOP)) {
 		while (session.creationStatus !== AnalyticsSessionStatus.CREATED) {
 			if (session.creationStatus === AnalyticsSessionStatus.NOT_CREATED) {
 				await startSession();
+			} else {
+				// sleep in both NOT_CREATED and IN_PROGRESS case (wait until the session event is created)
+				await sleep(2000);
 			}
-
-			// sleep in both NOT_CREATED and IN_PROGRESS case (wait until the session event is created)
-			await sleep(5000);
 		}
 	}
 
@@ -156,11 +174,12 @@ export const record: (input: RecordInput[]) => void = async input => {
 	};
 
 	const putEventsCommand = new PutEventsCommand(commandInput);
-	await pinClient.send(putEventsCommand);
+	await sendEvent(putEventsCommand);
 };
 
 const startSession = async () => {
 	session.creationStatus = AnalyticsSessionStatus.IN_PROGRESS;
+	await createEndpoint();
 	session.id = uuid.randomUUID();
 	session.startTimestamp = new Date().toISOString();
 	await record([{ EventType: EventTypeEnum.SESSION_START, Attributes: {} }]);
@@ -190,7 +209,7 @@ export const initiateAnalytics = async () => {
 
 	addEventListener("mousedown", () => {
 		// create session whenever user becomes active
-		if (session.creationStatus !== AnalyticsSessionStatus.CREATED) {
+		if (session.creationStatus === AnalyticsSessionStatus.NOT_CREATED) {
 			startSession();
 		} else {
 			stopSessionIn30Minutes();
