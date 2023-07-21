@@ -18,7 +18,7 @@ import {
 	MapStyleFilterTypes,
 	TypeEnum
 } from "@demo/types";
-import { EventTypeEnum } from "@demo/types/Enums";
+import { EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
 import { record } from "@demo/utils/analyticsUtils";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "react-tooltip";
@@ -148,6 +148,15 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 			onCloseSidebar();
 			onShowGeofenceBox();
 			setIsAddingGeofence(!isAddingGeofence);
+			record(
+				[
+					{
+						EventType: EventTypeEnum.GEOFENCE_CREATION_STARTED,
+						Attributes: { triggeredBy: TriggeredByEnum.MAP_BUTTONS }
+					}
+				],
+				["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+			);
 		} else {
 			onPrompt();
 		}

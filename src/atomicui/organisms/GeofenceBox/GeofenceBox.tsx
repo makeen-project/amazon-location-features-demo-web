@@ -28,7 +28,8 @@ import {
 	SuggestionType,
 	ToastType
 } from "@demo/types";
-import { SearchActionsEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { AnalyticsEventActionsEnum, EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { ListGeofenceResponseEntry, Place, Position } from "aws-sdk/clients/location";
 import { useTranslation } from "react-i18next";
 import { LngLat, MapRef } from "react-map-gl";
@@ -130,7 +131,7 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 						exact,
 						sg => setSuggestions(sg),
 						TriggeredByEnum.GEOFENCE_MODULE,
-						SearchActionsEnum.AUTOCOMPLETE
+						AnalyticsEventActionsEnum.AUTOCOMPLETE
 					);
 				}, 200);
 			}
@@ -469,6 +470,11 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 			setCurrent({ value: `${Center[1]}, ${Center[0]}`, radiusInM: Radius });
 			setIsAddingGeofence(true);
 			setIsEditing(true);
+
+			record(
+				[{ EventType: EventTypeEnum.GEOFENCE_ITEM_SELECTED, Attributes: { geofenceId: GeofenceId } }],
+				["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+			);
 		},
 		[setIsAddingGeofence]
 	);
@@ -632,7 +638,21 @@ const GeofenceBox: React.FC<GeofenceBoxProps> = ({ mapRef, setShowGeofenceBox })
 					</Flex>
 					<Flex gap={0} alignItems="center">
 						{!isAddingGeofence && (
-							<Flex className="geofence-action" onClick={() => setIsAddingGeofence(true)}>
+							<Flex
+								className="geofence-action"
+								onClick={() => {
+									setIsAddingGeofence(true);
+									record(
+										[
+											{
+												EventType: EventTypeEnum.GEOFENCE_CREATION_STARTED,
+												Attributes: { triggeredBy: TriggeredByEnum.GEOFENCE_MODULE }
+											}
+										],
+										["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+									);
+								}}
+							>
 								<IconPlus />
 								<Text className="bold" textAlign={isLtr ? "start" : "end"}>
 									{t("geofence_box__add.text")}

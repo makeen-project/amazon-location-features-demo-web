@@ -10,6 +10,7 @@ import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { appConfig } from "@demo/core/constants";
 import { AnalyticsSessionStatus, EventTypeEnum } from "@demo/types/Enums";
 import RecordInput from "@demo/types/RecordInput";
+import { omit } from "ramda";
 import { browserName, fullBrowserVersion, isAndroid, isDesktop, isIOS } from "react-device-detect";
 
 import { getCountryCodeByIp } from "./countryUtil";
@@ -106,7 +107,10 @@ const createOrUpdateEndpoint = async () => {
 	await sendEvent(putEventsCommand);
 };
 
-export const record: (input: RecordInput[]) => void = async input => {
+export const record: (input: RecordInput[], excludeAttributes?: string[]) => void = async (
+	input,
+	excludeAttributes = []
+) => {
 	const eventTypes = input.map(x => x.EventType);
 
 	if (!eventTypes.includes(EventTypeEnum.SESSION_START) && !eventTypes.includes(EventTypeEnum.SESSION_STOP)) {
@@ -133,12 +137,16 @@ export const record: (input: RecordInput[]) => void = async input => {
 		await createOrUpdateEndpoint();
 	}
 
+	const defaultOptions = omit(excludeAttributes, {
+		userAWSAccountConnectionStatus: isUserAwsAccountConnected ? "Connected" : "Not connected",
+		userAuthenticationStatus: credentials?.authenticated ? "Authenticated" : "Unauthenticated"
+	});
+
 	const events = input.reduce((result, value) => {
 		const extValue = {
 			...value,
 			Attributes: {
-				userAWSAccountConnectionStatus: isUserAwsAccountConnected ? "Connected" : "Not connected",
-				userAuthenticationStatus: credentials?.authenticated ? "Authenticated" : "Unauthenticated",
+				...defaultOptions,
 				...(value.Attributes || {})
 			},
 			Session: { Id: session.id, StartTimestamp: session.startTimestamp, ...(value.Session || {}) },

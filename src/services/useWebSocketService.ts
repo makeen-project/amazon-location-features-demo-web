@@ -61,15 +61,18 @@ const useWebSocketService = (): { subscription: ZenObservable.Subscription | nul
 							type: ToastType.INFO
 						});
 
-						record([
-							{
-								EventType: EventTypeEnum.GEO_EVENT_TRIGGERED,
-								Attributes: {
-									eventType: data.value.trackerEventType,
-									geofenceId: data.value.geofenceId
+						record(
+							[
+								{
+									EventType: EventTypeEnum.GEO_EVENT_TRIGGERED,
+									Attributes: {
+										eventType: data.value.trackerEventType,
+										geofenceId: data.value.geofenceId
+									}
 								}
-							}
-						]);
+							],
+							["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+						);
 					}
 				},
 				error: () => {

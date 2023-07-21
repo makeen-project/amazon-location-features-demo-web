@@ -235,7 +235,10 @@ const DemoPage: React.FC = () => {
 		if (code && state && !authTokens) {
 			window.history.replaceState(undefined, "", DEMO);
 			setAuthTokens({ code, state });
-			record([{ EventType: EventTypeEnum.SIGN_IN_SUCCESSFUL, Attributes: {} }]);
+			record(
+				[{ EventType: EventTypeEnum.SIGN_IN_SUCCESSFUL, Attributes: {} }],
+				["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+			);
 			setTimeout(() => clearCredsAndLocationClient(), 0);
 		}
 

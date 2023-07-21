@@ -25,7 +25,7 @@ import {
 	SettingOptionEnum,
 	SettingOptionItemType
 } from "@demo/types";
-import { EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { AnalyticsEventActionsEnum, EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
 import { record } from "@demo/utils/analyticsUtils";
 import { transformCloudFormationLink } from "@demo/utils/transformCloudFormationLink";
 import { useTranslation } from "react-i18next";
@@ -541,7 +541,24 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 							{isUserAwsAccountConnected ? (
 								!isAuthenticated ? (
 									<>
-										<Button variation="primary" fontFamily="AmazonEmber-Bold" width="100%" onClick={_onLogin}>
+										<Button
+											variation="primary"
+											fontFamily="AmazonEmber-Bold"
+											width="100%"
+											onClick={async () => {
+												await record(
+													[
+														{
+															EventType: EventTypeEnum.SIGN_IN_STARTED,
+															Attributes: { triggeredBy: TriggeredByEnum.SETTINGS_MODAL }
+														}
+													],
+													["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+												);
+
+												_onLogin();
+											}}
+										>
 											{t("sign_in.text")}
 										</Button>
 										<Button
@@ -630,6 +647,37 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 				key={id}
 				className={selectedOption === id ? "option-item selected" : "option-item"}
 				onClick={() => {
+					if (id === SettingOptionEnum.AWS_CLOUD_FORMATION) {
+						record(
+							[
+								{
+									EventType: EventTypeEnum.AWS_ACCOUNT_CONNECTION_STARTED,
+									Attributes: { triggeredBy: TriggeredByEnum.SETTINGS_MODAL }
+								}
+							],
+							["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+						);
+					} else if (selectedOption === SettingOptionEnum.AWS_CLOUD_FORMATION) {
+						const columnsHavingText = Object.keys(formValues)
+							.filter(key => !!formValues[key as keyof ConnectFormValuesType].trim())
+							.map(valueKey => valueKey)
+							.join(",");
+
+						record(
+							[
+								{
+									EventType: EventTypeEnum.AWS_ACCOUNT_CONNECTION_STOPPED,
+									Attributes: {
+										triggeredBy: TriggeredByEnum.SETTINGS_MODAL,
+										fieldsFilled: columnsHavingText,
+										action: AnalyticsEventActionsEnum.TAB_CHANGED
+									}
+								}
+							],
+							["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+						);
+					}
+
 					resetSearchAndFilters();
 					setSelectedOption(id);
 				}}
@@ -647,7 +695,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 				</Flex>
 			</Flex>
 		));
-	}, [optionItems, selectedOption, resetSearchAndFilters]);
+	}, [optionItems, selectedOption, resetSearchAndFilters, formValues]);
 
 	const renderOptionDetails = useMemo(() => {
 		const [optionItem] = optionItems.filter(({ id }) => selectedOption === id);

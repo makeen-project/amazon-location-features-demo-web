@@ -116,15 +116,15 @@ const TrackerBox: React.FC<TrackerBoxProps> = ({ mapRef, setShowTrackingBox }) =
 			setIsEditingRoute(false);
 			setIsSaved(true);
 
-			record([
-				{
-					EventType: EventTypeEnum.TRACKER_SAVED,
-					Attributes: {
-						trackerType: selectedTrackerType,
-						numberOfTrackerPoints: String(trackerPoints.length)
+			record(
+				[
+					{
+						EventType: EventTypeEnum.TRACKER_SAVED,
+						Attributes: { trackerType: selectedTrackerType, numberOfTrackerPoints: String(trackerPoints.length) }
 					}
-				}
-			]);
+				],
+				["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+			);
 		}
 	};
 
