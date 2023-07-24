@@ -11,6 +11,7 @@ import { AuthTokensType, ConnectFormValuesType, ToastType } from "@demo/types";
 import { EventTypeEnum } from "@demo/types/Enums";
 import { record } from "@demo/utils/analyticsUtils";
 import { errorHandler } from "@demo/utils/errorHandler";
+import { clearStorage } from "@demo/utils/localstorageUtils";
 import { Amplify, Auth } from "aws-amplify";
 import AWS from "aws-sdk";
 import { useTranslation } from "react-i18next";
@@ -223,7 +224,7 @@ const useAmplifyAuth = () => {
 				}
 			},
 			onDisconnectAwsAccount: () => {
-				localStorage.clear();
+				clearStorage();
 				methods.resetStore();
 				resetAwsStore();
 				resetAmplifyMapStore();
