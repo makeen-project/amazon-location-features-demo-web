@@ -18,6 +18,8 @@ import {
 	MapStyleFilterTypes,
 	TypeEnum
 } from "@demo/types";
+import { EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "react-tooltip";
 import "./styles.scss";
@@ -38,6 +40,7 @@ const filters = {
 };
 
 export interface MapButtonsProps {
+	renderedUpon: string;
 	openStylesCard: boolean;
 	setOpenStylesCard: (b: boolean) => void;
 	onCloseSidebar: () => void;
@@ -58,6 +61,7 @@ export interface MapButtonsProps {
 }
 
 const MapButtons: React.FC<MapButtonsProps> = ({
+	renderedUpon,
 	openStylesCard,
 	setOpenStylesCard,
 	onCloseSidebar,
@@ -144,6 +148,15 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 			onCloseSidebar();
 			onShowGeofenceBox();
 			setIsAddingGeofence(!isAddingGeofence);
+			record(
+				[
+					{
+						EventType: EventTypeEnum.GEOFENCE_CREATION_STARTED,
+						Attributes: { triggeredBy: TriggeredByEnum.MAP_BUTTONS }
+					}
+				],
+				["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+			);
 		} else {
 			onPrompt();
 		}
@@ -163,8 +176,25 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 				onShowGridLoader();
 				handleMapStyleChange(id);
 			}
+
+			let mapProvider = "Unknown";
+
+			if (Object.values(EsriMapEnum).includes(id as EsriMapEnum)) {
+				mapProvider = MapProviderEnum.ESRI;
+			} else if (Object.values(HereMapEnum).includes(id as HereMapEnum)) {
+				mapProvider = MapProviderEnum.HERE;
+			} else if (Object.values(GrabMapEnum).includes(id as GrabMapEnum)) {
+				mapProvider = MapProviderEnum.GRAB;
+			}
+
+			record([
+				{
+					EventType: EventTypeEnum.MAP_STYLE_CHANGE,
+					Attributes: { id, provider: String(mapProvider), triggeredBy: renderedUpon }
+				}
+			]);
 		},
-		[currentMapStyle, handleMapStyleChange, onShowGridLoader]
+		[currentMapStyle, handleMapStyleChange, onShowGridLoader, renderedUpon]
 	);
 
 	const addProviderTitle = useCallback(

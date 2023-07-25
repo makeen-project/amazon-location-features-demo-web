@@ -8,6 +8,7 @@ import { IconCar, IconClose, IconCopyPages, IconDirections, IconInfo } from "@de
 import { useAmplifyMap, useAwsPlace, useAwsRoute, useMediaQuery } from "@demo/hooks";
 import { DistanceUnitEnum, MapProviderEnum, MapUnitEnum, SuggestionType, TravelMode } from "@demo/types";
 
+import { TriggeredByEnum } from "@demo/types/Enums";
 import { humanReadableTime } from "@demo/utils/dateTimeUtils";
 import { calculateGeodesicDistance } from "@demo/utils/geoCalculation";
 import { Units } from "@turf/turf";
@@ -88,7 +89,7 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 			DistanceUnit: currentMapUnit === METRIC ? KILOMETERS : MILES,
 			TravelMode: TravelMode.CAR
 		};
-		const r = await getRoute(params as CalculateRouteRequest);
+		const r = await getRoute(params as CalculateRouteRequest, TriggeredByEnum.PLACES_POPUP);
 		setRouteData(r);
 	}, [currentLocationData, longitude, latitude, currentMapUnit, getRoute]);
 

@@ -7,6 +7,8 @@ import { Button, Flex } from "@aws-amplify/ui-react";
 import { IconGeofence, IconRoute } from "@demo/assets";
 import { Modal, TextEl } from "@demo/atomicui/atoms";
 import { useAmplifyAuth } from "@demo/hooks";
+import { EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { useTranslation } from "react-i18next";
 import "./styles.scss";
 
@@ -55,7 +57,19 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
 						variation="primary"
 						fontFamily="AmazonEmber-Bold"
 						marginTop="32px"
-						onClick={() => onLogin()}
+						onClick={async () => {
+							await record(
+								[
+									{
+										EventType: EventTypeEnum.SIGN_IN_STARTED,
+										Attributes: { triggeredBy: TriggeredByEnum.SIGN_IN_MODAL }
+									}
+								],
+								["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+							);
+
+							onLogin();
+						}}
 					>
 						{t("sign_in.text")}
 					</Button>

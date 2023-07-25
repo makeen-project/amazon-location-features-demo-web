@@ -9,6 +9,8 @@ import { List, Logo } from "@demo/atomicui/atoms";
 import { appConfig, marketingMenuOptionsData } from "@demo/core/constants";
 import { useAmplifyAuth, useAmplifyMap, useAwsIot } from "@demo/hooks";
 import { MapProviderEnum } from "@demo/types";
+import { AnalyticsEventActionsEnum, EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
@@ -49,9 +51,19 @@ const Sidebar: React.FC<SidebarProps> = ({
 
 	const sidebarData = marketingMenuOptionsData.filter(v => t(v.label) !== t("demo.text"));
 
-	const onConnectAwsAccount = () => {
+	const onConnectAwsAccount = (action: AnalyticsEventActionsEnum) => {
 		onCloseSidebar();
 		onOpenConnectAwsAccountModal();
+
+		record(
+			[
+				{
+					EventType: EventTypeEnum.AWS_ACCOUNT_CONNECTION_STARTED,
+					Attributes: { triggeredBy: TriggeredByEnum.SIDEBAR, action }
+				}
+			],
+			["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+		);
 	};
 
 	const onClickLockItem = () => {
@@ -59,7 +71,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 			onCloseSidebar();
 			!isAuthenticated && onOpenSignInModal();
 		} else {
-			onConnectAwsAccount();
+			onConnectAwsAccount(AnalyticsEventActionsEnum.LOCKED_ITEM_CLICKED);
 		}
 	};
 
@@ -173,13 +185,29 @@ const Sidebar: React.FC<SidebarProps> = ({
 						variation="primary"
 						fontFamily="AmazonEmber-Bold"
 						textAlign="center"
-						onClick={isAuthenticated ? _onLogout : _onLogin}
+						onClick={async () => {
+							if (isAuthenticated) {
+								_onLogout();
+							} else {
+								await record(
+									[{ EventType: EventTypeEnum.SIGN_IN_STARTED, Attributes: { triggeredBy: TriggeredByEnum.SIDEBAR } }],
+									["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+								);
+
+								_onLogin();
+							}
+						}}
 					>
 						{isAuthenticated ? t("sign_out.text") : t("sign_in.text")}
 					</Button>
 				)}
 				{!isUserAwsAccountConnected && (
-					<Button variation="primary" fontFamily="AmazonEmber-Bold" textAlign="center" onClick={onConnectAwsAccount}>
+					<Button
+						variation="primary"
+						fontFamily="AmazonEmber-Bold"
+						textAlign="center"
+						onClick={() => onConnectAwsAccount(AnalyticsEventActionsEnum.CONNECT_AWS_ACCOUNT_BUTTON_CLICKED)}
+					>
 						{t("connect_aws_account.text")}
 					</Button>
 				)}

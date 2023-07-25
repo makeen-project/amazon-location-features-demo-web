@@ -10,6 +10,8 @@ import { InputField } from "@demo/atomicui/molecules";
 import { appConfig, regionsData } from "@demo/core/constants";
 import { useAmplifyAuth, useAmplifyMap, useAws, useMediaQuery } from "@demo/hooks";
 import { ConnectFormValuesType, EsriMapEnum, MapProviderEnum } from "@demo/types";
+import { AnalyticsEventActionsEnum, EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { transformCloudFormationLink } from "@demo/utils/transformCloudFormationLink";
 import { useTranslation } from "react-i18next";
 import "./styles.scss";
@@ -146,11 +148,36 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 		await onLogin();
 	};
 
+	const handleModalClose = () => {
+		_onClose();
+
+		if (!isUserAwsAccountConnected) {
+			const columnsHavingText = Object.keys(formValues)
+				.filter(key => !!formValues[key as keyof ConnectFormValuesType].trim())
+				.map(valueKey => valueKey)
+				.join(",");
+
+			record(
+				[
+					{
+						EventType: EventTypeEnum.AWS_ACCOUNT_CONNECTION_STOPPED,
+						Attributes: {
+							triggeredBy: TriggeredByEnum.CONNECT_AWS_ACCOUNT_MODAL,
+							fieldsFilled: columnsHavingText,
+							action: AnalyticsEventActionsEnum.MODAL_CLOSED
+						}
+					}
+				],
+				["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+			);
+		}
+	};
+
 	return (
 		<Modal
 			data-testid="connect-aws-account-modal-container"
 			open={open}
-			onClose={_onClose}
+			onClose={handleModalClose}
 			className="connect-aws-account-modal"
 			content={
 				<Flex className="content-container">
@@ -268,12 +295,41 @@ const ConnectAwsAccountModal: React.FC<ConnectAwsAccountModalProps> = ({
 										height="3.08rem"
 										variation="primary"
 										fontFamily="AmazonEmber-Bold"
-										onClick={_onLogin}
+										onClick={async () => {
+											await record(
+												[
+													{
+														EventType: EventTypeEnum.SIGN_IN_STARTED,
+														Attributes: { triggeredBy: TriggeredByEnum.CONNECT_AWS_ACCOUNT_MODAL }
+													}
+												],
+												["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+											);
+
+											_onLogin();
+										}}
 									>
 										{t("sign_in.text")}
 									</Button>
 								)}
-								<Button className="continue-to-explore" width="100%" height="3.08rem" onClick={_onClose}>
+								<Button
+									className="continue-to-explore"
+									width="100%"
+									height="3.08rem"
+									onClick={async () => {
+										await record(
+											[
+												{
+													EventType: EventTypeEnum.CONTINUE_TO_DEMO_CLICKED,
+													Attributes: { triggeredBy: TriggeredByEnum.CONNECT_AWS_ACCOUNT_MODAL }
+												}
+											],
+											["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+										);
+
+										_onClose();
+									}}
+								>
 									{t("caam__continue_to_demo.text")}
 								</Button>
 							</>
