@@ -5,7 +5,7 @@
     "type": "module",
     "main": "translate.js",
     "scripts": {
-        "run-test": "yarn install && node translate.js",
+        "run-translate": "yarn install && node translate.js",
         "translate": "node translate.js"
     },
     "dependencies": {
