@@ -1,4 +1,4 @@
-const excludedPhrases = [
+export const excludedPhrases = [
 	"Amazon Location",
 	"Amazon Web",
 	"Amazon Web Services",
@@ -30,5 +30,3 @@ const excludedPhrases = [
 	"JavaScript",
 	"React"
 ];
-
-module.exports = { excludedPhrases };
