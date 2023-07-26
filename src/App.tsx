@@ -9,6 +9,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 const App = () => {
 	const router = createBrowserRouter(RouteChunks);
+	console.log("DEMO APP");
 
 	return (
 		<StrictMode>
