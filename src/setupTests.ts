@@ -7,10 +7,12 @@ import { faker } from "@faker-js/faker";
 
 jest.mock("@demo/core/constants/appConfig", () => ({
 	ENV: {
-		IDENTITY_POOL_ID: "",
-		REGION: "",
+		IDENTITY_POOL_ID_EAST: "",
+		REGION_EAST: "",
 		IDENTITY_POOL_ID_ASIA: "",
 		REGION_ASIA: "",
+		IDENTITY_POOL_ID_WEST: "",
+		REGION_WEST: "",
 		CF_TEMPLATE: "",
 		APPLE_APP_STORE_LINK: "",
 		GOOGLE_PLAY_STORE_LINK: ""
