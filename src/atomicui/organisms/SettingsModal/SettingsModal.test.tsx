@@ -12,11 +12,11 @@ describe("<SettingsModal />", () => {
 	const onClose = jest.fn();
 	const resetAppState = jest.fn();
 	const handleMapProviderChange = jest.fn();
-	const handleMapStyleChange = jest.fn();
 	const handleCurrentLocationAndViewpoint = jest.fn();
 	const resetSearchAndFilters = jest.fn();
 
 	const props = {
+		renderedUpon: "",
 		openStylesCard: false,
 		isGrabVisible: true,
 		showGrabDisclaimerModal: false,
@@ -49,7 +49,6 @@ describe("<SettingsModal />", () => {
 					resetAppState={resetAppState}
 					isGrabVisible={false}
 					handleMapProviderChange={handleMapProviderChange}
-					handleMapStyleChange={handleMapStyleChange}
 					handleCurrentLocationAndViewpoint={handleCurrentLocationAndViewpoint}
 					resetSearchAndFilters={resetSearchAndFilters}
 					mapButtons={<MapButtons {...props} />}

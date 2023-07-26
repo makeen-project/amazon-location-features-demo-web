@@ -58,7 +58,8 @@ export enum EventTypeEnum {
 
 	// General
 	CONTINUE_TO_DEMO_CLICKED = "CONTINUE_TO_DEMO_CLICKED",
-	LANGUAGE_CHANGED = "LANGUAGE_CHANGED"
+	LANGUAGE_CHANGED = "LANGUAGE_CHANGED",
+	HELP_SEARCH = "HELP_SEARCH"
 }
 
 export enum AnalyticsSessionStatus {

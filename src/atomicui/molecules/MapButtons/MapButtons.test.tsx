@@ -7,6 +7,7 @@ import MapButtons from "./MapButtons";
 
 describe("<MapButtons/>", () => {
 	const props = {
+		renderedUpon: "",
 		openStylesCard: false,
 		setOpenStylesCard: jest.fn(),
 		onCloseSidebar: jest.fn(),
