@@ -19,7 +19,7 @@ import sleep from "./sleep";
 import { uuid } from "./uuid";
 
 const {
-	ENV: { REGION, IDENTITY_POOL_ID, PINPOINT_REGION, PINPOINT_APPLICATION_ID },
+	ENV: { REGION, IDENTITY_POOL_ID, PINPOINT_APPLICATION_ID },
 	PERSIST_STORAGE_KEYS: { LOCAL_STORAGE_PREFIX, AMPLIFY_AUTH_DATA, ANALYTICS_ENDPOINT_ID, ANALYTICS_CREDS }
 } = appConfig;
 const amplifyAuthDataLocalStorageKey = `${LOCAL_STORAGE_PREFIX}${AMPLIFY_AUTH_DATA}`;
@@ -55,11 +55,11 @@ const validateAndSetAnalyticsCreds = async (forceRefreshCreds = false) => {
 			clientConfig: { region: REGION }
 		})();
 		localStorage.setItem(analyticsCredsKey, JSON.stringify(analyticsCreds));
-		pinClient = new PinpointClient({ credentials: analyticsCreds, region: PINPOINT_REGION });
+		pinClient = new PinpointClient({ credentials: analyticsCreds, region: REGION });
 	}
 
 	if (!pinClient) {
-		pinClient = new PinpointClient({ credentials: analyticsCreds, region: PINPOINT_REGION });
+		pinClient = new PinpointClient({ credentials: analyticsCreds, region: REGION });
 	}
 };
 
