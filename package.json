@@ -6,6 +6,7 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc && vite build",
+		"translate": "node extra/translation-script/translate.js",
 		"preview": "vite preview",
 		"stylelint-check": "stylelint-config-prettier-check",
 		"cypress": "cypress run --browser chrome --headed",
@@ -19,6 +20,7 @@
 	},
 	"dependencies": {
 		"@aws-amplify/ui-react": "^3.5.11",
+		"@aws-sdk/credential-providers": "^3.370.0",
 		"@turf/turf": "^6.5.0",
 		"aws-amplify": "^4.3.43",
 		"aws-sdk": "^2.1248.0",
@@ -29,6 +31,7 @@
 		"ngeohash": "^0.6.3",
 		"ramda": "^0.28.0",
 		"react": "^18.2.0",
+		"react-device-detect": "^2.2.3",
 		"react-dom": "^18.2.0",
 		"react-i18next": "^13.0.1",
 		"react-router-dom": "^6.4.3",

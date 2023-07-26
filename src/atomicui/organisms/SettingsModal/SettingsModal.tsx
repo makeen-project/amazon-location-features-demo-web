@@ -20,13 +20,13 @@ import { useAmplifyAuth, useAmplifyMap, useAws, useAwsIot, usePersistedData } fr
 import {
 	ConnectFormValuesType,
 	EsriMapEnum,
-	GrabMapEnum,
-	HereMapEnum,
 	MapProviderEnum,
 	MapUnitEnum,
 	SettingOptionEnum,
 	SettingOptionItemType
 } from "@demo/types";
+import { AnalyticsEventActionsEnum, EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { transformCloudFormationLink } from "@demo/utils/transformCloudFormationLink";
 import { useTranslation } from "react-i18next";
 import "./styles.scss";
@@ -53,8 +53,7 @@ interface SettingsModalProps {
 	onClose: () => void;
 	resetAppState: () => void;
 	isGrabVisible: boolean;
-	handleMapProviderChange: (mapProvider: MapProviderEnum) => void;
-	handleMapStyleChange: (mapStyle: EsriMapEnum | HereMapEnum | GrabMapEnum) => void;
+	handleMapProviderChange: (mapProvider: MapProviderEnum, triggeredBy: TriggeredByEnum) => void;
 	handleCurrentLocationAndViewpoint: (b: boolean) => void;
 	mapButtons: JSX.Element;
 	resetSearchAndFilters: () => void;
@@ -122,6 +121,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 	const handleAutoMapUnitChange = useCallback(() => {
 		setIsAutomaticMapUnit(true);
 		resetAppState();
+		record([{ EventType: EventTypeEnum.MAP_UNIT_CHANGE, Attributes: { type: "Automatic" } }]);
 	}, [setIsAutomaticMapUnit, resetAppState]);
 
 	const onMapUnitChange = useCallback(
@@ -129,6 +129,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			setIsAutomaticMapUnit(false);
 			setMapUnit(mapUnit);
 			resetAppState();
+
+			record([{ EventType: EventTypeEnum.MAP_UNIT_CHANGE, Attributes: { type: String(mapUnit) } }]);
 		},
 		[setIsAutomaticMapUnit, setMapUnit, resetAppState]
 	);
@@ -212,6 +214,37 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 		setStackRegion(option);
 	};
 
+	const handleLanguageChange = useCallback(
+		(e: { target: { value: string } }) => {
+			record([
+				{
+					EventType: EventTypeEnum.LANGUAGE_CHANGED,
+					Attributes: { language: e.target.value, triggeredBy: TriggeredByEnum.SETTINGS_MODAL }
+				}
+			]);
+			i18n.changeLanguage(e.target.value);
+		},
+		[i18n]
+	);
+
+	const handleRouteOptionChange = useCallback(
+		(e: { target: { checked: boolean } }, routeOption: string) => {
+			setDefaultRouteOptions({ ...defaultRouteOptions, [routeOption]: e.target.checked });
+
+			record([
+				{
+					EventType: EventTypeEnum.ROUTE_OPTION_CHANGED,
+					Attributes: {
+						option: routeOption,
+						status: e.target.checked ? "on" : "off",
+						triggeredBy: TriggeredByEnum.SETTINGS_MODAL
+					}
+				}
+			]);
+		},
+		[defaultRouteOptions, setDefaultRouteOptions]
+	);
+
 	const optionItems: Array<SettingOptionItemType> = useMemo(
 		() => [
 			{
@@ -292,7 +325,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								data-testid="data-provider-esri-radio"
 								value={ESRI}
 								checked={currentMapProvider === ESRI}
-								onChange={() => handleMapProviderChange(ESRI)}
+								onChange={() => handleMapProviderChange(ESRI, TriggeredByEnum.SETTINGS_MODAL)}
 							>
 								<Text marginLeft="1.23rem">{ESRI}</Text>
 							</Radio>
@@ -303,7 +336,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 								data-testid="data-provider-here-radio"
 								value={HERE}
 								checked={currentMapProvider === HERE}
-								onChange={() => handleMapProviderChange(HERE)}
+								onChange={() => handleMapProviderChange(HERE, TriggeredByEnum.SETTINGS_MODAL)}
 							>
 								<Text marginLeft="1.23rem">{HERE}</Text>
 							</Radio>
@@ -315,7 +348,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 									data-testid="data-provider-grab-radio"
 									value={GRAB}
 									checked={currentMapProvider === GRAB}
-									onChange={() => handleMapProviderChange(GRAB)}
+									onChange={() => handleMapProviderChange(GRAB, TriggeredByEnum.SETTINGS_MODAL)}
 								>
 									<Text marginLeft="1.23rem">{`${GRAB}Maps`}</Text>
 								</Radio>
@@ -359,9 +392,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 									data-testid="unit-automatic-radio"
 									value={value}
 									checked={i18n.language === value}
-									onChange={({ target: { value } }) => {
-										i18n.changeLanguage(value);
-									}}
+									onChange={handleLanguageChange}
 								>
 									<Text marginLeft="1.23rem">{label}</Text>
 								</Radio>
@@ -388,7 +419,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 							name={t("avoid_tolls.text")}
 							value="Avoid tolls"
 							checked={defaultRouteOptions.avoidTolls}
-							onChange={e => setDefaultRouteOptions({ ...defaultRouteOptions, avoidTolls: e.target.checked })}
+							onChange={e => handleRouteOptionChange(e, "avoidTolls")}
 						/>
 						<CheckboxField
 							data-testid="avoid-ferries"
@@ -397,7 +428,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 							name={t("avoid_ferries.text")}
 							value="Avoid ferries"
 							checked={defaultRouteOptions.avoidFerries}
-							onChange={e => setDefaultRouteOptions({ ...defaultRouteOptions, avoidFerries: e.target.checked })}
+							onChange={e => handleRouteOptionChange(e, "avoidFerries")}
 						/>
 					</Flex>
 				)
@@ -513,7 +544,24 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 							{isUserAwsAccountConnected ? (
 								!isAuthenticated ? (
 									<>
-										<Button variation="primary" fontFamily="AmazonEmber-Bold" width="100%" onClick={_onLogin}>
+										<Button
+											variation="primary"
+											fontFamily="AmazonEmber-Bold"
+											width="100%"
+											onClick={async () => {
+												await record(
+													[
+														{
+															EventType: EventTypeEnum.SIGN_IN_STARTED,
+															Attributes: { triggeredBy: TriggeredByEnum.SETTINGS_MODAL }
+														}
+													],
+													["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+												);
+
+												_onLogin();
+											}}
+										>
 											{t("sign_in.text")}
 										</Button>
 										<Button
@@ -573,7 +621,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			handleMapProviderChange,
 			selectedMapStyle,
 			defaultRouteOptions,
-			setDefaultRouteOptions,
 			isUserAwsAccountConnected,
 			onDisconnectAwsAccount,
 			onConnect,
@@ -590,7 +637,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 			langDir,
 			i18n,
 			isLtr,
-			mapButtons
+			mapButtons,
+			handleLanguageChange,
+			handleRouteOptionChange
 		]
 	);
 
@@ -601,6 +650,37 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 				key={id}
 				className={selectedOption === id ? "option-item selected" : "option-item"}
 				onClick={() => {
+					if (id === SettingOptionEnum.AWS_CLOUD_FORMATION) {
+						record(
+							[
+								{
+									EventType: EventTypeEnum.AWS_ACCOUNT_CONNECTION_STARTED,
+									Attributes: { triggeredBy: TriggeredByEnum.SETTINGS_MODAL }
+								}
+							],
+							["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+						);
+					} else if (selectedOption === SettingOptionEnum.AWS_CLOUD_FORMATION) {
+						const columnsHavingText = Object.keys(formValues)
+							.filter(key => !!formValues[key as keyof ConnectFormValuesType].trim())
+							.map(valueKey => valueKey)
+							.join(",");
+
+						record(
+							[
+								{
+									EventType: EventTypeEnum.AWS_ACCOUNT_CONNECTION_STOPPED,
+									Attributes: {
+										triggeredBy: TriggeredByEnum.SETTINGS_MODAL,
+										fieldsFilled: columnsHavingText,
+										action: AnalyticsEventActionsEnum.TAB_CHANGED
+									}
+								}
+							],
+							["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+						);
+					}
+
 					resetSearchAndFilters();
 					setSelectedOption(id);
 				}}
@@ -618,7 +698,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 				</Flex>
 			</Flex>
 		));
-	}, [optionItems, selectedOption, resetSearchAndFilters]);
+	}, [optionItems, selectedOption, resetSearchAndFilters, formValues]);
 
 	const renderOptionDetails = useMemo(() => {
 		const [optionItem] = optionItems.filter(({ id }) => selectedOption === id);

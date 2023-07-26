@@ -8,7 +8,10 @@ import { useAmplifyMap, useAws } from "@demo/hooks";
 import { useAmplifyAuthService } from "@demo/services";
 import { useAmplifyAuthStore } from "@demo/stores";
 import { AuthTokensType, ConnectFormValuesType, ToastType } from "@demo/types";
+import { EventTypeEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { errorHandler } from "@demo/utils/errorHandler";
+import { clearStorage } from "@demo/utils/localstorageUtils";
 import { getPoolByRegion, setClosestRegion } from "@demo/utils/regionUtils";
 import { Amplify, Auth } from "aws-amplify";
 import AWS from "aws-sdk";
@@ -58,9 +61,22 @@ const useAmplifyAuth = () => {
 					err => {
 						if (err) {
 							console.error({ err });
-							showToast({ content: t("show_toast__failed_to_connect_1.text"), type: ToastType.ERROR });
+							record(
+								[
+									{ EventType: EventTypeEnum.AWS_ACCOUNT_CONNECTION_FAILED, Attributes: { error: JSON.stringify(err) } }
+								],
+								["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+							);
+							showToast({
+								content: t("show_toast__failed_to_connect_1.text"),
+								type: ToastType.ERROR
+							});
 						} else {
 							successCb && successCb();
+							record(
+								[{ EventType: EventTypeEnum.AWS_ACCOUNT_CONNECTION_SUCCESSFUL, Attributes: {} }],
+								["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+							);
 						}
 					}
 				);
@@ -194,6 +210,10 @@ const useAmplifyAuth = () => {
 					setState({ authTokens: undefined });
 					await login();
 				} catch (error) {
+					record(
+						[{ EventType: EventTypeEnum.SIGN_IN_FAILED, Attributes: { error: JSON.stringify(error) } }],
+						["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+					);
 					errorHandler(error, t("error_handler__failed_sign_in.text") as string);
 				}
 			},
@@ -201,12 +221,20 @@ const useAmplifyAuth = () => {
 				try {
 					await logout();
 					setState({ authTokens: undefined });
+					record(
+						[{ EventType: EventTypeEnum.SIGN_OUT_SUCCESSFUL, Attributes: {} }],
+						["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+					);
 				} catch (error) {
+					record(
+						[{ EventType: EventTypeEnum.SIGN_OUT_FAILED, Attributes: { error: JSON.stringify(error) } }],
+						["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+					);
 					errorHandler(error, t("error_handler__failed_sign_out.text") as string);
 				}
 			},
 			onDisconnectAwsAccount: () => {
-				localStorage.clear();
+				clearStorage();
 				methods.resetStore();
 				resetAwsStore();
 				resetAmplifyMapStore();

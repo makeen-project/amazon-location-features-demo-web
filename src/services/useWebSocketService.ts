@@ -9,6 +9,8 @@ import { showToast } from "@demo/core/Toast";
 import { useAmplifyAuth } from "@demo/hooks";
 import i18n from "@demo/locales/i18n";
 import { ToastType } from "@demo/types";
+import { EventTypeEnum } from "@demo/types/Enums";
+import { record } from "@demo/utils/analyticsUtils";
 import { Amplify, Hub, PubSub } from "aws-amplify";
 
 const RETRY_INTERVAL = 100;
@@ -62,6 +64,19 @@ const useWebSocketService = (): { subscription: ZenObservable.Subscription | nul
 									  }`,
 							type: ToastType.INFO
 						});
+
+						record(
+							[
+								{
+									EventType: EventTypeEnum.GEO_EVENT_TRIGGERED,
+									Attributes: {
+										eventType: data.value.trackerEventType,
+										geofenceId: data.value.geofenceId
+									}
+								}
+							],
+							["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+						);
 					}
 				},
 				error: () => {

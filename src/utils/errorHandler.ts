@@ -7,6 +7,8 @@ import { appConfig } from "@demo/core/constants";
 import i18n from "@demo/locales/i18n";
 import { ToastType } from "@demo/types";
 
+import { clearStorage } from "./localstorageUtils";
+
 const {
 	PERSIST_STORAGE_KEYS: { LOCAL_STORAGE_PREFIX, SHOULD_CLEAR_CREDENTIALS, AMPLIFY_AUTH_DATA },
 	ROUTES: { ERROR_BOUNDARY }
@@ -45,7 +47,7 @@ export const errorHandler = (error: any, message?: string) => {
 				isStackCorrupted = true;
 				showToast({ content: i18n.t("show_toast__stack_is_corrupted.text"), type: ToastType.ERROR });
 				setTimeout(() => {
-					localStorage.clear();
+					clearStorage();
 					window.location.reload();
 				}, 3000);
 				return;

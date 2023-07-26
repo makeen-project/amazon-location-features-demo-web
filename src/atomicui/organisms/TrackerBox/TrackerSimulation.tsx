@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useMemo } from "react";
 // import { IconTrackerIntersect } from "@demo/assets";
 import { useAmplifyMap, useAwsGeofence, useAwsRoute, useAwsTracker, usePersistedData } from "@demo/hooks";
 import { DistanceUnitEnum, MapUnitEnum, RouteDataType, TrackerType, TravelMode } from "@demo/types";
+import { TriggeredByEnum } from "@demo/types/Enums";
 import * as turf from "@turf/turf";
 import { CalculateRouteRequest, Position } from "aws-sdk/clients/location";
 import { Layer, LayerProps, MapRef, Marker, Source } from "react-map-gl";
@@ -75,7 +76,7 @@ const TrackerSimulation: React.FC<TrackerSimulationProps> = ({
 						: undefined,
 				WaypointPositions: trackerPoints.length > 2 ? trackerPoints.slice(1, trackerPoints.length - 1) : undefined
 			};
-			const rd = await getRoute(params as CalculateRouteRequest);
+			const rd = await getRoute(params as CalculateRouteRequest, TriggeredByEnum.TRACKER_SIMULATION_MODULE);
 			rd &&
 				setRouteData({
 					...rd,

@@ -11,3 +11,4 @@ export { default as useAwsRoute } from "./useAwsRoute";
 export { default as useAwsTracker } from "./useAwsTracker";
 export { default as useMediaQuery } from "./useMediaQuery";
 export { default as usePersistedData } from "./usePersistedData";
+export { default as useRecordViewPage } from "./useRecordViewPage";
