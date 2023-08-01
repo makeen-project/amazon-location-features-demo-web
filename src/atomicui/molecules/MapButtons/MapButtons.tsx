@@ -27,11 +27,11 @@ import "./styles.scss";
 const { GRAB } = MapProviderEnum;
 const {
 	MAP_RESOURCES: {
-		MAP_STYLES: { ESRI_STYLES, HERE_STYLES, GRAB_STYLES }
+		MAP_STYLES: { ESRI_STYLES, HERE_STYLES, GRAB_STYLES, OPEN_DATA_STYLES }
 	}
 } = appConfig;
 
-const MAP_STYLES = [...ESRI_STYLES, ...HERE_STYLES, ...GRAB_STYLES] as MapStyle[];
+const MAP_STYLES = [...ESRI_STYLES, ...HERE_STYLES, ...GRAB_STYLES, ...OPEN_DATA_STYLES] as MapStyle[];
 
 const filters = {
 	Providers: Object.values(MapProviderEnum).map(value => value),
