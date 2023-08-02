@@ -11,7 +11,6 @@ const {
 } = appConfig.default;
 const pageViewIdentifiersKey = `${LOCAL_STORAGE_PREFIX}${PAGE_VIEW_IDENTIFIERS}`;
 
-let pageViewDateTime: Date;
 let pageViewIdentifier: string;
 
 const useRecordViewPage = (pageName: string) => {
@@ -23,15 +22,9 @@ const useRecordViewPage = (pageName: string) => {
 		localStorage.setItem(pageViewIdentifiersKey, JSON.stringify(pageViewIdentifiersObj));
 
 		const path = location.pathname;
-		pageViewDateTime = new Date();
 		record([{ EventType: EventTypeEnum.VIEW_PAGE, Attributes: { path, pageName, pageViewIdentifier } }]);
 
-		return () => {
-			const pageViewDuration = String(((new Date().getTime() - pageViewDateTime.getTime()) / 1000 / 60).toFixed(1));
-			record([
-				{ EventType: EventTypeEnum.LEAVE_PAGE, Attributes: { path, pageName, pageViewIdentifier, pageViewDuration } }
-			]);
-		};
+		return () => record([{ EventType: EventTypeEnum.LEAVE_PAGE, Attributes: { path, pageName, pageViewIdentifier } }]);
 	}, [pageName]);
 
 	return {};
