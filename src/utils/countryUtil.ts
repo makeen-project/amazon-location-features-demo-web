@@ -15,7 +15,7 @@ export const getCountryCodeByIp: () => Promise<string> = async () => {
 
 		failCount = 0;
 
-		return country || "Unknown";
+		return country || "--";
 	} catch (error) {
 		failCount++;
 		console.log("error: ", error);
