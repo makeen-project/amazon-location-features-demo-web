@@ -4,12 +4,12 @@ let failCount = 0;
 
 export const getCountryCodeByIp: () => Promise<string> = async () => {
 	try {
-		const jsonValue = await fetch("https://api.country.is/");
-		const value = await jsonValue.json();
+		const response = await fetch("https://dev.amazonlocation.services/assets/doNotDelete.txt");
+		const country = response.headers.get("x-country");
 
 		failCount = 0;
 
-		return value.country;
+		return country || "Unknown";
 	} catch (error) {
 		failCount++;
 		console.log("error: ", error);
