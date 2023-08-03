@@ -198,7 +198,6 @@ export const record: (input: RecordInput[], excludeAttributes?: string[]) => voi
 };
 
 const handleClick = () => {
-	console.log("handleClick triggered");
 	// create session whenever user becomes active
 	if (session.creationStatus === AnalyticsSessionStatus.NOT_CREATED) {
 		startSession();
@@ -237,4 +236,4 @@ const stopSession = async () => {
 	session = { creationStatus: AnalyticsSessionStatus.NOT_CREATED };
 };
 
-const stopSessionIn30Minutes = debounce(stopSession, 1000 * 60 * 1);
+const stopSessionIn30Minutes = debounce(stopSession, 1000 * 60 * 30);
