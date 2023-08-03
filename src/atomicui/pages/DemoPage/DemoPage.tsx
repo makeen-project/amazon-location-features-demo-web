@@ -345,7 +345,7 @@ const DemoPage: React.FC = () => {
 						options
 				  );
 		}
-	}, [suggestions, bound, show.routeBox, routeData, isDesktop, currentMapProvider]);
+	}, [suggestions, bound, show.routeBox, routeData, isDesktop, currentMapProvider, currentMapStyle]);
 
 	useEffect(() => {
 		if (directions) setShow(s => ({ ...s, routeBox: true }));
@@ -755,7 +755,10 @@ const DemoPage: React.FC = () => {
 	);
 
 	return !!credentials?.identityId ? (
-		<View style={{ height }}>
+		<View
+			style={{ height }}
+			className={`${currentMapStyle.toLowerCase().includes("dark") ? "dark-mode" : "light-mode"}`}
+		>
 			<Map
 				style={{ width: "100%", height: "100%" }}
 				ref={mapViewRef}
