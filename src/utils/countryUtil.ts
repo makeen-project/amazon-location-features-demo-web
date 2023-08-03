@@ -1,10 +1,16 @@
+import { appConfig } from "@demo/core/constants";
+
 import sleep from "./sleep";
 
 let failCount = 0;
 
+const {
+	ENV: { COUNTRY_EVALUATION_URL }
+} = appConfig;
+
 export const getCountryCodeByIp: () => Promise<string> = async () => {
 	try {
-		const response = await fetch("https://dev.amazonlocation.services/assets/doNotDelete.txt");
+		const response = await fetch(COUNTRY_EVALUATION_URL);
 		const country = response.headers.get("x-country");
 
 		failCount = 0;
