@@ -31,7 +31,7 @@ import {
 	MapProviderEnum,
 	TypeEnum
 } from "@demo/types";
-import { OpenDataEnum, OpenDataStyleEnum } from "@demo/types/Enums";
+import { OpenDataMapEnum, OpenDataMapStyleEnum } from "@demo/types/Enums";
 
 const getEnv = (key: string) => {
 	return import.meta.env[key];
@@ -132,17 +132,17 @@ const appConfig = {
 			[GrabMapEnum.GRAB_STANDARD_DARK]: {
 				style: GrabMapStyleEnum[GrabMapEnum.GRAB_STANDARD_DARK]
 			},
-			[OpenDataEnum.OPEN_DATA_STANDARD_LIGHT]: {
-				style: OpenDataStyleEnum[OpenDataEnum.OPEN_DATA_STANDARD_LIGHT]
+			[OpenDataMapEnum.OPEN_DATA_STANDARD_LIGHT]: {
+				style: OpenDataMapStyleEnum[OpenDataMapEnum.OPEN_DATA_STANDARD_LIGHT]
 			},
-			[OpenDataEnum.OPEN_DATA_STANDARD_DARK]: {
-				style: OpenDataStyleEnum[OpenDataEnum.OPEN_DATA_STANDARD_DARK]
+			[OpenDataMapEnum.OPEN_DATA_STANDARD_DARK]: {
+				style: OpenDataMapStyleEnum[OpenDataMapEnum.OPEN_DATA_STANDARD_DARK]
 			},
-			[OpenDataEnum.OPEN_DATA_VISUALIZATION_LIGHT]: {
-				style: OpenDataStyleEnum[OpenDataEnum.OPEN_DATA_VISUALIZATION_LIGHT]
+			[OpenDataMapEnum.OPEN_DATA_VISUALIZATION_LIGHT]: {
+				style: OpenDataMapStyleEnum[OpenDataMapEnum.OPEN_DATA_VISUALIZATION_LIGHT]
 			},
-			[OpenDataEnum.OPEN_DATA_VISUALIZATION_DARK]: {
-				style: OpenDataStyleEnum[OpenDataEnum.OPEN_DATA_VISUALIZATION_DARK]
+			[OpenDataMapEnum.OPEN_DATA_VISUALIZATION_DARK]: {
+				style: OpenDataMapStyleEnum[OpenDataMapEnum.OPEN_DATA_VISUALIZATION_DARK]
 			}
 		},
 		MAP_STYLES: {
@@ -244,25 +244,25 @@ const appConfig = {
 			],
 			OPEN_DATA_STYLES: [
 				{
-					id: OpenDataEnum.OPEN_DATA_STANDARD_LIGHT,
+					id: OpenDataMapEnum.OPEN_DATA_STANDARD_LIGHT,
 					image: OpenDataStandardLight,
 					name: "map_buttons__standard_light.text",
 					filters: { provider: MapProviderEnum.OPEN_DATA, attribute: [AttributeEnum.Light], type: [TypeEnum.Vector] }
 				},
 				{
-					id: OpenDataEnum.OPEN_DATA_STANDARD_DARK,
+					id: OpenDataMapEnum.OPEN_DATA_STANDARD_DARK,
 					image: OpenDataStandardDark,
 					name: "map_buttons__standard_dark.text",
 					filters: { provider: MapProviderEnum.OPEN_DATA, attribute: [AttributeEnum.Dark], type: [TypeEnum.Vector] }
 				},
 				{
-					id: OpenDataEnum.OPEN_DATA_VISUALIZATION_LIGHT,
+					id: OpenDataMapEnum.OPEN_DATA_VISUALIZATION_LIGHT,
 					image: OpenDataVisualizationLight,
 					name: "map_buttons__visualization_light.text",
 					filters: { provider: MapProviderEnum.OPEN_DATA, attribute: [AttributeEnum.Light], type: [TypeEnum.Vector] }
 				},
 				{
-					id: OpenDataEnum.OPEN_DATA_VISUALIZATION_DARK,
+					id: OpenDataMapEnum.OPEN_DATA_VISUALIZATION_DARK,
 					image: OpenDataVisualizationDark,
 					name: "map_buttons__visualization_dark.text",
 					filters: { provider: MapProviderEnum.OPEN_DATA, attribute: [AttributeEnum.Dark], type: [TypeEnum.Vector] }

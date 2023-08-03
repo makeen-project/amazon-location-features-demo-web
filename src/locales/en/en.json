@@ -3361,5 +3361,11 @@
   },
   "map_buttons__visualization_dark": {
     "text": "Visualization Dark"
+  },
+  "open_data_cm__heading": {
+    "text": "Enable OpenData"
+  },
+  "open_data_cm__desc": {
+    "text": "OpenData uses Esri for Routes and Places search functionality to enhance your experience."
   }
 }

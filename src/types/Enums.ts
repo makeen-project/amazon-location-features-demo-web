@@ -193,14 +193,14 @@ export enum GrabMapStyleEnum {
 	"location.aws.com.demo.maps.Grab.StandardDark" = "VectorGrabStandardDark"
 }
 
-export enum OpenDataEnum {
+export enum OpenDataMapEnum {
 	OPEN_DATA_STANDARD_LIGHT = "location.aws.com.demo.maps.OpenData.StandardLight",
 	OPEN_DATA_STANDARD_DARK = "location.aws.com.demo.maps.OpenData.StandardDark",
 	OPEN_DATA_VISUALIZATION_LIGHT = "location.aws.com.demo.maps.OpenData.VisualizationLight",
 	OPEN_DATA_VISUALIZATION_DARK = "location.aws.com.demo.maps.OpenData.VisualizationDark"
 }
 
-export enum OpenDataStyleEnum {
+export enum OpenDataMapStyleEnum {
 	"location.aws.com.demo.maps.OpenData.StandardLight" = "VectorOpenDataStandardLight",
 	"location.aws.com.demo.maps.OpenData.StandardDark" = "VectorOpenDataStandardDark",
 	"location.aws.com.demo.maps.OpenData.VisualizationLight" = "VectorOpenDataVisualizationLight",
