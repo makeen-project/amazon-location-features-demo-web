@@ -13,7 +13,7 @@ import RecordInput from "@demo/types/RecordInput";
 import { omit } from "ramda";
 import { browserName, fullBrowserVersion, isAndroid, isDesktop, isIOS } from "react-device-detect";
 
-import { getCountryCodeByIp } from "./countryUtil";
+import { getCountryCode } from "./countryUtil";
 import { debounce } from "./debounce";
 import sleep from "./sleep";
 import { uuid } from "./uuid";
@@ -88,7 +88,7 @@ const sendEvent = async (command: any, shouldRetryAfterFailure = true) => {
 };
 
 const createOrUpdateEndpoint = async () => {
-	const country = await getCountryCodeByIp();
+	const country = await getCountryCode();
 
 	let platformType = "Other";
 

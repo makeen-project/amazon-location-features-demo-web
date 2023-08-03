@@ -8,14 +8,18 @@ const {
 	ENV: { COUNTRY_EVALUATION_URL }
 } = appConfig;
 
-export const getCountryCodeByIp: () => Promise<string> = async () => {
+export const getCountryCode: () => Promise<string | undefined> = async () => {
 	try {
 		const response = await fetch(COUNTRY_EVALUATION_URL);
 		const country = response.headers.get("x-country");
 
 		failCount = 0;
 
-		return country || "--";
+		if (country === "Unknown") {
+			return;
+		} else {
+			return country!;
+		}
 	} catch (error) {
 		failCount++;
 		console.log("error: ", error);
@@ -25,7 +29,7 @@ export const getCountryCodeByIp: () => Promise<string> = async () => {
 			throw error;
 		} else {
 			sleep(1000);
-			return await getCountryCodeByIp();
+			return await getCountryCode();
 		}
 	}
 };
