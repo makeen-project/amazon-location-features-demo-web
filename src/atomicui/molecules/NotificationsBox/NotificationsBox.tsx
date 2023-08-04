@@ -3,7 +3,6 @@ import React from "react";
 import { Flex, Text } from "@aws-amplify/ui-react";
 import { IconBellSolid, IconGeofenceMarkerDisabled } from "@demo/assets";
 import { IconicInfoCard } from "@demo/atomicui/molecules";
-import { useAwsGeofence } from "@demo/hooks";
 import { NotificationHistoryItemtype } from "@demo/types";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
