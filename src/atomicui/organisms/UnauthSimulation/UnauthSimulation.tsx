@@ -3,11 +3,11 @@ import { Ref, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button, Card, Flex, Text } from "@aws-amplify/ui-react";
 import {
 	IconBackArrow,
-	IconBell,
 	IconClose,
 	IconGeofence,
 	IconGeofenceColor,
 	IconGeofenceMarkerDisabled,
+	IconNotificationBell,
 	IconRadar,
 	IconSegment,
 	IconTrackers,
@@ -16,7 +16,7 @@ import {
 import { DropdownEl } from "@demo/atomicui/atoms";
 import { ConfirmationModal, IconicInfoCard, NotificationsBox, WebsocketBanner } from "@demo/atomicui/molecules";
 import { appConfig, busRoutesData } from "@demo/core";
-import { useAmplifyMap } from "@demo/hooks";
+import { useAmplifyMap, useAwsGeofence } from "@demo/hooks";
 import i18n from "@demo/locales/i18n";
 import {
 	MenuItemEnum,
@@ -77,8 +77,9 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 	const [busSelectedValue, setBusSelectedValue] = useState<SelectOption>(busRoutesDropdown[0]);
 	const [isNotifications, setIsNotifications] = useState(false);
 	const [confirmCloseSimulation, setConfirmCloseSimulation] = useState(false);
-	const [isPlaying, setIsPlaying] = useState(false);
+	const [isPlaying, setIsPlaying] = useState(true);
 	const { currentLocationData } = useAmplifyMap();
+	const { unauthNotifications, setUnauthNotifications } = useAwsGeofence();
 	const { subscription, Connection, isHidden } = WebsocketBanner(
 		useCallback((n: NotificationHistoryItemtype) => {
 			// Update tracking history with geofence notification, for geofence add "Bus stop number 1" to title and bus stop coords to description
@@ -166,7 +167,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 			<Flex
 				position="relative"
 				height={`${
-					!["en"].includes(currentLanguage) ? `${currentLanguage === "pt-BR" ? "51.5rem" : "50rem"}` : "47rem"
+					!["en"].includes(currentLanguage) ? `${currentLanguage === "pt-BR" ? "51.5rem" : "50rem"}` : "46rem"
 				}`}
 			>
 				<Flex className="start-simulation-container">
@@ -174,33 +175,72 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 						<Simulation className="simulation-icon" />
 					</Flex>
 					<Flex className="text-container">
-						<Flex direction="column">
-							<Text color={"var(--grey-color)"} fontSize="1.08rem" textAlign="center" variation="tertiary">
+						<Flex direction="column" gap="0.5rem">
+							<Text
+								color={"var(--grey-color)"}
+								fontSize="1.23rem"
+								textAlign="center"
+								variation="tertiary"
+								fontFamily="AmazonEmber-Regular"
+								lineHeight="1.75rem"
+							>
 								{t("simulation.text")}
 							</Text>
-							<Text fontSize="1.8rem" textAlign="center" variation="secondary" fontFamily="AmazonEmber-Medium">
+							<Text
+								fontSize="1.53rem"
+								textAlign="center"
+								variation="secondary"
+								fontFamily="AmazonEmber-Bold"
+								lineHeight="1.4rem"
+							>
 								{t("start_unauth_simulation__heading.text")}
 							</Text>
-							<Text color="var(--grey-color)" fontSize="1rem" textAlign="center" variation="tertiary">
+							<Text
+								color="var(--grey-color)"
+								fontSize="1rem"
+								textAlign="center"
+								variation="tertiary"
+								padding="0.4rem 1.1rem"
+								lineHeight="1.35rem"
+							>
 								{t("start_unauth_simulation__desc.text")}
 							</Text>
 						</Flex>
-						<IconicInfoCard
-							IconComponent={<IconRadar className="primary-icon" width={24} height={24} />}
-							title={t("trackers.text")}
-							description={t("start_unauth_simulation__info1_desc.text")}
-						/>
-						<IconicInfoCard
-							IconComponent={<IconGeofence className="primary-icon geofence-icon" width={40} height={26} />}
-							title={t("geofences.text")}
-							description={t("start_unauth_simulation__info2_desc.text")}
-						/>
-						<IconicInfoCard
-							IconComponent={<IconBell className="primary-icon" width={30} height={25} />}
-							title={t("notifications.text")}
-							description={t("start_unauth_simulation__info3_desc.text")}
-						/>
-						<Button variation="primary" padding="0.8rem 0" onClick={() => setStartSimulation(true)}>
+						<Flex direction="column" gap={0}>
+							<IconicInfoCard
+								gap="0"
+								textContainerMarginLeft="2rem"
+								IconComponent={<IconRadar className="primary-icon" width={24} height={24} />}
+								title={t("trackers.text")}
+								description={t("start_unauth_simulation__info1_desc.text")}
+								cardMargin={"0.923rem 0"}
+							/>
+							<IconicInfoCard
+								gap="0"
+								textContainerMarginLeft="2rem"
+								IconComponent={<IconGeofence className="primary-icon geofence-icon" width={40} height={30} />}
+								title={t("geofences.text")}
+								description={t("start_unauth_simulation__info2_desc.text")}
+								cardMargin={"0.923rem 0"}
+							/>
+							<IconicInfoCard
+								gap="0"
+								textContainerMarginLeft="2rem"
+								IconComponent={<IconNotificationBell className="primary-icon" width={32} height={30} />}
+								title={t("notifications.text")}
+								description={t("start_unauth_simulation__info3_desc.text")}
+								cardMargin={"0.923rem 0"}
+							/>
+						</Flex>
+						<Button
+							variation="primary"
+							padding="0.923rem 0"
+							onClick={() => setStartSimulation(true)}
+							fontFamily="AmazonEmber-Medium"
+							fontSize="1.077rem"
+							height="3.075rem"
+							marginTop="0.923rem"
+						>
 							{t("start_unauth_simulation__start_simulation.text")}
 						</Button>
 					</Flex>
@@ -273,6 +313,9 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 							marginTop="1.5rem"
 							isFullWidth
 							onClick={handleCta}
+							fontFamily="AmazonEmber-Medium"
+							fontSize="1.076rem"
+							minHeight="3.076rem"
 						>
 							{unauthSimulationCtaText}
 						</Button>
@@ -284,6 +327,8 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 							color="var(--primary-color)"
 							style={{ cursor: "pointer" }}
 							onClick={handleEnableLive}
+							fontFamily="AmazonEmber-Bold"
+							fontSize="1rem"
 						>{`${t("unauth_simulation__enable_live.text")} ${
 							from === MenuItemEnum.GEOFENCE ? t("geofences.text") : t("trackers.text")
 						}`}</Text>
@@ -331,8 +376,8 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 										onClick={() => setIsNotifications(n => !n)}
 										position="relative"
 									>
-										<IconBell className="bell-icon" width={20} height={20} />
-										{!isNotifications && <span className="notification-bubble" />}
+										<IconNotificationBell className="bell-icon" width={20} height={20} />
+										{!isNotifications && !!unauthNotifications.length && <span className="notification-bubble" />}
 									</Flex>
 								</Flex>
 								<Flex gap="0" direction="column" width="100%">
@@ -395,7 +440,7 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 													{t("start_unauth_simulation__no_tracking_history.text")}
 												</Flex>
 											)}
-											<Flex gap="0" overflow="scroll">
+											<Flex gap="0" className="tracking-history-container">
 												<Flex direction="column" gap="0" marginTop="2rem">
 													{trackingHistory[busSelectedValue.value].map(({ type }, idx) => (
 														<Flex key={idx} className="tracking-icon-container" gap="0">
@@ -432,7 +477,12 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 											</Flex>
 										</Flex>
 									) : (
-										<NotificationsBox maxHeight={isHidden ? 76.4 : 73.4} selectedRoutesIds={selectedRoutesIds} />
+										<NotificationsBox
+											maxHeight={isHidden ? 76.4 : 73.4}
+											selectedRoutesIds={selectedRoutesIds}
+											unauthNotifications={unauthNotifications}
+											setUnauthNotifications={setUnauthNotifications}
+										/>
 									)}
 								</Flex>
 								{renderGeofences}
