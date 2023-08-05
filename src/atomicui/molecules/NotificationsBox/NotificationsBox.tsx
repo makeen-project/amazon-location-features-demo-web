@@ -54,10 +54,13 @@ const NotificationsBox: React.FC<NotificationsBoxProps> = ({
 							<Flex key={idx} direction="column" width="100%" gap="0">
 								<IconicInfoCard
 									IconComponent={
-										<IconGeofenceMarkerDisabled
-											className={isEnabled ? "primary-active-icon" : "primary-icon"}
-											width={24}
-										/>
+										<Flex>
+											<IconGeofenceMarkerDisabled
+												className={isEnabled ? "primary-active-icon" : "primary-icon"}
+												width={24}
+												height={24}
+											/>
+										</Flex>
 									}
 									title={title}
 									description={`${format(new Date(createdAt), "p")}`.toLowerCase()}
