@@ -441,36 +441,46 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 												</Flex>
 											)}
 											<Flex gap="0" className="tracking-history-container">
-												<Flex direction="column" gap="0" marginTop="2rem">
-													{trackingHistory[busSelectedValue.value].map(({ type }, idx) => (
-														<Flex key={idx} className="tracking-icon-container" gap="0">
-															{type === TrackingHistoryTypeEnum.BUS_STOP ? (
-																<IconGeofenceMarkerDisabled className="geofence-icon" width={22} height={22} />
-															) : (
-																<IconSegment width={15} height={15} />
-															)}
-															{idx !== trackingHistory[busSelectedValue.value].length - 1 && (
-																<Flex direction="column" gap="0.5rem" margin="0.7rem 0">
-																	<Flex className="bubble-icon" />
-																	<Flex className="bubble-icon" />
-																	<Flex className="bubble-icon" />
-																</Flex>
-															)}
-														</Flex>
-													))}
-												</Flex>
-												<Flex direction="column" gap="0" paddingLeft="1.5rem">
+												<Flex direction="column" gap="0" paddingLeft="0.2rem" paddingBottom="0.4rem">
 													{trackingHistory[busSelectedValue.value].map(
-														({ title, description, subDescription }, idx) => (
-															<IconicInfoCard
-																key={idx}
-																title={title}
-																description={description || ""}
-																subDescription={format(parseISO(subDescription), "hh:mm aa")}
-																textContainerMarginLeft="0"
-																cardMargin="0.6rem 0"
-																cardAlignItems="center"
-															/>
+														({ title, description, subDescription, type }, idx) => (
+															<Flex key={idx}>
+																<Flex
+																	className="tracking-icon-container"
+																	gap="0"
+																	position="relative"
+																	top="1.8rem"
+																	left={type === TrackingHistoryTypeEnum.BUS_STOP ? "-0.2rem" : "0.2rem"}
+																	minHeight={type === TrackingHistoryTypeEnum.BUS_STOP ? "5rem" : "4.3rem"}
+																>
+																	{type === TrackingHistoryTypeEnum.BUS_STOP ? (
+																		<IconGeofenceMarkerDisabled className="geofence-icon" width={23} height={23} />
+																	) : (
+																		<IconSegment width={14} height={14} />
+																	)}
+																	{idx !== trackingHistory[busSelectedValue.value].length - 1 && (
+																		<Flex
+																			direction="column"
+																			gap={type === TrackingHistoryTypeEnum.BUS_STOP ? "0.5rem" : "0.4rem"}
+																			margin="0.75rem 0"
+																		>
+																			<Flex className="bubble-icon" />
+																			<Flex className="bubble-icon" />
+																			<Flex className="bubble-icon" />
+																		</Flex>
+																	)}
+																</Flex>
+																<IconicInfoCard
+																	title={title}
+																	description={description || ""}
+																	subDescription={format(parseISO(subDescription), "hh:mm aa")}
+																	textContainerMarginLeft={
+																		type === TrackingHistoryTypeEnum.BUS_STOP ? "0.7rem" : "1.33rem"
+																	}
+																	cardMargin={"0"}
+																	cardAlignItems="center"
+																/>
+															</Flex>
 														)
 													)}
 												</Flex>
