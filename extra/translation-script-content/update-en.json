@@ -1,5 +1,5 @@
 {
-	"settings_modal__region": {
-		"text": "Region"
-	}
+	"popup__place_time": {
+    "text": "Less than a minute"
+  }
 }

@@ -3370,5 +3370,20 @@
   },
   "settings_modal__region": {
     "text": "地域"
+  },
+  "geofence_box__mi__short": {
+    "text": "マイル"
+  },
+  "geofence_box__ft__short": {
+    "text": "フィート"
+  },
+  "geofence_box__km__short": {
+    "text": "キロ"
+  },
+  "geofence_box__m__short": {
+    "text": "メートル"
+  },
+  "popup__place_time": {
+    "text": "1 分未満"
   }
 }

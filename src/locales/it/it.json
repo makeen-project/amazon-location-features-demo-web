@@ -3370,5 +3370,20 @@
   },
   "settings_modal__region": {
     "text": "Regione"
+  },
+  "geofence_box__mi__short": {
+    "text": "miglia"
+  },
+  "geofence_box__ft__short": {
+    "text": "piedi"
+  },
+  "geofence_box__km__short": {
+    "text": "chilometri"
+  },
+  "geofence_box__m__short": {
+    "text": "metri"
+  },
+  "popup__place_time": {
+    "text": "Meno di un minuto"
   }
 }

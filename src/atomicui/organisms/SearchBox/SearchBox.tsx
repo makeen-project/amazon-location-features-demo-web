@@ -188,8 +188,8 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 
 		const geodesicDistanceWithUnit = geodesicDistance
 			? currentMapUnit === METRIC
-				? `${localizeGeodesicDistance()} ${KILOMETERS_SHORT}`
-				: `${localizeGeodesicDistance()} ${MILES_SHORT}`
+				? `${localizeGeodesicDistance()} ${currentLang === "en" ? KILOMETERS_SHORT : t("geofence_box__km__short.text")}`
+				: `${localizeGeodesicDistance()} ${currentLang === "en" ? MILES_SHORT : t("geofence_box__mi__short.text")}`
 			: undefined;
 
 		return (

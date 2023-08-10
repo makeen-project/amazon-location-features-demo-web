@@ -8,6 +8,7 @@ import { IconDestination, IconSegment } from "@demo/assets";
 import { useAmplifyMap, useAwsPlace } from "@demo/hooks";
 import { DistanceUnitEnum, MapUnitEnum, SuggestionType, TravelMode } from "@demo/types";
 import { Position, Step } from "aws-sdk/clients/location";
+import { useTranslation } from "react-i18next";
 import "./styles.scss";
 
 const { METRIC } = MapUnitEnum;
@@ -25,6 +26,8 @@ const StepCard: React.FC<StepCardProps> = ({ step, isFirst, isLast, travelMode }
 	const { mapUnit: currentMapUnit } = useAmplifyMap();
 	const { getPlaceDataByCoordinates } = useAwsPlace();
 	const onlyOneEl = isFirst && isLast;
+	const { t, i18n } = useTranslation();
+	const currentLang = i18n.language;
 
 	const fetchPlaceData = useCallback(
 		async (coords: Position) => {
@@ -79,7 +82,13 @@ const StepCard: React.FC<StepCardProps> = ({ step, isFirst, isLast, travelMode }
 					{placeData.Place?.Label || `${(placeData.Place?.Geometry.Point?.[1], placeData.Place?.Geometry.Point?.[0])}`}
 				</Text>
 				<Text className="distance">{`${step.Distance.toFixed(2)} ${
-					currentMapUnit === METRIC ? KILOMETERS_SHORT : MILES_SHORT
+					currentMapUnit === METRIC
+						? currentLang === "en"
+							? KILOMETERS_SHORT
+							: t("geofence_box__km__short.text")
+						: currentLang === "en"
+						? MILES_SHORT
+						: t("geofence_box__mi__short.text")
 				}`}</Text>
 			</View>
 		</View>

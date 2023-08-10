@@ -774,12 +774,18 @@ const RouteBox: React.FC<RouteBoxProps> = ({ mapRef, setShowRouteBox, isSideMenu
 									<Text className="grey-text">{t("route_box__selected.text")}</Text>
 								</View>
 								<Text className="grey-text">{`${routeData.Summary.Distance.toFixed(2)} ${
-									currentMapUnit === METRIC ? KILOMETERS_SHORT : MILES_SHORT
+									currentMapUnit === METRIC
+										? currentLang === "en"
+											? KILOMETERS_SHORT
+											: t("geofence_box__km__short.text")
+										: currentLang === "en"
+										? MILES_SHORT
+										: t("geofence_box__mi__short.text")
 								}`}</Text>
 							</View>
 							<View className="duration">
 								<Text className="regular-text">
-									{humanReadableTime(routeData.Summary.DurationSeconds * 1000, currentLang)}
+									{humanReadableTime(routeData.Summary.DurationSeconds * 1000, currentLang, t)}
 								</Text>
 							</View>
 						</View>

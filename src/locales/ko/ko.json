@@ -3370,5 +3370,20 @@
   },
   "settings_modal__region": {
     "text": "지역"
+  },
+  "geofence_box__mi__short": {
+    "text": "마일"
+  },
+  "geofence_box__ft__short": {
+    "text": "발"
+  },
+  "geofence_box__km__short": {
+    "text": "킬로미터"
+  },
+  "geofence_box__m__short": {
+    "text": "미터"
+  },
+  "popup__place_time": {
+    "text": "1분 미만"
   }
 }

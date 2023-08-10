@@ -3370,5 +3370,20 @@
   },
   "settings_modal__region": {
     "text": "Region"
+  },
+  "geofence_box__mi__short": {
+    "text": "miles"
+  },
+  "geofence_box__ft__short": {
+    "text": "feet"
+  },
+  "geofence_box__km__short": {
+    "text": "kilometers"
+  },
+  "geofence_box__m__short": {
+    "text": "meters"
+  },
+  "popup__place_time": {
+    "text": "Less than a minute"
   }
 }
