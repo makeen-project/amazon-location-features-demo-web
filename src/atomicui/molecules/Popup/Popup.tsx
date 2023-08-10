@@ -19,7 +19,7 @@ import { Tooltip } from "react-tooltip";
 import "./styles.scss";
 
 const { METRIC } = MapUnitEnum;
-const { KILOMETERS, KILOMETERS_SHORT, MILES, MILES_SHORT } = DistanceUnitEnum;
+const { KILOMETERS, MILES } = DistanceUnitEnum;
 
 interface Props {
 	active: boolean;
@@ -70,10 +70,10 @@ const Popup: React.FC<Props> = ({ active, info, select, onClosePopUp }) => {
 		() =>
 			localizeGeodesicDistance
 				? currentMapUnit === METRIC
-					? `${currentLang === "en" ? KILOMETERS_SHORT : t("geofence_box__km__short.text")}`
-					: `${currentLang === "en" ? MILES_SHORT : t("geofence_box__mi__short.text")}`
+					? t("geofence_box__km__short.text")
+					: t("geofence_box__mi__short.text")
 				: "",
-		[localizeGeodesicDistance, currentMapUnit, currentLang, t]
+		[localizeGeodesicDistance, currentMapUnit, t]
 	);
 
 	/* Esri route can't be calculated when distance is greater than 400 km or 248.55 mi */
