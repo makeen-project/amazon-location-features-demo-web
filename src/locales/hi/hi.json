@@ -3375,13 +3375,13 @@
     "text": "मील"
   },
   "geofence_box__ft__short": {
-    "text": "पैर का पंजा"
+    "text": "फुट"
   },
   "geofence_box__km__short": {
-    "text": "किलोमीटर"
+    "text": "किमी"
   },
   "geofence_box__m__short": {
-    "text": "मीटर"
+    "text": "मी"
   },
   "popup__place_time": {
     "text": "एक मिनट से भी कम"

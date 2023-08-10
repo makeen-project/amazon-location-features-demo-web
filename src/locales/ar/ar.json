@@ -3372,16 +3372,16 @@
     "text": "المنطقة"
   },
   "geofence_box__mi__short": {
-    "text": "أميال"
+    "text": "ميل"
   },
   "geofence_box__ft__short": {
-    "text": "أقدام"
+    "text": "قدم"
   },
   "geofence_box__km__short": {
-    "text": "كيلومترات"
+    "text": "كم"
   },
   "geofence_box__m__short": {
-    "text": "متر"
+    "text": "م"
   },
   "popup__place_time": {
     "text": "أقل من دقيقة"

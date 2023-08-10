@@ -3372,16 +3372,16 @@
     "text": "אזור"
   },
   "geofence_box__mi__short": {
-    "text": "מיילים"
+    "text": "mi"
   },
   "geofence_box__ft__short": {
-    "text": "כפות רגליים"
+    "text": "רגל"
   },
   "geofence_box__km__short": {
-    "text": "קילומטרים"
+    "text": "\"ק\"\"מ\""
   },
   "geofence_box__m__short": {
-    "text": "מטרים"
+    "text": "מ"
   },
   "popup__place_time": {
     "text": "פחות מדקה"

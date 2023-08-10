@@ -3372,16 +3372,16 @@
     "text": "지역"
   },
   "geofence_box__mi__short": {
-    "text": "마일"
+    "text": "mi"
   },
   "geofence_box__ft__short": {
-    "text": "발"
+    "text": "피트"
   },
   "geofence_box__km__short": {
-    "text": "킬로미터"
+    "text": "km"
   },
   "geofence_box__m__short": {
-    "text": "미터"
+    "text": "m"
   },
   "popup__place_time": {
     "text": "1분 미만"

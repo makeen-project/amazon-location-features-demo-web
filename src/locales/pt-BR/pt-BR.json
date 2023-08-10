@@ -3372,16 +3372,16 @@
     "text": "Região"
   },
   "geofence_box__mi__short": {
-    "text": "miles"
+    "text": "mi"
   },
   "geofence_box__ft__short": {
     "text": "pés"
   },
   "geofence_box__km__short": {
-    "text": "quilômetros"
+    "text": "quilômetro"
   },
   "geofence_box__m__short": {
-    "text": "metros"
+    "text": "m"
   },
   "popup__place_time": {
     "text": "Menos de um minuto"

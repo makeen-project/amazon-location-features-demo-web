@@ -3368,16 +3368,16 @@
     "text": "区域"
   },
   "geofence_box__mi__short": {
-    "text": "英里"
+    "text": "mi"
   },
   "geofence_box__ft__short": {
     "text": "英尺"
   },
   "geofence_box__km__short": {
-    "text": "千米"
+    "text": "公里"
   },
   "geofence_box__m__short": {
-    "text": "米"
+    "text": "m"
   },
   "popup__place_time": {
     "text": "不到一分钟"
