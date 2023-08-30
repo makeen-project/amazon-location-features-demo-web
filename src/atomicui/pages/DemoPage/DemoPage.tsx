@@ -79,7 +79,8 @@ const {
 	PERSIST_STORAGE_KEYS: { SHOULD_CLEAR_CREDENTIALS, GEO_LOCATION_ALLOWED, FASTEST_REGION },
 	ROUTES: { DEMO },
 	MAP_RESOURCES: { MAX_BOUNDS, AMAZON_HQ, GRAB_SUPPORTED_AWS_REGIONS },
-	LINKS: { AMAZON_LOCATION_TERMS_AND_CONDITIONS }
+	LINKS: { AMAZON_LOCATION_TERMS_AND_CONDITIONS },
+	GET_PARAMS: { DATA_PROVIDER }
 } = appConfig;
 const initShow = {
 	gridLoader: true,
@@ -104,6 +105,9 @@ const initShow = {
 };
 let interval: NodeJS.Timer | undefined;
 let timeout: NodeJS.Timer | undefined;
+
+const searchParams = new URLSearchParams(window.location.search);
+let switchToMapProvider = searchParams.get(DATA_PROVIDER);
 
 const DemoPage: React.FC = () => {
 	const {} = useRecordViewPage("DemoPage");
@@ -162,7 +166,9 @@ const DemoPage: React.FC = () => {
 		setDoNotAskOpenDataDisclaimerModal
 	} = usePersistedData();
 	const isDesktop = useMediaQuery("(min-width: 1024px)");
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
+	const langDir = i18n.dir();
+	const isLtr = langDir === "ltr";
 	const shouldClearCredentials = localStorage.getItem(SHOULD_CLEAR_CREDENTIALS) === "true";
 
 	const isGrabAvailableInRegion = useMemo(() => !!region && GRAB_SUPPORTED_AWS_REGIONS.includes(region), [region]);
@@ -679,6 +685,15 @@ const DemoPage: React.FC = () => {
 		]
 	);
 
+	useEffect(() => {
+		if (switchToMapProvider && currentMapProvider !== switchToMapProvider) {
+			onMapProviderChange(switchToMapProvider as MapProviderEnum, TriggeredByEnum.DEMO_PAGE);
+			switchToMapProvider = null;
+		} else if (!location.search.includes(`${DATA_PROVIDER}=`)) {
+			setMapProvider(currentMapProvider);
+		}
+	}, [currentMapProvider, onMapProviderChange, setMapProvider]);
+
 	const onMapStyleChange = useCallback(
 		(mapStyle: EsriMapEnum | HereMapEnum | GrabMapEnum | OpenDataMapEnum) => {
 			const splitArr = mapStyle.split(".");
@@ -980,7 +995,7 @@ const DemoPage: React.FC = () => {
 				heading={t("tracker_info_modal__heading.text") as string}
 				description={
 					<Text
-						className="regular-text"
+						className={`regular-text ${isLtr ? "ltr" : "rtl"}`}
 						variation="tertiary"
 						marginTop="1.23rem"
 						textAlign="center"
@@ -1009,7 +1024,10 @@ const DemoPage: React.FC = () => {
 			/>
 			<GrabConfirmationModal
 				open={show.grabDisclaimerModal}
-				onClose={() => setShow(s => ({ ...s, grabDisclaimerModal: false, mapStyle: undefined }))}
+				onClose={() => {
+					setShow(s => ({ ...s, grabDisclaimerModal: false, mapStyle: undefined }));
+					setMapProvider(currentMapProvider);
+				}}
 				onConfirm={() => {
 					(show.unauthGeofenceBox || show.unauthTrackerBox) &&
 						setShow(s => ({ ...s, unauthGeofenceBox: false, unauthTrackerBox: false }));
