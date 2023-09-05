@@ -79,7 +79,8 @@ const {
 	PERSIST_STORAGE_KEYS: { SHOULD_CLEAR_CREDENTIALS, GEO_LOCATION_ALLOWED, FASTEST_REGION },
 	ROUTES: { DEMO },
 	MAP_RESOURCES: { MAX_BOUNDS, AMAZON_HQ, GRAB_SUPPORTED_AWS_REGIONS },
-	LINKS: { AMAZON_LOCATION_TERMS_AND_CONDITIONS }
+	LINKS: { AMAZON_LOCATION_TERMS_AND_CONDITIONS },
+	GET_PARAMS: { DATA_PROVIDER }
 } = appConfig;
 const initShow = {
 	gridLoader: true,
@@ -104,6 +105,9 @@ const initShow = {
 };
 let interval: NodeJS.Timer | undefined;
 let timeout: NodeJS.Timer | undefined;
+
+const searchParams = new URLSearchParams(window.location.search);
+let switchToMapProvider = searchParams.get(DATA_PROVIDER);
 
 const DemoPage: React.FC = () => {
 	const {} = useRecordViewPage("DemoPage");
@@ -162,7 +166,9 @@ const DemoPage: React.FC = () => {
 		setDoNotAskOpenDataDisclaimerModal
 	} = usePersistedData();
 	const isDesktop = useMediaQuery("(min-width: 1024px)");
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
+	const langDir = i18n.dir();
+	const isLtr = langDir === "ltr";
 	const shouldClearCredentials = localStorage.getItem(SHOULD_CLEAR_CREDENTIALS) === "true";
 
 	const isGrabAvailableInRegion = useMemo(() => !!region && GRAB_SUPPORTED_AWS_REGIONS.includes(region), [region]);
@@ -679,6 +685,25 @@ const DemoPage: React.FC = () => {
 		]
 	);
 
+	/* Handle search query params for map provider */
+	useEffect(() => {
+		if (switchToMapProvider && currentMapProvider !== switchToMapProvider) {
+			/* If search query param exist, update map provider based on search query param */
+			if (["Grab", "GrabMaps"].includes(switchToMapProvider)) {
+				isGrabVisible
+					? onMapProviderChange(MapProviderEnum.GRAB, TriggeredByEnum.DEMO_PAGE)
+					: setMapProvider(currentMapProvider);
+			} else {
+				onMapProviderChange(switchToMapProvider as MapProviderEnum, TriggeredByEnum.DEMO_PAGE);
+			}
+
+			switchToMapProvider = null;
+		} else if (!location.search.includes(`${DATA_PROVIDER}=`)) {
+			/* If search query param doesn't exist, update search query param based on current map provider */
+			setMapProvider(currentMapProvider);
+		}
+	}, [currentMapProvider, isGrabVisible, setMapProvider, onMapProviderChange]);
+
 	const onMapStyleChange = useCallback(
 		(mapStyle: EsriMapEnum | HereMapEnum | GrabMapEnum | OpenDataMapEnum) => {
 			const splitArr = mapStyle.split(".");
@@ -980,7 +1005,7 @@ const DemoPage: React.FC = () => {
 				heading={t("tracker_info_modal__heading.text") as string}
 				description={
 					<Text
-						className="regular-text"
+						className={`regular-text ${isLtr ? "ltr" : "rtl"}`}
 						variation="tertiary"
 						marginTop="1.23rem"
 						textAlign="center"
@@ -1002,14 +1027,20 @@ const DemoPage: React.FC = () => {
 			/>
 			<OpenDataConfirmationModal
 				open={show.openDataDisclaimerModal}
-				onClose={() => setShow(s => ({ ...s, openDataDisclaimerModal: false, mapStyle: undefined }))}
+				onClose={() => {
+					setShow(s => ({ ...s, openDataDisclaimerModal: false, mapStyle: undefined }));
+					setMapProvider(currentMapProvider);
+				}}
 				onConfirm={() => setTimeout(() => handleOpenDataMapChange(), 0)}
 				showDoNotAskAgainCheckbox
 				onConfirmationCheckboxOnChange={setDoNotAskOpenDataDisclaimer}
 			/>
 			<GrabConfirmationModal
 				open={show.grabDisclaimerModal}
-				onClose={() => setShow(s => ({ ...s, grabDisclaimerModal: false, mapStyle: undefined }))}
+				onClose={() => {
+					setShow(s => ({ ...s, grabDisclaimerModal: false, mapStyle: undefined }));
+					setMapProvider(currentMapProvider);
+				}}
 				onConfirm={() => {
 					(show.unauthGeofenceBox || show.unauthTrackerBox) &&
 						setShow(s => ({ ...s, unauthGeofenceBox: false, unauthTrackerBox: false }));
