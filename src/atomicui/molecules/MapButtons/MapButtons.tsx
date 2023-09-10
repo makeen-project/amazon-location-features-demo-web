@@ -83,7 +83,6 @@ export interface MapButtonsProps {
 	isUnauthTrackerBoxOpen: boolean;
 	onSetShowUnauthGeofenceBox: (b: boolean) => void;
 	onSetShowUnauthTrackerBox: (b: boolean) => void;
-	onOpenConnectAwsAccountModal: () => void;
 }
 
 const MapButtons: React.FC<MapButtonsProps> = ({
@@ -121,8 +120,7 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 	isUnauthGeofenceBoxOpen,
 	isUnauthTrackerBoxOpen,
 	onSetShowUnauthGeofenceBox,
-	onSetShowUnauthTrackerBox,
-	onOpenConnectAwsAccountModal
+	onSetShowUnauthTrackerBox
 }) => {
 	const searchHandDeviceWidth = "36px";
 	const searchDesktopWidth = "100%";
