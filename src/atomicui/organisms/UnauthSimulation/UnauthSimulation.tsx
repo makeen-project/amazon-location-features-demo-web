@@ -32,7 +32,6 @@ import {
 	TrackingHistoryTypeEnum
 } from "@demo/types";
 import { ResponsiveUIEnum } from "@demo/types/Enums";
-import { PubSub } from "aws-amplify";
 import { format, parseISO } from "date-fns";
 import { LngLatBoundsLike } from "mapbox-gl";
 import { useTranslation } from "react-i18next";
@@ -302,7 +301,16 @@ const UnauthGeofenceBox: React.FC<UnauthGeofenceBoxProps> = ({
 				</Flex>
 			</Flex>
 		);
-	}, [currentLanguage, t, setStartSimulation, setBottomSheetMinHeight, setBottomSheetHeight, from, setUI]);
+	}, [
+		currentLanguage,
+		t,
+		setStartSimulation,
+		setBottomSheetMinHeight,
+		setBottomSheetHeight,
+		from,
+		setUI,
+		setShowUnauthSimulationBounds
+	]);
 
 	const renderGeofences = useMemo(
 		() =>
