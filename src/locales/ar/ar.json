@@ -3395,6 +3395,12 @@
   "regions__ap_southeast__region": {
     "text": "آسيا والمحيط الهادئ"
   },
+  "explore__connect_aws_account": {
+    "text": "الاتصال بـ AWS"
+  },
+  "explore__connect_description": {
+    "text": "الوصول إلى ميزات التتبع والسياج الجغرافي من خلال الاتصال بـ AWS CloudFormation "
+  },
   "samples__js-map-style-change__title": {
     "text": "تبديل أنماط الخريطة"
   },
@@ -3553,5 +3559,17 @@
   },
   "samples__react-map-with-markers__cleanUp": {
     "text": "لإزالة جميع الموارد التي تم إنشاؤها في هذه الإرشادات التفصيلية، احذف مكدس CloudFormation المسمى\n«خريطة التفاعل مع geojson»."
+  },
+  "settings_modal_option__overview": {
+    "text": "اكتشف قوة موقع أمازون"
+  },
+  "settings_modal_option__samples": {
+    "text": "ميزاتنا في عينات التعليمات البرمجية المنسقة"
+  },
+  "settings_modal_option__settings": {
+    "text": "تكوين تجربتك"
+  },
+  "settings_modal_option__about": {
+    "text": "القانونية والإسناد"
   }
 }

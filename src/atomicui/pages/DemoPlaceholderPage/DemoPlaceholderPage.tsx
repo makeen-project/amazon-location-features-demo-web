@@ -12,6 +12,7 @@ import {
 	Sidebar,
 	UnauthSimulation
 } from "@demo/atomicui/organisms";
+import { useDeviceMediaQuery } from "@demo/hooks";
 import { MapStyleFilterTypes, MenuItemEnum, ShowStateType } from "@demo/types";
 import "./styles.scss";
 
@@ -30,6 +31,7 @@ const DemoPlaceholderPage: React.FC<DemoPlaceholderPageProps> = ({
 	searchValue,
 	selectedFilters
 }) => {
+	const { isDesktop } = useDeviceMediaQuery();
 	return (
 		<View style={{ height }}>
 			<View className={"loader-container"}>
@@ -64,17 +66,66 @@ const DemoPlaceholderPage: React.FC<DemoPlaceholderPageProps> = ({
 						setShowUnauthSimulationBounds={() => {}}
 					/>
 				) : (
-					<SearchBox
-						mapRef={null}
-						isSideMenuExpanded={show.sidebar}
-						onToggleSideMenu={() => {}}
-						setShowRouteBox={() => {}}
-						isRouteBoxOpen={show.routeBox}
-						isAuthGeofenceBoxOpen={show.authGeofenceBox}
-						isAuthTrackerBoxOpen={show.authTrackerBox}
-						isSettingsOpen={show.settings}
-						isStylesCardOpen={show.stylesCard}
-					/>
+					<>
+						{isDesktop ? (
+							<SearchBox
+								mapRef={null}
+								isSideMenuExpanded={show.sidebar}
+								onToggleSideMenu={() => {}}
+								setShowRouteBox={() => {}}
+								isRouteBoxOpen={show.routeBox}
+								isAuthGeofenceBoxOpen={show.authGeofenceBox}
+								isAuthTrackerBoxOpen={show.authTrackerBox}
+								isSettingsOpen={show.settings}
+								isStylesCardOpen={show.stylesCard}
+							/>
+						) : (
+							<></>
+							// <ResponsiveBottomSheet
+							// 	SearchBoxEl={() => (
+							// 		<SearchBox
+							// 			mapRef={null}
+							// 			isSideMenuExpanded={show.sidebar}
+							// 			onToggleSideMenu={() => {}}
+							// 			setShowRouteBox={() => {}}
+							// 			isRouteBoxOpen={show.routeBox}
+							// 			isAuthGeofenceBoxOpen={show.authGeofenceBox}
+							// 			isAuthTrackerBoxOpen={show.authTrackerBox}
+							// 			isSettingsOpen={show.settings}
+							// 			isStylesCardOpen={show.stylesCard}
+							// 			value={searchValue}
+							// 			setValue={() => {}}
+							// 		/>
+							// 	)}
+							// 	MapButtons={
+							// 		<MapButtons
+							// 			renderedUpon={"Demo Page"}
+							// 			openStylesCard={show.stylesCard}
+							// 			setOpenStylesCard={() => {}}
+							// 			onCloseSidebar={() => {}}
+							// 			onOpenConnectAwsAccountModal={() => {}}
+							// 			onOpenSignInModal={() => {}}
+							// 			onShowGeofenceBox={() => {}}
+							// 			isGrabVisible={isGrabVisible}
+							// 			showGrabDisclaimerModal={show.grabDisclaimerModal}
+							// 			onShowGridLoader={() => {}}
+							// 			handleMapStyleChange={() => {}}
+							// 			searchValue={searchValue}
+							// 			setSearchValue={() => {}}
+							// 			selectedFilters={selectedFilters}
+							// 			setSelectedFilters={() => {}}
+							// 			isLoading={true}
+							// 			showOpenDataDisclaimerModal={false}
+							// 			handleMapProviderChange={() => {}}
+							// 			// currentMapProvider={}
+							// 			onlyMapStyles
+							// 			isHandDevice
+							// 		/>
+							// 	}
+							// 	RouteBox={<RouteBox mapRef={null} setShowRouteBox={() => {}} isSideMenuExpanded={show.sidebar} />}
+							// />
+						)}
+					</>
 				)}
 				<MapButtons
 					renderedUpon={"Demo Page"}

@@ -3391,6 +3391,12 @@
   "regions__ap_southeast__region": {
     "text": "亚太地区"
   },
+  "explore__connect_aws_account": {
+    "text": "连接到 AWS"
+  },
+  "explore__connect_description": {
+    "text": "连接到 AWS CloudFormation 即可访问跟踪和地理围栏功能 "
+  },
   "samples__js-map-style-change__title": {
     "text": "切换地图样式"
   },
@@ -3549,5 +3555,17 @@
   },
   "samples__react-map-with-markers__cleanUp": {
     "text": "要移除在本演练中创建的所有资源，请删除名为的 CloudFormation 堆栈\n`用geojson反应地图`。"
+  },
+  "settings_modal_option__overview": {
+    "text": "探索亚马逊定位的力量"
+  },
+  "settings_modal_option__samples": {
+    "text": "我们在精心策划的代码示例中的功能"
+  },
+  "settings_modal_option__settings": {
+    "text": "配置您的体验"
+  },
+  "settings_modal_option__about": {
+    "text": "法律与归因"
   }
 }
