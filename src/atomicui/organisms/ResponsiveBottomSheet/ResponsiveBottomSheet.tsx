@@ -328,8 +328,10 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 				header={
 					<Flex>
 						{isMax556 && (
-							<Flex className="logo-mobile">
-								{mapStyle.toLowerCase().includes("dark") ? <LogoDark /> : <LogoLight />}
+							<Flex className="logo-mobile-container">
+								<Flex className="logo-mobile">
+									{mapStyle.toLowerCase().includes("dark") ? <LogoDark /> : <LogoLight />}
+								</Flex>
 							</Flex>
 						)}
 						{bottomSheetHeader(ui)}
