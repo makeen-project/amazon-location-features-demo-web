@@ -220,33 +220,26 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 				case ResponsiveUIEnum.poi_card:
 				case ResponsiveUIEnum.explore:
 				case ResponsiveUIEnum.search:
-				case ResponsiveUIEnum.before_start_unauthorized_geofence:
-				case ResponsiveUIEnum.before_start_unauthorized_tracker:
 				default:
 					return (
 						<>
 							{SearchBoxEl()}
-							{ui &&
-								[
-									ResponsiveUIEnum.explore,
-									ResponsiveUIEnum.before_start_unauthorized_tracker,
-									ResponsiveUIEnum.before_start_unauthorized_geofence
-								].includes(ui) && (
-									<Explore
-										updateUIInfo={setUI}
-										onCloseSidebar={onCloseSidebar}
-										onOpenConnectAwsAccountModal={onOpenConnectAwsAccountModal}
-										onOpenSignInModal={onOpenSignInModal}
-										onShowAuthGeofenceBox={onShowAuthGeofenceBox}
-										onShowAuthTrackerBox={onShowAuthTrackerBox}
-										onShowSettings={onShowSettings}
-										onShowTrackingDisclaimerModal={onShowTrackingDisclaimerModal}
-										onShowAboutModal={onShowAboutModal}
-										onShowUnauthGeofenceBox={onShowUnauthGeofenceBox}
-										onShowUnauthTrackerBox={onShowUnauthTrackerBox}
-										onshowUnauthSimulationDisclaimerModal={onshowUnauthSimulationDisclaimerModal}
-									/>
-								)}
+							{ui === ResponsiveUIEnum.explore && (
+								<Explore
+									updateUIInfo={setUI}
+									onCloseSidebar={onCloseSidebar}
+									onOpenConnectAwsAccountModal={onOpenConnectAwsAccountModal}
+									onOpenSignInModal={onOpenSignInModal}
+									onShowAuthGeofenceBox={onShowAuthGeofenceBox}
+									onShowAuthTrackerBox={onShowAuthTrackerBox}
+									onShowSettings={onShowSettings}
+									onShowTrackingDisclaimerModal={onShowTrackingDisclaimerModal}
+									onShowAboutModal={onShowAboutModal}
+									onShowUnauthGeofenceBox={onShowUnauthGeofenceBox}
+									onShowUnauthTrackerBox={onShowUnauthTrackerBox}
+									onshowUnauthSimulationDisclaimerModal={onshowUnauthSimulationDisclaimerModal}
+								/>
+							)}
 						</>
 					);
 			}
@@ -355,7 +348,6 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 				className={`bottom-sheet ${isDesktop ? "desktop" : isTablet ? "tablet" : "mobile"} ${
 					isShortHeader ? "short-header" : ""
 				} ${(bottomSheetCurrentHeight || 0) + 30 < window.innerHeight ? "add-overlay" : ""}`}
-				scrollLocking={false}
 			>
 				<Flex data-amplify-theme="aws-location-theme" direction="column" gap="0">
 					{bottomSheetBody(ui)}
