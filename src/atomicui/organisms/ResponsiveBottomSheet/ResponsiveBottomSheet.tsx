@@ -183,6 +183,8 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 				case ResponsiveUIEnum.auth_tracker:
 				case ResponsiveUIEnum.auth_geofence:
 				case ResponsiveUIEnum.non_start_unauthorized_tracker:
+				case ResponsiveUIEnum.before_start_unauthorized_tracker:
+				case ResponsiveUIEnum.before_start_unauthorized_geofence:
 				case ResponsiveUIEnum.non_start_unauthorized_geofence:
 				case ResponsiveUIEnum.direction_to_routes:
 				case ResponsiveUIEnum.explore:
