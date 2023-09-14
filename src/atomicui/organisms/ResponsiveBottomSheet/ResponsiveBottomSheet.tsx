@@ -87,7 +87,8 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 			ResponsiveUIEnum.auth_tracker,
 			ResponsiveUIEnum.auth_geofence,
 			ResponsiveUIEnum.non_start_unauthorized_tracker,
-			ResponsiveUIEnum.non_start_unauthorized_geofence
+			ResponsiveUIEnum.non_start_unauthorized_geofence,
+			ResponsiveUIEnum.poi_card
 		].includes(ui);
 	const isNonStartedSimulation =
 		!isDesktop &&
@@ -184,10 +185,10 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 				case ResponsiveUIEnum.non_start_unauthorized_tracker:
 				case ResponsiveUIEnum.non_start_unauthorized_geofence:
 				case ResponsiveUIEnum.direction_to_routes:
-					return null;
 				case ResponsiveUIEnum.explore:
-				case ResponsiveUIEnum.poi_card:
 				case ResponsiveUIEnum.search:
+				case ResponsiveUIEnum.poi_card:
+					return null;
 				default:
 					return <Flex width="100%">{SearchBoxEl()}</Flex>;
 			}
@@ -203,9 +204,6 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 				case ResponsiveUIEnum.routes:
 				case ResponsiveUIEnum.direction_to_routes:
 					return RouteBox;
-				case ResponsiveUIEnum.search:
-				case ResponsiveUIEnum.poi_card:
-					return null;
 				case ResponsiveUIEnum.unauth_tracker:
 				case ResponsiveUIEnum.unauth_geofence:
 				case ResponsiveUIEnum.exit_unauthorized_tracker:
@@ -217,23 +215,30 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 					return AuthTrackerBox;
 				case ResponsiveUIEnum.auth_geofence:
 					return AuthGeofenceBox;
+				case ResponsiveUIEnum.poi_card:
 				case ResponsiveUIEnum.explore:
+				case ResponsiveUIEnum.search:
 				default:
 					return (
-						<Explore
-							updateUIInfo={setUI}
-							onCloseSidebar={onCloseSidebar}
-							onOpenConnectAwsAccountModal={onOpenConnectAwsAccountModal}
-							onOpenSignInModal={onOpenSignInModal}
-							onShowAuthGeofenceBox={onShowAuthGeofenceBox}
-							onShowAuthTrackerBox={onShowAuthTrackerBox}
-							onShowSettings={onShowSettings}
-							onShowTrackingDisclaimerModal={onShowTrackingDisclaimerModal}
-							onShowAboutModal={onShowAboutModal}
-							onShowUnauthGeofenceBox={onShowUnauthGeofenceBox}
-							onShowUnauthTrackerBox={onShowUnauthTrackerBox}
-							onshowUnauthSimulationDisclaimerModal={onshowUnauthSimulationDisclaimerModal}
-						/>
+						<>
+							{SearchBoxEl()}
+							{ui === ResponsiveUIEnum.explore && (
+								<Explore
+									updateUIInfo={setUI}
+									onCloseSidebar={onCloseSidebar}
+									onOpenConnectAwsAccountModal={onOpenConnectAwsAccountModal}
+									onOpenSignInModal={onOpenSignInModal}
+									onShowAuthGeofenceBox={onShowAuthGeofenceBox}
+									onShowAuthTrackerBox={onShowAuthTrackerBox}
+									onShowSettings={onShowSettings}
+									onShowTrackingDisclaimerModal={onShowTrackingDisclaimerModal}
+									onShowAboutModal={onShowAboutModal}
+									onShowUnauthGeofenceBox={onShowUnauthGeofenceBox}
+									onShowUnauthTrackerBox={onShowUnauthTrackerBox}
+									onshowUnauthSimulationDisclaimerModal={onshowUnauthSimulationDisclaimerModal}
+								/>
+							)}
+						</>
 					);
 			}
 		},
@@ -242,6 +247,7 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 			AuthTrackerBox,
 			MapButtons,
 			RouteBox,
+			SearchBoxEl,
 			UnauthSimulationUI,
 			onCloseSidebar,
 			onOpenConnectAwsAccountModal,
@@ -317,7 +323,7 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 
 			<BottomSheet
 				open
-				blocking={isDesktop}
+				blocking={false}
 				snapPoints={({ maxHeight }) => [
 					bottomSheetMinHeight,
 					footerHeight(maxHeight),
@@ -326,7 +332,7 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 				]}
 				maxHeight={bottomSheetHeight}
 				header={
-					<Flex>
+					<Flex data-amplify-theme="aws-location-theme" direction="column" gap="0">
 						{isMax556 && (
 							<Flex className="logo-mobile-container">
 								<Flex className="logo-mobile">
@@ -340,10 +346,10 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 				className={`bottom-sheet ${isDesktop ? "desktop" : isTablet ? "tablet" : "mobile"} ${
 					isShortHeader ? "short-header" : ""
 				} ${(bottomSheetCurrentHeight || 0) + 30 < window.innerHeight ? "add-overlay" : ""}`}
-				data-amplify-theme="aws-location-theme"
-				style={{ position: "absolute", bottom: 0, left: 1 }}
 			>
-				{bottomSheetBody(ui)}
+				<Flex data-amplify-theme="aws-location-theme" direction="column" gap="0">
+					{bottomSheetBody(ui)}
+				</Flex>
 			</BottomSheet>
 		</>
 	);
