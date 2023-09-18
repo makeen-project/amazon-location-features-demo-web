@@ -10,6 +10,7 @@ import { useAmplifyMap, useBottomSheet, useDeviceMediaQuery } from "@demo/hooks"
 import { MenuItemEnum, ResponsiveUIEnum } from "@demo/types/Enums";
 import { useTranslation } from "react-i18next";
 import { MapRef } from "react-map-gl";
+import { useNavigate } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
 import "react-spring-bottom-sheet/dist/style.css";
@@ -69,6 +70,7 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 }) => {
 	const { isDesktop, isTablet, isMax556 } = useDeviceMediaQuery();
 	const { t } = useTranslation();
+	const navigate = useNavigate();
 	const {
 		setBottomSheetMinHeight,
 		setBottomSheetHeight,
@@ -89,8 +91,12 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 			ResponsiveUIEnum.non_start_unauthorized_tracker,
 			ResponsiveUIEnum.non_start_unauthorized_geofence,
 			ResponsiveUIEnum.auth_geofence,
+			ResponsiveUIEnum.unauth_tracker,
+			ResponsiveUIEnum.unauth_geofence,
 			ResponsiveUIEnum.auth_tracker,
-			ResponsiveUIEnum.poi_card
+			ResponsiveUIEnum.poi_card,
+			ResponsiveUIEnum.routes,
+			ResponsiveUIEnum.direction_to_routes
 		].includes(ui);
 	const isNonStartedSimulation =
 		!isDesktop &&
@@ -339,7 +345,7 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 					<Flex data-amplify-theme="aws-location-theme" direction="column" gap="0">
 						{isMax556 && (
 							<Flex className="logo-mobile-container">
-								<Flex className="logo-mobile">
+								<Flex className="logo-mobile" onClick={() => navigate("/overview")}>
 									{mapStyle.toLowerCase().includes("dark") ? <LogoDark /> : <LogoLight />}
 								</Flex>
 							</Flex>
