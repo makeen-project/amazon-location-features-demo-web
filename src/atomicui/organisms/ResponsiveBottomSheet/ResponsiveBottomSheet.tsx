@@ -281,7 +281,6 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 		]
 	);
 
-	console.log(ui);
 	const calculatePixelValue = useCallback(
 		(maxHeight: number, number: number) => {
 			const percentage = number / 100;
@@ -364,6 +363,7 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 				className={`bottom-sheet ${isDesktop ? "desktop" : isTablet ? "tablet" : "mobile"} ${
 					isShortHeader ? "short-header" : ""
 				} ${(bottomSheetCurrentHeight || 0) + 30 < window.innerHeight ? "add-overlay" : ""}`}
+				scrollLocking={false}
 			>
 				<Flex data-amplify-theme="aws-location-theme" direction="column" gap="0">
 					{bottomSheetBody(ui)}
