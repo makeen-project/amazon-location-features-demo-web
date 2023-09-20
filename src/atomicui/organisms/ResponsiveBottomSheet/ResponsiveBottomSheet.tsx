@@ -1,7 +1,7 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-import React, { FC, useCallback, useEffect } from "react";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 
 import { Flex, Text } from "@aws-amplify/ui-react";
 import { IconClose, LogoDark, LogoLight } from "@demo/assets";
@@ -10,7 +10,6 @@ import { useAmplifyMap, useBottomSheet, useDeviceMediaQuery } from "@demo/hooks"
 import { MenuItemEnum, ResponsiveUIEnum } from "@demo/types/Enums";
 import { useTranslation } from "react-i18next";
 import { MapRef } from "react-map-gl";
-import { useNavigate } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
 import "react-spring-bottom-sheet/dist/style.css";
@@ -36,13 +35,13 @@ interface IProps {
 	onshowUnauthSimulationDisclaimerModal: () => void;
 	setShowUnauthGeofenceBox: (b: boolean) => void;
 	setShowUnauthTrackerBox: (b: boolean) => void;
-	setShowConnectAwsAccountModal: (b: boolean) => void;
 	setShowStartUnauthSimulation: (b: boolean) => void;
 	showStartUnauthSimulation: boolean;
 	from: MenuItemEnum;
 	UnauthSimulationUI: JSX.Element;
 	AuthGeofenceBox: JSX.Element;
 	AuthTrackerBox: JSX.Element;
+	handleLogoClick: () => Window | null;
 }
 
 const ResponsiveBottomSheet: FC<IProps> = ({
@@ -66,22 +65,34 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 	from,
 	AuthGeofenceBox,
 	AuthTrackerBox,
-	setShowStartUnauthSimulation
+	setShowStartUnauthSimulation,
+	handleLogoClick
 }) => {
 	const { isDesktop, isTablet, isMax556 } = useDeviceMediaQuery();
 	const { t } = useTranslation();
-	const navigate = useNavigate();
 	const {
 		setBottomSheetMinHeight,
 		setBottomSheetHeight,
 		bottomSheetMinHeight,
 		bottomSheetHeight,
-		bottomSheetCurrentHeight,
+		bottomSheetCurrentHeight = 0,
 		setBottomSheetCurrentHeight,
 		ui,
 		setUI
 	} = useBottomSheet();
 	const { mapStyle } = useAmplifyMap();
+	const [arrowDirection, setArrowDirection] = useState("no-dragging");
+	const prevBottomSheetHeightRef = useRef(bottomSheetCurrentHeight);
+
+	useEffect(() => {
+		if (bottomSheetCurrentHeight > prevBottomSheetHeightRef.current) {
+			setArrowDirection("dragging-up");
+		} else if (bottomSheetCurrentHeight < prevBottomSheetHeightRef.current) {
+			setArrowDirection("dragging-down");
+		}
+
+		prevBottomSheetHeightRef.current = bottomSheetCurrentHeight;
+	}, [bottomSheetCurrentHeight]);
 
 	const isShortHeader =
 		ui &&
@@ -354,7 +365,7 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 					<Flex data-amplify-theme="aws-location-theme" direction="column" gap="0">
 						{isMax556 && (
 							<Flex className="logo-mobile-container">
-								<Flex className="logo-mobile" onClick={() => navigate("/overview")}>
+								<Flex className="logo-mobile" onClick={handleLogoClick}>
 									{mapStyle.toLowerCase().includes("dark") ? <LogoDark /> : <LogoLight />}
 								</Flex>
 							</Flex>
@@ -375,8 +386,9 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 					].includes(ui)
 						? "margin-top-from-header"
 						: ""
-				}`}
+				} ${arrowDirection}`}
 				scrollLocking={false}
+				onSpringEnd={() => setArrowDirection("no-dragging")}
 			>
 				<Flex data-amplify-theme="aws-location-theme" direction="column" gap="0">
 					{bottomSheetBody(ui)}
