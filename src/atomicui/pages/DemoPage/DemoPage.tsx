@@ -958,7 +958,11 @@ const DemoPage: React.FC = () => {
 					currentMapProvider === MapProviderEnum.GRAB
 						? (MAX_BOUNDS.GRAB as LngLatBoundsLike)
 						: (show.unauthGeofenceBox || show.unauthTrackerBox) && show.unauthSimulationBounds
-						? (MAX_BOUNDS.VANCOUVER as LngLatBoundsLike)
+						? isDesktop
+							? (MAX_BOUNDS.VANCOUVER.DESKTOP as LngLatBoundsLike)
+							: isTablet
+							? (MAX_BOUNDS.VANCOUVER.TABLET as LngLatBoundsLike)
+							: (MAX_BOUNDS.VANCOUVER.MOBILE as LngLatBoundsLike)
 						: (MAX_BOUNDS.DEFAULT as LngLatBoundsLike)
 				}
 				onClick={handleMapClick}
@@ -1139,22 +1143,21 @@ const DemoPage: React.FC = () => {
 						/>
 					)}
 				</View>
-				{isDesktop && (
-					<AttributionControl
-						style={{
-							fontSize: "0.77rem",
-							borderRadius: "0.62rem",
-							marginRight: isMax556 ? `${(bottomSheetCurrentHeight || 0) / 13 + 1.2}rem` : "0.77rem",
-							marginBottom: isMax556 ? `${(bottomSheetCurrentHeight || 0) / 15}rem` : "2.77rem",
-							backgroundColor: currentMapStyle.toLowerCase().includes("dark")
-								? "rgba(0, 0, 0, 0.2)"
-								: "var(--white-color)",
-							color: currentMapStyle.toLowerCase().includes("dark") ? "var(--white-color)" : "var(--black-color)",
-							width: !isDesktop ? "100%" : undefined
-						}}
-						compact={!isDesktop}
-					/>
-				)}
+				<AttributionControl
+					style={{
+						fontSize: "0.77rem",
+						borderRadius: "0.62rem",
+						marginRight: isMax556 ? `${(bottomSheetCurrentHeight || 0) / 13 + 1.2}rem` : "0.77rem",
+						marginBottom: isMax556 ? `${(bottomSheetCurrentHeight || 0) / 15}rem` : "2.77rem",
+						backgroundColor: currentMapStyle.toLowerCase().includes("dark")
+							? "rgba(0, 0, 0, 0.2)"
+							: "var(--white-color)",
+						color: currentMapStyle.toLowerCase().includes("dark") ? "var(--white-color)" : "var(--black-color)",
+						width: !isDesktop ? "100%" : undefined,
+						display: isDesktop ? "flex" : "none"
+					}}
+					compact={!isDesktop}
+				/>
 			</Map>
 			<WelcomeModal open={showWelcomeModal} onClose={() => setShowWelcomeModal(false)} />
 			<SignInModal open={show.signInModal} onClose={() => setShow(s => ({ ...s, signInModal: false }))} />
