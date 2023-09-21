@@ -1,13 +1,25 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { Card, CheckboxField, Divider, Flex, Link, Placeholder, SearchField, Text } from "@aws-amplify/ui-react";
+import {
+	Button,
+	Card,
+	CheckboxField,
+	Divider,
+	Flex,
+	Link,
+	Placeholder,
+	SearchField,
+	Text,
+	View
+} from "@aws-amplify/ui-react";
 import { IconClose, IconFilterFunnel, IconGeofencePlusSolid, IconMapSolid, IconRadar, IconSearch } from "@demo/assets";
 import { NotFoundCard } from "@demo/atomicui/molecules";
 import { appConfig } from "@demo/core/constants";
-import { useAmplifyAuth, useAmplifyMap, useAwsGeofence } from "@demo/hooks";
+import { useAmplifyAuth, useAmplifyMap, useAwsGeofence, useDeviceMediaQuery } from "@demo/hooks";
+import useBottomSheet from "@demo/hooks/useBottomSheet";
 import {
 	AttributeEnum,
 	EsriMapEnum,
@@ -57,10 +69,13 @@ export interface MapButtonsProps {
 	onlyMapStyles?: boolean;
 	resetSearchAndFilters?: () => void;
 	showOpenDataDisclaimerModal: boolean;
+	isHandDevice?: boolean;
+	handleMapProviderChange?: (provider: MapProviderEnum, triggeredBy: TriggeredByEnum) => void;
 	isAuthGeofenceBoxOpen: boolean;
 	onSetShowAuthGeofenceBox: (b: boolean) => void;
 	isAuthTrackerDisclaimerModalOpen: boolean;
 	isAuthTrackerBoxOpen: boolean;
+	isSettingsModal?: boolean;
 	onShowAuthTrackerDisclaimerModal: () => void;
 	onSetShowAuthTrackerBox: (b: boolean) => void;
 	onShowUnauthSimulationDisclaimerModal: () => void;
@@ -92,11 +107,14 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 	onlyMapStyles = false,
 	resetSearchAndFilters,
 	showOpenDataDisclaimerModal,
+	isHandDevice,
+	handleMapProviderChange,
 	isAuthGeofenceBoxOpen,
 	onSetShowAuthGeofenceBox,
 	isAuthTrackerDisclaimerModalOpen,
-	isAuthTrackerBoxOpen,
 	onShowAuthTrackerDisclaimerModal,
+	isAuthTrackerBoxOpen,
+	isSettingsModal = false,
 	onSetShowAuthTrackerBox,
 	onShowUnauthSimulationDisclaimerModal,
 	isUnauthGeofenceBoxOpen,
@@ -104,17 +122,49 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 	onSetShowUnauthGeofenceBox,
 	onSetShowUnauthTrackerBox
 }) => {
+	const searchHandDeviceWidth = "36px";
+	const searchDesktopWidth = "100%";
+
+	const [tempFilters, setTempFilters] = useState(selectedFilters);
 	const [isLoadingImg, setIsLoadingImg] = useState(true);
 	const [showFilter, setShowFilter] = useState(false);
+	const [searchWidth, setSearchWidth] = useState(isHandDevice ? searchHandDeviceWidth : searchDesktopWidth);
 	const stylesCardRef = useRef<HTMLDivElement | null>(null);
 	const stylesCardTogglerRef = useRef<HTMLDivElement | null>(null);
 	const { credentials, isUserAwsAccountConnected } = useAmplifyAuth();
 	const { mapProvider: currentMapProvider, mapStyle: currentMapStyle } = useAmplifyMap();
 	const { isAddingGeofence, setIsAddingGeofence } = useAwsGeofence();
 	const isAuthenticated = !!credentials?.authenticated;
+	const { isTablet, isMobile, isDesktop, isMax766 } = useDeviceMediaQuery();
 	const { t, i18n } = useTranslation();
+	const { bottomSheetCurrentHeight = 0 } = useBottomSheet();
 	const langDir = i18n.dir();
 	const isLtr = langDir === "ltr";
+
+	const settingsTablet = isTablet && !!onlyMapStyles && isSettingsModal;
+
+	const filterIconWrapperRef = useRef<HTMLDivElement>(null);
+	const searchFieldRef = useRef<HTMLInputElement>(null);
+	const clearIconContainerRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		function handleClickOutside(event: MouseEvent) {
+			if (
+				!filterIconWrapperRef?.current?.contains(event.target as Node) &&
+				!searchFieldRef?.current?.contains(event.target as Node) &&
+				!clearIconContainerRef?.current?.contains(event.target as Node)
+			) {
+				if (!showFilter) {
+					isHandDevice && setSearchWidth(searchHandDeviceWidth);
+				}
+			}
+		}
+
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [isHandDevice, setSearchWidth, searchHandDeviceWidth, showFilter]);
 
 	const handleClickOutside = useCallback(
 		(ev: MouseEvent) => {
@@ -326,19 +376,57 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 	 * @param {React.ChangeEvent<HTMLInputElement>} e - The change event from the input element.
 	 * @param {string} filterCategory - The category of the filter being changed (e.g., 'Providers', 'Attribute', 'Type').
 	 */
+
 	const handleFilterChange = useCallback(
 		(e: React.ChangeEvent<HTMLInputElement>, filterCategory: string) => {
 			const { name, checked } = e.target;
-			setSelectedFilters(prevFilters => {
-				const key = filterCategory as keyof MapStyleFilterTypes;
-				return {
-					...prevFilters,
-					[key]: checked ? [...prevFilters[key], name] : prevFilters[key].filter(item => item !== name)
+			const key = filterCategory as keyof MapStyleFilterTypes;
+
+			const updatedFilters = {
+				...tempFilters,
+				[key]: checked ? [...tempFilters[key], name] : tempFilters[key].filter(item => item !== name)
+			};
+
+			if (isHandDevice) {
+				setTempFilters(updatedFilters);
+			} else {
+				const desktopUpdatedFilters = {
+					...selectedFilters,
+					[key]: checked ? [...selectedFilters[key], name] : selectedFilters[key].filter(item => item !== name)
 				};
-			});
+				setSelectedFilters(desktopUpdatedFilters);
+			}
 		},
-		[setSelectedFilters]
+		[tempFilters, isHandDevice, selectedFilters, setSelectedFilters]
 	);
+
+	const applyMobileFilters = useCallback(() => {
+		if (isHandDevice) {
+			setSelectedFilters(tempFilters);
+			setShowFilter(false);
+			setSearchWidth(!!searchValue ? searchHandDeviceWidth : searchHandDeviceWidth);
+		}
+	}, [isHandDevice, setSelectedFilters, tempFilters, searchValue]);
+
+	// Invoke this when dialog is closed without applying filters in mobile mode
+	const discardChanges = useCallback(() => {
+		if (isHandDevice) {
+			// revert tempFilters to the applied selectedFilters
+			setTempFilters(selectedFilters);
+		}
+	}, [selectedFilters, isHandDevice]);
+
+	const clearFilters = useCallback(() => {
+		if (isHandDevice) {
+			const initialFilterValues = {
+				Providers: [],
+				Attribute: [],
+				Type: []
+			};
+			setTempFilters(initialFilterValues);
+			setSelectedFilters(initialFilterValues);
+		}
+	}, [isHandDevice, setSelectedFilters]);
 
 	const stylesWithTitles = addProviderTitle(MAP_STYLES, isGrabVisible);
 	const searchAndFilteredResults = searchStyles(stylesWithTitles, searchValue, selectedFilters);
@@ -351,12 +439,16 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 				className={onlyMapStyles ? "map-styles-wrapper only-map-styles" : "map-styles-wrapper"}
 				direction={"column"}
 			>
-				<Flex direction={"column"} gap={0}>
+				<Flex direction={"column"} gap={0} marginBottom={isHandDevice && showFilter ? "5rem" : "0"}>
 					<Flex
-						className={showFilter ? "maps-styles-search with-filters" : "maps-styles-search"}
+						className={`maps-styles-search ${!!isHandDevice ? "responsive-search" : ""} ${
+							showFilter ? "with-filters" : ""
+						}`}
 						marginBottom={showFilter ? 0 : "0.6rem"}
+						padding={isHandDevice && searchWidth === searchHandDeviceWidth ? "0 0 0.5rem 1.2rem" : "0 1.2rem"}
 					>
 						<SearchField
+							ref={searchFieldRef}
 							data-testid="map-styles-search-field"
 							className="map-styles-search-field"
 							dir={langDir}
@@ -367,28 +459,67 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 							size={"large"}
 							innerStartComponent={
 								<Flex className="search-icon-container">
-									<IconSearch className="search-icon" />
+									<IconSearch className="search-bar-icon" />
 								</Flex>
 							}
+							innerEndComponent={null}
 							value={searchValue}
 							onChange={e => setSearchValue(e.target.value)}
-							onClear={() => setSearchValue("")}
-							onClick={() => !!showFilter && setShowFilter(false)}
+							onClick={() => {
+								isHandDevice && setSearchWidth(searchDesktopWidth);
+								!!showFilter && setShowFilter(false);
+							}}
 							crossOrigin={undefined}
+							width={searchWidth}
 						/>
-						<Flex className="filter-container">
-							<Flex
+						<Flex className="filter-container" gap="0">
+							{!!searchValue && searchWidth === searchDesktopWidth && (
+								<Flex
+									ref={clearIconContainerRef}
+									onClick={() => {
+										setSearchValue("");
+										setShowFilter(false);
+									}}
+									margin="0 0.4rem"
+								>
+									<IconClose className="search-bar-icon" />
+								</Flex>
+							)}
+							<View
+								ref={filterIconWrapperRef}
 								className="filter-icon-wrapper"
-								onClick={() => setShowFilter(show => !show)}
+								onClick={() => {
+									setShowFilter(show => {
+										isHandDevice && show ? setSearchWidth(searchHandDeviceWidth) : setSearchWidth(searchDesktopWidth);
+										return !show;
+									});
+									discardChanges();
+								}}
 								data-testid="filter-icon-wrapper"
+								paddingRight={isHandDevice ? "0" : "0.7rem"}
 							>
 								<IconFilterFunnel className={showFilter || hasAnyFilterSelected ? "filter-icon live" : "filter-icon"} />
 								<span className={hasAnyFilterSelected ? "filter-bubble live" : "filter-bubble"} />
-							</Flex>
+							</View>
 						</Flex>
+						{searchWidth === searchHandDeviceWidth && (
+							<Flex gap="0.5rem" className="map-providers-container-mobile">
+								{Object.values(MapProviderEnum).map(provider => (
+									<Button
+										key={provider}
+										className={currentMapProvider === provider ? "active-button" : ""}
+										onClick={() =>
+											handleMapProviderChange && handleMapProviderChange(provider, TriggeredByEnum.SETTINGS_MODAL)
+										}
+									>
+										{provider === MapProviderEnum.GRAB ? `${MapProviderEnum.GRAB}Maps` : provider}
+									</Button>
+								))}
+							</Flex>
+						)}
 					</Flex>
 					{showFilter && (
-						<Flex className="maps-filter-container" direction="column">
+						<Flex className={`maps-filter-container ${isHandDevice ? "responsive-filter" : ""}`} direction="column">
 							{Object.entries(filters).map(([key, value]) => (
 								<Flex key={key} direction="column">
 									<Text as="strong" fontWeight={700} fontSize="1em">
@@ -404,7 +535,11 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 												label={item === GRAB ? `${item}Maps` : item}
 												name={item}
 												value={item}
-												checked={selectedFilters[key as keyof MapStyleFilterTypes].includes(item)}
+												checked={
+													isHandDevice
+														? tempFilters[key as keyof MapStyleFilterTypes].includes(item)
+														: selectedFilters[key as keyof MapStyleFilterTypes].includes(item)
+												}
 												onChange={e => handleFilterChange(e, key)}
 												data-testid={`filter-checkbox-${item}`}
 												crossOrigin={undefined}
@@ -416,7 +551,7 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 						</Flex>
 					)}
 				</Flex>
-				{(!showFilter || onlyMapStyles) && (
+				{(!showFilter || (onlyMapStyles && !isHandDevice)) && (
 					<Flex gap={0} direction="column" className={isGrabVisible ? "maps-container grab-visible" : "maps-container"}>
 						<Flex gap={0} padding={onlyMapStyles ? "0 0 1.23rem" : "0 0.7rem 1.23rem 0.5rem"} wrap="wrap">
 							{!searchAndFilteredResults.length && (
@@ -449,7 +584,7 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 									</Flex>
 								) : (
 									(item.filters?.provider !== GRAB || (item.filters?.provider === GRAB && isGrabVisible)) && (
-										<Flex key={i} marginBottom={"1.2rem"} width="33.33%">
+										<Flex key={i} width={settingsTablet ? "auto" : "33.33%"} height="130px" alignItems="flex-start">
 											<Flex
 												data-testid={`map-style-item-${item.id}`}
 												className={item.id === currentMapStyle ? "mb-style-container selected" : "mb-style-container"}
@@ -465,13 +600,19 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 														<Placeholder position="absolute" width="100%" height="100%" />
 													)}
 													<img
-														className={onlyMapStyles ? "map-image only-map" : "map-image"}
+														className={`${isHandDevice ? "hand-device-img" : ""} ${
+															isMobile && onlyMapStyles ? "only-map" : ""
+														} map-image`}
 														src={item.image}
 														alt={item.name}
 														onLoad={() => setIsLoadingImg(false)}
 													/>
 												</Flex>
-												{!isLoading && <Text marginTop="0.62rem">{t(item.name)}</Text>}
+												{!isLoading && (
+													<Text marginTop="0.62rem" textAlign="center">
+														{t(item.name)}
+													</Text>
+												)}
 											</Flex>
 										</Flex>
 									)
@@ -480,34 +621,60 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 						</Flex>
 					</Flex>
 				)}
+				{isHandDevice && showFilter && bottomSheetCurrentHeight > 150 && (
+					<Flex className="responsive-map-footer">
+						<Button variation="link" className="clear-selection-button" onClick={clearFilters}>
+							{t("map_buttons__clear_selections.text")}
+						</Button>
+						<Button className="apply-button" variation="primary" onClick={applyMobileFilters}>
+							{t("map_buttons__apply_filters.text")}
+						</Button>
+					</Flex>
+				)}
 			</Flex>
 		),
 		[
-			currentMapStyle,
-			handleFilterChange,
+			onlyMapStyles,
+			isHandDevice,
+			showFilter,
+			searchWidth,
+			langDir,
+			t,
+			searchValue,
 			hasAnyFilterSelected,
 			isGrabVisible,
-			isLoading,
-			isLoadingImg,
-			onChangeStyle,
 			searchAndFilteredResults,
-			searchValue,
-			selectedFilters,
-			setSearchValue,
-			showFilter,
-			onlyMapStyles,
 			noFilters,
 			resetFilters,
-			t,
-			langDir
+			bottomSheetCurrentHeight,
+			clearFilters,
+			applyMobileFilters,
+			setSearchValue,
+			discardChanges,
+			currentMapProvider,
+			handleMapProviderChange,
+			tempFilters,
+			selectedFilters,
+			handleFilterChange,
+			settingsTablet,
+			currentMapStyle,
+			isLoading,
+			isLoadingImg,
+			isMobile,
+			onChangeStyle
 		]
 	);
 
 	if (onlyMapStyles) return mapStyles;
-
+	else if (isMax766) return null;
 	return (
 		<>
-			<Flex data-testid="map-buttons-container" className="map-styles-geofence-and-tracker-container">
+			<Flex
+				data-testid="map-buttons-container"
+				className={`map-styles-geofence-and-tracker-container ${
+					!isDesktop ? "map-styles-geofence-and-tracker-container-mobile" : ""
+				}`}
+			>
 				<Flex
 					data-testid="map-styles-button"
 					ref={stylesCardTogglerRef}
@@ -520,33 +687,37 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 					<IconMapSolid />
 				</Flex>
 				{!openStylesCard && <Tooltip id="map-styles-button" />}
-				<Divider className="button-divider" />
-				<Flex
-					data-testid="geofence-control-button"
-					className={isAddingGeofence || isUnauthGeofenceBoxOpen ? "geofence-button active" : "geofence-button"}
-					onClick={() => onClickGeofenceTracker(MenuItemEnum.GEOFENCE)}
-					data-tooltip-id="geofence-control-button"
-					data-tooltip-place="left"
-					data-tooltip-content={t("geofence.text")}
-				>
-					<IconGeofencePlusSolid />
-				</Flex>
-				<Tooltip id="geofence-control-button" />
-				<Divider className="button-divider" />
-				<Flex
-					data-testid="tracker-control-button"
-					className={
-						isAuthTrackerDisclaimerModalOpen || isAuthTrackerBoxOpen || isUnauthTrackerBoxOpen
-							? "tracker-button active"
-							: "tracker-button"
-					}
-					onClick={() => onClickGeofenceTracker(MenuItemEnum.TRACKER)}
-					data-tooltip-id="tracker-control-button"
-					data-tooltip-place="left"
-					data-tooltip-content={t("tracker.text")}
-				>
-					<IconRadar />
-				</Flex>
+				{isDesktop && (
+					<>
+						<Divider className="button-divider" />
+						<Flex
+							data-testid="geofence-control-button"
+							className={isAddingGeofence || isUnauthGeofenceBoxOpen ? "geofence-button active" : "geofence-button"}
+							onClick={() => onClickGeofenceTracker(MenuItemEnum.GEOFENCE)}
+							data-tooltip-id="geofence-control-button"
+							data-tooltip-place="left"
+							data-tooltip-content={t("geofence.text")}
+						>
+							<IconGeofencePlusSolid />
+						</Flex>
+						<Tooltip id="geofence-control-button" />
+						<Divider className="button-divider" />
+						<Flex
+							data-testid="tracker-control-button"
+							className={
+								isAuthTrackerDisclaimerModalOpen || isAuthTrackerBoxOpen || isUnauthTrackerBoxOpen
+									? "tracker-button active"
+									: "tracker-button"
+							}
+							onClick={() => onClickGeofenceTracker(MenuItemEnum.TRACKER)}
+							data-tooltip-id="tracker-control-button"
+							data-tooltip-place="left"
+							data-tooltip-content={t("tracker.text")}
+						>
+							<IconRadar />
+						</Flex>
+					</>
+				)}
 				<Tooltip id="tracker-control-button" />
 			</Flex>
 			{openStylesCard && (
@@ -571,4 +742,4 @@ const MapButtons: React.FC<MapButtonsProps> = ({
 	);
 };
 
-export default MapButtons;
+export default memo(MapButtons);
