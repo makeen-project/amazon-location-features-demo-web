@@ -377,8 +377,6 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 		[from, onCloseHandler, setUI, t]
 	);
 
-	console.log(bottomSheetMinHeight, bottomSheetHeight);
-
 	return (
 		<>
 			{!isDesktop && isNonStartedSimulation && UnauthSimulationUI}
