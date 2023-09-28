@@ -16,7 +16,7 @@
 
 		.geofence-close-mobile {
 			position: absolute;
-			top: -14px;
+			top: -10px;
 			right: 10px;
 		}
 
@@ -38,6 +38,8 @@
 
 		&.geofence-card-header-mobile {
 			border: 0;
+			padding-top: 0;
+			padding-bottom: 0;
 		}
 
 		.back-icon {
@@ -73,7 +75,7 @@
 
 			&.geofence-card-close-mobile {
 				position: relative;
-				top: -25px;
+				top: -18px;
 				border: 0;
 				z-index: 26;
 				svg {

@@ -30,6 +30,7 @@ import {
 import { DemoPlaceholderPage } from "@demo/atomicui/pages";
 import { showToast } from "@demo/core";
 import { appConfig } from "@demo/core/constants";
+import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
 import {
 	useAmplifyAuth,
 	useAmplifyMap,
@@ -116,10 +117,15 @@ const extraGeoLocateTop = 2.6;
 const DemoPage: React.FC = () => {
 	const {} = useRecordViewPage("DemoPage");
 	const [show, setShow] = React.useState<ShowStateType>(initShow);
-	const [height, setHeight] = React.useState(window.innerHeight);
+	const [isUnauthNotifications, setUnauthIsNotifications] = React.useState(false);
+	const [confirmCloseUnauthSimulation, setConfirmCloseUnauthSimulation] = React.useState(false);
 	const [searchValue, setSearchValue] = React.useState("");
 	const [doNotAskGrabDisclaimer, setDoNotAskGrabDisclaimer] = React.useState(false);
 	const [doNotAskOpenDataDisclaimer, setDoNotAskOpenDataDisclaimer] = React.useState(false);
+	const [triggerOnClose, setTriggerOnClose] = React.useState(false);
+	const [triggerOnReset, setTriggerOnReset] = React.useState(false);
+	const [expandRouteOptionsMobile, setExpandRouteOptionsMobile] = React.useState(false);
+	const [isEditingAuthRoute, setIsEditingAuthRoute] = React.useState(false);
 	const [selectedFilters, setSelectedFilters] = React.useState<MapStyleFilterTypes>({
 		Providers: [],
 		Attribute: [],
@@ -171,7 +177,7 @@ const DemoPage: React.FC = () => {
 		setDoNotAskOpenDataDisclaimerModal
 	} = usePersistedData();
 	const { isDesktop, isMobile, isTablet } = useDeviceMediaQuery();
-	const { setUI, ui, bottomSheetCurrentHeight } = useBottomSheet();
+	const { setUI, ui, bottomSheetCurrentHeight, setBottomSheetHeight, setBottomSheetMinHeight } = useBottomSheet();
 	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();
 	const isLtr = langDir === "ltr";
@@ -330,15 +336,15 @@ const DemoPage: React.FC = () => {
 		_attachPolicy();
 	}, [_attachPolicy]);
 
-	const onResize = useCallback(() => setHeight(window.innerHeight), []);
+	// const onResize = useCallback(() => setHeight(window.innerHeight), []);
 
-	useEffect(() => {
-		addEventListener("resize", onResize);
+	// useEffect(() => {
+	// 	addEventListener("resize", onResize);
 
-		return () => {
-			removeEventListener("resize", onResize);
-		};
-	}, [onResize]);
+	// 	return () => {
+	// 		removeEventListener("resize", onResize);
+	// 	};
+	// }, [onResize]);
 
 	useEffect(() => {
 		if (selectedMarker) {
@@ -524,7 +530,12 @@ const DemoPage: React.FC = () => {
 		resetAwsGeofenceStore();
 		resetAwsTrackingStore();
 		setShow(s => ({ ...s, authTrackerDisclaimerModal: false, authTrackerBox: true }));
-		!isDesktop && setUI(ResponsiveUIEnum.auth_tracker);
+		if (!isDesktop) {
+			setUI(ResponsiveUIEnum.auth_tracker);
+			setBottomSheetMinHeight(window.innerHeight / 2);
+			setBottomSheetHeight(window.innerHeight);
+			setTimeout(() => setBottomSheetMinHeight(BottomSheetHeights.explore.min), 300);
+		}
 	};
 
 	const locationError = useMemo(() => !!currentLocationData?.error, [currentLocationData]);
@@ -869,7 +880,7 @@ const DemoPage: React.FC = () => {
 				<Flex
 					style={{
 						position: "absolute",
-						bottom: isMobile ? `${(bottomSheetCurrentHeight || 0) / 13 + 1.2}rem` : isDesktop ? "12.85rem" : "2rem",
+						bottom: isMobile ? `${(bottomSheetCurrentHeight || 0) / 13 + 1.2}rem` : isDesktop ? "9.85rem" : "2rem",
 						right: isMobile ? "1rem" : isDesktop ? "2rem" : "2rem"
 					}}
 					className="location-disabled"
@@ -923,9 +934,19 @@ const DemoPage: React.FC = () => {
 				startSimulation={startSimulation}
 				setStartSimulation={setStartSimulation}
 				setShowUnauthSimulationBounds={b => setShow(s => ({ ...s, unauthSimulationBounds: b }))}
+				isNotifications={isUnauthNotifications}
+				setIsNotifications={setUnauthIsNotifications}
+				confirmCloseSimulation={confirmCloseUnauthSimulation}
+				setConfirmCloseSimulation={setConfirmCloseUnauthSimulation}
 			/>
 		),
-		[show.startUnauthSimulation, show.unauthGeofenceBox, startSimulation]
+		[
+			confirmCloseUnauthSimulation,
+			isUnauthNotifications,
+			show.startUnauthSimulation,
+			show.unauthGeofenceBox,
+			startSimulation
+		]
 	);
 
 	const handleLogoClick = () =>
@@ -938,7 +959,7 @@ const DemoPage: React.FC = () => {
 
 	return !!credentials?.identityId ? (
 		<View
-			style={{ height }}
+			style={{ height: "100%" }}
 			className={`${currentMapStyle.toLowerCase().includes("dark") ? "dark-mode" : "light-mode"}`}
 		>
 			<Map
@@ -1003,6 +1024,8 @@ const DemoPage: React.FC = () => {
 								<AuthGeofenceBox
 									mapRef={mapViewRef?.current}
 									setShowAuthGeofenceBox={b => setShow(s => ({ ...s, authGeofenceBox: b }))}
+									isEditingAuthRoute={isEditingAuthRoute}
+									setIsEditingAuthRoute={setIsEditingAuthRoute}
 								/>
 							) : show.authTrackerBox ? (
 								<AuthTrackerBox
@@ -1060,8 +1083,11 @@ const DemoPage: React.FC = () => {
 								setShowRouteBox={b => setShow(s => ({ ...s, routeBox: b }))}
 								isSideMenuExpanded={show.sidebar}
 								isDirection={ui === ResponsiveUIEnum.direction_to_routes}
+								expandRouteOptionsMobile={expandRouteOptionsMobile}
+								setExpandRouteOptionsMobile={setExpandRouteOptionsMobile}
 							/>
 						}
+						isEditingAuthRoute={isEditingAuthRoute}
 						onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
 						onOpenConnectAwsAccountModal={() => setShow(s => ({ ...s, connectAwsAccount: true }))}
 						onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
@@ -1080,11 +1106,18 @@ const DemoPage: React.FC = () => {
 						showStartUnauthSimulation={show.startUnauthSimulation}
 						setShowStartUnauthSimulation={b => setShow(s => ({ ...s, startUnauthSimulation: b }))}
 						from={show.unauthGeofenceBox ? MenuItemEnum.GEOFENCE : MenuItemEnum.TRACKER}
-						UnauthSimulationUI={UnauthSimulationUI}
+						show={show}
+						setShow={setShow}
 						AuthGeofenceBox={
 							<AuthGeofenceBox
 								mapRef={mapViewRef?.current}
 								setShowAuthGeofenceBox={b => setShow(s => ({ ...s, authGeofenceBox: b }))}
+								triggerOnClose={triggerOnClose}
+								setTriggerOnClose={setTriggerOnClose}
+								triggerOnReset={triggerOnReset}
+								setTriggerOnReset={setTriggerOnReset}
+								isEditingAuthRoute={isEditingAuthRoute}
+								setIsEditingAuthRoute={setIsEditingAuthRoute}
 							/>
 						}
 						AuthTrackerBox={
@@ -1093,7 +1126,21 @@ const DemoPage: React.FC = () => {
 								setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
 							/>
 						}
+						setTriggerOnReset={setTriggerOnReset}
+						setTriggerOnClose={setTriggerOnClose}
 						handleLogoClick={handleLogoClick}
+						startSimulation={startSimulation}
+						setStartSimulation={setStartSimulation}
+						isNotifications={isUnauthNotifications}
+						setIsNotifications={setUnauthIsNotifications}
+						confirmCloseSimulation={confirmCloseUnauthSimulation}
+						setConfirmCloseSimulation={setConfirmCloseUnauthSimulation}
+						setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
+						clearCredsAndLocationClient={clearCredsAndLocationClient}
+						setShowAuthGeofenceBox={b => setShow(s => ({ ...s, authGeofenceBox: b }))}
+						setShowRouteBox={b => setShow(s => ({ ...s, routeBox: b }))}
+						isExpandRouteOptionsMobile={expandRouteOptionsMobile}
+						setExpandRouteOptionsMobile={setExpandRouteOptionsMobile}
 					/>
 					<MapButtons
 						renderedUpon={TriggeredByEnum.DEMO_PAGE}
@@ -1302,7 +1349,6 @@ const DemoPage: React.FC = () => {
 		<DemoPlaceholderPage
 			searchValue={searchValue}
 			selectedFilters={selectedFilters}
-			height={height}
 			show={show}
 			isGrabVisible={isGrabVisible}
 		/>

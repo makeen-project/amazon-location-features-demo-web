@@ -47,6 +47,7 @@
 		max-height: 100vh;
 		width: 100%;
 		box-shadow: none;
+		top: 3.1rem;
 	}
 
 	&.unauth-non-start-simulation-card-tablet {
@@ -78,7 +79,7 @@
 
 				.amplify-flex {
 					position: absolute !important;
-					top: -13px;
+					top: -9px;
 				}
 
 				.amplify-flex:nth-child(1) {

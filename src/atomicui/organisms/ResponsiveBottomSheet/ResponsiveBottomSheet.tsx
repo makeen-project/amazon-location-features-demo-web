@@ -1,23 +1,29 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-import React, { FC, useCallback, useEffect, useRef, useState } from "react";
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Flex, Text } from "@aws-amplify/ui-react";
-import { IconClose, LogoDark, LogoLight } from "@demo/assets";
+import { IconClose, IconNotificationBell, LogoDark, LogoLight } from "@demo/assets";
 import { ConfirmationModal } from "@demo/atomicui/molecules";
-import { useAmplifyMap } from "@demo/hooks";
+import { appConfig } from "@demo/core";
+import { useAmplifyMap, useAwsGeofence, useAwsRoute, useAwsTracker } from "@demo/hooks";
 import useBottomSheet from "@demo/hooks/useBottomSheet";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
+import { ShowStateType } from "@demo/types";
 import { MenuItemEnum, ResponsiveUIEnum } from "@demo/types/Enums";
 import { useTranslation } from "react-i18next";
 import { MapRef } from "react-map-gl";
+import { useLocation } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
-import "react-spring-bottom-sheet/dist/style.css";
 import { Explore } from "../Explore";
+import { UnauthSimulation } from "../UnauthSimulation";
 
 import "./styles.scss";
+import "react-spring-bottom-sheet/dist/style.css";
+
+const { DEMO } = appConfig.default.ROUTES;
 
 interface IProps {
 	mapRef: MapRef | null;
@@ -40,10 +46,26 @@ interface IProps {
 	setShowStartUnauthSimulation: (b: boolean) => void;
 	showStartUnauthSimulation: boolean;
 	from: MenuItemEnum;
-	UnauthSimulationUI: JSX.Element;
 	AuthGeofenceBox: JSX.Element;
 	AuthTrackerBox: JSX.Element;
 	handleLogoClick: () => Window | null;
+	show: ShowStateType;
+	setShow: React.Dispatch<React.SetStateAction<ShowStateType>>;
+	startSimulation: boolean;
+	setStartSimulation: React.Dispatch<React.SetStateAction<boolean>>;
+	isNotifications: boolean;
+	setIsNotifications: React.Dispatch<React.SetStateAction<boolean>>;
+	confirmCloseSimulation: boolean;
+	setConfirmCloseSimulation: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowAuthTrackerBox: (b: boolean) => void;
+	clearCredsAndLocationClient?: () => void;
+	setShowAuthGeofenceBox: (b: boolean) => void;
+	setTriggerOnClose: React.Dispatch<React.SetStateAction<boolean>>;
+	setTriggerOnReset: React.Dispatch<React.SetStateAction<boolean>>;
+	isEditingAuthRoute: boolean;
+	setShowRouteBox: (b: boolean) => void;
+	isExpandRouteOptionsMobile: boolean;
+	setExpandRouteOptionsMobile: (b: boolean) => void;
 }
 
 const ResponsiveBottomSheet: FC<IProps> = ({
@@ -63,15 +85,34 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 	onshowUnauthSimulationDisclaimerModal,
 	setShowUnauthGeofenceBox,
 	setShowUnauthTrackerBox,
-	UnauthSimulationUI,
 	from,
 	AuthGeofenceBox,
 	AuthTrackerBox,
 	setShowStartUnauthSimulation,
-	handleLogoClick
+	handleLogoClick,
+	show,
+	setShow,
+	startSimulation,
+	setStartSimulation,
+	mapRef,
+	isNotifications,
+	setIsNotifications,
+	confirmCloseSimulation,
+	setConfirmCloseSimulation,
+	setShowAuthTrackerBox,
+	clearCredsAndLocationClient,
+	setTriggerOnClose,
+	setTriggerOnReset,
+	isEditingAuthRoute,
+	setShowRouteBox,
+	isExpandRouteOptionsMobile,
+	setExpandRouteOptionsMobile
 }) => {
 	const { isDesktop, isTablet, isMax556 } = useDeviceMediaQuery();
+	const { unauthNotifications, isAddingGeofence } = useAwsGeofence();
 	const { t } = useTranslation();
+	const location = useLocation();
+	const isDemoUrl = location.pathname === DEMO;
 	const {
 		setBottomSheetMinHeight,
 		setBottomSheetHeight,
@@ -82,9 +123,16 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 		ui,
 		setUI
 	} = useBottomSheet();
+	const { resetStore: resetAwsRouteStore } = useAwsRoute();
+	const { setIsEditingRoute, setTrackerPoints } = useAwsTracker();
 	const { mapStyle } = useAmplifyMap();
 	const [arrowDirection, setArrowDirection] = useState("no-dragging");
 	const prevBottomSheetHeightRef = useRef(bottomSheetCurrentHeight);
+
+	const isAddingOrEditing = useMemo(
+		() => isAddingGeofence || isEditingAuthRoute,
+		[isAddingGeofence, isEditingAuthRoute]
+	);
 
 	useEffect(() => {
 		if (bottomSheetCurrentHeight > prevBottomSheetHeightRef.current) {
@@ -95,6 +143,20 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 
 		prevBottomSheetHeightRef.current = bottomSheetCurrentHeight;
 	}, [bottomSheetCurrentHeight]);
+
+	// useEffect(() => {
+	// 	const hasDemoUrl = document.querySelector(".demoUrl");
+
+	// 	if (hasDemoUrl) {
+	// 		document.body.style.overflow = "hidden";
+	// 	} else {
+	// 		document.body.style.overflow = "auto";
+	// 	}
+
+	// 	return () => {
+	// 		document.body.style.overflow = "auto";
+	// 	};
+	// }, []);
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -183,6 +245,109 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 		};
 	}, [setBottomSheetCurrentHeight, setBottomSheetHeight, setBottomSheetMinHeight]);
 
+	const UnauthSimulationUI = useMemo(
+		() => (
+			<UnauthSimulation
+				mapRef={mapRef}
+				from={show.unauthGeofenceBox ? MenuItemEnum.GEOFENCE : MenuItemEnum.TRACKER}
+				setShowUnauthGeofenceBox={b => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
+				setShowUnauthTrackerBox={b => setShow(s => ({ ...s, unauthTrackerBox: b }))}
+				setShowConnectAwsAccountModal={b => setShow(s => ({ ...s, connectAwsAccount: b }))}
+				showStartUnauthSimulation={show.startUnauthSimulation}
+				setShowStartUnauthSimulation={b => setShow(s => ({ ...s, startUnauthSimulation: b }))}
+				startSimulation={startSimulation}
+				setStartSimulation={setStartSimulation}
+				setShowUnauthSimulationBounds={b => setShow(s => ({ ...s, unauthSimulationBounds: b }))}
+				isNotifications={isNotifications}
+				setIsNotifications={setIsNotifications}
+				confirmCloseSimulation={confirmCloseSimulation}
+				setConfirmCloseSimulation={setConfirmCloseSimulation}
+			/>
+		),
+		[
+			confirmCloseSimulation,
+			isNotifications,
+			mapRef,
+			setConfirmCloseSimulation,
+			setIsNotifications,
+			setShow,
+			setStartSimulation,
+			show.startUnauthSimulation,
+			show.unauthGeofenceBox,
+			startSimulation
+		]
+	);
+
+	const onCloseRouteBox = useCallback(() => {
+		resetAwsRouteStore();
+		setShowRouteBox(false);
+		setUI(ResponsiveUIEnum.explore);
+	}, [setUI, resetAwsRouteStore, setShowRouteBox]);
+
+	const handleClose = useCallback(() => {
+		from === MenuItemEnum.GEOFENCE
+			? setShow(s => ({ ...s, unauthGeofenceBox: false }))
+			: setShow(s => ({ ...s, unauthTrackerBox: false }));
+		setUI(ResponsiveUIEnum.explore);
+	}, [from, setShow, setUI]);
+
+	const onCloseAuthTracker = useCallback(() => {
+		clearCredsAndLocationClient && clearCredsAndLocationClient();
+		setIsEditingRoute(false);
+		setTrackerPoints(undefined);
+		setShowAuthTrackerBox(false);
+		setUI(ResponsiveUIEnum.explore);
+	}, [clearCredsAndLocationClient, setIsEditingRoute, setShowAuthTrackerBox, setTrackerPoints, setUI]);
+
+	const onBackUnauthHandler = useCallback(() => {
+		if (isNotifications) {
+			setIsNotifications(false);
+		} else {
+			setConfirmCloseSimulation(true);
+			from === MenuItemEnum.GEOFENCE
+				? setUI(ResponsiveUIEnum.exit_unauthorized_geofence)
+				: setUI(ResponsiveUIEnum.exit_unauthorized_tracker);
+		}
+	}, [from, isNotifications, setConfirmCloseSimulation, setIsNotifications, setUI]);
+
+	const handleUIAction = useCallback(() => {
+		if (
+			[ResponsiveUIEnum.non_start_unauthorized_tracker, ResponsiveUIEnum.non_start_unauthorized_geofence].includes(ui)
+		) {
+			handleClose();
+		} else if ([ResponsiveUIEnum.unauth_geofence, ResponsiveUIEnum.unauth_tracker].includes(ui)) {
+			onBackUnauthHandler();
+		} else if (ResponsiveUIEnum.auth_tracker === ui) {
+			onCloseAuthTracker();
+		} else if (ResponsiveUIEnum.auth_geofence === ui) {
+			if (isAddingOrEditing) {
+				setTriggerOnReset(true);
+			} else {
+				setTriggerOnClose(true);
+			}
+		} else if ([ResponsiveUIEnum.routes, ResponsiveUIEnum.direction_to_routes].includes(ui)) {
+			if (!isExpandRouteOptionsMobile) {
+				onCloseRouteBox();
+			} else {
+				setExpandRouteOptionsMobile(false);
+			}
+		} else {
+			setUI(ResponsiveUIEnum.explore);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [
+		ui,
+		handleClose,
+		onBackUnauthHandler,
+		onCloseAuthTracker,
+		isAddingOrEditing,
+		setTriggerOnReset,
+		setTriggerOnClose,
+		onCloseRouteBox,
+		setExpandRouteOptionsMobile,
+		setUI
+	]);
+
 	const bottomSheetHeader = useCallback(
 		(ui?: ResponsiveUIEnum) => {
 			switch (ui) {
@@ -207,18 +372,42 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 							</Flex>
 						</Flex>
 					);
-				case ResponsiveUIEnum.routes:
-				case ResponsiveUIEnum.unauth_tracker:
-				case ResponsiveUIEnum.unauth_geofence:
+				case ResponsiveUIEnum.search:
+				case ResponsiveUIEnum.explore:
+				case ResponsiveUIEnum.before_start_unauthorized_geofence:
+				case ResponsiveUIEnum.before_start_unauthorized_tracker:
+					return <Flex width="100%">{SearchBoxEl()}</Flex>;
+				case ResponsiveUIEnum.non_start_unauthorized_tracker:
+				case ResponsiveUIEnum.non_start_unauthorized_geofence:
 				case ResponsiveUIEnum.auth_tracker:
 				case ResponsiveUIEnum.auth_geofence:
-				case ResponsiveUIEnum.non_start_unauthorized_tracker:
-				case ResponsiveUIEnum.before_start_unauthorized_tracker:
-				case ResponsiveUIEnum.before_start_unauthorized_geofence:
-				case ResponsiveUIEnum.non_start_unauthorized_geofence:
+				case ResponsiveUIEnum.unauth_tracker:
+				case ResponsiveUIEnum.unauth_geofence:
+				case ResponsiveUIEnum.routes:
 				case ResponsiveUIEnum.direction_to_routes:
-				case ResponsiveUIEnum.explore:
-				case ResponsiveUIEnum.search:
+					return (
+						<Flex
+							className="map-header-mobile"
+							justifyContent={
+								[ResponsiveUIEnum.unauth_geofence, ResponsiveUIEnum.unauth_tracker].includes(ui)
+									? "space-between"
+									: "flex-end"
+							}
+							direction="row"
+						>
+							{[ResponsiveUIEnum.unauth_geofence, ResponsiveUIEnum.unauth_tracker].includes(ui) && (
+								<Flex
+									className={isNotifications ? "bell-icon-container bell-active" : "bell-icon-container"}
+									onClick={() => setIsNotifications(n => !n)}
+									position="relative"
+								>
+									<IconNotificationBell className="bell-icon" width={20} height={20} />
+									{!isNotifications && !!unauthNotifications.length && <span className="notification-bubble" />}
+								</Flex>
+							)}
+							<IconClose width={20} height={20} fill="var(--grey-color)" onClick={handleUIAction} />
+						</Flex>
+					);
 				case ResponsiveUIEnum.poi_card:
 				case ResponsiveUIEnum.exit_unauthorized_tracker:
 				case ResponsiveUIEnum.exit_unauthorized_geofence:
@@ -227,7 +416,7 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 					return <Flex width="100%">{SearchBoxEl()}</Flex>;
 			}
 		},
-		[SearchBoxEl, setUI, t]
+		[SearchBoxEl, handleUIAction, isNotifications, setIsNotifications, setUI, t, unauthNotifications.length]
 	);
 
 	const bottomSheetBody = useCallback(
@@ -250,6 +439,7 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 				case ResponsiveUIEnum.auth_geofence:
 					return AuthGeofenceBox;
 				case ResponsiveUIEnum.poi_card:
+					return <Flex width="100%">{SearchBoxEl()}</Flex>;
 				case ResponsiveUIEnum.explore:
 				case ResponsiveUIEnum.search:
 				case ResponsiveUIEnum.before_start_unauthorized_tracker:
@@ -257,7 +447,6 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 				default:
 					return (
 						<>
-							{SearchBoxEl()}
 							{ui &&
 								[
 									ResponsiveUIEnum.explore,
@@ -386,18 +575,24 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 				}
 				className={`bottom-sheet ${isDesktop ? "desktop" : isTablet ? "tablet" : "mobile"} ${
 					(bottomSheetCurrentHeight || 0) + 30 < window.innerHeight ? "add-overlay" : ""
-				} ${
+				} ${!isDesktop && isDemoUrl ? "disable-body-scroll" : ""} ${
 					ui &&
 					[
-						ResponsiveUIEnum.search,
-						ResponsiveUIEnum.explore,
 						ResponsiveUIEnum.poi_card,
 						ResponsiveUIEnum.before_start_unauthorized_tracker,
 						ResponsiveUIEnum.before_start_unauthorized_geofence
 					].includes(ui)
 						? "margin-top-from-header"
 						: ""
-				} ${arrowDirection}`}
+				} ${arrowDirection} ${
+					[
+						ResponsiveUIEnum.auth_tracker,
+						ResponsiveUIEnum.auth_geofence,
+						ResponsiveUIEnum.direction_to_routes
+					].includes(ui)
+						? "no-scroll-on-content"
+						: ""
+				}`}
 				scrollLocking={false}
 				onSpringEnd={() => setArrowDirection("no-dragging")}
 			>
