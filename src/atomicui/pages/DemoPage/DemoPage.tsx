@@ -20,6 +20,7 @@ import {
 	AboutModal,
 	AuthGeofenceBox,
 	AuthTrackerBox,
+	ResponsiveBottomSheet,
 	RouteBox,
 	SearchBox,
 	SettingsModal,
@@ -38,10 +39,11 @@ import {
 	useAwsPlace,
 	useAwsRoute,
 	useAwsTracker,
-	useMediaQuery,
 	usePersistedData,
 	useRecordViewPage
 } from "@demo/hooks";
+import useBottomSheet from "@demo/hooks/useBottomSheet";
+import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import {
 	EsriMapEnum,
 	GrabMapEnum,
@@ -52,7 +54,7 @@ import {
 	ShowStateType,
 	ToastType
 } from "@demo/types";
-import { EventTypeEnum, OpenDataMapEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { EventTypeEnum, OpenDataMapEnum, ResponsiveUIEnum, TriggeredByEnum } from "@demo/types/Enums";
 import { record } from "@demo/utils/analyticsUtils";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { getCurrentLocation } from "@demo/utils/getCurrentLocation";
@@ -79,7 +81,7 @@ const {
 	PERSIST_STORAGE_KEYS: { SHOULD_CLEAR_CREDENTIALS, GEO_LOCATION_ALLOWED, FASTEST_REGION },
 	ROUTES: { DEMO },
 	MAP_RESOURCES: { MAX_BOUNDS, AMAZON_HQ, GRAB_SUPPORTED_AWS_REGIONS },
-	LINKS: { AMAZON_LOCATION_TERMS_AND_CONDITIONS },
+	LINKS: { AMAZON_LOCATION_TERMS_AND_CONDITIONS, AWS_LOCATION },
 	GET_PARAMS: { DATA_PROVIDER }
 } = appConfig;
 const initShow = {
@@ -101,13 +103,15 @@ const initShow = {
 	unauthTrackerBox: false,
 	unauthSimulationBounds: false,
 	unauthSimulationDisclaimerModal: false,
-	unauthSimulationExitModal: false
+	unauthSimulationExitModal: false,
+	startUnauthSimulation: false
 };
 let interval: NodeJS.Timer | undefined;
 let timeout: NodeJS.Timer | undefined;
-
 const searchParams = new URLSearchParams(window.location.search);
 let switchToMapProvider = searchParams.get(DATA_PROVIDER);
+const peggedRemValue = 13;
+const extraGeoLocateTop = 2.6;
 
 const DemoPage: React.FC = () => {
 	const {} = useRecordViewPage("DemoPage");
@@ -121,6 +125,7 @@ const DemoPage: React.FC = () => {
 		Attribute: [],
 		Type: []
 	});
+	const [startSimulation, setStartSimulation] = React.useState(false);
 	const mapViewRef = useRef<MapRef | null>(null);
 	const geolocateControlRef = useRef<GeolocateControlRef | null>(null);
 	const {
@@ -165,11 +170,13 @@ const DemoPage: React.FC = () => {
 		doNotAskOpenDataDisclaimerModal,
 		setDoNotAskOpenDataDisclaimerModal
 	} = usePersistedData();
-	const isDesktop = useMediaQuery("(min-width: 1024px)");
+	const { isDesktop, isMobile, isTablet } = useDeviceMediaQuery();
+	const { setUI, ui, bottomSheetCurrentHeight } = useBottomSheet();
 	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();
 	const isLtr = langDir === "ltr";
 	const shouldClearCredentials = localStorage.getItem(SHOULD_CLEAR_CREDENTIALS) === "true";
+	const geoLocateTopValue = `-${(bottomSheetCurrentHeight || 0) / peggedRemValue + extraGeoLocateTop}rem`;
 
 	const isGrabAvailableInRegion = useMemo(() => !!region && GRAB_SUPPORTED_AWS_REGIONS.includes(region), [region]);
 
@@ -177,6 +184,28 @@ const DemoPage: React.FC = () => {
 		() => !isUserAwsAccountConnected || (isUserAwsAccountConnected && isGrabAvailableInRegion),
 		[isUserAwsAccountConnected, isGrabAvailableInRegion]
 	);
+
+	useEffect(() => {
+		let previousWidth = document.body.clientWidth;
+		const resizeObserver = new ResizeObserver(() => {
+			const currentWidth = document.body.clientWidth;
+			if ((previousWidth < 1024 && currentWidth >= 1024) || (previousWidth >= 1024 && currentWidth < 1024)) {
+				window.location.reload();
+			}
+			previousWidth = currentWidth;
+		});
+
+		const handleWindowResize = () => {
+			resizeObserver.observe(document.body);
+		};
+
+		window.addEventListener("resize", handleWindowResize);
+
+		return () => {
+			window.removeEventListener("resize", handleWindowResize);
+			resizeObserver.disconnect();
+		};
+	}, []);
 
 	useEffect(() => {
 		autoMapUnit.selected && setAutomaticMapUnit();
@@ -323,7 +352,7 @@ const DemoPage: React.FC = () => {
 			mapViewRef.current?.fitBounds(bound as [number, number, number, number], {
 				padding: suggestions.length > 2 ? 50 : 150
 			});
-		} else if (show.routeBox && routeData?.Summary.RouteBBox) {
+		} else if ((show.routeBox || ui === ResponsiveUIEnum.routes) && routeData?.Summary.RouteBBox) {
 			const boundingBox = routeData.Summary.RouteBBox;
 			const options = isDesktop
 				? {
@@ -334,17 +363,28 @@ const DemoPage: React.FC = () => {
 							right: 200
 						},
 						speed: 5,
+						linear: true
+				  }
+				: isTablet
+				? {
+						padding: {
+							top: 100,
+							bottom: 100,
+							left: 390,
+							right: 50
+						},
+						speed: 5,
 						linear: false
 				  }
 				: {
 						padding: {
-							top: 235,
-							bottom: 30,
+							top: 200,
+							bottom: 250,
 							left: 60,
 							right: 70
 						},
 						speed: 5,
-						linear: false
+						linear: true
 				  };
 			isDesktop
 				? mapViewRef.current?.fitBounds(
@@ -362,7 +402,7 @@ const DemoPage: React.FC = () => {
 						options
 				  );
 		}
-	}, [suggestions, bound, show.routeBox, routeData, isDesktop, currentMapProvider, currentMapStyle]);
+	}, [suggestions, bound, show.routeBox, ui, routeData, isDesktop, isTablet, currentMapProvider, currentMapStyle]);
 
 	useEffect(() => {
 		if (directions) setShow(s => ({ ...s, routeBox: true }));
@@ -416,37 +456,43 @@ const DemoPage: React.FC = () => {
 		}
 	}, [getCurrentGeoLocation, region]);
 
-	const onGeoLocate = ({ coords: { latitude, longitude } }: GeolocateResultEvent) => {
-		if (routeData) {
-			resetAwsRouteStore();
-			setShow(s => ({ ...s, routeBox: false }));
+	const onGeoLocate = useCallback(
+		({ coords: { latitude, longitude } }: GeolocateResultEvent) => {
+			if (routeData) {
+				resetAwsRouteStore();
+				setShow(s => ({ ...s, routeBox: false }));
 
-			setTimeout(() => {
+				setTimeout(() => {
+					setViewpoint({ latitude, longitude });
+					setCurrentLocation({ currentLocation: { latitude, longitude }, error: undefined });
+				}, 0);
+			} else {
 				setViewpoint({ latitude, longitude });
 				setCurrentLocation({ currentLocation: { latitude, longitude }, error: undefined });
-			}, 0);
-		} else {
-			setViewpoint({ latitude, longitude });
-			setCurrentLocation({ currentLocation: { latitude, longitude }, error: undefined });
-		}
-	};
+			}
+		},
+		[resetAwsRouteStore, routeData, setCurrentLocation, setViewpoint]
+	);
 
-	const onGeoLocateError = (e: GeolocateErrorEvent) => {
-		setCurrentLocation({ currentLocation: undefined, error: { ...omit(["type", "target"], e) } });
+	const onGeoLocateError = useCallback(
+		(e: GeolocateErrorEvent) => {
+			setCurrentLocation({ currentLocation: undefined, error: { ...omit(["type", "target"], e) } });
 
-		if (e.code === e.PERMISSION_DENIED) {
-			localStorage.setItem(GEO_LOCATION_ALLOWED, "no");
-			showToast({
-				content: t("show_toast__lpd.text"),
-				type: ToastType.ERROR
-			});
-		} else if (e.code === e.POSITION_UNAVAILABLE) {
-			showToast({
-				content: t("show_toast__lpu.text"),
-				type: ToastType.ERROR
-			});
-		}
-	};
+			if (e.code === e.PERMISSION_DENIED) {
+				localStorage.setItem(GEO_LOCATION_ALLOWED, "no");
+				showToast({
+					content: t("show_toast__lpd.text"),
+					type: ToastType.ERROR
+				});
+			} else if (e.code === e.POSITION_UNAVAILABLE) {
+				showToast({
+					content: t("show_toast__lpu.text"),
+					type: ToastType.ERROR
+				});
+			}
+		},
+		[setCurrentLocation, t]
+	);
 
 	const handleMapClick = ({ lngLat }: MapLayerMouseEvent) => {
 		if (lngLat && !show.unauthGeofenceBox && !show.unauthTrackerBox) {
@@ -478,6 +524,7 @@ const DemoPage: React.FC = () => {
 		resetAwsGeofenceStore();
 		resetAwsTrackingStore();
 		setShow(s => ({ ...s, authTrackerDisclaimerModal: false, authTrackerBox: true }));
+		!isDesktop && setUI(ResponsiveUIEnum.auth_tracker);
 	};
 
 	const locationError = useMemo(() => !!currentLocationData?.error, [currentLocationData]);
@@ -534,7 +581,6 @@ const DemoPage: React.FC = () => {
 						});
 					}
 				} else {
-					/* If current location data doesn't exists */
 					setViewpoint({ latitude: AMAZON_HQ.SG.latitude, longitude: AMAZON_HQ.SG.longitude });
 					setZoom(15);
 					mapViewRef.current?.flyTo({
@@ -542,10 +588,10 @@ const DemoPage: React.FC = () => {
 					});
 				}
 			} else {
-				/* When switching from Grab */
-				if (currentLocationData?.currentLocation && isCurrentLocationDisabled) {
+				/* When switching between other map providers or styles */
+				if (currentLocationData?.currentLocation) {
 					const { latitude, longitude } = currentLocationData.currentLocation;
-					setIsCurrentLocationDisabled(false);
+					isCurrentLocationDisabled && setIsCurrentLocationDisabled(false);
 					setViewpoint({ latitude, longitude });
 					setZoom(15);
 					mapViewRef.current?.flyTo({ center: [longitude, latitude] });
@@ -692,25 +738,24 @@ const DemoPage: React.FC = () => {
 
 	/* Handle search query params for map provider */
 	useEffect(() => {
-		const { ESRI, HERE, GRAB, OPEN_DATA } = MapProviderEnum;
+		if (switchToMapProvider) {
+			const { ESRI, HERE, GRAB, OPEN_DATA } = MapProviderEnum;
 
-		if (switchToMapProvider && ![ESRI, HERE, GRAB, "GrabMaps", OPEN_DATA].includes(switchToMapProvider)) {
-			switchToMapProvider = MapProviderEnum.ESRI;
-			onMapProviderChange(switchToMapProvider as MapProviderEnum, TriggeredByEnum.DEMO_PAGE);
-		} else {
-			if (switchToMapProvider && currentMapProvider !== switchToMapProvider) {
+			if (![ESRI, HERE, GRAB, "GrabMaps", OPEN_DATA].includes(switchToMapProvider)) {
+				/* Invalid search query param for map provider */
+				onMapProviderChange(currentMapProvider, TriggeredByEnum.DEMO_PAGE);
+			} else if (currentMapProvider !== switchToMapProvider) {
 				/* If search query param exist, update map provider based on search query param */
 				if (["Grab", "GrabMaps"].includes(switchToMapProvider)) {
 					isGrabVisible ? onMapProviderChange(GRAB, TriggeredByEnum.DEMO_PAGE) : setMapProvider(currentMapProvider);
 				} else {
 					onMapProviderChange(switchToMapProvider as MapProviderEnum, TriggeredByEnum.DEMO_PAGE);
 				}
-
-				switchToMapProvider = null;
-			} else if (!location.search.includes(`${DATA_PROVIDER}=`)) {
-				/* If search query param doesn't exist, update search query param based on current map provider */
-				setMapProvider(currentMapProvider);
 			}
+			switchToMapProvider = null;
+		} else if (!location.search.includes(`${DATA_PROVIDER}=`)) {
+			/* If search query param doesn't exist, update search query param based on current map provider */
+			setMapProvider(currentMapProvider);
 		}
 	}, [currentMapProvider, isGrabVisible, setMapProvider, onMapProviderChange]);
 
@@ -729,7 +774,7 @@ const DemoPage: React.FC = () => {
 				/* No map provider switch required */
 				setMapStyle(mapStyle);
 			} else if (mapProviderFromStyle === MapProviderEnum.OPEN_DATA) {
-				/* Switching from OpenData map provider to different map provider and style */
+				/* Switching to OpenData map provider to different map provider and style */
 				if (doNotAskOpenDataDisclaimerModal) {
 					setTimeout(
 						() => setShow(s => ({ ...s, openDataDisclaimerModal: true, mapStyle: mapStyle as OpenDataMapEnum })),
@@ -800,6 +845,97 @@ const DemoPage: React.FC = () => {
 		]
 	);
 
+	const searchBoxEl = useCallback(
+		(isSimpleSearch = false) => (
+			<SearchBox
+				mapRef={mapViewRef?.current}
+				isSideMenuExpanded={show.sidebar}
+				onToggleSideMenu={() => setShow(s => ({ ...s, sidebar: !s.sidebar }))}
+				setShowRouteBox={b => setShow(s => ({ ...s, routeBox: b }))}
+				isRouteBoxOpen={show.routeBox}
+				isAuthGeofenceBoxOpen={show.authGeofenceBox}
+				isAuthTrackerBoxOpen={show.authTrackerBox}
+				isSettingsOpen={show.settings}
+				isStylesCardOpen={show.stylesCard}
+				isSimpleSearch={isSimpleSearch}
+			/>
+		),
+		[show.authGeofenceBox, show.authTrackerBox, show.routeBox, show.settings, show.sidebar, show.stylesCard]
+	);
+
+	const GeoLocateIcon = useMemo(
+		() =>
+			locationError || isCurrentLocationDisabled ? (
+				<Flex
+					style={{
+						position: "absolute",
+						bottom: isMobile ? `${(bottomSheetCurrentHeight || 0) / 13 + 1.2}rem` : isDesktop ? "12.85rem" : "2rem",
+						right: isMobile ? "1rem" : isDesktop ? "2rem" : "2rem"
+					}}
+					className="location-disabled"
+					onClick={() => getCurrentGeoLocation()}
+				>
+					<IconLocateMe />
+				</Flex>
+			) : (
+				<GeolocateControl
+					style={{
+						width: "2.46rem",
+						height: "2.46rem",
+						position: "absolute",
+						top: isMobile ? geoLocateTopValue : isDesktop ? "-9.5rem" : "-2.5rem",
+						right: isMobile ? "-0.3rem" : isDesktop ? "0.75rem" : "0rem",
+						margin: 0,
+						borderRadius: "0.62rem"
+					}}
+					position="bottom-right"
+					ref={geolocateControlRef}
+					positionOptions={{ enableHighAccuracy: true }}
+					showUserLocation
+					showAccuracyCircle={false}
+					onGeolocate={onGeoLocate}
+					onError={onGeoLocateError}
+				/>
+			),
+		[
+			locationError,
+			isCurrentLocationDisabled,
+			isMobile,
+			bottomSheetCurrentHeight,
+			isDesktop,
+			geoLocateTopValue,
+			onGeoLocate,
+			onGeoLocateError,
+			getCurrentGeoLocation
+		]
+	);
+
+	const UnauthSimulationUI = useMemo(
+		() => (
+			<UnauthSimulation
+				mapRef={mapViewRef?.current}
+				from={show.unauthGeofenceBox ? MenuItemEnum.GEOFENCE : MenuItemEnum.TRACKER}
+				setShowUnauthGeofenceBox={b => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
+				setShowUnauthTrackerBox={b => setShow(s => ({ ...s, unauthTrackerBox: b }))}
+				setShowConnectAwsAccountModal={b => setShow(s => ({ ...s, connectAwsAccount: b }))}
+				showStartUnauthSimulation={show.startUnauthSimulation}
+				setShowStartUnauthSimulation={b => setShow(s => ({ ...s, startUnauthSimulation: b }))}
+				startSimulation={startSimulation}
+				setStartSimulation={setStartSimulation}
+				setShowUnauthSimulationBounds={b => setShow(s => ({ ...s, unauthSimulationBounds: b }))}
+			/>
+		),
+		[show.startUnauthSimulation, show.unauthGeofenceBox, startSimulation]
+	);
+
+	const handleLogoClick = () =>
+		window.open(
+			isUserAwsAccountConnected && region
+				? `https://${region}.console.aws.amazon.com/location/home?region=${region}#/`
+				: AWS_LOCATION,
+			"_blank"
+		);
+
 	return !!credentials?.identityId ? (
 		<View
 			style={{ height }}
@@ -822,7 +958,11 @@ const DemoPage: React.FC = () => {
 					currentMapProvider === MapProviderEnum.GRAB
 						? (MAX_BOUNDS.GRAB as LngLatBoundsLike)
 						: (show.unauthGeofenceBox || show.unauthTrackerBox) && show.unauthSimulationBounds
-						? (MAX_BOUNDS.VANCOUVER as LngLatBoundsLike)
+						? isDesktop
+							? (MAX_BOUNDS.VANCOUVER.DESKTOP as LngLatBoundsLike)
+							: isTablet
+							? (MAX_BOUNDS.VANCOUVER.TABLET as LngLatBoundsLike)
+							: (MAX_BOUNDS.VANCOUVER.MOBILE as LngLatBoundsLike)
 						: (MAX_BOUNDS.DEFAULT as LngLatBoundsLike)
 				}
 				onClick={handleMapClick}
@@ -834,63 +974,127 @@ const DemoPage: React.FC = () => {
 				attributionControl={false}
 			>
 				<View className={show.gridLoader ? "loader-container" : ""}>
-					{show.sidebar && (
-						<Sidebar
-							onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
-							onOpenConnectAwsAccountModal={() => setShow(s => ({ ...s, connectAwsAccount: true }))}
-							onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
-							onShowSettings={() => setShow(s => ({ ...s, settings: true }))}
-							onShowAboutModal={() => setShow(s => ({ ...s, about: true }))}
-							onShowAuthGeofenceBox={() => setShow(s => ({ ...s, authGeofenceBox: true }))}
-							onShowAuthTrackerDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
-							onShowAuthTrackerBox={() => setShow(s => ({ ...s, authTrackerBox: true }))}
-							onShowUnauthSimulationDisclaimerModal={() =>
-								setShow(s => ({ ...s, unauthSimulationDisclaimerModal: true }))
-							}
-							onShowUnauthGeofenceBox={() => setShow(s => ({ ...s, unauthGeofenceBox: true }))}
-							onShowUnauthTrackerBox={() => setShow(s => ({ ...s, unauthTrackerBox: true }))}
-						/>
+					{isDesktop && (
+						<>
+							{show.sidebar && (
+								<Sidebar
+									onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
+									onOpenConnectAwsAccountModal={() => setShow(s => ({ ...s, connectAwsAccount: true }))}
+									onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
+									onShowSettings={() => setShow(s => ({ ...s, settings: true }))}
+									onShowAboutModal={() => setShow(s => ({ ...s, about: true }))}
+									onShowAuthGeofenceBox={() => setShow(s => ({ ...s, authGeofenceBox: true }))}
+									onShowAuthTrackerDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
+									onShowAuthTrackerBox={() => setShow(s => ({ ...s, authTrackerBox: true }))}
+									onShowUnauthSimulationDisclaimerModal={() =>
+										setShow(s => ({ ...s, unauthSimulationDisclaimerModal: true }))
+									}
+									onShowUnauthGeofenceBox={() => setShow(s => ({ ...s, unauthGeofenceBox: true }))}
+									onShowUnauthTrackerBox={() => setShow(s => ({ ...s, unauthTrackerBox: true }))}
+								/>
+							)}
+							{show.routeBox ? (
+								<RouteBox
+									mapRef={mapViewRef?.current}
+									setShowRouteBox={b => setShow(s => ({ ...s, routeBox: b }))}
+									isSideMenuExpanded={show.sidebar}
+								/>
+							) : show.authGeofenceBox ? (
+								<AuthGeofenceBox
+									mapRef={mapViewRef?.current}
+									setShowAuthGeofenceBox={b => setShow(s => ({ ...s, authGeofenceBox: b }))}
+								/>
+							) : show.authTrackerBox ? (
+								<AuthTrackerBox
+									mapRef={mapViewRef?.current}
+									setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
+									clearCredsAndLocationClient={clearCredsAndLocationClient}
+								/>
+							) : show.unauthGeofenceBox || show.unauthTrackerBox ? (
+								UnauthSimulationUI
+							) : (
+								searchBoxEl()
+							)}
+						</>
 					)}
-					{show.routeBox ? (
-						<RouteBox
-							mapRef={mapViewRef?.current}
-							setShowRouteBox={b => setShow(s => ({ ...s, routeBox: b }))}
-							isSideMenuExpanded={show.sidebar}
-						/>
-					) : show.authGeofenceBox ? (
-						<AuthGeofenceBox
-							mapRef={mapViewRef?.current}
-							setShowAuthGeofenceBox={b => setShow(s => ({ ...s, authGeofenceBox: b }))}
-						/>
-					) : show.authTrackerBox ? (
-						<AuthTrackerBox
-							mapRef={mapViewRef?.current}
-							setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
-							clearCredsAndLocationClient={clearCredsAndLocationClient}
-						/>
-					) : show.unauthGeofenceBox || show.unauthTrackerBox ? (
-						<UnauthSimulation
-							mapRef={mapViewRef?.current}
-							from={show.unauthGeofenceBox ? MenuItemEnum.GEOFENCE : MenuItemEnum.TRACKER}
-							setShowUnauthGeofenceBox={b => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
-							setShowUnauthTrackerBox={b => setShow(s => ({ ...s, unauthTrackerBox: b }))}
-							setShowConnectAwsAccountModal={b => setShow(s => ({ ...s, connectAwsAccount: b }))}
-							setShowUnauthSimulationBounds={b => setShow(s => ({ ...s, unauthSimulationBounds: b }))}
-							clearCredsAndLocationClient={clearCredsAndLocationClient}
-						/>
-					) : (
-						<SearchBox
-							mapRef={mapViewRef?.current}
-							isSideMenuExpanded={show.sidebar}
-							onToggleSideMenu={() => setShow(s => ({ ...s, sidebar: !s.sidebar }))}
-							setShowRouteBox={b => setShow(s => ({ ...s, routeBox: b }))}
-							isRouteBoxOpen={show.routeBox}
-							isAuthGeofenceBoxOpen={show.authGeofenceBox}
-							isAuthTrackerBoxOpen={show.authTrackerBox}
-							isSettingsOpen={show.settings}
-							isStylesCardOpen={show.stylesCard}
-						/>
-					)}
+					<ResponsiveBottomSheet
+						SearchBoxEl={() => searchBoxEl(true)}
+						MapButtons={
+							<MapButtons
+								renderedUpon={TriggeredByEnum.SETTINGS_MODAL}
+								openStylesCard={show.stylesCard}
+								setOpenStylesCard={b => setShow(s => ({ ...s, stylesCard: b }))}
+								onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
+								onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
+								isGrabVisible={isGrabVisible}
+								showGrabDisclaimerModal={show.grabDisclaimerModal}
+								showOpenDataDisclaimerModal={show.openDataDisclaimerModal}
+								onShowGridLoader={() => setShow(s => ({ ...s, gridLoader: true }))}
+								handleMapStyleChange={onMapStyleChange}
+								searchValue={searchValue}
+								setSearchValue={setSearchValue}
+								selectedFilters={selectedFilters}
+								setSelectedFilters={setSelectedFilters}
+								handleMapProviderChange={onMapProviderChange}
+								isAuthTrackerBoxOpen={show.authTrackerBox}
+								isAuthTrackerDisclaimerModalOpen={show.authTrackerDisclaimerModal}
+								onShowAuthTrackerDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
+								isAuthGeofenceBoxOpen={show.authGeofenceBox}
+								onSetShowAuthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, authGeofenceBox: b }))}
+								onSetShowAuthTrackerBox={(b: boolean) => setShow(s => ({ ...s, authTrackerBox: b }))}
+								onShowUnauthSimulationDisclaimerModal={() =>
+									setShow(s => ({ ...s, unauthSimulationDisclaimerModal: true }))
+								}
+								isUnauthGeofenceBoxOpen={show.unauthGeofenceBox}
+								isUnauthTrackerBoxOpen={show.unauthTrackerBox}
+								onSetShowUnauthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
+								onSetShowUnauthTrackerBox={(b: boolean) => setShow(s => ({ ...s, unauthTrackerBox: b }))}
+								onlyMapStyles
+								isHandDevice
+							/>
+						}
+						mapRef={mapViewRef?.current}
+						RouteBox={
+							<RouteBox
+								mapRef={mapViewRef?.current}
+								setShowRouteBox={b => setShow(s => ({ ...s, routeBox: b }))}
+								isSideMenuExpanded={show.sidebar}
+								isDirection={ui === ResponsiveUIEnum.direction_to_routes}
+							/>
+						}
+						onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
+						onOpenConnectAwsAccountModal={() => setShow(s => ({ ...s, connectAwsAccount: true }))}
+						onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
+						onShowSettings={() => setShow(s => ({ ...s, settings: true }))}
+						onShowTrackingDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
+						onShowAboutModal={() => setShow(s => ({ ...s, about: true }))}
+						onShowUnauthGeofenceBox={() => setShow(s => ({ ...s, unauthGeofenceBox: true }))}
+						onShowUnauthTrackerBox={() => setShow(s => ({ ...s, unauthTrackerBox: true }))}
+						onShowAuthGeofenceBox={() => setShow(s => ({ ...s, authGeofenceBox: true }))}
+						onShowAuthTrackerBox={() => setShow(s => ({ ...s, authTrackerBox: true }))}
+						onshowUnauthSimulationDisclaimerModal={() =>
+							setShow(s => ({ ...s, unauthSimulationDisclaimerModal: true }))
+						}
+						setShowUnauthGeofenceBox={b => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
+						setShowUnauthTrackerBox={b => setShow(s => ({ ...s, unauthTrackerBox: b }))}
+						showStartUnauthSimulation={show.startUnauthSimulation}
+						setShowStartUnauthSimulation={b => setShow(s => ({ ...s, startUnauthSimulation: b }))}
+						from={show.unauthGeofenceBox ? MenuItemEnum.GEOFENCE : MenuItemEnum.TRACKER}
+						UnauthSimulationUI={UnauthSimulationUI}
+						AuthGeofenceBox={
+							<AuthGeofenceBox
+								mapRef={mapViewRef?.current}
+								setShowAuthGeofenceBox={b => setShow(s => ({ ...s, authGeofenceBox: b }))}
+							/>
+						}
+						AuthTrackerBox={
+							<AuthTrackerBox
+								mapRef={mapViewRef?.current}
+								setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
+							/>
+						}
+						handleLogoClick={handleLogoClick}
+					/>
 					<MapButtons
 						renderedUpon={TriggeredByEnum.DEMO_PAGE}
 						openStylesCard={show.stylesCard}
@@ -921,57 +1125,41 @@ const DemoPage: React.FC = () => {
 						onSetShowUnauthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
 						onSetShowUnauthTrackerBox={(b: boolean) => setShow(s => ({ ...s, unauthTrackerBox: b }))}
 					/>
-					{locationError || isCurrentLocationDisabled ? (
-						<Flex className="location-disabled" onClick={() => getCurrentGeoLocation()}>
-							<IconLocateMe />
-						</Flex>
-					) : (
-						<GeolocateControl
+					{GeoLocateIcon}
+					{isDesktop && (
+						<NavigationControl
 							style={{
 								width: "2.46rem",
-								height: "2.46rem",
+								height: "4.92rem",
 								position: "absolute",
-								top: "-9.5rem",
+								top: "-6rem",
 								right: "0.75rem",
 								margin: 0,
 								borderRadius: "0.62rem"
 							}}
 							position="bottom-right"
-							ref={geolocateControlRef}
-							positionOptions={{ enableHighAccuracy: true }}
-							showUserLocation
-							showAccuracyCircle={false}
-							onGeolocate={onGeoLocate}
-							onError={onGeoLocateError}
+							showZoom
+							showCompass={false}
 						/>
 					)}
-					<NavigationControl
-						style={{
-							width: "2.46rem",
-							height: "4.92rem",
-							position: "absolute",
-							top: "-6rem",
-							right: "0.75rem",
-							margin: 0,
-							borderRadius: "0.62rem"
-						}}
-						position="bottom-right"
-						showZoom
-						showCompass={false}
-					/>
 				</View>
 				<AttributionControl
-					style={{
-						fontSize: "0.77rem",
-						borderRadius: "0.62rem",
-						marginRight: "0.77rem",
-						marginBottom: !isDesktop ? "2.77rem" : "0rem",
-						backgroundColor: currentMapStyle.toLowerCase().includes("dark")
-							? "rgba(0, 0, 0, 0.2)"
-							: "var(--white-color)",
-						color: currentMapStyle.toLowerCase().includes("dark") ? "var(--white-color)" : "var(--black-color)"
-					}}
-					compact={!isDesktop}
+					style={
+						isDesktop
+							? {
+									display: "flex",
+									fontSize: "0.77rem",
+									color: currentMapStyle.toLowerCase().includes("dark") ? "var(--white-color)" : "var(--black-color)",
+									backgroundColor: currentMapStyle.toLowerCase().includes("dark")
+										? "rgba(0, 0, 0, 0.2)"
+										: "var(--white-color)",
+									border: "0px solid none",
+									marginTop: "0rem",
+									marginBottom: "0rem"
+							  }
+							: { display: "none" }
+					}
+					compact={true}
 				/>
 			</Map>
 			<WelcomeModal open={showWelcomeModal} onClose={() => setShowWelcomeModal(false)} />
@@ -1013,6 +1201,7 @@ const DemoPage: React.FC = () => {
 						onSetShowAuthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, authGeofenceBox: b }))}
 						isAuthTrackerDisclaimerModalOpen={show.authTrackerDisclaimerModal}
 						isAuthTrackerBoxOpen={show.authTrackerBox}
+						isSettingsModal
 						onShowAuthTrackerDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
 						onSetShowAuthTrackerBox={(b: boolean) => setShow(s => ({ ...s, authTrackerBox: b }))}
 						onShowUnauthSimulationDisclaimerModal={() =>
@@ -1100,9 +1289,14 @@ const DemoPage: React.FC = () => {
 				}}
 				cancelationText={t("start_unauth_simulation__stay_in_simulation.text")}
 			/>
-			<Flex className="logo-stroke-container">
-				{currentMapStyle.toLowerCase().includes("dark") ? <LogoDark /> : <LogoLight />}
-			</Flex>
+			{(isDesktop || isTablet) && (
+				<Flex
+					className={`logo-stroke-container ${isTablet ? "logo-stroke-container-tablet" : ""}`}
+					onClick={handleLogoClick}
+				>
+					{currentMapStyle.toLowerCase().includes("dark") ? <LogoDark /> : <LogoLight />}
+				</Flex>
+			)}
 		</View>
 	) : (
 		<DemoPlaceholderPage

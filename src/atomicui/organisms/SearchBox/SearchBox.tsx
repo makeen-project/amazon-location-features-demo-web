@@ -3,12 +3,15 @@
 
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { Autocomplete, ComboBoxOption, Flex, Placeholder, Text, View } from "@aws-amplify/ui-react";
+import { Autocomplete, Button, ComboBoxOption, Flex, Placeholder, Text, View } from "@aws-amplify/ui-react";
 import { IconActionMenu, IconClose, IconDirections, IconPin, IconSearch } from "@demo/assets";
-import { Marker, NotFoundCard, SuggestionMarker } from "@demo/atomicui/molecules";
+import { InputField, Marker, NotFoundCard, SuggestionMarker } from "@demo/atomicui/molecules";
+import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
 import { useAmplifyMap, useAwsPlace } from "@demo/hooks";
+import useBottomSheet from "@demo/hooks/useBottomSheet";
+import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import { DistanceUnitEnum, MapUnitEnum, SuggestionType } from "@demo/types";
-import { AnalyticsEventActionsEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { AnalyticsEventActionsEnum, ResponsiveUIEnum, TriggeredByEnum } from "@demo/types/Enums";
 import { calculateGeodesicDistance } from "@demo/utils/geoCalculation";
 import { uuid } from "@demo/utils/uuid";
 import { Units } from "@turf/turf";
@@ -32,6 +35,7 @@ interface SearchBoxProps {
 	isAuthTrackerBoxOpen: boolean;
 	isSettingsOpen: boolean;
 	isStylesCardOpen: boolean;
+	isSimpleSearch?: boolean;
 }
 
 const SearchBox: React.FC<SearchBoxProps> = ({
@@ -43,11 +47,12 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 	isAuthGeofenceBoxOpen,
 	isAuthTrackerBoxOpen,
 	isSettingsOpen,
-	isStylesCardOpen
+	isStylesCardOpen,
+	isSimpleSearch = false
 }) => {
-	const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-	const [value, setValue] = useState<string>("");
+	const [value, setValue] = useState("");
 	const [isFocused, setIsFocused] = useState(false);
+	const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const autocompleteRef = useRef<HTMLInputElement | null>(null);
 	const { mapUnit: currentMapUnit, isCurrentLocationDisabled, currentLocationData, viewpoint } = useAmplifyMap();
 	const {
@@ -60,18 +65,33 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 		clearPoiList,
 		setSelectedMarker,
 		setHoveredMarker,
+		setSearchingState,
 		setIsSearching
 	} = useAwsPlace();
 	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();
 	const currentLang = i18n.language;
 	const isLanguageRTL = ["ar", "he"].includes(currentLang);
+	const {
+		bottomSheetCurrentHeight = 0,
+		setBottomSheetMinHeight,
+		setBottomSheetHeight,
+		POICard,
+		setUI,
+		ui
+	} = useBottomSheet();
+	const { isDesktop, isMobile } = useDeviceMediaQuery();
+	const searchContainerRef = useRef<HTMLDivElement>(null);
+	const searchInputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
-		if (!value) {
-			clearPoiList();
+		if (!isDesktop) {
+			if (isFocused && !!value?.length) setUI(ResponsiveUIEnum.search);
+			else if (ui === ResponsiveUIEnum.search && !value?.length) setUI(ResponsiveUIEnum.explore);
 		}
+	}, [setUI, isFocused, value, isDesktop, ui]);
 
+	useEffect(() => {
 		if (isRouteBoxOpen || isAuthGeofenceBoxOpen || isAuthTrackerBoxOpen || isSettingsOpen || isStylesCardOpen) {
 			setValue("");
 			clearPoiList();
@@ -88,6 +108,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 
 	const handleSearch = useCallback(
 		async (value: string, exact = false, action: string) => {
+			setSearchingState(!!value?.length);
 			const { lng: longitude, lat: latitude } = mapRef?.getCenter() as LngLat;
 			const vp = { longitude, latitude };
 
@@ -108,7 +129,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 				setIsSearching(false);
 			}, 200);
 		},
-		[mapRef, setIsSearching, search]
+		[mapRef, search, setSearchingState, setIsSearching]
 	);
 
 	useEffect(() => {
@@ -119,17 +140,35 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 		};
 	}, []);
 
-	const selectSuggestion = async ({ text, label, placeid }: ComboBoxOption) => {
-		if (!placeid) {
-			await handleSearch(text || label, true, AnalyticsEventActionsEnum.SUGGESTION_SELECTED);
-		} else {
-			const selectedMarker = suggestions?.find(
-				(i: SuggestionType) => i.PlaceId === placeid || i.Place?.Label === placeid
-			);
-
-			await setSelectedMarker(selectedMarker);
+	useEffect(() => {
+		function handleClickOutside() {
+			if (!POICard) {
+				searchInputRef?.current?.blur();
+				setBottomSheetHeight(window.innerHeight);
+				setBottomSheetMinHeight(BottomSheetHeights.explore.min);
+			}
 		}
-	};
+
+		document.addEventListener("touchmove", handleClickOutside);
+		return () => {
+			document.removeEventListener("touchmove", handleClickOutside);
+		};
+	}, [POICard, setBottomSheetHeight, setBottomSheetMinHeight, isMobile]);
+
+	const selectSuggestion = useCallback(
+		async ({ text, label, placeid }: ComboBoxOption) => {
+			if (!placeid) {
+				await handleSearch(text || label, true, AnalyticsEventActionsEnum.SUGGESTION_SELECTED);
+			} else {
+				const selectedMarker = suggestions?.find(
+					(i: SuggestionType) => i.PlaceId === placeid || i.Place?.Label === placeid
+				);
+
+				await setSelectedMarker(selectedMarker);
+			}
+		},
+		[handleSearch, setSelectedMarker, suggestions]
+	);
 
 	const setHover = useCallback(
 		({ placeid }: ComboBoxOption) => {
@@ -153,8 +192,9 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 		if (!!value) {
 			clearPoiList();
 			handleSearch(value, false, AnalyticsEventActionsEnum.SEARCH_ICON_CLICK);
-			autocompleteRef?.current?.focus();
+			// setBottomSheetMinHeight(isMobile ? (isMobile ? BottomSheetHeights.search.min : 80) : 80);
 		}
+		autocompleteRef?.current?.focus();
 	};
 
 	const renderOption = (option: {
@@ -236,12 +276,13 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 	const onClearSearch = () => {
 		setValue("");
 		clearPoiList();
+		isSimpleSearch && setUI && setUI(ResponsiveUIEnum.explore);
 	};
 
 	const markers = useMemo(() => {
 		if (suggestions?.length === 1 && selectedMarker) {
-			return suggestions.map(s => (
-				<SuggestionMarker key={s.Hash} active={true} searchValue={value} setSearchValue={setValue} {...s} />
+			return suggestions.map((s, i) => (
+				<SuggestionMarker key={i} active={true} searchValue={value} setSearchValue={setValue} {...s} />
 			));
 		} else if (!clusters) {
 			return suggestions?.map((s, i) => {
@@ -273,11 +314,11 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 				return acc;
 			}, [] as Array<JSX.Element>);
 		}
-	}, [suggestions, selectedMarker, clusters, value]);
+	}, [suggestions, selectedMarker, clusters, value, setValue]);
 
 	const mapMarker = useMemo(
 		() => marker && <Marker searchValue={value} setSearchValue={setValue} {...marker} />,
-		[value, marker]
+		[marker, value, setValue]
 	);
 
 	const hideBorderRadius = useMemo(() => {
@@ -289,96 +330,220 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 		);
 	}, [value, suggestions?.length, isFocused, isSearching]);
 
+	const onFormSubmit = useCallback(
+		(e: React.FormEvent<HTMLFormElement>) => {
+			e.preventDefault();
+			handleSearch(value, true, AnalyticsEventActionsEnum.ENTER_BUTTON);
+			if (!!options?.length) {
+				setBottomSheetMinHeight(BottomSheetHeights.search.min);
+				setBottomSheetHeight(BottomSheetHeights.search.min);
+				searchInputRef?.current?.blur();
+			}
+		},
+		[handleSearch, options, setBottomSheetHeight, setBottomSheetMinHeight, value]
+	);
+
 	return (
 		<>
-			<Flex
-				data-testid="search-bar-container"
-				className="search-bar"
-				style={{
-					flexDirection: "column",
-					left: isSideMenuExpanded ? 252 : 20,
-					borderBottomLeftRadius: hideBorderRadius ? "0px" : "8px",
-					borderBottomRightRadius: hideBorderRadius ? "0px" : "8px"
-				}}
-			>
-				<Flex gap={0} width="100%" height="100%" alignItems="center">
-					<Autocomplete
-						className={!value && !suggestions?.length ? "search-complete noEmpty" : "search-complete"}
-						ref={autocompleteRef}
-						inputMode="search"
-						hasSearchIcon={false}
-						label={t("search.text")}
-						dir={langDir}
-						innerStartComponent={
-							<Flex data-testid="hamburger-menu" className="inner-start-component" onClick={onToggleSideMenu}>
-								<IconActionMenu />
-							</Flex>
-						}
-						size="large"
-						onFocus={() => setIsFocused(true)}
-						onBlur={() => setIsFocused(false)}
-						onSubmit={e => handleSearch(e, true, AnalyticsEventActionsEnum.ENTER_BUTTON)}
-						value={value}
-						onChange={onChange}
-						onClear={clearPoiList}
-						placeholder={t("search.text") as string}
-						options={options || []}
-						results={options?.length || 0}
-						renderOption={renderOption}
-						optionFilter={() => true}
-						onSelect={selectSuggestion}
-						menuSlots={{
-							LoadingIndicator: (
-								<Flex className="search-loader-container">
-									{Array.from({ length: 5 }).map((_, index) => (
-										<Flex className="skeleton-container" key={index}>
-											<Placeholder />
-											<Placeholder width="65%" />
-										</Flex>
-									))}
+			{ui !== ResponsiveUIEnum.poi_card && !POICard ? (
+				<>
+					{isSimpleSearch ? (
+						<Flex direction="column" gap="0" className="simple-search-bar" ref={searchContainerRef}>
+							<form onSubmit={onFormSubmit}>
+								<Flex gap="0" padding="0 0.61rem 0.61rem">
+									<InputField
+										searchInputRef={searchInputRef}
+										value={value}
+										onChange={onChange}
+										dir={langDir}
+										onKeyDown={e => {
+											e.stopPropagation();
+										}}
+										onFocus={e => {
+											e.stopPropagation();
+											setIsFocused(true);
+											setTimeout(() => {
+												setBottomSheetMinHeight(window.innerHeight - 10);
+												setBottomSheetHeight(window.innerHeight);
+											}, 200);
+											setTimeout(() => {
+												setBottomSheetMinHeight(BottomSheetHeights.explore.min);
+											}, 400);
+										}}
+										onBlur={e => {
+											e.stopPropagation();
+											setIsFocused(false);
+											!value?.length && setUI(ResponsiveUIEnum.explore);
+										}}
+										placeholder={t("search.text") as string}
+										innerStartComponent={
+											<Flex
+												className="icon inner-end-component"
+												onClick={onSearch}
+												alignItems="center"
+												margin="0 0.3rem 0 0.8rem"
+											>
+												<IconSearch data-tooltip-content={t("search.text")} width="1.53rem" />
+											</Flex>
+										}
+										innerEndComponent={
+											<Flex className="inner-end-components">
+												{!!value && (
+													<Flex className="icon outter-end-component" onClick={onClearSearch}>
+														<IconClose />
+													</Flex>
+												)}
+											</Flex>
+										}
+									/>
+									{!!value && (
+										<Button className="clear-button" onClick={onClearSearch}>
+											{t("confirmation_modal__cancel.text")}
+										</Button>
+									)}
 								</Flex>
-							),
-							Empty:
-								!!value && !suggestions?.length ? (
+							</form>
+							<Flex gap="0" direction="column">
+								{isSearching ? (
+									<Flex className="search-loader-container">
+										{Array.from({ length: 5 }).map((_, index) => (
+											<Flex className="skeleton-container" key={index}>
+												<Placeholder />
+												<Placeholder width="65%" />
+											</Flex>
+										))}
+									</Flex>
+								) : !isSearching && !!value && !suggestions?.length ? (
 									<Flex className="not-found-container">
 										<NotFoundCard />
 									</Flex>
-								) : null
-						}}
-						isLoading={isSearching}
-						innerEndComponent={
-							<Flex className="inner-end-components">
-								<Flex className="icon inner-end-component" onClick={onSearch}>
-									<IconSearch
-										data-tooltip-id="search-button"
-										data-tooltip-place="bottom"
-										data-tooltip-content={t("search.text")}
-									/>
-									<Tooltip id="search-button" />
-								</Flex>
-								<Flex
-									className="icon outter-end-component"
-									onClick={!!value ? onClearSearch : () => setShowRouteBox(true)}
-								>
-									{!!value ? (
-										<IconClose />
-									) : (
-										<>
-											<IconDirections
-												data-tooltip-id="directions-button"
-												data-tooltip-place="bottom"
-												data-tooltip-content={t("routes.text")}
-											/>
-											<Tooltip id="directions-button" />
-										</>
-									)}
-								</Flex>
+								) : (
+									<Flex
+										gap="0"
+										direction="column"
+										className={`search-complete ${!isDesktop ? "search-complete-mobile" : ""}`}
+										maxHeight={bottomSheetCurrentHeight}
+										paddingBottom={!!options?.length ? "5.1rem" : ""}
+									>
+										{!!options?.length &&
+											options.map((option, i) => (
+												<div
+													key={i}
+													onClick={() => {
+														selectSuggestion({
+															id: option.id,
+															text: !!option?.placeid ? value : option.label,
+															label: option.label,
+															placeid: option?.placeid
+														});
+														setBottomSheetMinHeight(BottomSheetHeights.search.min);
+														setBottomSheetHeight(BottomSheetHeights.search.min);
+													}}
+													className="option-wrapper"
+												>
+													{renderOption(option)}
+												</div>
+											))}
+									</Flex>
+								)}
 							</Flex>
-						}
-						crossOrigin={undefined}
-					/>
-				</Flex>
-			</Flex>
+						</Flex>
+					) : (
+						<Flex
+							data-testid="search-bar-container"
+							className="search-bar"
+							style={{
+								flexDirection: "column",
+								left: isSideMenuExpanded ? 252 : 20,
+								borderBottomLeftRadius: hideBorderRadius ? "0px" : "8px",
+								borderBottomRightRadius: hideBorderRadius ? "0px" : "8px"
+							}}
+						>
+							<Flex gap={0} width="100%" height="100%" alignItems="center">
+								<Autocomplete
+									className={!value && !suggestions?.length ? "search-complete noEmpty" : "search-complete"}
+									ref={autocompleteRef}
+									inputMode="search"
+									hasSearchIcon={false}
+									label={t("search.text")}
+									dir={langDir}
+									innerStartComponent={
+										<Flex data-testid="hamburger-menu" className="inner-start-component" onClick={onToggleSideMenu}>
+											<IconActionMenu />
+										</Flex>
+									}
+									size="large"
+									onFocus={() => setIsFocused(true)}
+									onBlur={() => setIsFocused(false)}
+									onSubmit={e => handleSearch(e, true, AnalyticsEventActionsEnum.ENTER_BUTTON)}
+									value={value}
+									onChange={onChange}
+									onClear={clearPoiList}
+									placeholder={t("search.text") as string}
+									options={options || []}
+									results={options?.length || 0}
+									renderOption={renderOption}
+									optionFilter={() => true}
+									onSelect={selectSuggestion}
+									menuSlots={{
+										LoadingIndicator: (
+											<Flex className="search-loader-container">
+												{Array.from({ length: 5 }).map((_, index) => (
+													<Flex className="skeleton-container" key={index}>
+														<Placeholder />
+														<Placeholder width="65%" />
+													</Flex>
+												))}
+											</Flex>
+										),
+										Empty:
+											!!value && !suggestions?.length ? (
+												<Flex className="not-found-container">
+													<NotFoundCard />
+												</Flex>
+											) : null
+									}}
+									isLoading={isSearching}
+									innerEndComponent={
+										<Flex className="inner-end-components">
+											<>
+												<Flex className="icon inner-end-component" onClick={onSearch}>
+													<IconSearch
+														data-tooltip-id="search-button"
+														data-tooltip-place="bottom"
+														data-tooltip-content={t("search.text")}
+													/>
+													<Tooltip id="search-button" />
+												</Flex>
+												<Flex
+													className="icon outter-end-component"
+													onClick={!!value ? onClearSearch : () => setShowRouteBox(true)}
+												>
+													{!!value ? (
+														<IconClose />
+													) : (
+														<>
+															<IconDirections
+																data-tooltip-id="directions-button"
+																data-tooltip-place="bottom"
+																data-tooltip-content={t("routes.text")}
+															/>
+															<Tooltip id="directions-button" />
+														</>
+													)}
+												</Flex>
+											</>
+										</Flex>
+									}
+									crossOrigin={undefined}
+								/>
+							</Flex>
+						</Flex>
+					)}
+				</>
+			) : (
+				POICard
+			)}
 			{markers}
 			{mapMarker}
 		</>
