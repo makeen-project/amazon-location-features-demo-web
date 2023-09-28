@@ -295,22 +295,3 @@ jest.mock("@demo/utils/analyticsUtils", () => ({
 jest.mock("@demo/utils/countryUtil", () => ({
 	getCountryCode: () => "PK"
 }));
-
-jest.mock("@demo/hooks/useDeviceMediaQuery", () => ({
-	__esModule: true,
-	default: () => ({
-		isDesktop: true,
-		isMobile: false,
-		isTablet: false,
-		isMax556: false,
-		isMax766: false
-	})
-}));
-
-if (typeof window?.location.reload === "undefined") {
-	Object.assign(window, {
-		location: {
-			reload: () => jest.fn()
-		}
-	});
-}
