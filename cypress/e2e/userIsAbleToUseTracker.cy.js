@@ -2,9 +2,9 @@
 /* SPDX-License-Identifier: MIT-0 */
 import { faker } from "@faker-js/faker";
 
-describe("Tracker", () => {
-	const geofenceName = faker.random.word();
+const geofenceName = faker.random.word();
 
+describe("Tracker", () => {
 	beforeEach(() => {
 		cy.visitDomain(`${Cypress.env("WEB_DOMAIN")}/demo`);
 		cy.get('[data-testid="hamburger-menu"]').click();
@@ -17,7 +17,11 @@ describe("Tracker", () => {
 		cy.get('[placeholder="Enter WebSocketUrl"]').type(`${Cypress.env("WEB_SOCKET_URL")}`);
 		cy.get('[data-testid="connect-button"]').click();
 		cy.wait(5000);
-		cy.get("div").should("contain", "Your AWS account is now connected.");
+		cy.get('[data-testid="connect-aws-account-modal-container"]').should(
+			"contain",
+			"Your AWS account is now connected."
+		);
+		cy.wait(5000);
 		cy.get('[data-testid="sign-in-button"]').click();
 		cy.wait(5000);
 		cy.origin(`${Cypress.env("USER_DOMAIN")}`, () => {
@@ -36,10 +40,8 @@ describe("Tracker", () => {
 			});
 		});
 		cy.wait(5000);
-
 		cy.get('[data-testid="hamburger-menu"]').click();
 		cy.wait(5000);
-
 		cy.get("#root").then($root => {
 			const asd = $root.find('[class="amplify-button amplify-field-group__control amplify-button--primary"]');
 
@@ -49,7 +51,6 @@ describe("Tracker", () => {
 				cy.get('[data-testid="hamburger-menu"]').click();
 			}
 		});
-
 		cy.wait(5000);
 	});
 
@@ -66,7 +67,8 @@ describe("Tracker", () => {
 		cy.wait(5000);
 		cy.get("div").should("contain", `${geofenceName}`);
 		cy.wait(1000);
-		cy.get('[class="amplify-flex geofence-card-close"]').click();
+		// cy.get('[data-testid="auth-geofence-box-close-button"]').click();
+		cy.get('[class="amplify-flex geofence-card-close "]').click(); // TODO: remove this after deployment
 		cy.wait(5000);
 		cy.get('[data-testid="hamburger-menu"]').click();
 		cy.wait(5000);
@@ -105,7 +107,9 @@ describe("Tracker", () => {
 		cy.wait(5000);
 		cy.get(`[data-testid="icon-trash-${geofenceName}"]`).click({ force: true });
 		cy.wait(5000);
-		cy.get('[class="amplify-flex geofence-card-close"]').click();
+		cy.get('[data-testid="geofences-list-container"]').should("not.contain", `${geofenceName}`);
+		cy.wait(5000);
+		cy.get('[data-testid="auth-geofence-box-close-button"]').click();
 		cy.wait(5000);
 		cy.get('[data-testid="hamburger-menu"]').click();
 		cy.wait(5000);

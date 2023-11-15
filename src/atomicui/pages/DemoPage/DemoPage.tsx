@@ -7,6 +7,7 @@ import { Flex, Text, View } from "@aws-amplify/ui-react";
 import { IconLocateMe, LogoDark, LogoLight } from "@demo/assets";
 import {
 	ConnectAwsAccountModal,
+	FeedbackModal,
 	GrabConfirmationModal,
 	MapButtons,
 	OpenDataConfirmationModal,
@@ -107,7 +108,8 @@ const initShow = {
 	unauthSimulationBounds: false,
 	unauthSimulationDisclaimerModal: false,
 	unauthSimulationExitModal: false,
-	startUnauthSimulation: false
+	startUnauthSimulation: false,
+	openFeedbackModal: false
 };
 let interval: NodeJS.Timer | undefined;
 let timeout: NodeJS.Timer | undefined;
@@ -208,6 +210,14 @@ const DemoPage: React.FC = () => {
 			(!isUserAwsAccountConnected || (isUserAwsAccountConnected && isGrabAvailableInRegion)),
 		[show.unauthGeofenceBox, show.unauthTrackerBox, isUserAwsAccountConnected, isGrabAvailableInRegion]
 	);
+
+	useEffect(() => {
+		document.addEventListener("visibilitychange", () => {
+			if (document.visibilityState === "visible") {
+				window.location.reload();
+			}
+		});
+	}, []);
 
 	useEffect(() => {
 		let previousWidth = document.body.clientWidth;
@@ -1072,6 +1082,7 @@ const DemoPage: React.FC = () => {
 									}
 									onShowUnauthGeofenceBox={() => setShow(s => ({ ...s, unauthGeofenceBox: true }))}
 									onShowUnauthTrackerBox={() => setShow(s => ({ ...s, unauthTrackerBox: true }))}
+									onOpenFeedbackModal={() => setShow(s => ({ ...s, openFeedbackModal: true }))}
 								/>
 							)}
 							{show.routeBox ? (
@@ -1100,114 +1111,117 @@ const DemoPage: React.FC = () => {
 							)}
 						</>
 					)}
-					<ResponsiveBottomSheet
-						SearchBoxEl={(ref?: React.MutableRefObject<RefHandles | null>) => searchBoxEl(true, ref)}
-						MapButtons={(ref?: React.MutableRefObject<RefHandles | null>) => (
-							<MapButtons
-								renderedUpon={TriggeredByEnum.SETTINGS_MODAL}
-								openStylesCard={show.stylesCard}
-								setOpenStylesCard={b => setShow(s => ({ ...s, stylesCard: b }))}
-								onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
-								onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
-								isGrabVisible={isGrabVisible}
-								showGrabDisclaimerModal={show.grabDisclaimerModal}
-								showOpenDataDisclaimerModal={show.openDataDisclaimerModal}
-								onShowGridLoader={() => setShow(s => ({ ...s, gridLoader: true }))}
-								handleMapStyleChange={onMapStyleChange}
-								searchValue={searchValue}
-								setSearchValue={setSearchValue}
-								selectedFilters={selectedFilters}
-								setSelectedFilters={setSelectedFilters}
-								handleMapProviderChange={onMapProviderChange}
-								isAuthTrackerBoxOpen={show.authTrackerBox}
-								isAuthTrackerDisclaimerModalOpen={show.authTrackerDisclaimerModal}
-								onShowAuthTrackerDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
-								isAuthGeofenceBoxOpen={show.authGeofenceBox}
-								onSetShowAuthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, authGeofenceBox: b }))}
-								onSetShowAuthTrackerBox={(b: boolean) => setShow(s => ({ ...s, authTrackerBox: b }))}
-								onShowUnauthSimulationDisclaimerModal={() =>
-									setShow(s => ({ ...s, unauthSimulationDisclaimerModal: true }))
-								}
-								isUnauthGeofenceBoxOpen={show.unauthGeofenceBox}
-								isUnauthTrackerBoxOpen={show.unauthTrackerBox}
-								onSetShowUnauthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
-								onSetShowUnauthTrackerBox={(b: boolean) => setShow(s => ({ ...s, unauthTrackerBox: b }))}
-								onlyMapStyles
-								isHandDevice
-								bottomSheetRef={ref}
-							/>
-						)}
-						mapRef={mapViewRef?.current}
-						RouteBox={(ref?: React.MutableRefObject<RefHandles | null>) => (
-							<RouteBox
-								mapRef={mapViewRef?.current}
-								setShowRouteBox={b => setShow(s => ({ ...s, routeBox: b }))}
-								isSideMenuExpanded={show.sidebar}
-								isDirection={ui === ResponsiveUIEnum.direction_to_routes}
-								expandRouteOptionsMobile={expandRouteOptionsMobile}
-								setExpandRouteOptionsMobile={setExpandRouteOptionsMobile}
-								bottomSheetRef={ref}
-							/>
-						)}
-						isEditingAuthRoute={isEditingAuthRoute}
-						onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
-						onOpenConnectAwsAccountModal={() => setShow(s => ({ ...s, connectAwsAccount: true }))}
-						onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
-						onShowSettings={() => {
-							setShow(s => ({ ...s, settings: true }));
-							setSettingsOptions(undefined);
-						}}
-						onShowTrackingDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
-						onShowAboutModal={() => setShow(s => ({ ...s, about: true }))}
-						onShowUnauthGeofenceBox={() => setShow(s => ({ ...s, unauthGeofenceBox: true }))}
-						onShowUnauthTrackerBox={() => setShow(s => ({ ...s, unauthTrackerBox: true }))}
-						onShowAuthGeofenceBox={() => setShow(s => ({ ...s, authGeofenceBox: true }))}
-						onShowAuthTrackerBox={() => setShow(s => ({ ...s, authTrackerBox: true }))}
-						onshowUnauthSimulationDisclaimerModal={() =>
-							setShow(s => ({ ...s, unauthSimulationDisclaimerModal: true }))
-						}
-						setShowUnauthGeofenceBox={b => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
-						setShowUnauthTrackerBox={b => setShow(s => ({ ...s, unauthTrackerBox: b }))}
-						showStartUnauthSimulation={show.startUnauthSimulation}
-						setShowStartUnauthSimulation={b => setShow(s => ({ ...s, startUnauthSimulation: b }))}
-						from={show.unauthGeofenceBox ? MenuItemEnum.GEOFENCE : MenuItemEnum.TRACKER}
-						show={show}
-						setShow={setShow}
-						AuthGeofenceBox={
-							<AuthGeofenceBox
-								mapRef={mapViewRef?.current}
-								setShowAuthGeofenceBox={b => setShow(s => ({ ...s, authGeofenceBox: b }))}
-								triggerOnClose={triggerOnClose}
-								setTriggerOnClose={setTriggerOnClose}
-								triggerOnReset={triggerOnReset}
-								setTriggerOnReset={setTriggerOnReset}
-								isEditingAuthRoute={isEditingAuthRoute}
-								setIsEditingAuthRoute={setIsEditingAuthRoute}
-							/>
-						}
-						AuthTrackerBox={
-							<AuthTrackerBox
-								mapRef={mapViewRef?.current}
-								setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
-							/>
-						}
-						setTriggerOnReset={setTriggerOnReset}
-						setTriggerOnClose={setTriggerOnClose}
-						handleLogoClick={handleLogoClick}
-						startSimulation={startSimulation}
-						setStartSimulation={setStartSimulation}
-						isNotifications={isUnauthNotifications}
-						setIsNotifications={setUnauthIsNotifications}
-						confirmCloseSimulation={confirmCloseUnauthSimulation}
-						setConfirmCloseSimulation={setConfirmCloseUnauthSimulation}
-						setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
-						clearCredsAndLocationClient={clearCredsAndLocationClient}
-						setShowAuthGeofenceBox={b => setShow(s => ({ ...s, authGeofenceBox: b }))}
-						setShowRouteBox={b => setShow(s => ({ ...s, routeBox: b }))}
-						isExpandRouteOptionsMobile={expandRouteOptionsMobile}
-						setExpandRouteOptionsMobile={setExpandRouteOptionsMobile}
-						setSearchBoxValue={setSearchBoxValue}
-					/>
+					{!isDesktop && (
+						<ResponsiveBottomSheet
+							SearchBoxEl={(ref?: React.MutableRefObject<RefHandles | null>) => searchBoxEl(true, ref)}
+							MapButtons={(ref?: React.MutableRefObject<RefHandles | null>) => (
+								<MapButtons
+									renderedUpon={TriggeredByEnum.SETTINGS_MODAL}
+									openStylesCard={show.stylesCard}
+									setOpenStylesCard={b => setShow(s => ({ ...s, stylesCard: b }))}
+									onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
+									onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
+									isGrabVisible={isGrabVisible}
+									showGrabDisclaimerModal={show.grabDisclaimerModal}
+									showOpenDataDisclaimerModal={show.openDataDisclaimerModal}
+									onShowGridLoader={() => setShow(s => ({ ...s, gridLoader: true }))}
+									handleMapStyleChange={onMapStyleChange}
+									searchValue={searchValue}
+									setSearchValue={setSearchValue}
+									selectedFilters={selectedFilters}
+									setSelectedFilters={setSelectedFilters}
+									handleMapProviderChange={onMapProviderChange}
+									isAuthTrackerBoxOpen={show.authTrackerBox}
+									isAuthTrackerDisclaimerModalOpen={show.authTrackerDisclaimerModal}
+									onShowAuthTrackerDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
+									isAuthGeofenceBoxOpen={show.authGeofenceBox}
+									onSetShowAuthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, authGeofenceBox: b }))}
+									onSetShowAuthTrackerBox={(b: boolean) => setShow(s => ({ ...s, authTrackerBox: b }))}
+									onShowUnauthSimulationDisclaimerModal={() =>
+										setShow(s => ({ ...s, unauthSimulationDisclaimerModal: true }))
+									}
+									isUnauthGeofenceBoxOpen={show.unauthGeofenceBox}
+									isUnauthTrackerBoxOpen={show.unauthTrackerBox}
+									onSetShowUnauthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
+									onSetShowUnauthTrackerBox={(b: boolean) => setShow(s => ({ ...s, unauthTrackerBox: b }))}
+									onlyMapStyles
+									isHandDevice
+									bottomSheetRef={ref}
+								/>
+							)}
+							mapRef={mapViewRef?.current}
+							RouteBox={(ref?: React.MutableRefObject<RefHandles | null>) => (
+								<RouteBox
+									mapRef={mapViewRef?.current}
+									setShowRouteBox={b => setShow(s => ({ ...s, routeBox: b }))}
+									isSideMenuExpanded={show.sidebar}
+									isDirection={ui === ResponsiveUIEnum.direction_to_routes}
+									expandRouteOptionsMobile={expandRouteOptionsMobile}
+									setExpandRouteOptionsMobile={setExpandRouteOptionsMobile}
+									bottomSheetRef={ref}
+								/>
+							)}
+							isEditingAuthRoute={isEditingAuthRoute}
+							onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
+							onOpenConnectAwsAccountModal={() => setShow(s => ({ ...s, connectAwsAccount: true }))}
+							//TODO: feedback form for mobile view
+							onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
+							onShowSettings={() => {
+								setShow(s => ({ ...s, settings: true }));
+								setSettingsOptions(undefined);
+							}}
+							onShowTrackingDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
+							onShowAboutModal={() => setShow(s => ({ ...s, about: true }))}
+							onShowUnauthGeofenceBox={() => setShow(s => ({ ...s, unauthGeofenceBox: true }))}
+							onShowUnauthTrackerBox={() => setShow(s => ({ ...s, unauthTrackerBox: true }))}
+							onShowAuthGeofenceBox={() => setShow(s => ({ ...s, authGeofenceBox: true }))}
+							onShowAuthTrackerBox={() => setShow(s => ({ ...s, authTrackerBox: true }))}
+							onshowUnauthSimulationDisclaimerModal={() =>
+								setShow(s => ({ ...s, unauthSimulationDisclaimerModal: true }))
+							}
+							setShowUnauthGeofenceBox={b => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
+							setShowUnauthTrackerBox={b => setShow(s => ({ ...s, unauthTrackerBox: b }))}
+							showStartUnauthSimulation={show.startUnauthSimulation}
+							setShowStartUnauthSimulation={b => setShow(s => ({ ...s, startUnauthSimulation: b }))}
+							from={show.unauthGeofenceBox ? MenuItemEnum.GEOFENCE : MenuItemEnum.TRACKER}
+							show={show}
+							setShow={setShow}
+							AuthGeofenceBox={
+								<AuthGeofenceBox
+									mapRef={mapViewRef?.current}
+									setShowAuthGeofenceBox={b => setShow(s => ({ ...s, authGeofenceBox: b }))}
+									triggerOnClose={triggerOnClose}
+									setTriggerOnClose={setTriggerOnClose}
+									triggerOnReset={triggerOnReset}
+									setTriggerOnReset={setTriggerOnReset}
+									isEditingAuthRoute={isEditingAuthRoute}
+									setIsEditingAuthRoute={setIsEditingAuthRoute}
+								/>
+							}
+							AuthTrackerBox={
+								<AuthTrackerBox
+									mapRef={mapViewRef?.current}
+									setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
+								/>
+							}
+							setTriggerOnReset={setTriggerOnReset}
+							setTriggerOnClose={setTriggerOnClose}
+							handleLogoClick={handleLogoClick}
+							startSimulation={startSimulation}
+							setStartSimulation={setStartSimulation}
+							isNotifications={isUnauthNotifications}
+							setIsNotifications={setUnauthIsNotifications}
+							confirmCloseSimulation={confirmCloseUnauthSimulation}
+							setConfirmCloseSimulation={setConfirmCloseUnauthSimulation}
+							setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
+							clearCredsAndLocationClient={clearCredsAndLocationClient}
+							setShowAuthGeofenceBox={b => setShow(s => ({ ...s, authGeofenceBox: b }))}
+							setShowRouteBox={b => setShow(s => ({ ...s, routeBox: b }))}
+							isExpandRouteOptionsMobile={expandRouteOptionsMobile}
+							setExpandRouteOptionsMobile={setExpandRouteOptionsMobile}
+							setSearchBoxValue={setSearchBoxValue}
+						/>
+					)}
 					<MapButtons
 						renderedUpon={TriggeredByEnum.DEMO_PAGE}
 						openStylesCard={show.stylesCard}
@@ -1282,6 +1296,7 @@ const DemoPage: React.FC = () => {
 				onClose={() => setShow(s => ({ ...s, connectAwsAccount: false }))}
 				handleCurrentLocationAndViewpoint={handleCurrentLocationAndViewpoint}
 			/>
+			<FeedbackModal open={show.openFeedbackModal} onClose={() => setShow(s => ({ ...s, openFeedbackModal: false }))} />
 			<SettingsModal
 				open={show.settings}
 				onClose={() => {
