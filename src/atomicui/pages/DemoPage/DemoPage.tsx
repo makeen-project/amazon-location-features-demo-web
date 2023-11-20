@@ -11,28 +11,72 @@ import {
 	ConfirmationModal as UnauthSimulationExitModal
 } from "@demo/atomicui/molecules";
 
-import { AuthGeofenceBox, AuthTrackerBox, RouteBox, SearchBox } from "@demo/atomicui/organisms";
+import { AuthGeofenceBox, AuthTrackerBox, SearchBox } from "@demo/atomicui/organisms";
 
-const ResponsiveBottomSheet = lazy(
-	() => import("@demo/atomicui/organisms/ResponsiveBottomSheet/ResponsiveBottomSheet")
+const ResponsiveBottomSheet = lazy(() =>
+	import("@demo/atomicui/organisms/ResponsiveBottomSheet").then(res => ({
+		default: res.ResponsiveBottomSheet
+	}))
 );
-const Sidebar = lazy(() => import("@demo/atomicui/organisms/Sidebar/Sidebar"));
-const UnauthSimulation = lazy(() => import("@demo/atomicui/organisms/UnauthSimulation/UnauthSimulation"));
-const SettingsModal = lazy(() => import("@demo/atomicui/organisms/SettingsModal/SettingsModal"));
-const AboutModal = lazy(() => import("@demo/atomicui/organisms/AboutModal/AboutModal"));
-
-const MapButtons = lazy(() => import("@demo/atomicui/molecules/MapButtons/MapButtons"));
-const OpenDataConfirmationModal = lazy(
-	() => import("@demo/atomicui/molecules/OpenDataConfirmationModal/OpenDataConfirmationModal")
+const RouteBox = lazy(() =>
+	import("@demo/atomicui/organisms/RouteBox").then(res => ({
+		default: res.RouteBox
+	}))
 );
-const GrabConfirmationModal = lazy(
-	() => import("@demo/atomicui/molecules/GrabConfirmationModal/GrabConfirmationModal")
+const Sidebar = lazy(() =>
+	import("@demo/atomicui/organisms/Sidebar").then(res => ({
+		default: res.Sidebar
+	}))
 );
-const SignInModal = lazy(() => import("@demo/atomicui/molecules/SignInModal/SignInModal"));
-const WelcomeModal = lazy(() => import("@demo/atomicui/molecules/WelcomeModal/WelcomeModal"));
-const FeedbackModal = lazy(() => import("@demo/atomicui/molecules/FeedbackModal/FeedbackModal"));
-const ConnectAwsAccountModal = lazy(
-	() => import("@demo/atomicui/molecules/ConnectAwsAccountModal/ConnectAwsAccountModal")
+const UnauthSimulation = lazy(() =>
+	import("@demo/atomicui/organisms/UnauthSimulation").then(res => ({
+		default: res.UnauthSimulation
+	}))
+);
+const SettingsModal = lazy(() =>
+	import("@demo/atomicui/organisms/SettingsModal").then(res => ({
+		default: res.SettingsModal
+	}))
+);
+const AboutModal = lazy(() =>
+	import("@demo/atomicui/organisms/AboutModal").then(res => ({
+		default: res.AboutModal
+	}))
+);
+const MapButtons = lazy(() =>
+	import("@demo/atomicui/molecules/MapButtons").then(res => ({
+		default: res.MapButtons
+	}))
+);
+const OpenDataConfirmationModal = lazy(() =>
+	import("@demo/atomicui/molecules/OpenDataConfirmationModal").then(res => ({
+		default: res.OpenDataConfirmationModal
+	}))
+);
+const GrabConfirmationModal = lazy(() =>
+	import("@demo/atomicui/molecules/GrabConfirmationModal").then(res => ({
+		default: res.GrabConfirmationModal
+	}))
+);
+const SignInModal = lazy(() =>
+	import("@demo/atomicui/molecules/SignInModal").then(res => ({
+		default: res.SignInModal
+	}))
+);
+const WelcomeModal = lazy(() =>
+	import("@demo/atomicui/molecules/WelcomeModal").then(res => ({
+		default: res.WelcomeModal
+	}))
+);
+const FeedbackModal = lazy(() =>
+	import("@demo/atomicui/molecules/FeedbackModal").then(res => ({
+		default: res.FeedbackModal
+	}))
+);
+const ConnectAwsAccountModal = lazy(() =>
+	import("@demo/atomicui/molecules/ConnectAwsAccountModal").then(res => ({
+		default: res.ConnectAwsAccountModal
+	}))
 );
 
 import { DemoPlaceholderPage } from "@demo/atomicui/pages";
@@ -1244,36 +1288,38 @@ const DemoPage: React.FC = () => {
 								setSearchBoxValue={setSearchBoxValue}
 							/>
 						)}
-						<MapButtons
-							renderedUpon={TriggeredByEnum.DEMO_PAGE}
-							openStylesCard={show.stylesCard}
-							setOpenStylesCard={b => setShow(s => ({ ...s, stylesCard: b }))}
-							onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
-							onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
-							isGrabVisible={isGrabVisible}
-							showGrabDisclaimerModal={show.grabDisclaimerModal}
-							showOpenDataDisclaimerModal={show.openDataDisclaimerModal}
-							onShowGridLoader={() => setShow(s => ({ ...s, gridLoader: true }))}
-							handleMapStyleChange={onMapStyleChange}
-							searchValue={searchValue}
-							setSearchValue={setSearchValue}
-							selectedFilters={selectedFilters}
-							setSelectedFilters={setSelectedFilters}
-							resetSearchAndFilters={handleResetCallback}
-							isAuthGeofenceBoxOpen={show.authGeofenceBox}
-							onSetShowAuthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, authGeofenceBox: b }))}
-							isAuthTrackerDisclaimerModalOpen={show.authTrackerDisclaimerModal}
-							isAuthTrackerBoxOpen={show.authTrackerBox}
-							onShowAuthTrackerDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
-							onSetShowAuthTrackerBox={(b: boolean) => setShow(s => ({ ...s, authTrackerBox: b }))}
-							onShowUnauthSimulationDisclaimerModal={() =>
-								setShow(s => ({ ...s, unauthSimulationDisclaimerModal: true }))
-							}
-							isUnauthGeofenceBoxOpen={show.unauthGeofenceBox}
-							isUnauthTrackerBoxOpen={show.unauthTrackerBox}
-							onSetShowUnauthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
-							onSetShowUnauthTrackerBox={(b: boolean) => setShow(s => ({ ...s, unauthTrackerBox: b }))}
-						/>
+						{isDesktop && (
+							<MapButtons
+								renderedUpon={TriggeredByEnum.DEMO_PAGE}
+								openStylesCard={show.stylesCard}
+								setOpenStylesCard={b => setShow(s => ({ ...s, stylesCard: b }))}
+								onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
+								onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
+								isGrabVisible={isGrabVisible}
+								showGrabDisclaimerModal={show.grabDisclaimerModal}
+								showOpenDataDisclaimerModal={show.openDataDisclaimerModal}
+								onShowGridLoader={() => setShow(s => ({ ...s, gridLoader: true }))}
+								handleMapStyleChange={onMapStyleChange}
+								searchValue={searchValue}
+								setSearchValue={setSearchValue}
+								selectedFilters={selectedFilters}
+								setSelectedFilters={setSelectedFilters}
+								resetSearchAndFilters={handleResetCallback}
+								isAuthGeofenceBoxOpen={show.authGeofenceBox}
+								onSetShowAuthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, authGeofenceBox: b }))}
+								isAuthTrackerDisclaimerModalOpen={show.authTrackerDisclaimerModal}
+								isAuthTrackerBoxOpen={show.authTrackerBox}
+								onShowAuthTrackerDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
+								onSetShowAuthTrackerBox={(b: boolean) => setShow(s => ({ ...s, authTrackerBox: b }))}
+								onShowUnauthSimulationDisclaimerModal={() =>
+									setShow(s => ({ ...s, unauthSimulationDisclaimerModal: true }))
+								}
+								isUnauthGeofenceBoxOpen={show.unauthGeofenceBox}
+								isUnauthTrackerBoxOpen={show.unauthTrackerBox}
+								onSetShowUnauthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
+								onSetShowUnauthTrackerBox={(b: boolean) => setShow(s => ({ ...s, unauthTrackerBox: b }))}
+							/>
+						)}
 						{GeoLocateIcon}
 						{isDesktop && (
 							<NavigationControl
