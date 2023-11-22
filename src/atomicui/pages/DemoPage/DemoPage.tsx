@@ -212,14 +212,6 @@ const DemoPage: React.FC = () => {
 	);
 
 	useEffect(() => {
-		document.addEventListener("visibilitychange", () => {
-			if (document.visibilityState === "visible") {
-				window.location.reload();
-			}
-		});
-	}, []);
-
-	useEffect(() => {
 		let previousWidth = document.body.clientWidth;
 		const resizeObserver = new ResizeObserver(() => {
 			const currentWidth = document.body.clientWidth;
