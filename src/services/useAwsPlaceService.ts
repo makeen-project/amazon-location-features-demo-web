@@ -86,13 +86,28 @@ const useAwsPlaceService = () => {
 				return await locationClient?.searchPlaceIndexForPosition(params).promise();
 			},
 			getNLPlacesByText: async (Text: string) => {
-				const response = await fetch(`${NL_BASE_URL}/places/ask?` + new URLSearchParams({ Text: Text }), {
-					method: "GET",
-					headers: {
-						"x-api-key": NL_API_KEY
+				const BiasPosition = [viewpoint?.longitude as number, viewpoint?.latitude as number];
+				const mapProvider = currentMapProvider === MapProviderEnum.HERE ? "Here" : currentMapProvider;
+				const response = await fetch(
+					`${NL_BASE_URL}/places/ask?` +
+						new URLSearchParams([
+							["Text", Text],
+							["BiasPosition", BiasPosition[0].toString()],
+							["BiasPosition", BiasPosition[1].toString()],
+							["DataSource", mapProvider]
+						]),
+					{
+						method: "GET",
+						headers: {
+							"x-api-key": NL_API_KEY
+						}
 					}
-				});
-				return await response.json();
+				);
+				const responseBody = await response.json();
+				if (response.status !== 200) {
+					throw new Error(responseBody.message);
+				}
+				return responseBody;
 			}
 		}),
 		[config, locationClient, currentMapProvider, viewpoint]
