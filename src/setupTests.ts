@@ -1,7 +1,6 @@
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
+/* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
+/* SPDX-License-Identifier: MIT-0 */
+
 import "@testing-library/jest-dom";
 import { faker } from "@faker-js/faker";
 
@@ -53,12 +52,12 @@ jest.mock("@demo/core/constants/appConfig", () => ({
 		PRICING_PAGE: ""
 	},
 	PERSIST_STORAGE_KEYS: {
-		LOCAL_STORAGE_PREFIX: "amazon-location-web-demo_",
-		AMPLIFY_AUTH_DATA: "AmplifyAuthData",
-		AMPLIFY_MAP_DATA: "AmplifyMapData",
-		PERSISTED_DATA: "PersistedData",
-		GEO_LOCATION_ALLOWED: "GeoLocationAllowed",
-		SHOULD_CLEAR_CREDENTIALS: "ShouldClearCredentials",
+		LOCAL_STORAGE_PREFIX: "amazon-location_",
+		AMPLIFY_AUTH_DATA: "amplifyAuthData",
+		AMPLIFY_MAP_DATA: "amplifyMapData",
+		PERSISTED_DATA: "persistedData",
+		GEO_LOCATION_ALLOWED: "geoLocationAllowed",
+		SHOULD_CLEAR_CREDENTIALS: "shouldClearCredentials",
 		ANALYTICS_ENDPOINT_ID: "analyticsEndpointId",
 		ANALYTICS_CREDS: "analyticsCreds",
 		PAGE_VIEW_IDENTIFIERS: "pageViewIdentifiers",
@@ -68,20 +67,15 @@ jest.mock("@demo/core/constants/appConfig", () => ({
 	ROUTES: {
 		DEFAULT: "/",
 		DEMO: "/demo",
+		NL_DEMO: "/demo?dp=Esri&nl=true",
+		NOT_FOUND: "/404",
+		ERROR_BOUNDARY: "/error",
 		OVERVIEW: "/overview",
-		PRODUCT: "/product",
 		SAMPLES: "/samples",
 		SAMPLE_DETAILS: "/sample/:sampleId",
 		HELP: "/demo/help",
 		TERMS: "/demo/terms",
-		SOFTWARE_ATTRIBUTIONS: "/demo/software-attributions",
-		BLOG: "/blog",
-		NEW: "/new",
-		UNAUTHORIZED: "/401",
-		FORBIDDEN: "/403",
-		NOT_FOUND: "/404",
-		ERROR_BOUNDARY: "/error",
-		NL_DEMO: "/demo?dp=Esri&nl=true",
+		SOFTWARE_ATTRIBUTIONS: "/showcase/software-attributions",
 		MIGRATE_FROM_GOOGLE_MAPS: "/migrate-from-google-maps",
 		FEATURE_COMPARISON: "/feature-comparison",
 		MIGRATE_A_WEB_APP: "/migrate-a-web-app",
