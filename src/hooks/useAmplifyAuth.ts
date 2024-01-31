@@ -48,9 +48,10 @@ const useAmplifyAuth = () => {
 		if (localAppVersion !== APP_VERSION) {
 			localStorage.clear();
 			localStorage.setItem(LOCAL_APP_VERSION, APP_VERSION);
+			window.location.reload();
 		}
 
-		if (!store.identityPoolId) {
+		if (window.location.pathname === DEMO && !store.identityPoolId) {
 			(async () => {
 				await setClosestRegion();
 				const region = localStorage.getItem(FASTEST_REGION) ?? fallbackRegion;
