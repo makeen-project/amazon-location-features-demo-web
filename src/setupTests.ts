@@ -75,7 +75,7 @@ jest.mock("@demo/core/constants/appConfig", () => ({
 		SAMPLE_DETAILS: "/sample/:sampleId",
 		HELP: "/demo/help",
 		TERMS: "/demo/terms",
-		SOFTWARE_ATTRIBUTIONS: "/showcase/software-attributions",
+		SOFTWARE_ATTRIBUTIONS: "/demo/software-attributions",
 		MIGRATE_FROM_GOOGLE_MAPS: "/migrate-from-google-maps",
 		FEATURE_COMPARISON: "/feature-comparison",
 		MIGRATE_A_WEB_APP: "/migrate-a-web-app",
