@@ -1,7 +1,7 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef } from "react";
+import { FC, MutableRefObject, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Flex, Text, View } from "@aws-amplify/ui-react";
 import { IconLocateMe, LogoDark, LogoLight } from "@demo/assets";
@@ -110,9 +110,8 @@ import {
 	MapRef,
 	NavigationControl
 } from "react-map-gl";
-
-import "./styles.scss";
 import { RefHandles } from "react-spring-bottom-sheet/dist/types";
+import "./styles.scss";
 
 const {
 	MAP_RESOURCES: { MAX_BOUNDS },
@@ -140,23 +139,23 @@ const initShow = {
 const peggedRemValue = 13;
 const extraGeoLocateTop = 2.6;
 
-const DemoPage: React.FC = () => {
+const DemoPage: FC = () => {
 	const {} = useRecordViewPage("DemoPage");
-	const [show, setShow] = React.useState<ShowStateType>(initShow);
-	const [isUnauthNotifications, setUnauthIsNotifications] = React.useState(false);
-	const [confirmCloseUnauthSimulation, setConfirmCloseUnauthSimulation] = React.useState(false);
-	const [searchValue, setSearchValue] = React.useState("");
-	const [triggerOnClose, setTriggerOnClose] = React.useState(false);
-	const [triggerOnReset, setTriggerOnReset] = React.useState(false);
-	const [expandRouteOptionsMobile, setExpandRouteOptionsMobile] = React.useState(false);
-	const [isEditingAuthRoute, setIsEditingAuthRoute] = React.useState(false);
-	const [selectedFilters, setSelectedFilters] = React.useState<MapStyleFilterTypes>({
+	const [show, setShow] = useState<ShowStateType>(initShow);
+	const [isUnauthNotifications, setUnauthIsNotifications] = useState(false);
+	const [confirmCloseUnauthSimulation, setConfirmCloseUnauthSimulation] = useState(false);
+	const [searchValue, setSearchValue] = useState("");
+	const [triggerOnClose, setTriggerOnClose] = useState(false);
+	const [triggerOnReset, setTriggerOnReset] = useState(false);
+	const [expandRouteOptionsMobile, setExpandRouteOptionsMobile] = useState(false);
+	const [isEditingAuthRoute, setIsEditingAuthRoute] = useState(false);
+	const [selectedFilters, setSelectedFilters] = useState<MapStyleFilterTypes>({
 		Providers: [],
 		Attribute: [],
 		Type: []
 	});
-	const [startSimulation, setStartSimulation] = React.useState(false);
-	const [searchBoxValue, setSearchBoxValue] = React.useState("");
+	const [startSimulation, setStartSimulation] = useState(false);
+	const [searchBoxValue, setSearchBoxValue] = useState("");
 	const mapViewRef = useRef<MapRef | null>(null);
 	const geolocateControlRef = useRef<GeolocateControlRef | null>(null);
 	const { credentials, region, isUserAwsAccountConnected } = useAmplifyAuth();
@@ -347,7 +346,7 @@ const DemoPage: React.FC = () => {
 	);
 
 	const searchBoxEl = useCallback(
-		(isSimpleSearch = false, bottomSheetRef?: React.MutableRefObject<RefHandles | null>) => (
+		(isSimpleSearch = false, bottomSheetRef?: MutableRefObject<RefHandles | null>) => (
 			<SearchBox
 				mapRef={mapViewRef?.current}
 				value={searchBoxValue}
