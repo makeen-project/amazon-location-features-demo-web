@@ -4,82 +4,8 @@
 import { FC, MutableRefObject, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Flex, Text, View } from "@aws-amplify/ui-react";
-import { IconLocateMe, LogoDark, LogoLight } from "@demo/assets";
-import {
-	ConfirmationModal as TrackerInformationModal,
-	ConfirmationModal as UnauthSimulationDisclaimerModal,
-	ConfirmationModal as UnauthSimulationExitModal
-} from "@demo/atomicui/molecules";
-
-import { AuthGeofenceBox, AuthTrackerBox, SearchBox } from "@demo/atomicui/organisms";
-
-const ResponsiveBottomSheet = lazy(() =>
-	import("@demo/atomicui/organisms/ResponsiveBottomSheet").then(res => ({
-		default: res.ResponsiveBottomSheet
-	}))
-);
-const RouteBox = lazy(() =>
-	import("@demo/atomicui/organisms/RouteBox").then(res => ({
-		default: res.RouteBox
-	}))
-);
-const Sidebar = lazy(() =>
-	import("@demo/atomicui/organisms/Sidebar").then(res => ({
-		default: res.Sidebar
-	}))
-);
-const UnauthSimulation = lazy(() =>
-	import("@demo/atomicui/organisms/UnauthSimulation").then(res => ({
-		default: res.UnauthSimulation
-	}))
-);
-const SettingsModal = lazy(() =>
-	import("@demo/atomicui/organisms/SettingsModal").then(res => ({
-		default: res.SettingsModal
-	}))
-);
-const AboutModal = lazy(() =>
-	import("@demo/atomicui/organisms/AboutModal").then(res => ({
-		default: res.AboutModal
-	}))
-);
-const MapButtons = lazy(() =>
-	import("@demo/atomicui/molecules/MapButtons").then(res => ({
-		default: res.MapButtons
-	}))
-);
-const OpenDataConfirmationModal = lazy(() =>
-	import("@demo/atomicui/molecules/OpenDataConfirmationModal").then(res => ({
-		default: res.OpenDataConfirmationModal
-	}))
-);
-const GrabConfirmationModal = lazy(() =>
-	import("@demo/atomicui/molecules/GrabConfirmationModal").then(res => ({
-		default: res.GrabConfirmationModal
-	}))
-);
-const SignInModal = lazy(() =>
-	import("@demo/atomicui/molecules/SignInModal").then(res => ({
-		default: res.SignInModal
-	}))
-);
-const WelcomeModal = lazy(() =>
-	import("@demo/atomicui/molecules/WelcomeModal").then(res => ({
-		default: res.WelcomeModal
-	}))
-);
-const FeedbackModal = lazy(() =>
-	import("@demo/atomicui/molecules/FeedbackModal").then(res => ({
-		default: res.FeedbackModal
-	}))
-);
-const ConnectAwsAccountModal = lazy(() =>
-	import("@demo/atomicui/molecules/ConnectAwsAccountModal").then(res => ({
-		default: res.ConnectAwsAccountModal
-	}))
-);
-
-import { DemoPlaceholderPage } from "@demo/atomicui/pages";
+import { IconLocateMe, LogoDark, LogoLight } from "@demo/assets/svgs";
+import { SearchBox } from "@demo/atomicui/organisms/SearchBox";
 import { appConfig } from "@demo/core/constants";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
 import {
@@ -112,6 +38,102 @@ import {
 } from "react-map-gl";
 import { RefHandles } from "react-spring-bottom-sheet/dist/types";
 import "./styles.scss";
+
+const DemoPlaceholderPage = lazy(() =>
+	import("@demo/atomicui/pages/DemoPlaceholderPage").then(module => ({
+		default: module.DemoPlaceholderPage
+	}))
+);
+const WelcomeModal = lazy(() =>
+	import("@demo/atomicui/molecules/WelcomeModal").then(module => ({
+		default: module.WelcomeModal
+	}))
+);
+const MapButtons = lazy(() =>
+	import("@demo/atomicui/molecules/MapButtons").then(module => ({
+		default: module.MapButtons
+	}))
+);
+const Sidebar = lazy(() =>
+	import("@demo/atomicui/organisms/Sidebar").then(module => ({
+		default: module.Sidebar
+	}))
+);
+const RouteBox = lazy(() =>
+	import("@demo/atomicui/organisms/RouteBox").then(module => ({
+		default: module.RouteBox
+	}))
+);
+const UnauthSimulation = lazy(() =>
+	import("@demo/atomicui/organisms/UnauthSimulation").then(module => ({
+		default: module.UnauthSimulation
+	}))
+);
+const AuthGeofenceBox = lazy(() =>
+	import("@demo/atomicui/organisms/AuthGeofenceBox").then(module => ({
+		default: module.AuthGeofenceBox
+	}))
+);
+const AuthTrackerBox = lazy(() =>
+	import("@demo/atomicui/organisms/AuthTrackerBox").then(module => ({
+		default: module.AuthTrackerBox
+	}))
+);
+const ResponsiveBottomSheet = lazy(() =>
+	import("@demo/atomicui/organisms/ResponsiveBottomSheet").then(module => ({
+		default: module.ResponsiveBottomSheet
+	}))
+);
+const SettingsModal = lazy(() =>
+	import("@demo/atomicui/organisms/SettingsModal").then(module => ({
+		default: module.SettingsModal
+	}))
+);
+const AboutModal = lazy(() =>
+	import("@demo/atomicui/organisms/AboutModal").then(module => ({
+		default: module.AboutModal
+	}))
+);
+const FeedbackModal = lazy(() =>
+	import("@demo/atomicui/molecules/FeedbackModal").then(module => ({
+		default: module.FeedbackModal
+	}))
+);
+const SignInModal = lazy(() =>
+	import("@demo/atomicui/molecules/SignInModal").then(module => ({
+		default: module.SignInModal
+	}))
+);
+const GrabConfirmationModal = lazy(() =>
+	import("@demo/atomicui/molecules/GrabConfirmationModal").then(module => ({
+		default: module.GrabConfirmationModal
+	}))
+);
+const OpenDataConfirmationModal = lazy(() =>
+	import("@demo/atomicui/molecules/OpenDataConfirmationModal").then(module => ({
+		default: module.OpenDataConfirmationModal
+	}))
+);
+const ConnectAwsAccountModal = lazy(() =>
+	import("@demo/atomicui/molecules/ConnectAwsAccountModal").then(module => ({
+		default: module.ConnectAwsAccountModal
+	}))
+);
+const TrackerInformationModal = lazy(() =>
+	import("@demo/atomicui/molecules/ConfirmationModal").then(module => ({
+		default: module.ConfirmationModal
+	}))
+);
+const UnauthSimulationDisclaimerModal = lazy(() =>
+	import("@demo/atomicui/molecules/ConfirmationModal").then(module => ({
+		default: module.ConfirmationModal
+	}))
+);
+const UnauthSimulationExitModal = lazy(() =>
+	import("@demo/atomicui/molecules/ConfirmationModal").then(module => ({
+		default: module.ConfirmationModal
+	}))
+);
 
 const {
 	MAP_RESOURCES: { MAX_BOUNDS },
@@ -290,7 +312,7 @@ const DemoPage: FC = () => {
 
 		if (suggestions && bound) {
 			mapViewRef.current?.fitBounds(bound as [number, number, number, number], options);
-		} else if ((show.routeBox || ui === ResponsiveUIEnum.routes) && routeData?.Summary.RouteBBox) {
+		} else if ((show.routeBox || ui === ResponsiveUIEnum.routes) && routeData?.Summary?.RouteBBox) {
 			const boundingBox = routeData.Summary.RouteBBox;
 			mapViewRef.current?.fitBounds(
 				[
@@ -461,20 +483,6 @@ const DemoPage: FC = () => {
 			"_blank"
 		);
 
-	const DemoPlaceholder = useCallback(
-		() => (
-			<DemoPlaceholderPage
-				value={searchBoxValue}
-				setValue={setSearchBoxValue}
-				searchValue={searchValue}
-				selectedFilters={selectedFilters}
-				show={show}
-				isGrabVisible={isGrabVisible}
-			/>
-		),
-		[isGrabVisible, searchBoxValue, searchValue, selectedFilters, show]
-	);
-
 	return !!credentials?.identityId ? (
 		<View
 			style={{ height: "100%" }}
@@ -561,8 +569,8 @@ const DemoPage: FC = () => {
 					)}
 					{!isDesktop && (
 						<ResponsiveBottomSheet
-							SearchBoxEl={(ref?: React.MutableRefObject<RefHandles | null>) => searchBoxEl(true, ref)}
-							MapButtons={(ref?: React.MutableRefObject<RefHandles | null>) => (
+							SearchBoxEl={(ref?: MutableRefObject<RefHandles | null>) => searchBoxEl(true, ref)}
+							MapButtons={(ref?: MutableRefObject<RefHandles | null>) => (
 								<MapButtons
 									renderedUpon={TriggeredByEnum.SETTINGS_MODAL}
 									openStylesCard={show.stylesCard}
@@ -572,7 +580,7 @@ const DemoPage: FC = () => {
 									isGrabVisible={isGrabVisible}
 									showGrabDisclaimerModal={grabDisclaimerModal}
 									showOpenDataDisclaimerModal={openDataDisclaimerModal}
-									onShowGridLoader={() => setGridLoader(true)}
+									onShowGridLoader={() => setShow(s => ({ ...s, gridLoader: true }))}
 									handleMapStyleChange={onMapStyleChange}
 									searchValue={searchValue}
 									setSearchValue={setSearchValue}
@@ -612,11 +620,11 @@ const DemoPage: FC = () => {
 							isEditingAuthRoute={isEditingAuthRoute}
 							onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
 							onOpenConnectAwsAccountModal={() => setShow(s => ({ ...s, connectAwsAccount: true }))}
-							onOpenFeedbackModal={() => setShow(s => ({ ...s, openFeedbackModal: true }))}
+							//TODO: feedback form for mobile view
 							onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
 							onShowSettings={() => {
 								setShow(s => ({ ...s, settings: true }));
-								setSettingsOptions(undefined);
+								isMobile && setSettingsOptions(undefined);
 							}}
 							onShowTrackingDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
 							onShowAboutModal={() => setShow(s => ({ ...s, about: true }))}
@@ -668,39 +676,42 @@ const DemoPage: FC = () => {
 							isExpandRouteOptionsMobile={expandRouteOptionsMobile}
 							setExpandRouteOptionsMobile={setExpandRouteOptionsMobile}
 							setSearchBoxValue={setSearchBoxValue}
+							onOpenFeedbackModal={() => setShow(s => ({ ...s, openFeedbackModal: true }))}
 							geolocateControlRef={geolocateControlRef}
 						/>
 					)}
-					<MapButtons
-						renderedUpon={TriggeredByEnum.DEMO_PAGE}
-						openStylesCard={show.stylesCard}
-						setOpenStylesCard={b => setShow(s => ({ ...s, stylesCard: b }))}
-						onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
-						onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
-						isGrabVisible={isGrabVisible}
-						showGrabDisclaimerModal={grabDisclaimerModal}
-						showOpenDataDisclaimerModal={openDataDisclaimerModal}
-						onShowGridLoader={() => setGridLoader(true)}
-						handleMapStyleChange={onMapStyleChange}
-						searchValue={searchValue}
-						setSearchValue={setSearchValue}
-						selectedFilters={selectedFilters}
-						setSelectedFilters={setSelectedFilters}
-						resetSearchAndFilters={handleResetCallback}
-						isAuthGeofenceBoxOpen={show.authGeofenceBox}
-						onSetShowAuthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, authGeofenceBox: b }))}
-						isAuthTrackerDisclaimerModalOpen={show.authTrackerDisclaimerModal}
-						isAuthTrackerBoxOpen={show.authTrackerBox}
-						onShowAuthTrackerDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
-						onSetShowAuthTrackerBox={(b: boolean) => setShow(s => ({ ...s, authTrackerBox: b }))}
-						onShowUnauthSimulationDisclaimerModal={() =>
-							setShow(s => ({ ...s, unauthSimulationDisclaimerModal: true }))
-						}
-						isUnauthGeofenceBoxOpen={show.unauthGeofenceBox}
-						isUnauthTrackerBoxOpen={show.unauthTrackerBox}
-						onSetShowUnauthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
-						onSetShowUnauthTrackerBox={(b: boolean) => setShow(s => ({ ...s, unauthTrackerBox: b }))}
-					/>
+					{isDesktop && (
+						<MapButtons
+							renderedUpon={TriggeredByEnum.DEMO_PAGE}
+							openStylesCard={show.stylesCard}
+							setOpenStylesCard={b => setShow(s => ({ ...s, stylesCard: b }))}
+							onCloseSidebar={() => setShow(s => ({ ...s, sidebar: false }))}
+							onOpenSignInModal={() => setShow(s => ({ ...s, signInModal: true }))}
+							isGrabVisible={isGrabVisible}
+							showGrabDisclaimerModal={grabDisclaimerModal}
+							showOpenDataDisclaimerModal={openDataDisclaimerModal}
+							onShowGridLoader={() => setShow(s => ({ ...s, gridLoader: true }))}
+							handleMapStyleChange={onMapStyleChange}
+							searchValue={searchValue}
+							setSearchValue={setSearchValue}
+							selectedFilters={selectedFilters}
+							setSelectedFilters={setSelectedFilters}
+							resetSearchAndFilters={handleResetCallback}
+							isAuthGeofenceBoxOpen={show.authGeofenceBox}
+							onSetShowAuthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, authGeofenceBox: b }))}
+							isAuthTrackerDisclaimerModalOpen={show.authTrackerDisclaimerModal}
+							isAuthTrackerBoxOpen={show.authTrackerBox}
+							onShowAuthTrackerDisclaimerModal={() => setShow(s => ({ ...s, authTrackerDisclaimerModal: true }))}
+							onSetShowAuthTrackerBox={(b: boolean) => setShow(s => ({ ...s, authTrackerBox: b }))}
+							onShowUnauthSimulationDisclaimerModal={() =>
+								setShow(s => ({ ...s, unauthSimulationDisclaimerModal: true }))
+							}
+							isUnauthGeofenceBoxOpen={show.unauthGeofenceBox}
+							isUnauthTrackerBoxOpen={show.unauthTrackerBox}
+							onSetShowUnauthGeofenceBox={(b: boolean) => setShow(s => ({ ...s, unauthGeofenceBox: b }))}
+							onSetShowUnauthTrackerBox={(b: boolean) => setShow(s => ({ ...s, unauthTrackerBox: b }))}
+						/>
+					)}
 					{GeoLocateIcon}
 					{isDesktop && (
 						<NavigationControl
@@ -882,7 +893,14 @@ const DemoPage: FC = () => {
 			)}
 		</View>
 	) : (
-		<DemoPlaceholder />
+		<DemoPlaceholderPage
+			value={searchBoxValue}
+			setValue={setSearchBoxValue}
+			searchValue={searchValue}
+			selectedFilters={selectedFilters}
+			show={show}
+			isGrabVisible={isGrabVisible}
+		/>
 	);
 };
 
