@@ -50,7 +50,7 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
 	confirmationCheckboxOnChange = () => {}
 }) => {
 	const { t, i18n } = useTranslation();
-	const [isConfirmationChecked, setIsConfirmationChecked] = React.useState(false);
+	const [isConfirmationChecked, setIsConfirmationChecked] = useState(false);
 	const { isMobile } = useDeviceMediaQuery();
 	const { language } = i18n;
 	const isLongLang = ["de", "es", "fr", "it", "pt-BR"].includes(language);

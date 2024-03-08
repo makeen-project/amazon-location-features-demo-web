@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useEffect, useMemo, useRef } from "react";
 
 import { View } from "@aws-amplify/ui-react";
 import { IconBusActive, IconBusInactive } from "@demo/assets/svgs";

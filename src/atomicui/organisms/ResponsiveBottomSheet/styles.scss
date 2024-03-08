@@ -59,12 +59,12 @@
 		height: 2.08rem;
 
 		&.dark-logo {
-			background: url("/src/assets/icons/LogoDark.svg") center center no-repeat;
+			background: url("/src/assets/svgs/LogoDark.svg") center center no-repeat;
 			background-size: contain;
 		}
 
 		&.light-logo {
-			background: url("/src/assets/icons/LogoLight.svg") center center no-repeat;
+			background: url("/src/assets/svgs/LogoLight.svg") center center no-repeat;
 			background-size: contain;
 		}
 	}
