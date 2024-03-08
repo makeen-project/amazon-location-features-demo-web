@@ -11,6 +11,8 @@ import {
 	IconSegment,
 	Simulation
 } from "@demo/assets/svgs";
+import { DropdownEl } from "@demo/atomicui/atoms";
+import { NotificationsBox } from "@demo/atomicui/molecules";
 import { appConfig, busRoutesData } from "@demo/core/constants";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
 import { useAwsGeofence, useUnauthSimulation, useWebSocketBanner } from "@demo/hooks";
@@ -36,9 +38,6 @@ import UnauthGeofencesSimulation from "./UnauthGeofencesSimulation";
 import UnauthRouteSimulation from "./UnauthRouteSimulation";
 import "./styles.scss";
 
-const DropdownEl = lazy(() =>
-	import("@demo/atomicui/atoms/DropdownEl").then(module => ({ default: module.DropdownEl }))
-);
 const Modal = lazy(() => import("@demo/atomicui/atoms/Modal").then(module => ({ default: module.Modal })));
 const ConfirmationModal = lazy(() =>
 	import("@demo/atomicui/molecules/ConfirmationModal").then(module => ({ default: module.ConfirmationModal }))
@@ -50,9 +49,6 @@ const NonStartUnauthSimulation = lazy(() =>
 	import("@demo/atomicui/molecules/NonStartUnauthSimulation").then(module => ({
 		default: module.NonStartUnauthSimulation
 	}))
-);
-const NotificationsBox = lazy(() =>
-	import("@demo/atomicui/molecules/NotificationsBox").then(module => ({ default: module.NotificationsBox }))
 );
 
 const initialIdx: IdxType = {
