@@ -75,7 +75,7 @@ describe("<UnauthSimulation />", () => {
 		mockProps.startSimulation = false;
 	});
 
-	it("should render correclty", async () => {
+	it("should render correctly", async () => {
 		const { getByTestId } = renderComponent();
 		waitFor(
 			() => {
@@ -98,7 +98,7 @@ describe("<UnauthSimulation />", () => {
 		);
 	});
 
-	it("should render correclty when startSimulation is true", () => {
+	it("should render correctly when startSimulation is true", () => {
 		mockProps.startSimulation = true;
 		const { getByTestId } = renderComponent();
 
