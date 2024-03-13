@@ -86,8 +86,8 @@ interface IProps {
 	setShowRouteBox: (b: boolean) => void;
 	isExpandRouteOptionsMobile: boolean;
 	setExpandRouteOptionsMobile: (b: boolean) => void;
-	setSearchBoxValue: React.Dispatch<React.SetStateAction<string>>;
-	geolocateControlRef: React.MutableRefObject<GeolocateControlRef | null>;
+	setSearchBoxValue: Dispatch<SetStateAction<string>>;
+	geolocateControlRef: MutableRefObject<GeolocateControlRef | null>;
 }
 
 const ResponsiveBottomSheet: FC<IProps> = ({
