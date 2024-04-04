@@ -17,6 +17,14 @@
 		"./style.css": {
 			"import": "./lib/style.css",
 			"require": "./lib/style.css"
+		},
+		"./ApiPlaygroundListPage": {
+			"import": "./lib/atomicui/pages/ApiPlaygroundLisPage",
+			"require": "./lib/atomicui/pages/ApiPlaygroundLisPage"
+		},
+		"./ApiPlaygroundDetailsPage": {
+			"import": "./lib/atomicui/pages/ApiPlaygroundDetailsPage",
+			"require": "./lib/atomicui/pages/ApiPlaygroundDetailsPage"
 		}
 	},
 	"scripts": {
