@@ -50,7 +50,8 @@ const {
 		MIGRATE_AN_ANDROID_APP_PAGE,
 		MIGRATE_AN_IOS_APP_PAGE,
 		MIGRATE_A_WEB_SERVICE_PAGE,
-		PRICING_PAGE
+		PRICING_PAGE,
+		API_PLAYGROUND_PAGE
 	},
 	ROUTES: {
 		OVERVIEW,
@@ -60,7 +61,8 @@ const {
 		MIGRATE_AN_ANDROID_APP,
 		MIGRATE_AN_IOS_APP,
 		MIGRATE_A_WEB_SERVICE,
-		PRICING
+		PRICING,
+		API_PLAYGROUND
 	}
 } = appConfig;
 
@@ -367,6 +369,12 @@ const Explore: FC<IProps> = ({
 				description: t("pricing_desc.text"),
 				onClickHandler: () => navigate(PRICING),
 				isEnabled: !!parseInt(PRICING_PAGE)
+			},
+			{
+				title: t("API Playground"),
+				description: t("Explore APIs"),
+				onClickHandler: () => navigate(API_PLAYGROUND),
+				isEnabled: !!parseInt(API_PLAYGROUND_PAGE)
 			},
 			{
 				title: t("settings.text"),

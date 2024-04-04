@@ -1,3 +1,4 @@
+import { ApiPlaygroundDetailsPage, ApiPlaygroundListPage } from "./atomicui/pages";
 import appConfig from "./core/constants/appConfig";
 import useAmplifyAuth from "./hooks/useAmplifyAuth";
 import useAmplifyMap from "./hooks/useAmplifyMap";
@@ -31,5 +32,7 @@ export {
 	TriggeredByEnum,
 	record,
 	debounce,
-	clearStorage
+	clearStorage,
+	ApiPlaygroundListPage,
+	ApiPlaygroundDetailsPage
 };

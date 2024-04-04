@@ -15,7 +15,8 @@ const {
 		MIGRATE_AN_ANDROID_APP_PAGE,
 		MIGRATE_AN_IOS_APP_PAGE,
 		MIGRATE_A_WEB_SERVICE_PAGE,
-		PRICING_PAGE
+		PRICING_PAGE,
+		API_PLAYGROUND_PAGE
 	},
 	ROUTES: {
 		OVERVIEW,
@@ -25,7 +26,8 @@ const {
 		MIGRATE_AN_ANDROID_APP,
 		MIGRATE_AN_IOS_APP,
 		MIGRATE_A_WEB_SERVICE,
-		PRICING
+		PRICING,
+		API_PLAYGROUND
 	}
 } = appConfig;
 
@@ -46,7 +48,8 @@ const routeToEnvMapping = {
 	[MIGRATE_AN_ANDROID_APP]: MIGRATE_AN_ANDROID_APP_PAGE,
 	[MIGRATE_AN_IOS_APP]: MIGRATE_AN_IOS_APP_PAGE,
 	[MIGRATE_A_WEB_SERVICE]: MIGRATE_A_WEB_SERVICE_PAGE,
-	[PRICING]: PRICING_PAGE
+	[PRICING]: PRICING_PAGE,
+	[API_PLAYGROUND]: API_PLAYGROUND_PAGE
 };
 
 const shouldIncludeMenuItem = (menuItem: MenuItem) => !!parseInt(routeToEnvMapping[menuItem?.link]);
@@ -103,6 +106,13 @@ let marketingMenuOptionsData: MenuItem[] = [
 	{
 		label: "pricing.text",
 		link: PRICING,
+		iconBeforeLink: IconDollarSolid,
+		iconContainerClass: "menu-item-icon",
+		isExternalLink: false
+	},
+	{
+		label: "API Playground",
+		link: API_PLAYGROUND,
 		iconBeforeLink: IconDollarSolid,
 		iconContainerClass: "menu-item-icon",
 		isExternalLink: false

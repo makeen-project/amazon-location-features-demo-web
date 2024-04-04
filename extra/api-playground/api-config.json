@@ -1,0 +1,190 @@
+{
+	"apis": [
+		{
+			"category": "Maps",
+			"name": "GetMapTileCommand",
+			"description": "Retrieve a map image for a specified location and zoom level.",
+			"requestParams": [
+				{
+					"name": "X",
+					"type": "string",
+					"required": true,
+					"description": "The X axis value for the map tile."
+				},
+				{
+					"name": "Y",
+					"type": "string",
+					"required": true,
+					"description": "The Y axis value for the map tile."
+				},
+				{
+					"name": "Z",
+					"type": "string",
+					"required": true,
+					"description": "The zoom value for the map tile."
+				}
+			]
+		},
+		{
+			"category": "Places",
+			"name": "SearchPlaceIndexForTextCommand",
+			"description": "Geocodes free-form text, such as an address, name, city, or region to allow you to search for Places or points of interest.",
+			"requestParams": [
+				{
+					"name": "IndexName",
+					"type": "string",
+					"required": true,
+					"description": "The name of the place index resource you want to use for the search."
+				},
+				{
+					"name": "Text",
+					"type": "string",
+					"required": true,
+					"description": "The address, name, city, or region to be used in the search in free-form text format."
+				},
+				{
+					"name": "BiasPosition",
+					"type": "number[]",
+					"required": false,
+					"description": "An optional parameter that indicates a preference for places that are closer to a specified position."
+				},
+				{
+					"name": "FilterBBox",
+					"type": "number[]",
+					"required": false,
+					"description": "An optional parameter that limits the search results by returning only places that are within the provided bounding box."
+				},
+				{
+					"name": "FilterCategories",
+					"type": "string[]",
+					"required": false,
+					"description": "A list of one or more Amazon Location categories to filter the returned places. If you include more than one category, the results will include results that match any of the categories listed."
+				},
+				{
+					"name": "FilterCountries",
+					"type": "string[]",
+					"required": false,
+					"description": "An optional parameter that limits the search results by returning only places that are in a specified list of countries."
+				},
+				{
+					"name": "Key",
+					"type": "string",
+					"required": false,
+					"description": "The optional API key to authorize the request."
+				},
+				{
+					"name": "Language",
+					"type": "string",
+					"required": true,
+					"description": "The preferred language used to return results."
+				},
+				{
+					"name": "MaxResults",
+					"type": "number",
+					"required": false,
+					"description": "An optional parameter. The maximum number of results returned per request. The default: 50"
+				}
+			]
+		},
+		{
+			"category": "Routes",
+			"name": "CalculateRouteCommand",
+			"description": "Calculates a route between positions.",
+			"dataProvider": ["Esri", "HERE"],
+			"requestParams": [
+				{
+					"name": "CalculatorName",
+					"type": "string",
+					"required": true,
+					"description": "The name of the route calculator resource that you want to use to calculate the route.",
+					"shouldRender": false
+				},
+				{
+					"name": "DeparturePosition",
+					"type": "number[]",
+					"required": true,
+					"description": "The start position for the route."
+				},
+				{
+					"name": "DestinationPosition",
+					"type": "number[]",
+					"required": true,
+					"description": "The finish position for the route."
+				},
+				{
+					"name": "ArrivalTime",
+					"type": "Date",
+					"required": false,
+					"description": "Specifies the desired time of arrival. Uses the given time to calculate the route. Otherwise, the best time of day to travel with the best traffic conditions is used to calculate the route. ArrivalTime is not supported Esri."
+				},
+				{
+					"name": "DepartNow",
+					"type": "boolean",
+					"required": false,
+					"description": "Avoids tolls when calculating routes. Default Value: false"
+				},
+				{
+					"name": "DepartureTime",
+					"type": "Date",
+					"required": false,
+					"description": "Specifies the desired time of departure. Uses the given time to calculate the route. Otherwise, the best time of day to travel with the best traffic conditions is used to calculate the route."
+				},
+				{
+					"name": "DistanceUnit",
+					"type": "string",
+					"required": false,
+					"description": "Set the unit system to specify the distance. Default Value: Kilometers"
+				},
+				{
+					"name": "IncludeLegGeometry",
+					"description": "Set to include the geometry details in the result for each path between a pair of positions.",
+					"required": false,
+					"type": "boolean",
+					"defaultValue": false,
+					"validValues": [true, false]
+				},
+				{
+					"name": "OptimizeFor",
+					"description": "Set to include the geometry details in the result for each path between a pair of positions.",
+					"required": false,
+					"type": "string",
+					"defaultValue": null,
+					"validValues": ["FastestRoute", "ShortestRoute"]
+				},
+				{
+					"name": "TravelMode",
+					"description": "Specifies the mode of transport when calculating a route. Used in estimating the speed of travel and road compatibility.",
+					"required": false,
+					"type": "string",
+					"defaultValue": "Car",
+					"validValues": ["Car", "Truck", "Bicycle"]
+				},
+				{
+					"name": "AvoidFerries",
+					"description": "Avoids ferries when calculating routes.",
+					"required": false,
+					"type": "boolean",
+					"defaultValue": false,
+					"validValues": [true, false]
+				},
+				{
+					"name": "AvoidTolls",
+					"description": "Avoids tolls when calculating routes.",
+					"required": false,
+					"type": "boolean",
+					"defaultValue": false,
+					"validValues": [true, false]
+				},
+				{
+					"name": "Dimensions",
+					"description": "Avoids tolls when calculating routes.",
+					"required": false,
+					"type": "boolean",
+					"defaultValue": false,
+					"validValues": [true, false],
+					"visibleIf": ["TravelMode", "Truck"]
+				}
+			]
+		}
+	]
+}

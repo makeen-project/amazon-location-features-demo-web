@@ -3,3 +3,5 @@
 
 export * from "./DemoPage";
 export * from "./DemoPlaceholderPage";
+export * from "./ApiPlaygroundListPage";
+export * from "./ApiPlaygroundDetailsPage";
