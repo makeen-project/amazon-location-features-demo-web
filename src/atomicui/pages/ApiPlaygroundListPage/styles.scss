@@ -1,4 +1,52 @@
 .api-playground-list-container {
-	gap: 0;
-	border: 1px solid red;
+	.header {
+		border-radius: 10px;
+		margin-top: 50px;
+		height: 239px;
+		justify-content: space-between;
+		background: url("/src/assets/svgs/product-header-bg.svg") no-repeat;
+		background-size: cover;
+
+		.header-text {
+			a {
+				color: var(--black-color);
+			}
+			margin-top: 10px;
+			white-space: break-spaces;
+			max-width: 500px;
+		}
+
+		.header-icon {
+			width: 50%;
+			text-align: center;
+
+			svg {
+				width: 130px;
+				height: 130px;
+			}
+		}
+	}
+
+	@media screen and (max-width: 960px) {
+		.header {
+			text-align: center;
+			justify-content: space-around;
+
+			.header-icon {
+				display: none;
+			}
+		}
+
+		.content-container {
+			padding: 0px 10px 50px 10px;
+		}
+
+		.checkbox-filter-container {
+			display: none;
+		}
+
+		.filter-icon {
+			display: block;
+		}
+	}
 }

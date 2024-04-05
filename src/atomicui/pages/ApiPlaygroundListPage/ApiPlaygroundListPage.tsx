@@ -1,9 +1,11 @@
 import { FC } from "react";
 
-import { Button, Flex, Text } from "@aws-amplify/ui-react";
+import { Flex, Heading, Text, View } from "@aws-amplify/ui-react";
 import "./styles.scss";
+import { IconCode } from "@demo/assets/svgs";
 import { appConfig } from "@demo/core/constants";
 // import { useRecordViewPage } from "@demo/hooks";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 const {
@@ -12,21 +14,36 @@ const {
 
 const ApiPlaygroundListPage: FC = () => {
 	const navigate = useNavigate();
+	const { t, i18n } = useTranslation();
 	// useRecordViewPage("ApiPlaygroundListPage");
+	const langDir = i18n.dir();
+	const isLtr = langDir === "ltr";
 
 	const handleCardClick = (apiId: string) => {
 		// record([{ EventType: EventTypeEnum.API_CLICKED, Attributes: { apiId, apiTitle } }]);
-		console.log("hello");
 		navigate(`${API_PLAYGROUND}/${apiId}`);
 		document.body.scrollTop = 0;
 		document.documentElement.scrollTop = 0;
 	};
 
 	return (
-		<Flex className="api-playground-list-container">
-			<Text>This is the API Playground list page</Text>
-			<Button onClick={() => handleCardClick("test-api")}>Open details</Button>
-		</Flex>
+		<>
+			<View className="api-playground-list-container no-side-gaps inner-container-padding">
+				<Flex className="header">
+					<View>
+						<Heading className="bold x-large-text" level={2} textAlign={isLtr ? "start" : "end"}>
+							{t("API Playground")}
+						</Heading>
+						<Text className="header-text regular-text" textAlign={isLtr ? "start" : "end"}>
+							{t("APIs available for you to explore.")}
+						</Text>
+					</View>
+					<View className="header-icon">
+						<IconCode />
+					</View>
+				</Flex>
+			</View>
+		</>
 	);
 };
 

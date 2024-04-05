@@ -2,6 +2,7 @@
 	"apis": [
 		{
 			"category": "Maps",
+			"id": "get-map-tile",
 			"name": "GetMapTileCommand",
 			"description": "Retrieve a map image for a specified location and zoom level.",
 			"requestParams": [
@@ -24,6 +25,16 @@
 					"description": "The zoom value for the map tile."
 				}
 			]
+		},
+		{
+			"category": "Places",
+			"id": "search-place-index-for-position",
+			"name": "SearchPlaceIndexForPositionCommand"
+		},
+		{
+			"category": "Places",
+			"id": "search-place-index-for-suggestions",
+			"name": "SearchPlaceIndexForSuggestionsCommand"
 		},
 		{
 			"category": "Places",
@@ -185,6 +196,26 @@
 					"visibleIf": ["TravelMode", "Truck"]
 				}
 			]
+		},
+		{
+			"category": "Geofences",
+			"id": "get-geofence",
+			"name": "GetGeofenceCommand"
+		},
+		{
+			"category": "Geofences",
+			"id": "list-geofences",
+			"name": "ListGeofencesCommand"
+		},
+		{
+			"category": "Trackers",
+			"id": "describe-tracker",
+			"name": "DescribeTrackerCommand"
+		},
+		{
+			"category": "Trackers",
+			"id": "get-device-position",
+			"name": "GetDevicePositionCommand"
 		}
 	]
 }
