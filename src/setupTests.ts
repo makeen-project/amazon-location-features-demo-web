@@ -49,7 +49,9 @@ jest.mock("@demo/core/constants/appConfig", () => ({
 		MIGRATE_AN_IOS_APP_PAGE: "1",
 		MIGRATE_A_WEB_SERVICE_PAGE: "1",
 		PRICING_PAGE: "1",
-		API_PLAYGROUND_PAGE: "1"
+		API_PLAYGROUND_PAGE: "1",
+		API_PLAYGROUND_URL: "",
+		API_PLAYGROUND_LIST_FILENAME: ""
 	},
 	PERSIST_STORAGE_KEYS: {
 		LOCAL_STORAGE_PREFIX: "amazon-location_",
