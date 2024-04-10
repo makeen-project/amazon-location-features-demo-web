@@ -2,34 +2,142 @@
 	"apis": [
 		{
 			"category": "Maps",
-			"id": "get-map-tile",
+			"id": "get-map-tile-command",
 			"name": "GetMapTileCommand",
 			"description": "Retrieve a map image for a specified location and zoom level.",
+			"shouldRenderMap": true,
 			"requestParams": [
 				{
-					"name": "X",
-					"type": "string",
+					"name": "MapName",
+					"description": "The map resource to retrieve the map tiles from.",
 					"required": true,
-					"description": "The X axis value for the map tile."
+					"type": "string",
+					"defaultValue": "here-map-resource",
+					"validValues": ["here-map-resource"],
+					"visibleIf": null,
+					"shouldRender": true,
+					"isEditable": false
+				},
+				{
+					"name": "X",
+					"description": "The X axis value for the map tile.",
+					"required": true,
+					"type": "string",
+					"defaultValue": "100",
+					"validValues": null,
+					"visibleIf": null,
+					"shouldRender": true,
+					"isEditable": true
 				},
 				{
 					"name": "Y",
-					"type": "string",
+					"description": "The Y axis value for the map tile.",
 					"required": true,
-					"description": "The Y axis value for the map tile."
+					"type": "string",
+					"defaultValue": "",
+					"ValidValues": null,
+					"visibleIf": null,
+					"shouldRender": true,
+					"isEditable": true
 				},
 				{
 					"name": "Z",
-					"type": "string",
+					"description": "The zoom value for the map tile.",
 					"required": true,
-					"description": "The zoom value for the map tile."
+					"type": "string",
+					"defaultValue": "",
+					"ValidValues": null,
+					"visibleIf": null,
+					"shouldRender": true,
+					"isEditable": true
+				},
+				{
+					"name": "Key",
+					"description": "The optional API key to authorize the request.",
+					"required": false,
+					"type": "string",
+					"defaultValue": "",
+					"ValidValues": null,
+					"visibleIf": null,
+					"shouldRender": false,
+					"isEditable": true
 				}
 			]
 		},
 		{
 			"category": "Places",
-			"id": "search-place-index-for-position",
-			"name": "SearchPlaceIndexForPositionCommand"
+			"id": "search-place-index-for-position-command",
+			"name": "SearchPlaceIndexForPositionCommand",
+			"description": "Reverse geocodes a given coordinate and returns a legible address. Allows you to search for Places or points of interest near a given position.",
+			"shouldRenderMap": false,
+			"requestParams": [
+				{
+					"name": "IndexName",
+					"description": "The optional API key to authorize the request.",
+					"required": true,
+					"type": "string",
+					"defaultValue": "here-place-index",
+					"validValues": ["here-place-index"],
+					"visibleIf": null,
+					"shouldRender": true,
+					"isEditable": false
+				},
+				{
+					"name": "Position",
+					"description": "Specifies the longitude and latitude of the position to query. This parameter must contain a pair of numbers. The first number represents the X coordinate, or longitude; the second number represents the Y coordinate, or latitude.",
+					"required": true,
+					"type": "number[]",
+					"defaultValue": "",
+					"ValidValues": null,
+					"visibleIf": null,
+					"shouldRender": true,
+					"isEditable": true
+				},
+				{
+					"name": "Position",
+					"description": "Specifies the longitude and latitude of the position to query. This parameter must contain a pair of numbers. The first number represents the X coordinate, or longitude; the second number represents the Y coordinate, or latitude. For example, [-123.1174, 49.2847] represents a position with longitude -123.1174 and latitude 49.2847",
+					"required": true,
+					"type": "number[]",
+					"defaultValue": "",
+					"ValidValues": null,
+					"visibleIf": null,
+					"shouldRender": true,
+					"isEditable": true
+				},
+				{
+					"name": "Key",
+					"description": "The optional API key to authorize the request.",
+					"required": false,
+					"type": "string",
+					"defaultValue": "",
+					"ValidValues": null,
+					"visibleIf": null,
+					"shouldRender": false,
+					"isEditable": true
+				},
+				{
+					"name": "Language",
+					"description": "The preferred language used to return results, for example, en for English.",
+					"required": false,
+					"type": "string",
+					"defaultValue": "en",
+					"ValidValues": null,
+					"visibleIf": null,
+					"shouldRender": false,
+					"isEditable": true
+				},
+				{
+					"name": "MaxResults",
+					"description": "An optional parameter. The maximum number of results returned per request. Default value: 50",
+					"required": false,
+					"type": "number",
+					"defaultValue": 50,
+					"ValidValues": null,
+					"visibleIf": null,
+					"shouldRender": true,
+					"isEditable": true
+				}
+			]
 		},
 		{
 			"category": "Places",
