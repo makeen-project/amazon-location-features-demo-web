@@ -182,6 +182,20 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 		prevBottomSheetHeightRef.current = bottomSheetCurrentHeight;
 	}, [bottomSheetCurrentHeight, setBottomSheetHeight, setBottomSheetMinHeight, ui]);
 
+	// useEffect(() => {
+	// 	const hasDemoUrl = document.querySelector(".demoUrl");
+
+	// 	if (hasDemoUrl) {
+	// 		document.body.style.overflow = "hidden";
+	// 	} else {
+	// 		document.body.style.overflow = "auto";
+	// 	}
+
+	// 	return () => {
+	// 		document.body.style.overflow = "auto";
+	// 	};
+	// }, []);
+
 	useEffect(() => {
 		setTimeout(() => {
 			const targetElement = document.querySelector('[data-rsbs-scroll="true"]') as HTMLElement;
@@ -484,8 +498,8 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 					return <Flex width="100%">{SearchBoxEl()}</Flex>;
 				case ResponsiveUIEnum.explore:
 				case ResponsiveUIEnum.search:
-				case ResponsiveUIEnum.before_start_unauthorized_geofence:
 				case ResponsiveUIEnum.before_start_unauthorized_tracker:
+				case ResponsiveUIEnum.before_start_unauthorized_geofence:
 				default:
 					return (
 						<>

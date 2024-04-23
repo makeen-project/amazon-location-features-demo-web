@@ -606,7 +606,7 @@ const DemoPage: FC = () => {
 								/>
 							)}
 							mapRef={mapViewRef?.current}
-							RouteBox={(ref?: MutableRefObject<RefHandles | null>) => (
+							RouteBox={(ref?: React.MutableRefObject<RefHandles | null>) => (
 								<RouteBox
 									mapRef={mapViewRef?.current}
 									setShowRouteBox={b => setShow(s => ({ ...s, routeBox: b }))}
