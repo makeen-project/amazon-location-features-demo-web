@@ -1,7 +1,7 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-import { appConfig } from "core/constants";
+import { appConfig } from "@demo/core/constants";
 
 const {
 	ENV: { API_PLAYGROUND_URL }
