@@ -46,28 +46,3 @@ body,
 .hideScroll {
 	scrollbar-width: none !important;
 }
-
-.demo-inner-container-padding > div:not(.demo-no-side-gaps) {
-	padding: 0px 9%;
-	border: 1px solid red;
-
-	@media only screen and (max-width: 3600px) {
-		padding: 0px 26%;
-	}
-
-	@media only screen and (max-width: 2000px) {
-		padding: 0px 15%;
-	}
-
-	@media only screen and (max-width: 1440px) {
-		padding: 0px 9%;
-	}
-
-	@media only screen and (max-width: 1200px) {
-		padding: 0px 5%;
-	}
-
-	@media only screen and (max-width: 844px) {
-		padding: 0px 2%;
-	}
-}

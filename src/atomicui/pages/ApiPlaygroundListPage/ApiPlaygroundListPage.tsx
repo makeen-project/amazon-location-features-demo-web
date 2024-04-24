@@ -28,7 +28,7 @@ const ApiPlaygroundListPage: FC = () => {
 
 	return (
 		<>
-			<View className="api-playground-list-container demo-no-side-gaps demo-inner-container-padding">
+			<View className="api-playground-list-container no-side-gaps inner-container-padding">
 				<Flex className="header">
 					<View>
 						<Heading className="bold x-large-text" level={2} textAlign={isLtr ? "start" : "end"}>
