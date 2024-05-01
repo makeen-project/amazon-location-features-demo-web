@@ -112,3 +112,6 @@ export { ReactComponent as IconDollarSolid } from "./icon-dollar-solid.svg";
 export { ReactComponent as IconSwap } from "./icon-swap.svg";
 export { ReactComponent as Simulation } from "./simulation.svg";
 export { ReactComponent as ProductHeaderBg } from "./product-header-bg.svg";
+export { ReactComponent as IconReloadFilled } from "./icon-reload-filled.svg";
+export { ReactComponent as IconApiPlayground } from "./icon-api-playground.svg";
+export { ReactComponent as IconPinSolid } from "./icon-pin-solid.svg";
