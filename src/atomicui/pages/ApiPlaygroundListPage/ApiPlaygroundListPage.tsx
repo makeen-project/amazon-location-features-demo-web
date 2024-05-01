@@ -44,7 +44,6 @@ const ApiPlaygroundListPage: FC = () => {
 	const langDir = i18n.dir();
 	const isLtr = langDir === "ltr";
 	const isTablet = useMediaQuery("(max-width: 960px)");
-	console.log(isTablet);
 
 	const data = useMemo(
 		() => (searchText ? filteredApiListData : apiListData),
@@ -198,9 +197,11 @@ const ApiPlaygroundListPage: FC = () => {
 		if (!isFetching && !isFiltering && !!data) {
 			return Object.keys(data).map(category => {
 				return (
-					<Flex key={category} id={category} className="section">
-						<Text className="section-title bold regular-text">{category}</Text>
-						<Flex className="list">{renderList(category)}</Flex>
+					<Flex key={category} id={category} className="anchor" gap={0} direction="column">
+						<Flex className="section">
+							<Text className="section-title bold regular-text">{category}</Text>
+							<Flex className="list">{renderList(category)}</Flex>
+						</Flex>
 					</Flex>
 				);
 			});
