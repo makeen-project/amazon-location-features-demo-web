@@ -15,7 +15,6 @@ const ApiPlaygroundDetailsPage: FC = () => {
 			data-testid="api-playground-details-container"
 			className="api-playground-details-container no-side-gaps inner-container-padding"
 		>
-			{/* <Text>{`This is the API Playground details page for ${apiId}`}</Text> */}
 			<Flex className="content-container">
 				<Flex className="req-params-container">
 					<Text className="title bold medium-text">Customize Request</Text>
