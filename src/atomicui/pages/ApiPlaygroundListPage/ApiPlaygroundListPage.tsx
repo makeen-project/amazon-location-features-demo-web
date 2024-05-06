@@ -32,9 +32,6 @@ const categoryIcons: { [key: string]: JSX.Element } = {
 	Trackers: <IconRadar />
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type TODO = any;
-
 const ApiPlaygroundListPage: FC = () => {
 	useRecordViewPage("ApiPlaygroundListPage");
 	const navigate = useNavigate();
@@ -105,14 +102,67 @@ const ApiPlaygroundListPage: FC = () => {
 
 	const renderList = useCallback(
 		(category: string) => {
-			if (!isTablet && data[category].length > 1) {
-				const col1 = (data[category] as TODO[]).filter((_, idx) => idx % 2 === 0);
-				const col2 = (data[category] as TODO[]).filter((_, idx) => idx % 2 !== 0);
+			if (!!data) {
+				if (!isTablet && data[category].length > 1) {
+					const col1 = data[category].filter((_, idx) => idx % 2 === 0);
+					const col2 = data[category].filter((_, idx) => idx % 2 !== 0);
 
-				return (
-					<>
-						<Flex className="multi-col1">
-							{col1.map(
+					return (
+						<>
+							<Flex className="multi-col1">
+								{col1.map(
+									({
+										id,
+										imageSource,
+										title,
+										description
+									}: {
+										id: string;
+										imageSource: string;
+										title: string;
+										description: string;
+									}) => (
+										<ApiCard
+											key={`${category}_${id}`}
+											id={`${category}_${id}`}
+											imageSource={imageSource}
+											title={title}
+											description={description}
+											onCardClick={handleCardClick}
+										/>
+									)
+								)}
+							</Flex>
+							<Flex className="multi-col2">
+								{col2.map(
+									({
+										id,
+										imageSource,
+										title,
+										description
+									}: {
+										id: string;
+										imageSource: string;
+										title: string;
+										description: string;
+									}) => (
+										<ApiCard
+											key={`${category}_${id}`}
+											id={`${category}_${id}`}
+											imageSource={imageSource}
+											title={title}
+											description={description}
+											onCardClick={handleCardClick}
+										/>
+									)
+								)}
+							</Flex>
+						</>
+					);
+				} else {
+					return (
+						<Flex className="single-col">
+							{data[category].map(
 								({
 									id,
 									imageSource,
@@ -125,8 +175,8 @@ const ApiPlaygroundListPage: FC = () => {
 									description: string;
 								}) => (
 									<ApiCard
-										key={id}
-										id={id}
+										key={`${category}_${id}`}
+										id={`${category}_${id}`}
 										imageSource={imageSource}
 										title={title}
 										description={description}
@@ -135,59 +185,8 @@ const ApiPlaygroundListPage: FC = () => {
 								)
 							)}
 						</Flex>
-						<Flex className="multi-col2">
-							{col2.map(
-								({
-									id,
-									imageSource,
-									title,
-									description
-								}: {
-									id: string;
-									imageSource: string;
-									title: string;
-									description: string;
-								}) => (
-									<ApiCard
-										key={id}
-										id={id}
-										imageSource={imageSource}
-										title={title}
-										description={description}
-										onCardClick={handleCardClick}
-									/>
-								)
-							)}
-						</Flex>
-					</>
-				);
-			} else {
-				return (
-					<Flex className="single-col">
-						{data[category].map(
-							({
-								id,
-								imageSource,
-								title,
-								description
-							}: {
-								id: string;
-								imageSource: string;
-								title: string;
-								description: string;
-							}) => (
-								<ApiCard
-									key={id}
-									id={id}
-									imageSource={imageSource}
-									title={title}
-									description={description}
-									onCardClick={handleCardClick}
-								/>
-							)
-						)}
-					</Flex>
-				);
+					);
+				}
 			}
 		},
 		[isTablet, data, handleCardClick]

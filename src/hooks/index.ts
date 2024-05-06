@@ -19,3 +19,4 @@ export { default as useCredsManager } from "./useCredsManager";
 export { default as useMapManager } from "./useMapManager";
 export { default as useApiPlaygroundList } from "./useApiPlaygroundList";
 export { default as useApiPlaygroundFilters } from "./useApiPlaygroundFilters";
+export { default as useApiPlaygroundDetails } from "./useApiPlaygroundDetails";

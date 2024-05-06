@@ -3,6 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 // import { EventTypeEnum } from "@demo/types/Enums";
 // import { debounce, record } from "@demo/utils";
 
+import { ApiListData } from "@demo/types";
+
 import useApiPlaygroundList from "./useApiPlaygroundList";
 
 // const recordFilterEvent = debounce(
@@ -12,22 +14,20 @@ import useApiPlaygroundList from "./useApiPlaygroundList";
 // );
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type TODO = any;
-type DATA = { [key: string]: TODO[] };
 
 const useApiPlaygroundFilters = () => {
 	const [isFiltering, setIsFiltering] = useState(false);
 	const [searchText, setSearchText] = useState("");
-	const [filteredApiListData, setFilteredApiListData] = useState<DATA>({});
+	const [filteredApiListData, setFilteredApiListData] = useState<ApiListData | null>(null);
 	const { isFetching, apiListData } = useApiPlaygroundList();
 
 	const filterBySearch = useCallback(() => {
 		setIsFiltering(true);
-		const filteredObj: DATA = {};
+		const filteredObj: ApiListData = {};
 
 		for (const category in apiListData) {
 			const filteredItems = apiListData[category].filter(
-				(item: TODO) => item.title.includes(searchText) || (item.description && item.description.includes(searchText))
+				({ title, description }) => title.includes(searchText) || (description && description.includes(searchText))
 			);
 
 			if (filteredItems.length > 0) {

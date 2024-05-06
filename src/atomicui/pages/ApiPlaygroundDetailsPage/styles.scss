@@ -1,4 +1,79 @@
 .api-playground-details-container {
-	gap: 0;
-	border: 1px solid blue;
+	border: 1px solid red;
+	height: 100%;
+
+	.content-container {
+		gap: 0;
+		padding-top: 2.46rem !important;
+		margin-bottom: 2.46rem;
+		height: 100%;
+		border: 1px solid green;
+
+		@media screen and (max-width: 960px) {
+			padding: 0px 10px 50px 10px;
+		}
+
+		.req-params-container {
+			gap: 0;
+			flex-direction: column;
+			min-width: 19.08rem;
+			border: 1px solid blue;
+			padding-right: 2.46rem;
+
+			.title {
+				line-height: 2.85rem;
+			}
+
+			.params {
+				gap: 0;
+				padding-top: 1.23rem;
+				flex-direction: column;
+				border: 1px solid red;
+				max-height: 78.6vh;
+				overflow: auto;
+			}
+
+			.buttons-container {
+				padding-top: 1.85rem;
+				border: 1px solid aqua;
+			}
+		}
+
+		.map-req-res-code-container {
+			gap: 0;
+			flex-direction: column;
+			width: calc(100% - 19.08rem);
+			border: 1px solid yellow;
+
+			.title {
+				line-height: 3.08rem;
+				color: var(--tertiary-color);
+			}
+
+			.description {
+				line-height: 1.38rem;
+				color: var(--tertiary-color);
+			}
+
+			.map-container {
+				margin-top: 1.92rem;
+				border: 1px solid yellow;
+			}
+
+			.req-container {
+				margin-top: 1.92rem;
+				border: 1px solid yellow;
+			}
+
+			.res-container {
+				margin-top: 1.92rem;
+				border: 1px solid yellow;
+			}
+
+			.code-container {
+				margin-top: 1.92rem;
+				border: 1px solid yellow;
+			}
+		}
+	}
 }

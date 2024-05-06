@@ -1,15 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { appConfig } from "@demo/core/constants";
+import { ApiListData } from "@demo/types";
 import { errorHandler } from "@demo/utils";
 import { useTranslation } from "react-i18next";
 
 const {
 	ENV: { API_PLAYGROUND_URL, API_PLAYGROUND_LIST_FILENAME }
 } = appConfig;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type TODO = any;
 
 const downloadJson = async () => {
 	const bucketURL = `${API_PLAYGROUND_URL.trim()}/${API_PLAYGROUND_LIST_FILENAME}`;
@@ -29,7 +27,7 @@ const downloadJson = async () => {
 
 const useApiPlaygroundList = () => {
 	const [isFetching, setIsFetching] = useState(false);
-	const [apiListData, setApiListData] = useState<TODO | null>(null);
+	const [apiListData, setApiListData] = useState<ApiListData | null>(null);
 	const { t } = useTranslation();
 
 	const fetchApiList = useCallback(async () => {

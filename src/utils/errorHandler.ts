@@ -79,6 +79,7 @@ export const errorHandler = (error: any, message?: string) => {
 			}
 
 			if (message) {
+				console.log({ message });
 				showToast({ content: `${message}, ${apiErrorMsg}`, type: ToastType.ERROR });
 				return;
 			}
