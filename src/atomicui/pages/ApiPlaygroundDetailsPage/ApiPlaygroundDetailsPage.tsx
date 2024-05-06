@@ -1,6 +1,7 @@
 import { FC } from "react";
 
 import { Button, Flex, Text, View } from "@aws-amplify/ui-react";
+import { IconReloadLined } from "@demo/assets/svgs";
 import { useApiPlaygroundDetails } from "@demo/hooks";
 import { ApiListItem } from "@demo/types";
 import "./styles.scss";
@@ -26,8 +27,10 @@ const ApiPlaygroundDetailsPage: FC = () => {
 						))}
 					</Flex>
 					<Flex className="buttons-container">
-						<Button variation="primary">G</Button>
-						<Button variation="primary" width={"100%"}>
+						<Flex className="reset" onClick={() => {}}>
+							<IconReloadLined />
+						</Flex>
+						<Button className="submit" variation="primary" onClick={() => {}}>
 							Submit
 						</Button>
 					</Flex>

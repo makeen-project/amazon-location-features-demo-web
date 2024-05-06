@@ -115,3 +115,4 @@ export { ReactComponent as ProductHeaderBg } from "./product-header-bg.svg";
 export { ReactComponent as IconReloadFilled } from "./icon-reload-filled.svg";
 export { ReactComponent as IconApiPlayground } from "./icon-api-playground.svg";
 export { ReactComponent as IconPinSolid } from "./icon-pin-solid.svg";
+export { ReactComponent as IconReloadLined } from "./icon-reload-lined.svg";
