@@ -5,7 +5,7 @@ import { useApiPlaygroundDetails } from "@demo/hooks";
 import { ApiListItem } from "@demo/types";
 import "./styles.scss";
 
-const ApiPlaygroundDetailsPage: FC<ApiListItem> = () => {
+const ApiPlaygroundDetailsPage: FC = () => {
 	const { isFetching, apiDetails } = useApiPlaygroundDetails();
 	const { imageSource, title, description, requestParams, codeSnippets } = apiDetails || {};
 
