@@ -1,5 +1,7 @@
+/* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
+/* SPDX-License-Identifier: MIT-0 */
+
 .api-playground-details-container {
-	border: 1px solid red;
 	height: 100%;
 
 	.content-container {
@@ -7,7 +9,7 @@
 		padding-top: 2.46rem !important;
 		padding-bottom: 2.46rem !important;
 		height: 100%;
-		border: 1px solid green;
+		border: 1px solid red;
 
 		@media screen and (max-width: 960px) {
 			padding: 0px 10px 50px 10px;
@@ -17,7 +19,7 @@
 			gap: 0;
 			flex-direction: column;
 			min-width: 19.08rem;
-			border: 1px solid blue;
+			border: 1px solid green;
 			padding-right: 2.46rem;
 
 			.title {
@@ -28,14 +30,14 @@
 				gap: 0;
 				padding-top: 1.23rem;
 				flex-direction: column;
-				border: 1px solid red;
+				border: 1px solid blue;
 				max-height: 67.9vh;
 				overflow: auto;
 			}
 
 			.buttons-container {
 				padding-top: 1.85rem;
-				border: 1px solid aqua;
+				border: 1px solid red;
 
 				.reset {
 					border-radius: 0.62rem;
@@ -75,7 +77,7 @@
 			gap: 0;
 			flex-direction: column;
 			width: calc(100% - 19.08rem);
-			border: 1px solid yellow;
+			border: 1px solid red;
 
 			.title {
 				line-height: 3.08rem;
@@ -89,22 +91,14 @@
 
 			.map-container {
 				margin-top: 1.92rem;
-				border: 1px solid yellow;
+				min-height: 36.92rem;
+				max-height: 36.92rem;
 			}
 
-			.req-container {
-				margin-top: 1.92rem;
-				border: 1px solid yellow;
-			}
-
-			.res-container {
-				margin-top: 1.92rem;
-				border: 1px solid yellow;
-			}
-
+			.req-container,
+			.res-container,
 			.code-container {
 				margin-top: 1.92rem;
-				border: 1px solid yellow;
 			}
 		}
 	}

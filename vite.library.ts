@@ -76,6 +76,7 @@ export default defineConfig(() => {
 					"react-i18next",
 					"react-router-dom",
 					"react-spring-bottom-sheet",
+					"react-syntax-highlighter",
 					"react-toastify",
 					"react-tooltip",
 					"zustand",

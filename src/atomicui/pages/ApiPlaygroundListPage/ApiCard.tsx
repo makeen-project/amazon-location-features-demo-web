@@ -18,7 +18,7 @@ interface ApiCardProps {
 }
 
 const ApiCard: FC<ApiCardProps> = ({ id, imageSource, title, description, onCardClick }) => {
-	const { i18n } = useTranslation();
+	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();
 	const isLtr = langDir === "ltr";
 
@@ -35,10 +35,10 @@ const ApiCard: FC<ApiCardProps> = ({ id, imageSource, title, description, onCard
 					textAlign={isLtr ? "start" : "end"}
 					alignSelf={isLtr ? "start" : "end"}
 				>
-					{title}
+					{t(title)}
 				</Text>
 				<Text className="desc regular-text" textAlign={isLtr ? "start" : "end"}>
-					{description}
+					{t(description)}
 				</Text>
 			</Flex>
 		</Flex>

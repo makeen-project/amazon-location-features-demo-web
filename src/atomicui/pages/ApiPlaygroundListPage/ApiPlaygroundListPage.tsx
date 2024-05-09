@@ -50,14 +50,14 @@ const ApiPlaygroundListPage: FC = () => {
 	const renderCategoriesDesktop = useMemo(() => {
 		return (
 			<Flex className="categories-container-desktop">
-				<Text className="title bold regular-text">API Categories</Text>
+				<Text className="title bold regular-text">{t("API Categories")}</Text>
 				<Flex className="list">
 					{!isFetching && !isFiltering && !!data ? (
 						Object.keys(data).map(cateogry => (
 							<Link key={cateogry} href={`#${cateogry}`}>
 								<Flex className="category">
 									{categoryIcons[cateogry]}
-									<Text className="text bold regular-text">{cateogry}</Text>
+									<Text className="text bold regular-text">{t(cateogry)}</Text>
 								</Flex>
 							</Link>
 						))
@@ -67,7 +67,7 @@ const ApiPlaygroundListPage: FC = () => {
 				</Flex>
 			</Flex>
 		);
-	}, [isFetching, isFiltering, data]);
+	}, [isFetching, isFiltering, data, t]);
 
 	const renderCategoriesMobile = useMemo(() => {
 		return (
@@ -78,7 +78,7 @@ const ApiPlaygroundListPage: FC = () => {
 							<Link key={cateogry} href={`#${cateogry}`}>
 								<Flex className="category">
 									{categoryIcons[cateogry]}
-									<Text className="text bold regular-text">{cateogry}</Text>
+									<Text className="text bold regular-text">{t(cateogry)}</Text>
 								</Flex>
 							</Link>
 						))
@@ -88,7 +88,7 @@ const ApiPlaygroundListPage: FC = () => {
 				</Flex>
 			</Flex>
 		);
-	}, [isFetching, isFiltering, data]);
+	}, [isFetching, isFiltering, data, t]);
 
 	const handleCardClick = useCallback(
 		(apiId: string, apiTitle: string) => () => {

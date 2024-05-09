@@ -85,6 +85,11 @@
 	font-size: 1.0075rem;
 }
 
+.xs-text {
+	// 12px
+	font-size: 0.93rem;
+}
+
 /* https://mycolor.space/gradient?ori=to+right+top&hex=%23005276&hex2=%2338EF7D&sub=1 */
 .action-gradient-button {
 	background-image: linear-gradient(to right top, #005276, #007a9e, #00a3ad, #00cba1, #38ef7d);

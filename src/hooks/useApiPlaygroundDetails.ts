@@ -14,7 +14,7 @@ const {
 
 const useApiPlaygroundDetails = () => {
 	const [isFetching, setIsFetching] = useState(false);
-	const [apiDetails, setApiDetails] = useState<ApiListItem | null>();
+	const [apiDetails, setApiDetails] = useState<ApiListItem | null>(null);
 	const { apiId } = useParams();
 	const { t } = useTranslation();
 	const navigate = useNavigate();
@@ -27,7 +27,7 @@ const useApiPlaygroundDetails = () => {
 			const data = apiListData![category].find(api => api.id === id);
 
 			if (!!data) {
-				setApiDetails(data);
+				setTimeout(() => setApiDetails(data), 5000);
 			} else {
 				navigate(NOT_FOUND);
 				throw new Error("API not found.");
