@@ -30,7 +30,7 @@ const CodeSnippet: FC<CodeSnippetProps> = ({ title, placeholderText, singleCodeS
 				<Text className="title regular-text">{title}</Text>
 			</Flex>
 			{languageAndSnippet.length > 0 && (
-				<Flex className="tabs-container">
+				<Flex className="tabs-section">
 					{languageAndSnippet.map(([tabTitle], idx) => (
 						<Flex
 							key={tabTitle}

@@ -21,16 +21,18 @@
 		}
 	}
 
-	.tabs-container {
+	.tabs-section {
 		gap: 0;
 		height: 2.15rem;
-		padding-left: 1.23rem;
+		padding: 0 1.23rem;
 		background-color: var(--snow);
+		overflow: auto;
 
 		.tab {
 			min-width: 6.77rem;
 			justify-content: center;
 			padding: 0.38rem 1.15rem;
+			cursor: pointer;
 
 			&.selected {
 				border-radius: 0.46rem 0.46rem 0 0;
