@@ -16,6 +16,7 @@ import "./styles.scss";
 
 interface InputFieldProps {
 	dataTestId?: string;
+	id?: string;
 	containerMargin?: string;
 	labelMargin?: string;
 	label?: string;
@@ -37,6 +38,7 @@ interface InputFieldProps {
 
 const InputField: FC<InputFieldProps> = ({
 	dataTestId,
+	id,
 	containerMargin,
 	labelMargin = "0px 0px 8px 0px",
 	label,
@@ -65,6 +67,7 @@ const InputField: FC<InputFieldProps> = ({
 			<Flex className={disabled ? "input-container disabled" : "input-container"} gap={0} alignContent="center">
 				{innerStartComponent}
 				<input
+					id={id}
 					ref={searchInputRef}
 					data-testid={dataTestId || "input-field"}
 					style={{ order: dir === "ltr" ? 0 : 1 }}

@@ -133,6 +133,7 @@ const ApiPlaygroundDetailsPage: FC = () => {
 			),
 		[isDataPresent, apiDetails, t, isMobile, isTablet]
 	);
+
 	return (
 		<View
 			data-testid="api-playground-details-container"

@@ -57,4 +57,4 @@ export type {
 	TrackerPosType
 } from "./UnauthSimulationTypes";
 export type { FeedbackValueType } from "./FeedbackModel";
-export type { RequestParams, ApiListItem, ApiListData } from "./ApiPlaygroundModel";
+export type { RequestParam, ApiListItem, ApiListData } from "./ApiPlaygroundModel";

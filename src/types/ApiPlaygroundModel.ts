@@ -1,4 +1,4 @@
-export type RequestParams = {
+export type RequestParam = {
 	name: string;
 	description: string;
 	required: boolean;
@@ -8,6 +8,8 @@ export type RequestParams = {
 	visibleIf: string[] | null;
 	shouldRender: boolean;
 	isEditable: boolean;
+	subParams: string[] | null;
+	fieldType: string | null;
 };
 
 export type ApiListItem = {
@@ -16,7 +18,7 @@ export type ApiListItem = {
 	title: string;
 	description: string;
 	shouldRenderMap: boolean;
-	requestParams: RequestParams[];
+	requestParams: RequestParam[];
 	codeSnippets: {
 		[key: string]: string;
 	};

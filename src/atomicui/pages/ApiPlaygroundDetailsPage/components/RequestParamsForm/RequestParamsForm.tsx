@@ -1,41 +1,145 @@
-import { FC, useEffect, useState } from "react";
+import { FC, lazy, useEffect, useMemo, useState } from "react";
 
-import { Flex } from "@aws-amplify/ui-react";
-import { RequestParams } from "@demo/types";
+import { CheckboxField, Flex } from "@aws-amplify/ui-react";
+import { IconInfo } from "@demo/assets/svgs";
+import { RequestParam } from "@demo/types";
+import { Tooltip } from "react-tooltip";
 import "./styles.scss";
 
+const InputField = lazy(() =>
+	import("@demo/atomicui/molecules/InputField").then(module => ({ default: module.InputField }))
+);
+
 interface RequestParamsFormProps {
-	requestParams: RequestParams[];
+	requestParams: RequestParam[];
 }
 
 type RequestObj = { [key: string]: string | number | boolean };
 
 const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
-	const [requestObj, setRequestObj] = useState<RequestObj | null>(null);
+	const [formData, setFormData] = useState<{ [key: string]: string | number | boolean }>({});
 
-	useEffect(() => {
-		if (requestParams.length > 0 && !requestObj) {
-			const obj: RequestObj = {};
+	const paramsToRender = useMemo(() => requestParams.filter(param => param.shouldRender), [requestParams]);
 
-			requestParams.forEach(param => {
-				if (param.required) {
-					obj[param.name] = param.defaultValue;
-				}
-			});
+	const handleInputChange = (paramName: string, value: string | number | boolean) => {
+		setFormData(prevData => ({
+			...prevData,
+			[paramName]: value
+		}));
+	};
 
-			setRequestObj(obj);
+	const renderLabel = (param: RequestParam) => {
+		const { name, required, description } = param;
+		return (
+			<Flex className="label">
+				<label className="text bold small-text" htmlFor={name}>
+					{required ? `${name}*` : name}
+				</label>
+				<IconInfo
+					className="info-icon"
+					data-tooltip-id={name}
+					data-tooltip-place="top"
+					data-tooltip-content={description}
+				/>
+				<Tooltip id={name} />
+			</Flex>
+		);
+	};
+
+	const renderFormField = (param: RequestParam) => {
+		const { fieldType, name, defaultValue, isEditable, validValues } = param;
+
+		switch (fieldType) {
+			case "string-input":
+				return (
+					<Flex className="form-field col">
+						{renderLabel(param)}
+						<InputField
+							dataTestId={`input-${name}`}
+							id={name}
+							name={name}
+							type={"text"}
+							value={formData[name] ? `${formData[name]}` : `${defaultValue}`}
+							onChange={e => handleInputChange(name, e.target.value)}
+							disabled={!isEditable}
+						/>
+					</Flex>
+				);
+			case "string-input-array":
+				return (
+					<Flex className="form-field col">
+						{renderLabel(param)}
+						string-input-array
+					</Flex>
+				);
+			case "number-input":
+				return (
+					<Flex className="form-field col">
+						{renderLabel(param)}
+						<InputField
+							dataTestId={`input-${name}`}
+							id={name}
+							name={name}
+							type={"number"}
+							value={formData[name] ? `${formData[name]}` : `${defaultValue}`}
+							onChange={e => handleInputChange(name, parseFloat(e.target.value))}
+							disabled={!isEditable}
+						/>
+					</Flex>
+				);
+			case "number-input-array":
+				// [-12.12, 12.12, 0.0, 0.0]
+				return (
+					<Flex className="form-field col">
+						{renderLabel(param)}
+						number-input-array
+					</Flex>
+				);
+			case "coordinates":
+				// [-12.12, 12.12]
+				return (
+					<Flex className="form-field col">
+						{renderLabel(param)}
+						coordinates
+					</Flex>
+				);
+			case "coordinates-array":
+				// [[-12.12, 12.12], [-12.12, 12.12]]
+				return (
+					<Flex className="form-field col">
+						{renderLabel(param)}
+						coordinates-array
+					</Flex>
+				);
+			case "checkbox":
+				return (
+					<Flex className="form-field">
+						<CheckboxField
+							data-testid={`checkbox-${name}`}
+							id={name}
+							// className="sm-checkbox"
+							name={name}
+							label={name}
+							value={name}
+							checked={!!formData[name]}
+							onChange={e => handleInputChange(name, e.target.checked)}
+						/>
+						{renderLabel(param)}
+					</Flex>
+				);
+			case "dropdown":
+				return (
+					<Flex className="form-field col">
+						{renderLabel(param)}
+						dropdown
+					</Flex>
+				);
+			default:
+				return null;
 		}
-	}, [requestParams, requestObj]);
+	};
 
-	return (
-		<>
-			{requestParams.map((_, idx) => (
-				<Flex key={idx} className="param">
-					{idx}
-				</Flex>
-			))}
-		</>
-	);
+	return <Flex className="request-params-form">{paramsToRender.map(param => renderFormField(param))}</Flex>;
 };
 
 export default RequestParamsForm;

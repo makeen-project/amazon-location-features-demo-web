@@ -17,18 +17,22 @@
 						"validValues": ["here-map-resource"],
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": false
+						"isEditable": false,
+						"subParams": null,
+						"fieldType": "dropdown"
 					},
 					{
 						"name": "X",
 						"description": "The X axis value for the map tile.",
 						"required": true,
 						"type": "string",
-						"defaultValue": "100",
+						"defaultValue": "",
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
 					},
 					{
 						"name": "Y",
@@ -39,7 +43,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
 					},
 					{
 						"name": "Z",
@@ -50,7 +56,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
 					},
 					{
 						"name": "Key",
@@ -61,7 +69,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": false,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
 					}
 				],
 				"codeSnippets": {
@@ -88,7 +98,9 @@
 						"validValues": ["here-place-index"],
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": false
+						"isEditable": false,
+						"subParams": null,
+						"fieldType": "dropdown"
 					},
 					{
 						"name": "Position",
@@ -99,7 +111,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "coordinates"
 					},
 					{
 						"name": "Key",
@@ -110,7 +124,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": false,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
 					},
 					{
 						"name": "Language",
@@ -121,7 +137,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
 					},
 					{
 						"name": "MaxResults",
@@ -132,7 +150,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "number-input"
 					}
 				],
 				"codeSnippets": {
@@ -157,7 +177,9 @@
 						"validValues": ["here-place-index"],
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": false
+						"isEditable": false,
+						"subParams": null,
+						"fieldType": "dropdown"
 					},
 					{
 						"name": "Text",
@@ -168,7 +190,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
 					},
 					{
 						"name": "BiasPosition",
@@ -179,7 +203,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "coordinates"
 					},
 					{
 						"name": "FilterBBox",
@@ -190,7 +216,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "number-input-array"
 					},
 					{
 						"name": "FilterCategories",
@@ -201,7 +229,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input-array"
 					},
 					{
 						"name": "FilterCountries",
@@ -212,7 +242,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input-array"
 					},
 					{
 						"name": "Key",
@@ -223,7 +255,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": false,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
 					},
 					{
 						"name": "Language",
@@ -234,7 +268,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
 					},
 					{
 						"name": "MaxResults",
@@ -245,7 +281,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "number-input"
 					}
 				],
 				"codeSnippets": {
@@ -269,7 +307,9 @@
 						"validValues": ["here-place-index"],
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": false
+						"isEditable": false,
+						"subParams": null,
+						"fieldType": "dropdown"
 					},
 					{
 						"name": "Text",
@@ -280,7 +320,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
 					},
 					{
 						"name": "BiasPosition",
@@ -291,7 +333,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "coordinates"
 					},
 					{
 						"name": "FilterBBox",
@@ -302,7 +346,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "number-input-array"
 					},
 					{
 						"name": "FilterCategories",
@@ -313,7 +359,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input-array"
 					},
 					{
 						"name": "FilterCountries",
@@ -324,7 +372,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input-array"
 					},
 					{
 						"name": "Key",
@@ -335,7 +385,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": false,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
 					},
 					{
 						"name": "Language",
@@ -346,7 +398,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
 					},
 					{
 						"name": "MaxResults",
@@ -357,7 +411,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "number-input"
 					}
 				],
 				"codeSnippets": {
@@ -383,7 +439,9 @@
 						"validValues": ["here-route-calculator"],
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": false
+						"isEditable": false,
+						"subParams": null,
+						"fieldType": "dropdown"
 					},
 					{
 						"name": "DeparturePosition",
@@ -394,7 +452,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "coordinates"
 					},
 					{
 						"name": "DestinationPosition",
@@ -405,7 +465,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "coordinates"
 					},
 					{
 						"name": "DepartNow",
@@ -416,7 +478,9 @@
 						"validValues": [true, false],
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "checkbox"
 					},
 					{
 						"name": "DepartureTime",
@@ -427,7 +491,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "date"
 					},
 					{
 						"name": "ArrivalTime",
@@ -438,7 +504,9 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "date"
 					},
 					{
 						"name": "TravelMode",
@@ -449,7 +517,9 @@
 						"validValues": ["Car", "Truck", "Walking"],
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "dropdown"
 					},
 					{
 						"name": "DistanceUnit",
@@ -460,7 +530,9 @@
 						"validValues": ["Kilometers", "Miles"],
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "dropdown"
 					},
 					{
 						"name": "IncludeLegGeometry",
@@ -471,7 +543,9 @@
 						"validValues": [true, false],
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "checkbox"
 					},
 					{
 						"name": "Key",
@@ -482,18 +556,22 @@
 						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": false,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
 					},
 					{
 						"name": "OptimizeFor",
 						"description": "Specifies the distance to optimize for when calculating a route.",
 						"required": false,
 						"type": "string",
-						"defaultValue": "",
+						"defaultValue": "FastestRoute",
 						"validValues": ["FastestRoute", "ShortestRoute"],
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "dropdown"
 					},
 					{
 						"name": "WaypointPositions",
@@ -501,10 +579,12 @@
 						"required": false,
 						"type": "number[][]",
 						"defaultValue": "",
-						"validValues": [],
+						"validValues": null,
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "coordinates-array"
 					},
 					{
 						"name": "CarModeOptions",
@@ -516,7 +596,8 @@
 						"visibleIf": ["TravelMode", "Car"],
 						"shouldRender": true,
 						"isEditable": true,
-						"subParams": ["AvoidFerries", "AvoidTolls"]
+						"subParams": ["AvoidFerries", "AvoidTolls"],
+						"fieldType": null
 					},
 					{
 						"name": "TruckModeOptions",
@@ -528,7 +609,8 @@
 						"visibleIf": ["TravelMode", "Truck"],
 						"shouldRender": true,
 						"isEditable": true,
-						"subParams": ["AvoidFerries", "AvoidTolls"]
+						"subParams": ["AvoidFerries", "AvoidTolls"],
+						"fieldType": null
 					},
 					{
 						"name": "AvoidFerries",
@@ -539,7 +621,9 @@
 						"validValues": [true, false],
 						"visibleIf": ["TravelMode", "Car", "Truck"],
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "checkbox"
 					},
 					{
 						"name": "AvoidTolls",
@@ -550,7 +634,9 @@
 						"validValues": [true, false],
 						"visibleIf": ["TravelMode", "Car", "Truck"],
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "checkbox"
 					},
 					{
 						"name": "Dimensions",
@@ -562,7 +648,8 @@
 						"visibleIf": ["TravelMode", "Truck"],
 						"shouldRender": true,
 						"isEditable": true,
-						"subParams": ["Height", "Length", "Width", "Unit"]
+						"subParams": ["Height", "Length", "Width", "Unit"],
+						"fieldType": null
 					},
 					{
 						"name": "Height",
@@ -573,7 +660,9 @@
 						"validValues": null,
 						"visibleIf": ["TravelMode", "Truck"],
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "number-input"
 					},
 					{
 						"name": "Length",
@@ -584,18 +673,22 @@
 						"validValues": null,
 						"visibleIf": ["TravelMode", "Truck"],
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "number-input"
 					},
 					{
 						"name": "Unit",
 						"description": "Specifies the unit of measurement for the truck dimensions. Default Value: Meters",
 						"required": false,
 						"type": "string",
-						"defaultValue": "",
+						"defaultValue": "Meters",
 						"validValues": ["Feet", "Meters"],
 						"visibleIf": ["TravelMode", "Truck"],
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "dropdown"
 					},
 					{
 						"name": "Width",
@@ -606,7 +699,9 @@
 						"validValues": null,
 						"visibleIf": ["TravelMode", "Truck"],
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "number-input"
 					},
 					{
 						"name": "Weight",
@@ -618,7 +713,8 @@
 						"visibleIf": ["TravelMode", "Truck"],
 						"shouldRender": true,
 						"isEditable": true,
-						"subParams": ["Total", "Unit"]
+						"subParams": ["Total", "Unit"],
+						"fieldType": null
 					},
 					{
 						"name": "Total",
@@ -629,7 +725,9 @@
 						"validValues": null,
 						"visibleIf": ["TravelMode", "Truck"],
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "number-input"
 					},
 					{
 						"name": "Unit",
@@ -640,7 +738,9 @@
 						"validValues": ["Kilograms", "Pounds"],
 						"visibleIf": ["TravelMode", "Truck"],
 						"shouldRender": true,
-						"isEditable": true
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "dropdown"
 					}
 				],
 				"codeSnippets": {
@@ -656,7 +756,34 @@
 				"imageSource": "images/placeholder.png",
 				"title": "GetGeofenceCommand",
 				"description": "Retrieves the geofence details from a geofence collection.",
-				"requestParams": [],
+				"requestParams": [
+					{
+						"name": "CollectionName",
+						"description": "The geofence collection storing the target geofence.",
+						"required": true,
+						"type": "string",
+						"defaultValue": "here-geofence-collection",
+						"validValues": ["here-geofence-collection"],
+						"visibleIf": null,
+						"shouldRender": true,
+						"isEditable": false,
+						"subParams": null,
+						"fieldType": "dropdown"
+					},
+					{
+						"name": "GeofenceId",
+						"description": "The geofence you're retrieving details for.",
+						"required": true,
+						"type": "string",
+						"defaultValue": "here-geofence-id-1",
+						"validValues": ["here-geofence-id-1, here-geofence-id-2, here-geofence-id-3"],
+						"visibleIf": null,
+						"shouldRender": true,
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "dropdown"
+					}
+				],
 				"codeSnippets": {
 					"JavaScript": "import { LocationClient, GetMapTileCommand } from \"@aws-sdk/client-location\";\nconst client = new LocationClient(config);\nconst input = {MapName: \"STRING_VALUE\",Z: \"STRING_VALUE\",X: \"STRING_VALUE\",Y: \"STRING_VALUE\",Key: \"STRING_VALUE\",};\nconst command = new GetMapTileCommand(input);\nconst response = await client.send(command);",
 					"Python": "from aws_location.client import LocationClient\nfrom aws_location.models import GetMapTileRequest\n\n# Initialize Location client\nclient = LocationClient()\n\n# Construct GetMapTileRequest\ninput = GetMapTileRequest(MapName=\"STRING_VALUE\",Z=\"STRING_VALUE\",X=\"STRING_VALUE\",Y=\"STRING_VALUE\",Key=\"STRING_VALUE\")\n\n# Call GetMapTile API\nresponse = client.get_map_tile(input)",
@@ -668,7 +795,47 @@
 				"imageSource": "images/placeholder.png",
 				"title": "ListGeofencesCommand",
 				"description": "Lists geofences stored in a given geofence collection.",
-				"requestParams": [],
+				"requestParams": [
+					{
+						"name": "CollectionName",
+						"description": "The geofence collection storing the list of geofences.",
+						"required": true,
+						"type": "string",
+						"defaultValue": "here-geofence-collection",
+						"validValues": ["here-geofence-collection"],
+						"visibleIf": null,
+						"shouldRender": true,
+						"isEditable": false,
+						"subParams": null,
+						"fieldType": "dropdown"
+					},
+					{
+						"name": "MaxResults",
+						"description": "An optional limit for the number of geofences returned in a single call. Default value: 100",
+						"required": false,
+						"type": "number",
+						"defaultValue": 100,
+						"validValues": null,
+						"visibleIf": null,
+						"shouldRender": true,
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "number-input"
+					},
+					{
+						"name": "NextToken",
+						"description": "The pagination token specifying which page of results to return in the response. If no token is provided, the default page is the first page. Default value: null",
+						"required": false,
+						"type": "string",
+						"defaultValue": "",
+						"validValues": null,
+						"visibleIf": null,
+						"shouldRender": true,
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "string-input"
+					}
+				],
 				"codeSnippets": {
 					"JavaScript": "import { LocationClient, GetMapTileCommand } from \"@aws-sdk/client-location\";\nconst client = new LocationClient(config);\nconst input = {MapName: \"STRING_VALUE\",Z: \"STRING_VALUE\",X: \"STRING_VALUE\",Y: \"STRING_VALUE\",Key: \"STRING_VALUE\",};\nconst command = new GetMapTileCommand(input);\nconst response = await client.send(command);",
 					"Python": "from aws_location.client import LocationClient\nfrom aws_location.models import GetMapTileRequest\n\n# Initialize Location client\nclient = LocationClient()\n\n# Construct GetMapTileRequest\ninput = GetMapTileRequest(MapName=\"STRING_VALUE\",Z=\"STRING_VALUE\",X=\"STRING_VALUE\",Y=\"STRING_VALUE\",Key=\"STRING_VALUE\")\n\n# Call GetMapTile API\nresponse = client.get_map_tile(input)",
@@ -682,7 +849,21 @@
 				"imageSource": "images/placeholder.png",
 				"title": "DescribeTrackerCommand",
 				"description": "Retrieves the tracker resource details.",
-				"requestParams": [],
+				"requestParams": [
+					{
+						"name": "TrackerName",
+						"description": "The name of the tracker resource.",
+						"required": true,
+						"type": "string",
+						"defaultValue": "tracker-resource-1",
+						"validValues": ["tracker-resource-1", "tracker-resource-2", "tracker-resource-3"],
+						"visibleIf": null,
+						"shouldRender": true,
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "dropdown"
+					}
+				],
 				"codeSnippets": {
 					"JavaScript": "import { LocationClient, GetMapTileCommand } from \"@aws-sdk/client-location\";\nconst client = new LocationClient(config);\nconst input = {MapName: \"STRING_VALUE\",Z: \"STRING_VALUE\",X: \"STRING_VALUE\",Y: \"STRING_VALUE\",Key: \"STRING_VALUE\",};\nconst command = new GetMapTileCommand(input);\nconst response = await client.send(command);",
 					"Python": "from aws_location.client import LocationClient\nfrom aws_location.models import GetMapTileRequest\n\n# Initialize Location client\nclient = LocationClient()\n\n# Construct GetMapTileRequest\ninput = GetMapTileRequest(MapName=\"STRING_VALUE\",Z=\"STRING_VALUE\",X=\"STRING_VALUE\",Y=\"STRING_VALUE\",Key=\"STRING_VALUE\")\n\n# Call GetMapTile API\nresponse = client.get_map_tile(input)",
@@ -694,7 +875,34 @@
 				"imageSource": "images/placeholder.png",
 				"title": "GetDevicePositionCommand",
 				"description": "Retrieves a device's most recent position according to its sample time. Device positions are deleted after 30 days.",
-				"requestParams": [],
+				"requestParams": [
+					{
+						"name": "TrackerName",
+						"description": "The tracker resource receiving the position update.",
+						"required": true,
+						"type": "string",
+						"defaultValue": "tracker-resource-1",
+						"validValues": ["tracker-resource-1", "tracker-resource-2", "tracker-resource-3"],
+						"visibleIf": null,
+						"shouldRender": true,
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "dropdown"
+					},
+					{
+						"name": "DeviceId",
+						"description": "The device whose position you want to retrieve.",
+						"required": true,
+						"type": "string",
+						"defaultValue": "device-1",
+						"validValues": ["device-1", "device-2", "device-3"],
+						"visibleIf": null,
+						"shouldRender": true,
+						"isEditable": true,
+						"subParams": null,
+						"fieldType": "dropdown"
+					}
+				],
 				"codeSnippets": {
 					"JavaScript": "import { LocationClient, GetMapTileCommand } from \"@aws-sdk/client-location\";\nconst client = new LocationClient(config);\nconst input = {MapName: \"STRING_VALUE\",Z: \"STRING_VALUE\",X: \"STRING_VALUE\",Y: \"STRING_VALUE\",Key: \"STRING_VALUE\",};\nconst command = new GetMapTileCommand(input);\nconst response = await client.send(command);",
 					"Python": "from aws_location.client import LocationClient\nfrom aws_location.models import GetMapTileRequest\n\n# Initialize Location client\nclient = LocationClient()\n\n# Construct GetMapTileRequest\ninput = GetMapTileRequest(MapName=\"STRING_VALUE\",Z=\"STRING_VALUE\",X=\"STRING_VALUE\",Y=\"STRING_VALUE\",Key=\"STRING_VALUE\")\n\n# Call GetMapTile API\nresponse = client.get_map_tile(input)",
