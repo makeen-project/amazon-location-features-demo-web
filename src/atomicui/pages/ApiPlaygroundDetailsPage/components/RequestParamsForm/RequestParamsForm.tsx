@@ -17,12 +17,12 @@ interface RequestParamsFormProps {
 type RequestObj = { [key: string]: string | number | boolean };
 
 const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
-	const [formData, setFormData] = useState<{ [key: string]: string | number | boolean }>({});
+	const [request, setRequest] = useState<{ [key: string]: string | number | boolean }>({});
 
 	const paramsToRender = useMemo(() => requestParams.filter(param => param.shouldRender), [requestParams]);
 
 	const handleInputChange = (paramName: string, value: string | number | boolean) => {
-		setFormData(prevData => ({
+		setRequest(prevData => ({
 			...prevData,
 			[paramName]: value
 		}));
@@ -59,7 +59,7 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 							id={name}
 							name={name}
 							type={"text"}
-							value={formData[name] ? `${formData[name]}` : `${defaultValue}`}
+							value={request[name] ? `${request[name]}` : `${defaultValue}`}
 							onChange={e => handleInputChange(name, e.target.value)}
 							disabled={!isEditable}
 						/>
@@ -81,7 +81,7 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 							id={name}
 							name={name}
 							type={"number"}
-							value={formData[name] ? `${formData[name]}` : `${defaultValue}`}
+							value={request[name] ? `${request[name]}` : `${defaultValue}`}
 							onChange={e => handleInputChange(name, parseFloat(e.target.value))}
 							disabled={!isEditable}
 						/>
@@ -121,7 +121,7 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 							name={name}
 							label={name}
 							value={name}
-							checked={!!formData[name]}
+							checked={!!request[name]}
 							onChange={e => handleInputChange(name, e.target.checked)}
 						/>
 						{renderLabel(param)}
