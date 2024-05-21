@@ -65,7 +65,7 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
 	// 	[identityPoolId, region, userPoolId, userPoolClientId, userDomain]
 	// );
 
-	/* Configure Auth and Geo via amplify */
+	// /* Configure Auth and Geo via amplify */
 	// configureAmplify(amplifyConfig);
 
 	return (
