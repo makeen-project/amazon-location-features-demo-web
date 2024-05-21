@@ -21,7 +21,6 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 
 	const hasNestedParams = useMemo(() => requestParams.some(param => !!param.subParams), [requestParams]);
 	const paramsToRender = useMemo(() => requestParams.filter(param => param.shouldRender), [requestParams]);
-	console.log({ hasNestedParams, paramsToRender });
 
 	const handleInputChange = (paramName: string, value: string | number | boolean) => {
 		setRequest(prevData => ({
