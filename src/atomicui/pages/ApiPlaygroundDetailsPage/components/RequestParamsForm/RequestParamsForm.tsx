@@ -19,7 +19,9 @@ type RequestObj = { [key: string]: string | number | boolean };
 const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 	const [request, setRequest] = useState<{ [key: string]: string | number | boolean }>({});
 
+	const hasNestedParams = useMemo(() => requestParams.some(param => !!param.subParams), [requestParams]);
 	const paramsToRender = useMemo(() => requestParams.filter(param => param.shouldRender), [requestParams]);
+	console.log({ hasNestedParams, paramsToRender });
 
 	const handleInputChange = (paramName: string, value: string | number | boolean) => {
 		setRequest(prevData => ({
@@ -27,6 +29,16 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 			[paramName]: value
 		}));
 	};
+
+	// generate a useEffect that takes the requestParams prop and create a request object with default values
+	useEffect(() => {
+		const initialRequest: RequestObj = {};
+		requestParams.forEach(param => {
+			const { name, defaultValue } = param;
+			initialRequest[name] = defaultValue;
+		});
+		setRequest(initialRequest);
+	}, [requestParams]);
 
 	const renderLabel = (param: RequestParam) => {
 		const { name, required, description } = param;
