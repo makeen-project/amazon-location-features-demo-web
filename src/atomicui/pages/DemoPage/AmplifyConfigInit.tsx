@@ -12,7 +12,7 @@ const {
 	MAP_RESOURCES: { MAP_ITEMS }
 } = appConfig;
 
-const DempMap = lazy(() =>
+const DemoMap = lazy(() =>
 	import("./DemoMap").then(module => ({
 		default: module.default
 	}))
@@ -58,7 +58,7 @@ const AmplifyConfigInit: FC = () => {
 	/* Configure Auth and Geo via amplify */
 	configureAmplify(amplifyConfig);
 
-	return <DempMap />;
+	return <DemoMap />;
 };
 
 export default AmplifyConfigInit;
