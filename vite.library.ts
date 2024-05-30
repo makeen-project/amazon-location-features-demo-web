@@ -69,6 +69,7 @@ export default defineConfig(() => {
 					"i18next",
 					"i18next-browser-languagedetector",
 					"mapbox-gl-draw-circle",
+					"maplibre-gl",
 					"ngeohash",
 					"ramda",
 					"react",

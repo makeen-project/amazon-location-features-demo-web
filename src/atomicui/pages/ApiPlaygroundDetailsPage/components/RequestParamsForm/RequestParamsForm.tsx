@@ -1,4 +1,4 @@
-import { FC, lazy, useEffect, useMemo, useState } from "react";
+import { FC, Fragment, lazy, useEffect, useMemo, useState } from "react";
 
 import { CheckboxField, Flex } from "@aws-amplify/ui-react";
 import { IconInfo } from "@demo/assets/svgs";
@@ -9,35 +9,97 @@ import "./styles.scss";
 const InputField = lazy(() =>
 	import("@demo/atomicui/molecules/InputField").then(module => ({ default: module.InputField }))
 );
+const SimpleDropdownEl = lazy(() =>
+	import("../SimpleDropdownEl").then(module => ({ default: module.SimpleDropdownEl }))
+);
 
 interface RequestParamsFormProps {
 	requestParams: RequestParam[];
 }
 
-type RequestObj = { [key: string]: string | number | boolean };
+type RequestObj = { [key: string]: string | number | boolean | {} };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type TODO = any;
 
-const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
-	const [request, setRequest] = useState<{ [key: string]: string | number | boolean }>({});
+const buildRequestObject = (params: RequestParam[]): { [key: string]: TODO } => {
+	const requestObject: { [key: string]: TODO } = {};
 
-	const hasNestedParams = useMemo(() => requestParams.some(param => !!param.subParams), [requestParams]);
-	const paramsToRender = useMemo(() => requestParams.filter(param => param.shouldRender), [requestParams]);
+	// Function to check if a parameter is visible based on its dependencies
+	const isVisible = (param: RequestParam): boolean => {
+		if (!param.visibleIf) return true;
 
-	const handleInputChange = (paramName: string, value: string | number | boolean) => {
-		setRequest(prevData => ({
-			...prevData,
-			[paramName]: value
-		}));
+		const [depName, depValue1, depValue2] = param.visibleIf;
+		return depValue1 && depValue2
+			? requestObject[depName] === depValue1 || requestObject[depName] === depValue2
+			: requestObject[depName] === depValue1;
 	};
 
-	// generate a useEffect that takes the requestParams prop and create a request object with default values
+	// Function to build a nested object if needed
+	const buildNestedObject = (param: RequestParam, allParams: RequestParam[]): { [key: string]: TODO } => {
+		const nestedObject: { [key: string]: TODO } = {};
+		if (param.subParams) {
+			param.subParams.forEach(subParamName => {
+				const subParam = allParams.find(p => p.name === subParamName);
+
+				if (subParam && isVisible(subParam)) {
+					nestedObject[subParam.name] = subParam.defaultValue;
+				}
+			});
+		}
+		return nestedObject;
+	};
+
+	params.forEach(param => {
+		if (isVisible(param) && param.shouldRender) {
+			if (param.type === "object" && param.subParams) {
+				requestObject[param.name] = buildNestedObject(param, params);
+			} else {
+				requestObject[param.name] = param.defaultValue;
+			}
+		}
+	});
+
+	return requestObject;
+};
+
+const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
+	const [request, setRequest] = useState<RequestObj>({});
+	console.log({ request });
+
+	const requiredParams = useMemo(() => requestParams.filter(param => param.required), [requestParams]);
+	const dependentParams = useMemo(() => requestParams.filter(param => !!param.visibleIf), [requestParams]);
+	const paramsToRender = useMemo(() => requestParams.filter(param => param.shouldRender), [requestParams]);
+	const editableParams = useMemo(() => requestParams.filter(param => param.isEditable), [requestParams]);
+	const nestedParams = useMemo(() => requestParams.filter(param => !!param.subParams), [requestParams]);
+
+	// create a request object with default values
 	useEffect(() => {
-		const initialRequest: RequestObj = {};
-		requestParams.forEach(param => {
-			const { name, defaultValue } = param;
-			initialRequest[name] = defaultValue;
-		});
-		setRequest(initialRequest);
-	}, [requestParams]);
+		if (Object.keys(request).length === 0) {
+			const requestObject = buildRequestObject(requestParams);
+			setRequest(requestObject);
+		}
+	}, [request, requestParams]);
+
+	// const setNestedValue = (obj: RequestObj, path: string[], value: TODO): RequestObj => {
+	// 	const [head, ...tail] = path;
+
+	// 	if (!tail.length) {
+	// 		return {
+	// 			...obj,
+	// 			[head]: value
+	// 		};
+	// 	}
+
+	// 	return {
+	// 		...obj,
+	// 		[head]: setNestedValue(obj[head], tail, value)
+	// 	};
+	// };
+
+	const handleInputChange = (name: string, value: TODO) => {
+		const path = name.split(".");
+		// setRequest(prevRequest => setNestedValue(prevRequest, path, value));
+	};
 
 	const renderLabel = (param: RequestParam) => {
 		const { name, required, description } = param;
@@ -58,7 +120,8 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 	};
 
 	const renderFormField = (param: RequestParam) => {
-		const { fieldType, name, defaultValue, isEditable, validValues } = param;
+		const { fieldType, name, defaultValue, isEditable, validValues, type, subParams } = param;
+		const inputName = type === "object" && subParams ? `${name}.${subParams.join(".")}` : name;
 
 		switch (fieldType) {
 			case "string-input":
@@ -142,7 +205,12 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 				return (
 					<Flex className="form-field col">
 						{renderLabel(param)}
-						dropdown
+						<SimpleDropdownEl
+							defaultOption={defaultValue as string}
+							options={validValues as string[]}
+							onSelect={option => console.log({ option })}
+							disabled={!isEditable}
+						/>
 					</Flex>
 				);
 			default:
@@ -150,7 +218,13 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 		}
 	};
 
-	return <Flex className="request-params-form">{paramsToRender.map(param => renderFormField(param))}</Flex>;
+	return (
+		<Flex className="request-params-form">
+			{paramsToRender.map((param, idx) => (
+				<Fragment key={idx}>{renderFormField(param)}</Fragment>
+			))}
+		</Flex>
+	);
 };
 
 export default RequestParamsForm;

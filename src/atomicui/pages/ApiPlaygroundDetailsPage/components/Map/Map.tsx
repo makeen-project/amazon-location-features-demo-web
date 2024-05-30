@@ -1,82 +1,49 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 
-import { Flex, View } from "@aws-amplify/ui-react";
-import { appConfig } from "@demo/core/constants";
-import { useAmplifyAuth, useAmplifyMap, useCredsManager } from "@demo/hooks";
+import { withIdentityPoolId } from "@aws/amazon-location-utilities-auth-helper";
 import { HereMapEnum } from "@demo/types";
-import { Signer } from "aws-amplify";
-import { LngLatBoundsLike } from "mapbox-gl";
-import { Map as ReacMapGlMap } from "react-map-gl";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 import "./styles.scss";
-
-const {
-	MAP_RESOURCES: { MAX_BOUNDS }
-} = appConfig;
 
 interface MapProps {
 	shouldRenderMap: boolean;
 }
 
 const Map: FC<MapProps> = ({ shouldRenderMap }) => {
+	const mapContainer = useRef<HTMLDivElement | null>(null);
+	const map = useRef<maplibregl.Map | null>(null);
 	const [gridLoader, setGridLoader] = useState(true);
-	useCredsManager();
-	const { credentials, region } = useAmplifyAuth();
-	const { viewpoint } = useAmplifyMap();
+	const [lng] = useState(67.1260922);
+	const [lat] = useState(24.9244741);
+	const [zoom] = useState(14);
 
-	const transformRequest = useCallback(
-		(url: string, resourceType: string) => {
-			let newUrl = url;
+	const identityPoolId = "us-east-1:2d870886-9661-4cec-a6f1-cf49925e236a";
+	const region = identityPoolId.split(":")[0];
 
-			if (resourceType === "Style" && !newUrl.includes("://") && region) {
-				newUrl = `https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${newUrl}/style-descriptor`;
-			}
+	const initMap = useCallback(async () => {
+		if (!map.current) {
+			// Create an authentication helper instance using credentials from Cognito
+			const authHelper = await withIdentityPoolId(identityPoolId);
+			map.current = new maplibregl.Map({
+				container: mapContainer.current as HTMLDivElement,
+				center: [lng, lat],
+				zoom: zoom,
+				renderWorldCopies: false,
+				style: `https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${HereMapEnum.HERE_EXPLORE}/style-descriptor`,
+				...authHelper.getMapAuthenticationOptions()
+			});
+		}
+	}, [lat, lng, region, zoom]);
 
-			if (newUrl.includes("amazonaws.com")) {
-				return {
-					url: Signer.signUrl(newUrl, {
-						access_key: credentials?.accessKeyId,
-						secret_key: credentials?.secretAccessKey,
-						session_token: credentials?.sessionToken
-					})
-				};
-			}
-
-			return { url: newUrl };
-		},
-		[region, credentials]
-	);
+	useEffect(() => {
+		initMap();
+	}, [initMap]);
 
 	return shouldRenderMap ? (
-		<Flex className="map">
-			<ReacMapGlMap
-				style={{ width: "100%", height: "100%" }}
-				// ref={mapViewRef}
-				// cursor={isEditingRoute ? "crosshair" : ""}
-				maxTileCacheSize={100}
-				zoom={10}
-				initialViewState={{ ...viewpoint, zoom: 10 }}
-				mapStyle={HereMapEnum.HERE_EXPLORE}
-				minZoom={2}
-				maxBounds={MAX_BOUNDS.DEFAULT as LngLatBoundsLike}
-				// onClick={handleMapClick}
-				onLoad={() => {
-					// onLoad();
-					console.log("MAP LOADED");
-				}}
-				// onZoom={({ viewState }) => setZoom(viewState.zoom)}
-				onError={error => {
-					console.log({ error });
-					// errorHandler(error.error)
-				}}
-				onIdle={() => {
-					gridLoader && setGridLoader(false);
-				}}
-				transformRequest={transformRequest}
-				attributionControl={false}
-			>
-				<View className={gridLoader ? "loader-container" : ""}></View>
-			</ReacMapGlMap>
-		</Flex>
+		<div className="map-wrapper">
+			<div ref={mapContainer} className="map" />
+		</div>
 	) : null;
 };
 
