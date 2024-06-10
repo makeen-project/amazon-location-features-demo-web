@@ -6,11 +6,9 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./styles.scss";
 
-interface MapProps {
-	shouldRenderMap: boolean;
-}
+interface MapProps {}
 
-const Map: FC<MapProps> = ({ shouldRenderMap }) => {
+const Map: FC<MapProps> = ({}) => {
 	const mapContainer = useRef<HTMLDivElement | null>(null);
 	const map = useRef<maplibregl.Map | null>(null);
 	const [gridLoader, setGridLoader] = useState(true);
@@ -23,10 +21,12 @@ const Map: FC<MapProps> = ({ shouldRenderMap }) => {
 
 	const initMap = useCallback(async () => {
 		if (!map.current) {
-			// Create an authentication helper instance using credentials from Cognito
+			// create an authentication helper instance using credentials from Cognito
 			const authHelper = await withIdentityPoolId(identityPoolId);
+
+			// create a new map instance
 			map.current = new maplibregl.Map({
-				container: mapContainer.current as HTMLDivElement,
+				container: (mapContainer.current as HTMLElement) || "map",
 				center: [lng, lat],
 				zoom: zoom,
 				renderWorldCopies: false,
@@ -38,13 +38,13 @@ const Map: FC<MapProps> = ({ shouldRenderMap }) => {
 
 	useEffect(() => {
 		initMap();
-	}, [initMap]);
+	}, []);
 
-	return shouldRenderMap ? (
+	return (
 		<div className="map-wrapper">
-			<div ref={mapContainer} className="map" />
+			<div id="map" ref={mapContainer} className="map" />
 		</div>
-	) : null;
+	);
 };
 
 export default Map;

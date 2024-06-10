@@ -77,9 +77,11 @@ const ApiPlaygroundDetailsPage: FC = () => {
 				<>
 					<Text className="title bold medium-large-text">{apiDetails!.title}</Text>
 					<Text className="description regular small-text">{apiDetails!.description}</Text>
-					<Flex className="map-container">
-						<Map shouldRenderMap={apiDetails!.shouldRenderMap} />
-					</Flex>
+					{apiDetails?.shouldRenderMap && (
+						<Flex className="map-container">
+							<Map />
+						</Flex>
+					)}
 					<Flex className="customize-request-button-container-tablet">
 						<Button className="customize-request-button" variation="primary" onClick={() => setShowBottomSheet(true)}>
 							{t("Customize Request")}

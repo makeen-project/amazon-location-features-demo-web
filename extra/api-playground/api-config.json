@@ -297,6 +297,7 @@
 				"imageSource": "images/placeholder.png",
 				"title": "SearchPlaceIndexForTextCommand",
 				"description": "Geocodes free-form text, such as an address, name, city, or region to allow you to search for Places or points of interest.",
+				"shouldRenderMap": false,
 				"requestParams": [
 					{
 						"name": "IndexName",
@@ -429,6 +430,7 @@
 				"imageSource": "images/placeholder.png",
 				"title": "CalculateRouteCommand",
 				"description": "Calculates a route between positions.",
+				"shouldRenderMap": true,
 				"requestParams": [
 					{
 						"name": "CalculatorName",
@@ -609,7 +611,7 @@
 						"visibleIf": ["TravelMode", "Truck"],
 						"shouldRender": true,
 						"isEditable": true,
-						"subParams": ["AvoidFerries", "AvoidTolls"],
+						"subParams": ["AvoidFerries", "AvoidTolls", "Dimensions", "Weight"],
 						"fieldType": null
 					},
 					{
@@ -756,6 +758,7 @@
 				"imageSource": "images/placeholder.png",
 				"title": "GetGeofenceCommand",
 				"description": "Retrieves the geofence details from a geofence collection.",
+				"shouldRenderMap": false,
 				"requestParams": [
 					{
 						"name": "CollectionName",
@@ -776,7 +779,7 @@
 						"required": true,
 						"type": "string",
 						"defaultValue": "here-geofence-id-1",
-						"validValues": ["here-geofence-id-1, here-geofence-id-2, here-geofence-id-3"],
+						"validValues": ["here-geofence-id-1", "here-geofence-id-2", "here-geofence-id-3"],
 						"visibleIf": null,
 						"shouldRender": true,
 						"isEditable": true,
@@ -795,6 +798,7 @@
 				"imageSource": "images/placeholder.png",
 				"title": "ListGeofencesCommand",
 				"description": "Lists geofences stored in a given geofence collection.",
+				"shouldRenderMap": false,
 				"requestParams": [
 					{
 						"name": "CollectionName",
@@ -849,6 +853,7 @@
 				"imageSource": "images/placeholder.png",
 				"title": "DescribeTrackerCommand",
 				"description": "Retrieves the tracker resource details.",
+				"shouldRenderMap": false,
 				"requestParams": [
 					{
 						"name": "TrackerName",
@@ -875,6 +880,7 @@
 				"imageSource": "images/placeholder.png",
 				"title": "GetDevicePositionCommand",
 				"description": "Retrieves a device's most recent position according to its sample time. Device positions are deleted after 30 days.",
+				"shouldRenderMap": false,
 				"requestParams": [
 					{
 						"name": "TrackerName",

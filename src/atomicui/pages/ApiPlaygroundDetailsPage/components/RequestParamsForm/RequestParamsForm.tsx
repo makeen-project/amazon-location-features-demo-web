@@ -21,27 +21,30 @@ type RequestObj = { [key: string]: string | number | boolean | {} };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TODO = any;
 
+// function to check if a parameter is visible based on its dependencies
+const isVisible = (requestObject: RequestObj, param: RequestParam): boolean => {
+	if (!param.visibleIf) return true;
+
+	const [depName, depValue1, depValue2] = param.visibleIf;
+
+	return depValue1 && depValue2
+		? requestObject[depName] === depValue1 || requestObject[depName] === depValue2
+		: requestObject[depName] === depValue1;
+};
+
+// function to build request object
 const buildRequestObject = (params: RequestParam[]): { [key: string]: TODO } => {
 	const requestObject: { [key: string]: TODO } = {};
 
-	// Function to check if a parameter is visible based on its dependencies
-	const isVisible = (param: RequestParam): boolean => {
-		if (!param.visibleIf) return true;
-
-		const [depName, depValue1, depValue2] = param.visibleIf;
-		return depValue1 && depValue2
-			? requestObject[depName] === depValue1 || requestObject[depName] === depValue2
-			: requestObject[depName] === depValue1;
-	};
-
-	// Function to build a nested object if needed
+	// function to build a nested object if needed
 	const buildNestedObject = (param: RequestParam, allParams: RequestParam[]): { [key: string]: TODO } => {
 		const nestedObject: { [key: string]: TODO } = {};
+
 		if (param.subParams) {
 			param.subParams.forEach(subParamName => {
 				const subParam = allParams.find(p => p.name === subParamName);
 
-				if (subParam && isVisible(subParam)) {
+				if (subParam && isVisible(requestObject, subParam)) {
 					nestedObject[subParam.name] = subParam.defaultValue;
 				}
 			});
@@ -50,7 +53,7 @@ const buildRequestObject = (params: RequestParam[]): { [key: string]: TODO } => 
 	};
 
 	params.forEach(param => {
-		if (isVisible(param) && param.shouldRender) {
+		if (isVisible(requestObject, param) && param.shouldRender) {
 			if (param.type === "object" && param.subParams) {
 				requestObject[param.name] = buildNestedObject(param, params);
 			} else {
@@ -64,19 +67,25 @@ const buildRequestObject = (params: RequestParam[]): { [key: string]: TODO } => 
 
 const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 	const [request, setRequest] = useState<RequestObj>({});
+	const [paramsToRender, setParamsToRender] = useState<RequestParam[]>([]);
 	console.log({ request });
 
 	const requiredParams = useMemo(() => requestParams.filter(param => param.required), [requestParams]);
 	const dependentParams = useMemo(() => requestParams.filter(param => !!param.visibleIf), [requestParams]);
-	const paramsToRender = useMemo(() => requestParams.filter(param => param.shouldRender), [requestParams]);
 	const editableParams = useMemo(() => requestParams.filter(param => param.isEditable), [requestParams]);
 	const nestedParams = useMemo(() => requestParams.filter(param => !!param.subParams), [requestParams]);
+	const conditionalParams = useMemo(() => requestParams.filter(param => !!param.visibleIf), [requestParams]);
+	console.log({ request, requestParams, nestedParams, conditionalParams });
 
-	// create a request object with default values
 	useEffect(() => {
 		if (Object.keys(request).length === 0) {
+			// create a request object with default values
 			const requestObject = buildRequestObject(requestParams);
 			setRequest(requestObject);
+
+			// set the params to render based on request object
+			const formParams = requestParams.filter(param => param.shouldRender && isVisible(requestObject, param));
+			setParamsToRender(formParams);
 		}
 	}, [request, requestParams]);
 
@@ -193,7 +202,7 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 							id={name}
 							// className="sm-checkbox"
 							name={name}
-							label={name}
+							label={""}
 							value={name}
 							checked={!!request[name]}
 							onChange={e => handleInputChange(name, e.target.checked)}
