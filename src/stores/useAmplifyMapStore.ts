@@ -38,6 +38,7 @@ interface AmplifyMapStoreProps {
 }
 
 const initialState: IStateProps<AmplifyMapStoreProps> = {
+	currentLocationData: undefined,
 	viewpoint: US,
 	autoMapUnit: {
 		selected: true,

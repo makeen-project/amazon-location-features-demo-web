@@ -1,48 +1,61 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 
 import { withIdentityPoolId } from "@aws/amazon-location-utilities-auth-helper";
+import { appConfig } from "@demo/core/constants";
+import { useAwsMap } from "@demo/hooks";
 import { HereMapEnum } from "@demo/types";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./styles.scss";
 
+const {
+	ENV: { API_PLAYGROUND_IDENTITY_POOL_ID },
+	MAP_RESOURCES: { AMAZON_HQ }
+} = appConfig;
+
 interface MapProps {}
 
 const Map: FC<MapProps> = ({}) => {
+	const mapRef = useRef<maplibregl.Map | null>(null);
 	const mapContainer = useRef<HTMLDivElement | null>(null);
-	const map = useRef<maplibregl.Map | null>(null);
-	const [gridLoader, setGridLoader] = useState(true);
-	const [lng] = useState(67.1260922);
-	const [lat] = useState(24.9244741);
-	const [zoom] = useState(14);
+	const [showGridLoader, setShowGridLoader] = useState(true);
+	const { setMapRef } = useAwsMap();
 
-	const identityPoolId = "us-east-1:2d870886-9661-4cec-a6f1-cf49925e236a";
-	const region = identityPoolId.split(":")[0];
+	const onLoad = useCallback(() => {
+		setShowGridLoader(false);
+	}, []);
 
 	const initMap = useCallback(async () => {
-		if (!map.current) {
-			// create an authentication helper instance using credentials from Cognito
-			const authHelper = await withIdentityPoolId(identityPoolId);
+		if (!mapRef.current) {
+			/* Create an authentication helper instance using credentials from Cognito */
+			const authHelper = await withIdentityPoolId(API_PLAYGROUND_IDENTITY_POOL_ID);
 
-			// create a new map instance
-			map.current = new maplibregl.Map({
+			/* Create a new map instance */
+			mapRef.current = new maplibregl.Map({
 				container: (mapContainer.current as HTMLElement) || "map",
-				center: [lng, lat],
-				zoom: zoom,
+				center: [AMAZON_HQ.US.longitude, AMAZON_HQ.US.latitude],
+				zoom: 10,
 				renderWorldCopies: false,
-				style: `https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${HereMapEnum.HERE_EXPLORE}/style-descriptor`,
+				style: `https://maps.geo.${API_PLAYGROUND_IDENTITY_POOL_ID.split(":")[0]}.amazonaws.com/maps/v0/maps/${
+					HereMapEnum.HERE_EXPLORE
+				}/style-descriptor`,
 				...authHelper.getMapAuthenticationOptions()
 			});
+
+			/* Add the onLoad event listener */
+			mapRef.current.on("load", onLoad);
+
+			setMapRef(mapRef.current);
 		}
-	}, [lat, lng, region, zoom]);
+	}, [onLoad, setMapRef]);
 
 	useEffect(() => {
 		initMap();
-	}, []);
+	}, [initMap]);
 
 	return (
 		<div className="map-wrapper">
-			<div id="map" ref={mapContainer} className="map" />
+			<div id="map" ref={mapContainer} className={showGridLoader ? "loader-container" : "map"} />
 		</div>
 	);
 };

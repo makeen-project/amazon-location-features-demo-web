@@ -101,7 +101,6 @@ const useAwsGeofence = () => {
 				});
 			},
 			resetStore: () => {
-				setState({ geofences: undefined });
 				setInitial();
 			}
 		}),

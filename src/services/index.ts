@@ -12,3 +12,4 @@ export { default as useAwsIotService } from "./useAwsIotService";
 export { default as useFeedbackService } from "./useFeedbackService";
 export { default as useAwsMapService } from "./useAwsMapService";
 export { default as useAwsTrackerService } from "./useAwsTrackerService";
+export { default as useAwsCredentialsService } from "./useAwsCredentialsService";

@@ -15,8 +15,10 @@ interface BottomSheetStoreProps {
 }
 
 const initialState: IStateProps<BottomSheetStoreProps> = {
+	bottomSheetCurrentHeight: undefined,
 	bottomSheetMinHeight: 125,
 	bottomSheetHeight: window.innerHeight,
+	POICard: undefined,
 	ui: ResponsiveUIEnum.explore
 };
 

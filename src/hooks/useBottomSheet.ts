@@ -9,6 +9,7 @@ import { ResponsiveUIEnum } from "@demo/types/Enums";
 
 const useBottomSheet = () => {
 	const store = useBottomSheetStore();
+	const { setInitial } = store;
 	const { setState } = useBottomSheetStore;
 
 	const methods = useMemo(
@@ -41,9 +42,12 @@ const useBottomSheet = () => {
 				setTimeout(() => {
 					setState({ bottomSheetMinHeight: BottomSheetHeights.explore.min, bottomSheetHeight: innerHeight });
 				}, 1200);
+			},
+			resetStore: () => {
+				setInitial();
 			}
 		}),
-		[setState]
+		[setInitial, setState]
 	);
 	return useMemo(() => ({ ...methods, ...store }), [methods, store]);
 };

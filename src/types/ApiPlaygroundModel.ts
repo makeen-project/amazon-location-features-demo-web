@@ -1,3 +1,5 @@
+import { FieldTypeEnum } from "./Enums";
+
 export type RequestParam = {
 	name: string;
 	description: string;
@@ -9,7 +11,7 @@ export type RequestParam = {
 	shouldRender: boolean;
 	isEditable: boolean;
 	subParams: string[] | null;
-	fieldType: string | null;
+	fieldType: FieldTypeEnum;
 };
 
 export type ApiListItem = {
@@ -27,3 +29,10 @@ export type ApiListItem = {
 export type ApiListData = {
 	[key: string]: ApiListItem[];
 };
+
+export type ApiRequestObjValues = string | string[] | number | number[] | number[][] | boolean | {};
+
+export type ApiRequestObj = { [key: string]: ApiRequestObjValues };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type TODO = any;

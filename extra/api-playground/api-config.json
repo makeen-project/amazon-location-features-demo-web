@@ -13,8 +13,8 @@
 						"description": "The map resource to retrieve the map tiles from.",
 						"required": true,
 						"type": "string",
-						"defaultValue": "here-map-resource",
-						"validValues": ["here-map-resource"],
+						"defaultValue": "location.aws.com.api.playground.maps.HERE.Explore",
+						"validValues": ["location.aws.com.api.playground.maps.HERE.Explore"],
 						"visibleIf": null,
 						"shouldRender": true,
 						"isEditable": false,
@@ -94,8 +94,8 @@
 						"description": "The name of the place index resource you want to use for the search.",
 						"required": true,
 						"type": "string",
-						"defaultValue": "here-place-index",
-						"validValues": ["here-place-index"],
+						"defaultValue": "location.aws.com.api.playground.places.HERE.PlaceIndex",
+						"validValues": ["location.aws.com.api.playground.places.HERE.PlaceIndex"],
 						"visibleIf": null,
 						"shouldRender": true,
 						"isEditable": false,
@@ -599,7 +599,7 @@
 						"shouldRender": true,
 						"isEditable": true,
 						"subParams": ["AvoidFerries", "AvoidTolls"],
-						"fieldType": null
+						"fieldType": "parent"
 					},
 					{
 						"name": "TruckModeOptions",
@@ -612,7 +612,7 @@
 						"shouldRender": true,
 						"isEditable": true,
 						"subParams": ["AvoidFerries", "AvoidTolls", "Dimensions", "Weight"],
-						"fieldType": null
+						"fieldType": "parent"
 					},
 					{
 						"name": "AvoidFerries",
@@ -651,7 +651,7 @@
 						"shouldRender": true,
 						"isEditable": true,
 						"subParams": ["Height", "Length", "Width", "Unit"],
-						"fieldType": null
+						"fieldType": "parent"
 					},
 					{
 						"name": "Height",
@@ -716,7 +716,7 @@
 						"shouldRender": true,
 						"isEditable": true,
 						"subParams": ["Total", "Unit"],
-						"fieldType": null
+						"fieldType": "parent"
 					},
 					{
 						"name": "Total",

@@ -61,6 +61,7 @@ export default defineConfig(() => {
 					"@aws-sdk/client-iot",
 					"@aws-sdk/client-location",
 					"@aws-sdk/client-pinpoint",
+					"@aws-sdk/credential-provider-cognito-identity",
 					"@aws-sdk/credential-providers",
 					"@turf/turf",
 					"aws-amplify",

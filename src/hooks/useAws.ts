@@ -4,6 +4,7 @@
 import { useMemo } from "react";
 
 import { ICredentials } from "@aws-amplify/core";
+import { CognitoIdentityCredentials } from "@aws-sdk/credential-provider-cognito-identity";
 import { useAwsService } from "@demo/services";
 import { useAwsStore } from "@demo/stores";
 import { errorHandler } from "@demo/utils/errorHandler";
@@ -13,12 +14,12 @@ const useAws = () => {
 	const store = useAwsStore();
 	const { setInitial } = store;
 	const { setState } = useAwsStore;
-	const { createLocationClient, createIotClient } = useAwsService();
+	const { createCognitoIdentityClient, createLocationClient, createIotClient } = useAwsService();
 	const { t } = useTranslation();
 
 	const methods = useMemo(
 		() => ({
-			createLocationClient: (credentials: ICredentials, region: string) => {
+			createLocationClient: (credentials: ICredentials | CognitoIdentityCredentials, region: string) => {
 				try {
 					const locationClient = createLocationClient(credentials, region);
 					setState({ locationClient });
@@ -34,12 +35,20 @@ const useAws = () => {
 					errorHandler(error, t("error_handler__failed_create_iot_client.text") as string);
 				}
 			},
+			createCognitoIdentityClient: (region: string) => {
+				try {
+					const cognitoIdentityClient = createCognitoIdentityClient(region);
+					setState({ cognitoIdentityClient });
+					return cognitoIdentityClient;
+				} catch (error) {
+					errorHandler(error, t("Failed to create cognito identity client") as string);
+				}
+			},
 			resetStore: () => {
-				setState({ locationClient: undefined, iotClient: undefined });
 				setInitial();
 			}
 		}),
-		[setInitial, setState, createLocationClient, createIotClient, t]
+		[createCognitoIdentityClient, setState, t, createLocationClient, createIotClient, setInitial]
 	);
 
 	return { ...methods, ...store };

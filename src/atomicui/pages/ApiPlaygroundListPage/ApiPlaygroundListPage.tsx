@@ -16,7 +16,6 @@ import { EventTypeEnum } from "@demo/types/Enums";
 import { record } from "@demo/utils/analyticsUtils";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-
 import "./styles.scss";
 
 const ApiCard = lazy(() => import("./ApiCard").then(module => ({ default: module.default })));

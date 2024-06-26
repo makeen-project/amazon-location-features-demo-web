@@ -46,7 +46,12 @@ const SimpleDropdownEl: FC<SimpleDropdownElProps> = ({ defaultOption, options, o
 				<Text
 					className="medium"
 					fontSize="1.08rem"
-					style={{ color: disabled ? "var(--grey-color)" : "var(--tertiary-color)" }}
+					style={{
+						color: disabled ? "var(--grey-color)" : "var(--tertiary-color)",
+						overflow: "hidden",
+						textOverflow: "ellipsis",
+						whiteSpace: "nowrap"
+					}}
 				>
 					{defaultOption || options[0]}
 				</Text>

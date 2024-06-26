@@ -1,9 +1,11 @@
-import { FC, lazy, useMemo, useState } from "react";
+import { FC, lazy, useEffect, useMemo, useRef, useState } from "react";
 
-import { Button, Flex, Placeholder, Text, View } from "@aws-amplify/ui-react";
+import { Button, Flex, Loader, Placeholder, Text, View } from "@aws-amplify/ui-react";
 import { IconClose, IconReloadLined } from "@demo/assets/svgs";
-import { useApiPlaygroundDetails, useMediaQuery } from "@demo/hooks";
+import { useApiPlayground, useApiPlaygroundDetails, useAwsCredsManager, useMediaQuery } from "@demo/hooks";
 import { useTranslation } from "react-i18next";
+
+import { RequestParamsFormRef } from "./components/RequestParamsForm/RequestParamsForm";
 import "./styles.scss";
 
 const BottomSheet = lazy(() =>
@@ -17,18 +19,31 @@ const CodeSnippet = lazy(() => import("./components/CodeSnippet").then(module =>
 
 const ApiPlaygroundDetailsPage: FC = () => {
 	const [showBottomSheet, setShowBottomSheet] = useState(false);
+	const requestParamsFormRef = useRef<RequestParamsFormRef>(null);
+	useAwsCredsManager();
+	const { isFetchingApiDetails, apiDetails } = useApiPlaygroundDetails();
+	const { isLoading, request, response, resetStore: resetApiPlaygroundStore } = useApiPlayground();
 	const { t } = useTranslation();
-	const { isFetching, apiDetails } = useApiPlaygroundDetails();
 	const isMobile = useMediaQuery("(max-width: 450px)");
 	const isTablet = useMediaQuery("(max-width: 844px)");
 
-	const isDataPresent = useMemo(() => !isFetching && !!apiDetails, [isFetching, apiDetails]);
+	useEffect(() => {
+		return () => {
+			resetApiPlaygroundStore();
+		};
+	}, [resetApiPlaygroundStore]);
+
+	const isApiDataPresent = useMemo(() => !isFetchingApiDetails && !!apiDetails, [isFetchingApiDetails, apiDetails]);
 
 	const renderParams = useMemo(
 		() => (
 			<>
-				{isDataPresent ? (
-					<RequestParamsForm requestParams={apiDetails!.requestParams} />
+				{isApiDataPresent ? (
+					<RequestParamsForm
+						ref={requestParamsFormRef}
+						apiId={apiDetails!.id}
+						requestParams={apiDetails!.requestParams}
+					/>
 				) : (
 					<>
 						{Array.from({ length: 6 }).map((_, idx) => (
@@ -38,26 +53,34 @@ const ApiPlaygroundDetailsPage: FC = () => {
 				)}
 			</>
 		),
-		[apiDetails, isDataPresent]
+		[isApiDataPresent, apiDetails]
 	);
+
+	const onReset = () => {
+		requestParamsFormRef.current?.handleReset();
+	};
+
+	const onSubmit = () => {
+		requestParamsFormRef.current?.handleSubmit();
+	};
 
 	const renderReqParamsContainerDesktop = useMemo(() => {
 		return (
 			<>
-				{isDataPresent ? (
+				{isApiDataPresent ? (
 					<Text className="title bold medium-text">{t("Customize Request")}</Text>
 				) : (
 					<Placeholder width="15rem" minHeight="3.08rem" />
 				)}
 				<Flex className="params-container">{renderParams}</Flex>
 				<Flex className="buttons-container">
-					{isDataPresent ? (
+					{isApiDataPresent ? (
 						<>
-							<Flex className="reset" onClick={() => {}}>
+							<Flex className="reset" onClick={() => onReset()}>
 								<IconReloadLined />
 							</Flex>
-							<Button className="submit" variation="primary" onClick={() => {}}>
-								Submit
+							<Button className="submit" variation="primary" isLoading={isLoading} onClick={() => onSubmit()}>
+								{isLoading ? <Loader size="large" /> : "Submit"}
 							</Button>
 						</>
 					) : (
@@ -69,11 +92,11 @@ const ApiPlaygroundDetailsPage: FC = () => {
 				</Flex>
 			</>
 		);
-	}, [isDataPresent, renderParams, t]);
+	}, [isApiDataPresent, t, renderParams, isLoading]);
 
 	const renderMapReqResCodeContainer = useMemo(
 		() =>
-			isDataPresent ? (
+			isApiDataPresent ? (
 				<>
 					<Text className="title bold medium-large-text">{apiDetails!.title}</Text>
 					<Text className="description regular small-text">{apiDetails!.description}</Text>
@@ -98,14 +121,14 @@ const ApiPlaygroundDetailsPage: FC = () => {
 						<CodeSnippet
 							title={t("Request")}
 							placeholderText={t("Submit your request to see the request")}
-							singleCodeSnippet={undefined}
+							singleCodeSnippet={request}
 						/>
 					</Flex>
 					<Flex className="res-container">
 						<CodeSnippet
 							title={t("Response")}
 							placeholderText={t("Submit your request to see the response")}
-							singleCodeSnippet={undefined}
+							singleCodeSnippet={response}
 						/>
 					</Flex>
 					<Flex className="code-container">
@@ -133,7 +156,7 @@ const ApiPlaygroundDetailsPage: FC = () => {
 					<Placeholder marginTop="1.92rem" minHeight="11.5rem" />
 				</Flex>
 			),
-		[isDataPresent, apiDetails, t, isMobile, isTablet]
+		[isApiDataPresent, apiDetails, t, request, response, isMobile, isTablet]
 	);
 
 	return (
@@ -164,11 +187,11 @@ const ApiPlaygroundDetailsPage: FC = () => {
 				content={<Flex className="bottom-sheet-params-container">{renderParams}</Flex>}
 				footer={
 					<Flex className="bottom-sheet-buttons-container">
-						<Flex className="reset" onClick={() => {}}>
+						<Flex className="reset" onClick={() => onReset()}>
 							<IconReloadLined />
 						</Flex>
-						<Button className="submit" variation="primary" onClick={() => {}}>
-							Submit
+						<Button className="submit" variation="primary" isLoading={isLoading} onClick={() => onSubmit()}>
+							{isLoading ? <Loader size="large" /> : "Submit"}
 						</Button>
 					</Flex>
 				}

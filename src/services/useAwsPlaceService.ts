@@ -107,6 +107,9 @@ const useAwsPlaceService = () => {
 					throw new Error(responseBody.message);
 				}
 				return responseBody;
+			},
+			searchPlaceIndexForPosition: async (apiRequest: SearchPlaceIndexForPositionRequest) => {
+				return await locationClient?.searchPlaceIndexForPosition(apiRequest);
 			}
 		}),
 		[config, locationClient, currentMapProvider, viewpoint]

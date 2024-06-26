@@ -3,7 +3,7 @@
 
 import { useMemo } from "react";
 
-import { SearchForTextResult } from "@aws-sdk/client-location";
+import { SearchForTextResult, SearchPlaceIndexForPositionRequest } from "@aws-sdk/client-location";
 import { useAmplifyMap } from "@demo/hooks";
 import { useAwsPlaceService } from "@demo/services";
 import { useAwsPlaceStore } from "@demo/stores";
@@ -20,7 +20,7 @@ const useAwsPlace = () => {
 	const { setInitial } = store;
 	const { setState } = useAwsPlaceStore;
 	const { setViewpoint } = useAmplifyMap();
-	const placesService = useAwsPlaceService();
+	const awsPlaceService = useAwsPlaceService();
 	const { t } = useTranslation();
 
 	const methods = useMemo(
@@ -31,7 +31,7 @@ const useAwsPlace = () => {
 			searchPlaceSuggestions: async (value: string, viewpoint: ViewPointType, cb?: (sg: SuggestionType[]) => void) => {
 				try {
 					setState({ isSearching: true });
-					const data = await placesService.getPlaceSuggestions(value);
+					const data = await awsPlaceService.getPlaceSuggestions(value);
 					cb
 						? cb(data?.Results?.map(({ PlaceId, Text }) => ({ PlaceId, Text })) as SuggestionType[])
 						: setState({
@@ -50,7 +50,7 @@ const useAwsPlace = () => {
 			getPlaceData: async (placeId: string) => {
 				try {
 					setState({ isFetchingPlaceData: true });
-					const data = await placesService.getPlaceById(placeId);
+					const data = await awsPlaceService.getPlaceById(placeId);
 					return data;
 				} catch (error) {
 					errorHandler(error, t("error_handler__failed_fetch_place_id.text") as string);
@@ -61,7 +61,7 @@ const useAwsPlace = () => {
 			searchPlacesByText: async (value: string, viewpoint: ViewPointType, cb?: (sg: SuggestionType[]) => void) => {
 				try {
 					setState({ isSearching: true });
-					const data = await placesService.getPlacesByText(value);
+					const data = await awsPlaceService.getPlacesByText(value);
 					const clusters: ClustersType = {};
 					const suggestions = data?.Results?.map(p => {
 						const Hash = getHash(p.Place?.Geometry?.Point as number[], store.precision);
@@ -88,7 +88,7 @@ const useAwsPlace = () => {
 			searchNLPlacesByText: async (value: string, viewpoint: ViewPointType, cb?: (sg: SuggestionType[]) => void) => {
 				try {
 					setState({ isSearching: true });
-					const data = await placesService.getNLPlacesByText(value);
+					const data = await awsPlaceService.getNLPlacesByText(value);
 					const clusters: ClustersType = {};
 					const suggestions = data?.Results?.map((p: SearchForTextResult) => {
 						const Hash = getHash(p.Place?.Geometry?.Point as number[], store.precision);
@@ -114,7 +114,7 @@ const useAwsPlace = () => {
 			},
 			getPlaceDataByCoordinates: async (input: number[]) => {
 				try {
-					return await placesService.getPlaceByCoordinates(input);
+					return await awsPlaceService.getPlaceByCoordinates(input);
 				} catch (error) {
 					errorHandler(error, t("error_handler__failed_fetch_place_coords.text") as string);
 				}
@@ -127,7 +127,7 @@ const useAwsPlace = () => {
 				try {
 					setState({ isSearching: true });
 					const [lat, lng] = value.split(",");
-					const data = await placesService.getPlaceByCoordinates([parseFloat(lng), parseFloat(lat)]);
+					const data = await awsPlaceService.getPlaceByCoordinates([parseFloat(lng), parseFloat(lat)]);
 
 					if (!!data?.Results?.length) {
 						const vPoint = data
@@ -206,7 +206,7 @@ const useAwsPlace = () => {
 					coords = Place?.Geometry?.Point;
 				} else {
 					try {
-						const pd = await placesService.getPlaceById(selectedMarker.PlaceId);
+						const pd = await awsPlaceService.getPlaceById(selectedMarker.PlaceId);
 						coords = pd?.Place?.Geometry?.Point;
 					} catch (error) {
 						errorHandler(error, t("error_handler__failed_fetch_place_id_marker.text") as string);
@@ -235,20 +235,21 @@ const useAwsPlace = () => {
 			setSuggestions: (suggestions?: SuggestionType[]) => {
 				setState({ suggestions });
 			},
+			searchPlaceIndexForPosition: async (apiRequest: SearchPlaceIndexForPositionRequest) => {
+				try {
+					const response = await awsPlaceService.searchPlaceIndexForPosition(apiRequest);
+					return response;
+				} catch (error) {
+					console.error({ error });
+				}
+			},
 			resetStore() {
-				setState({
-					bound: undefined,
-					clusters: undefined,
-					suggestions: undefined,
-					selectedMarker: undefined,
-					hoveredMarker: undefined,
-					marker: undefined
-				});
 				setInitial();
 			}
 		}),
-		[placesService, setState, store.precision, setInitial, setViewpoint, t]
+		[awsPlaceService, setState, store.precision, setInitial, setViewpoint, t]
 	);
+
 	return useMemo(() => ({ ...methods, ...store }), [methods, store]);
 };
 

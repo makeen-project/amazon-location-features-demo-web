@@ -19,6 +19,7 @@ export const initialState: IStateProps<AwsGeofenceStoreProps> = {
 	isFetchingGeofences: false,
 	isCreatingGeofence: false,
 	isDeletingGeofence: false,
+	geofences: undefined,
 	isAddingGeofence: false,
 	unauthNotifications: []
 };

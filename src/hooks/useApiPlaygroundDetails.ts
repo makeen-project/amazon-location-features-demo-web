@@ -13,7 +13,7 @@ const {
 } = appConfig;
 
 const useApiPlaygroundDetails = () => {
-	const [isFetching, setIsFetching] = useState(false);
+	const [isFetchingApiDetails, setIsFetchingApiDetails] = useState(false);
 	const [apiDetails, setApiDetails] = useState<ApiListItem | null>(null);
 	const { apiId } = useParams();
 	const { t } = useTranslation();
@@ -35,7 +35,7 @@ const useApiPlaygroundDetails = () => {
 		} catch (error) {
 			errorHandler(error, t("Failed to fetch API details"));
 		} finally {
-			setIsFetching(false);
+			setIsFetchingApiDetails(false);
 		}
 	}, [apiId, apiListData, navigate, t]);
 
@@ -45,7 +45,7 @@ const useApiPlaygroundDetails = () => {
 		}
 	}, [apiListData, apiId, fetchApiDetails]);
 
-	return { isFetching, apiDetails };
+	return { isFetchingApiDetails, apiDetails };
 };
 
 export default useApiPlaygroundDetails;

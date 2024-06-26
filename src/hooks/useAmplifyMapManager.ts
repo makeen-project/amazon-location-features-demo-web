@@ -46,7 +46,7 @@ const {
 const searchParams = new URLSearchParams(window.location.search);
 let switchToMapProvider = searchParams.get(DATA_PROVIDER);
 
-interface UseMapManagerProps {
+interface UseAmplifyMapManagerProps {
 	mapViewRef: React.MutableRefObject<MapRef | null>;
 	geolocateControlRef: React.MutableRefObject<GeolocateControlRef | null>;
 	isUnauthGeofenceBoxOpen: boolean;
@@ -59,7 +59,7 @@ interface UseMapManagerProps {
 	setUnauthSimulationExitModal: (b: boolean) => void;
 }
 
-const useMapManager = ({
+const useAmplifyMapManager = ({
 	mapViewRef,
 	geolocateControlRef,
 	isUnauthGeofenceBoxOpen,
@@ -70,7 +70,7 @@ const useMapManager = ({
 	closeRouteBox,
 	resetAppStateCb,
 	setUnauthSimulationExitModal
-}: UseMapManagerProps) => {
+}: UseAmplifyMapManagerProps) => {
 	const [gridLoader, setGridLoader] = useState(true);
 	const [tempMapStyle, setTempMapStyle] = useState<GrabMapEnum | OpenDataMapEnum | undefined>(undefined);
 	const [grabDisclaimerModal, setGrabDisclaimerModal] = useState(false);
@@ -631,4 +631,4 @@ const useMapManager = ({
 	};
 };
 
-export default useMapManager;
+export default useAmplifyMapManager;

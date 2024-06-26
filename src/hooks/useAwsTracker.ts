@@ -29,7 +29,6 @@ const useAwsTracker = () => {
 				setState({ selectedTrackerType });
 			},
 			resetStore: () => {
-				setState({ trackerPoints: undefined });
 				setInitial();
 			}
 		}),

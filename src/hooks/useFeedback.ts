@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 
 const useFeedback = () => {
 	const store = useFeedbackStore();
+	const { setInitial } = store;
 	const { setState } = useFeedbackStore;
 	const feedbackService = useFeedbackService();
 	const { t } = useTranslation();
@@ -32,9 +33,12 @@ const useFeedback = () => {
 			},
 			setIsSubmitting: (isSubmitting: boolean) => {
 				setState({ isSubmitting });
+			},
+			resetStore: () => {
+				setInitial();
 			}
 		}),
-		[feedbackService, setState, t]
+		[feedbackService, setInitial, setState, t]
 	);
 	return useMemo(() => ({ ...methods, ...store }), [methods, store]);
 };

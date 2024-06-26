@@ -82,9 +82,6 @@ const useAmplifyMap = () => {
 				setState({ isCurrentLocationDisabled });
 			},
 			resetStore() {
-				setState({
-					currentLocationData: undefined
-				});
 				setInitial();
 			}
 		}),

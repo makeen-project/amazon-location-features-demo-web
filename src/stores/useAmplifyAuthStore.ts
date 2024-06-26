@@ -31,9 +31,18 @@ export interface AmplifyAuthStoreProps {
 }
 
 export const initialState: IStateProps<AmplifyAuthStoreProps> = {
+	credentials: undefined,
+	authTokens: undefined,
 	isLoading: false,
 	isUserAwsAccountConnected: false,
+	identityPoolId: undefined,
+	region: undefined,
+	userDomain: undefined,
+	userPoolClientId: undefined,
+	userPoolId: undefined,
+	webSocketUrl: undefined,
 	autoRegion: true,
+	stackRegion: undefined,
 	cloudFormationLink: CF_TEMPLATE
 };
 

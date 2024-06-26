@@ -10,13 +10,13 @@ import { appConfig } from "@demo/core/constants";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
 import {
 	useAmplifyAuth,
+	useAmplifyCredsManager,
 	useAmplifyMap,
+	useAmplifyMapManager,
 	useAwsGeofence,
 	useAwsPlace,
 	useAwsRoute,
 	useAwsTracker,
-	useCredsManager,
-	useMapManager,
 	usePersistedData,
 	useRecordViewPage
 } from "@demo/hooks";
@@ -198,7 +198,7 @@ const DemoMap: FC = () => {
 	const { showWelcomeModal, setShowWelcomeModal, setSettingsOptions } = usePersistedData();
 	const { isDesktop, isMobile, isTablet } = useDeviceMediaQuery();
 	const { setUI, ui, bottomSheetCurrentHeight = 0, setBottomSheetHeight, setBottomSheetMinHeight } = useBottomSheet();
-	const { clearCredsAndLocationClient } = useCredsManager();
+	const { clearCredsAndLocationClient } = useAmplifyCredsManager();
 	const {
 		gridLoader,
 		setGridLoader,
@@ -224,7 +224,7 @@ const DemoMap: FC = () => {
 		handleGrabMapChange,
 		onMapProviderChange,
 		onMapStyleChange
-	} = useMapManager({
+	} = useAmplifyMapManager({
 		mapViewRef,
 		geolocateControlRef,
 		isUnauthGeofenceBoxOpen: show.unauthGeofenceBox,

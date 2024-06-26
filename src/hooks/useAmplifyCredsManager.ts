@@ -18,7 +18,7 @@ const {
 let interval: NodeJS.Timer | undefined;
 let timeout: NodeJS.Timer | undefined;
 
-const useCredsManager = () => {
+const useAmplifyCredsManager = () => {
 	const {
 		credentials,
 		getCurrentUserCredentials,
@@ -149,4 +149,4 @@ const useCredsManager = () => {
 	return { clearCredsAndLocationClient };
 };
 
-export default useCredsManager;
+export default useAmplifyCredsManager;

@@ -322,17 +322,6 @@ const useAmplifyAuth = () => {
 				}
 			},
 			resetStore: () => {
-				setState({
-					credentials: undefined,
-					authTokens: undefined,
-					identityPoolId: undefined,
-					region: undefined,
-					userDomain: undefined,
-					userPoolClientId: undefined,
-					userPoolId: undefined,
-					webSocketUrl: undefined,
-					stackRegion: undefined
-				});
 				setInitial();
 			}
 		}),

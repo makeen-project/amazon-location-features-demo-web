@@ -11,7 +11,10 @@
    - `WebSocketUrl` value will be added to `.env` file against `VITE_AWS_WEB_SOCKET_URLS` **(comma separated for multiple values)**.
 3. Value for `VITE_AWS_CF_TEMPLATE`, `VITE_APPLE_APP_STORE_LINK`, `VITE_GOOGLE_PLAY_STORE_LINK` can be added as it is to `.env` file from `.env.examples`.
 4. Value for `VITE_APP_VERSION` needs to be populated with the correct version at the time of deployment in the following format `2.1.0`.
-5. Values for `VITE_MIGRATE_FROM_GOOGLE_MAPS_PAGE`, `VITE_MIGRATE_A_WEB_APP_PAGE`, `VITE_MIGRATE_AN_ANDROID_APP_PAGE`, `VITE_MIGRATE_AN_IOS_APP_PAGE`, `VITE_MIGRATE_A_WEB_SERVICE_PAGE` and `VITE_PRICING_PAG` can either be `1` or `0` to either enable or disable the respective pages.
+5. Values for `VITE_MIGRATE_FROM_GOOGLE_MAPS_PAGE`, `VITE_MIGRATE_A_WEB_APP_PAGE`, `VITE_MIGRATE_AN_ANDROID_APP_PAGE`, `VITE_MIGRATE_AN_IOS_APP_PAGE`, `VITE_MIGRATE_A_WEB_SERVICE_PAGE`, `VITE_PRICING_PAGE` and `VITE_API_PLAYGROUND_PAGE` can either be `1` or `0` to either enable or disable the respective pages.
+6. Value for `VITE_API_PLAYGROUND_URL` needs to be populated with the correct link pointing to S3 bucket that contains the `extra/api-playground/images/` dir and `extra/api-playground/api-config.json` file.
+7. Value for `VITE_API_PLAYGROUND_LIST_FILENAME` can be added as it is to `.env` file from `.env.examples`.
+8. Run the template from `/extra/cloudformation/api-playground-unauth-template.yaml` to create a cloudformation stack on AWS in any region that supports Amazon Location using your own AWS account and get `IdentityPoolId` from stack output's tab. `IdentityPoolId` value will be added to `.env` file against `VITE_API_PLAYGROUND_IDENTITY_POOL_ID`.
 
 #### Env keys required in `.env` file, see `.env.example` for reference
 
@@ -29,6 +32,10 @@
 > VITE_MIGRATE_AN_IOS_APP_PAGE<br />
 > VITE_MIGRATE_A_WEB_SERVICE_PAGE<br />
 > VITE_PRICING_PAGE<br />
+> VITE_API_PLAYGROUND_PAGE<br />
+> VITE_API_PLAYGROUND_URL<br />
+> VITE_API_PLAYGROUND_LIST_FILENAME<br />
+> VITE_API_PLAYGROUND_IDENTITY_POOL_ID<br />
 
 #### Env keys optional in `.env` file, see `.env.example` for reference
 > VITE_NL_BASE_URL<br />

@@ -1,8 +1,11 @@
-import { FC, Fragment, lazy, useEffect, useMemo, useState } from "react";
+import { Fragment, forwardRef, lazy, useCallback, useEffect, useImperativeHandle, useMemo, useState } from "react";
 
 import { CheckboxField, Flex } from "@aws-amplify/ui-react";
+import { GetMapTileCommandInput, SearchPlaceIndexForPositionRequest } from "@aws-sdk/client-location";
 import { IconInfo } from "@demo/assets/svgs";
-import { RequestParam } from "@demo/types";
+import { useApiPlayground } from "@demo/hooks";
+import { ApiIdEnum, ApiRequestObj, ApiRequestObjValues, FieldTypeEnum, RequestParam } from "@demo/types";
+import { buildRequestObject, isVisible } from "@demo/utils";
 import { Tooltip } from "react-tooltip";
 import "./styles.scss";
 
@@ -13,101 +16,104 @@ const SimpleDropdownEl = lazy(() =>
 	import("../SimpleDropdownEl").then(module => ({ default: module.SimpleDropdownEl }))
 );
 
+export interface RequestParamsFormRef {
+	handleSubmit: () => void;
+	handleReset: () => void;
+}
+
 interface RequestParamsFormProps {
+	apiId: string;
 	requestParams: RequestParam[];
 }
 
-type RequestObj = { [key: string]: string | number | boolean | {} };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type TODO = any;
+const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProps>(({ apiId, requestParams }, ref) => {
+	const [formValues, setFormValues] = useState<ApiRequestObj>({});
+	const [apiRequest, setApiRequest] = useState<ApiRequestObj>({});
+	const [paramsToRender, setParamsToRender] = useState<RequestParam[]>([]);
+	const { resetStore: resetApiPlaygroundStore, getMapTile, searchPlaceIndexForPosition } = useApiPlayground();
+	console.log({ formValues, apiRequest, paramsToRender });
 
-// function to check if a parameter is visible based on its dependencies
-const isVisible = (requestObject: RequestObj, param: RequestParam): boolean => {
-	if (!param.visibleIf) return true;
+	// const requiredParams = useMemo(() => requestParams.filter(param => param.required), [requestParams]);
+	// const dependentParams = useMemo(() => requestParams.filter(param => !!param.visibleIf), [requestParams]);
+	// const editableParams = useMemo(() => requestParams.filter(param => param.isEditable), [requestParams]);
+	// const nestedParams = useMemo(() => requestParams.filter(param => !!param.subParams), [requestParams]);
+	// const conditionalParams = useMemo(() => requestParams.filter(param => !!param.visibleIf), [requestParams]);
 
-	const [depName, depValue1, depValue2] = param.visibleIf;
-
-	return depValue1 && depValue2
-		? requestObject[depName] === depValue1 || requestObject[depName] === depValue2
-		: requestObject[depName] === depValue1;
-};
-
-// function to build request object
-const buildRequestObject = (params: RequestParam[]): { [key: string]: TODO } => {
-	const requestObject: { [key: string]: TODO } = {};
-
-	// function to build a nested object if needed
-	const buildNestedObject = (param: RequestParam, allParams: RequestParam[]): { [key: string]: TODO } => {
-		const nestedObject: { [key: string]: TODO } = {};
-
-		if (param.subParams) {
-			param.subParams.forEach(subParamName => {
-				const subParam = allParams.find(p => p.name === subParamName);
-
-				if (subParam && isVisible(requestObject, subParam)) {
-					nestedObject[subParam.name] = subParam.defaultValue;
-				}
-			});
-		}
-		return nestedObject;
+	const handleReset = () => {
+		setFormValues({});
+		setApiRequest({});
+		resetApiPlaygroundStore();
 	};
 
-	params.forEach(param => {
-		if (isVisible(requestObject, param) && param.shouldRender) {
-			if (param.type === "object" && param.subParams) {
-				requestObject[param.name] = buildNestedObject(param, params);
-			} else {
-				requestObject[param.name] = param.defaultValue;
-			}
+	const handleSubmit = () => {
+		switch (apiId) {
+			case ApiIdEnum.GetMapTileCommand:
+				getMapTile(apiRequest as unknown as GetMapTileCommandInput);
+				break;
+			case ApiIdEnum.SearchPlaceIndexForPositionCommand:
+				searchPlaceIndexForPosition(apiRequest as unknown as SearchPlaceIndexForPositionRequest);
+				break;
+			default:
+				break;
 		}
-	});
+	};
 
-	return requestObject;
-};
+	useImperativeHandle(ref, () => ({
+		handleReset,
+		handleSubmit
+	}));
 
-const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
-	const [request, setRequest] = useState<RequestObj>({});
-	const [paramsToRender, setParamsToRender] = useState<RequestParam[]>([]);
-	console.log({ request });
-
-	const requiredParams = useMemo(() => requestParams.filter(param => param.required), [requestParams]);
-	const dependentParams = useMemo(() => requestParams.filter(param => !!param.visibleIf), [requestParams]);
-	const editableParams = useMemo(() => requestParams.filter(param => param.isEditable), [requestParams]);
-	const nestedParams = useMemo(() => requestParams.filter(param => !!param.subParams), [requestParams]);
-	const conditionalParams = useMemo(() => requestParams.filter(param => !!param.visibleIf), [requestParams]);
-	console.log({ request, requestParams, nestedParams, conditionalParams });
-
-	useEffect(() => {
-		if (Object.keys(request).length === 0) {
-			// create a request object with default values
-			const requestObject = buildRequestObject(requestParams);
-			setRequest(requestObject);
-
-			// set the params to render based on request object
-			const formParams = requestParams.filter(param => param.shouldRender && isVisible(requestObject, param));
+	/* Updates paramsToRender state based on API request object */
+	const updateParamsToRender = useCallback(
+		(requestObj: ApiRequestObj) => {
+			const formParams = requestParams.filter(param => param.shouldRender && isVisible(requestObj, param));
 			setParamsToRender(formParams);
+		},
+		[requestParams]
+	);
+
+	const requestObj = useMemo(() => buildRequestObject(requestParams), [requestParams]);
+
+	/* Create initial apiRequest and update paramsToRender */
+	useEffect(() => {
+		if (Object.keys(apiRequest).length === 0) {
+			setApiRequest(requestObj);
+		} else {
+			updateParamsToRender(requestObj);
 		}
-	}, [request, requestParams]);
+	}, [apiRequest, requestObj, setApiRequest, updateParamsToRender]);
 
-	// const setNestedValue = (obj: RequestObj, path: string[], value: TODO): RequestObj => {
-	// 	const [head, ...tail] = path;
+	/* Update apiRequest when form values changes */
+	const handleInputChange = (fieldType: FieldTypeEnum, name: string, value: ApiRequestObjValues) => {
+		setFormValues(s => ({ ...s, [name]: value }));
+		switch (fieldType) {
+			case FieldTypeEnum.STRING_INPUT:
+			case FieldTypeEnum.NUMBER_INPUT:
+				setApiRequest(s => ({ ...s, [name]: value }));
+				break;
+			case FieldTypeEnum.STRING_INPUT_ARRAY:
+				break;
+			case FieldTypeEnum.NUMBER_INPUT_ARRAY:
+				break;
+			case FieldTypeEnum.COORDINATES:
+				const [lat, lng] = (value as string).split(",");
 
-	// 	if (!tail.length) {
-	// 		return {
-	// 			...obj,
-	// 			[head]: value
-	// 		};
-	// 	}
-
-	// 	return {
-	// 		...obj,
-	// 		[head]: setNestedValue(obj[head], tail, value)
-	// 	};
-	// };
-
-	const handleInputChange = (name: string, value: TODO) => {
-		const path = name.split(".");
-		// setRequest(prevRequest => setNestedValue(prevRequest, path, value));
+				if (lat && lng) {
+					const coords = [parseFloat(lng.trim()), parseFloat(lat.trim())];
+					setApiRequest(s => ({ ...s, [name]: coords }));
+				}
+				break;
+			case FieldTypeEnum.COORDINATES_ARRAY:
+				break;
+			case FieldTypeEnum.CHECKBOX:
+				break;
+			case FieldTypeEnum.DROPDOWN:
+				break;
+			case FieldTypeEnum.PARENT:
+				break;
+			default:
+				break;
+		}
 	};
 
 	const renderLabel = (param: RequestParam) => {
@@ -129,11 +135,19 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 	};
 
 	const renderFormField = (param: RequestParam) => {
-		const { fieldType, name, defaultValue, isEditable, validValues, type, subParams } = param;
-		const inputName = type === "object" && subParams ? `${name}.${subParams.join(".")}` : name;
+		const {
+			fieldType,
+			name,
+			defaultValue,
+			isEditable,
+			validValues
+			// type,
+			// subParams
+		} = param;
+		// const inputName = type === "object" && subParams ? `${name}.${subParams.join(".")}` : name;
 
 		switch (fieldType) {
-			case "string-input":
+			case FieldTypeEnum.STRING_INPUT:
 				return (
 					<Flex className="form-field col">
 						{renderLabel(param)}
@@ -142,20 +156,20 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 							id={name}
 							name={name}
 							type={"text"}
-							value={request[name] ? `${request[name]}` : `${defaultValue}`}
-							onChange={e => handleInputChange(name, e.target.value)}
+							value={formValues[name] ? `${formValues[name]}` : `${defaultValue}`}
+							onChange={e => handleInputChange(fieldType, name, e.target.value)}
 							disabled={!isEditable}
 						/>
 					</Flex>
 				);
-			case "string-input-array":
+			case FieldTypeEnum.STRING_INPUT_ARRAY:
 				return (
 					<Flex className="form-field col">
 						{renderLabel(param)}
 						string-input-array
 					</Flex>
 				);
-			case "number-input":
+			case FieldTypeEnum.NUMBER_INPUT:
 				return (
 					<Flex className="form-field col">
 						{renderLabel(param)}
@@ -164,13 +178,13 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 							id={name}
 							name={name}
 							type={"number"}
-							value={request[name] ? `${request[name]}` : `${defaultValue}`}
-							onChange={e => handleInputChange(name, parseFloat(e.target.value))}
+							value={formValues[name] ? `${formValues[name]}` : `${defaultValue}`}
+							onChange={e => handleInputChange(fieldType, name, parseFloat(e.target.value))}
 							disabled={!isEditable}
 						/>
 					</Flex>
 				);
-			case "number-input-array":
+			case FieldTypeEnum.NUMBER_INPUT_ARRAY:
 				// [-12.12, 12.12, 0.0, 0.0]
 				return (
 					<Flex className="form-field col">
@@ -178,15 +192,23 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 						number-input-array
 					</Flex>
 				);
-			case "coordinates":
+			case FieldTypeEnum.COORDINATES:
 				// [-12.12, 12.12]
 				return (
 					<Flex className="form-field col">
 						{renderLabel(param)}
-						coordinates
+						<InputField
+							dataTestId={`input-${name}`}
+							id={name}
+							name={name}
+							type={"text"}
+							value={formValues[name] ? (formValues[name] as string) : (defaultValue as string)}
+							onChange={e => handleInputChange(fieldType, name, e.target.value)}
+							disabled={!isEditable}
+						/>
 					</Flex>
 				);
-			case "coordinates-array":
+			case FieldTypeEnum.COORDINATES_ARRAY:
 				// [[-12.12, 12.12], [-12.12, 12.12]]
 				return (
 					<Flex className="form-field col">
@@ -194,7 +216,7 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 						coordinates-array
 					</Flex>
 				);
-			case "checkbox":
+			case FieldTypeEnum.CHECKBOX:
 				return (
 					<Flex className="form-field">
 						<CheckboxField
@@ -204,13 +226,13 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 							name={name}
 							label={""}
 							value={name}
-							checked={!!request[name]}
-							onChange={e => handleInputChange(name, e.target.checked)}
+							checked={formValues[name] ? (formValues[name] as boolean) : (defaultValue as boolean)}
+							onChange={e => handleInputChange(fieldType, name, e.target.checked)}
 						/>
 						{renderLabel(param)}
 					</Flex>
 				);
-			case "dropdown":
+			case FieldTypeEnum.DROPDOWN:
 				return (
 					<Flex className="form-field col">
 						{renderLabel(param)}
@@ -222,6 +244,8 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 						/>
 					</Flex>
 				);
+			case FieldTypeEnum.PARENT:
+				return null;
 			default:
 				return null;
 		}
@@ -234,6 +258,6 @@ const RequestParamsForm: FC<RequestParamsFormProps> = ({ requestParams }) => {
 			))}
 		</Flex>
 	);
-};
+});
 
 export default RequestParamsForm;

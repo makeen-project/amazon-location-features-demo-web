@@ -22,9 +22,15 @@ interface AwsPlaceStoreProps {
 const initialState: IStateProps<AwsPlaceStoreProps> = {
 	isSearching: false,
 	isFetchingPlaceData: false,
-	zoom: 5,
+	bound: undefined,
+	clusters: undefined,
 	clusterZoom: 18,
-	precision: 10
+	precision: 10,
+	suggestions: undefined,
+	selectedMarker: undefined,
+	hoveredMarker: undefined,
+	marker: undefined,
+	zoom: 5
 };
 
 export default createStore<AwsPlaceStoreProps>(initialState);

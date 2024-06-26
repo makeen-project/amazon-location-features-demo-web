@@ -43,7 +43,9 @@ const CodeSnippet: FC<CodeSnippetProps> = ({ title, placeholderText, singleCodeS
 				</Flex>
 			)}
 			<Flex className="code-snippet-body">
-				{placeholderText && <Text className="placeholder-text regular-text">{placeholderText}</Text>}
+				{placeholderText && !singleCodeSnippet && languageAndSnippet.length === 0 && (
+					<Text className="placeholder-text regular-text">{placeholderText}</Text>
+				)}
 				{singleCodeSnippet && (
 					<SyntaxHighlighter
 						data-testid="syntax-highlighter"

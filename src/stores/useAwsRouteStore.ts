@@ -13,7 +13,10 @@ interface AwsRouteStoreProps {
 }
 
 const initialState: IStateProps<AwsRouteStoreProps> = {
-	isFetchingRoute: false
+	isFetchingRoute: false,
+	routePositions: undefined,
+	routeData: undefined,
+	directions: undefined
 };
 
 export default createStore<AwsRouteStoreProps>(initialState);

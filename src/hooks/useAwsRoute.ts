@@ -63,7 +63,6 @@ const useAwsRoute = () => {
 				setState({ directions });
 			},
 			resetStore: () => {
-				setState({ routePositions: undefined, routeData: undefined, directions: undefined });
 				setInitial();
 			}
 		}),

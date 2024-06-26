@@ -13,6 +13,7 @@ export interface AwsTrackerStoreProps {
 
 export const initialState: IStateProps<AwsTrackerStoreProps> = {
 	isEditingRoute: false,
+	trackerPoints: undefined,
 	selectedTrackerType: TrackerType.CAR
 };
 
