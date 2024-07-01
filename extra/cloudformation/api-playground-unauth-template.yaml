@@ -26,21 +26,18 @@ Resources:
       PolicyDocument:
         Statement:
           - Action:
-              - "geo:GetPlace"
-              - "geo:SearchPlaceIndex*"
               - "geo:GetMap*"
+              - "geo:SearchPlaceIndex*"
               - "geo:CalculateRoute"
               - "geo:GetGeofence"
               - "geo:ListGeofences"
-              - "geo:BatchEvaluateGeofences"
             Effect: Allow
             Resource:
               - !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:map/location.aws.com.api.playground.maps.HERE.Explore"
-              - !Sub "arn:aws:iot:${AWS::Region}:${AWS::AccountId}:topicfilter/${!cognito-identity.amazonaws.com:sub}/*"
-              - !Sub "arn:aws:iot:${AWS::Region}:${AWS::AccountId}:topic/${!cognito-identity.amazonaws.com:sub}/tracker"
-            Condition:
-              StringEquals:
-                cognito-identity.amazonaws.com:sub: "${cognito-identity.amazonaws.com:sub}"
+              - !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:place-index/location.aws.com.api.playground.places.HERE.PlaceIndex"
+              - !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:route-calculator/location.aws.com.api.playground.routes.HERE.RouteCalculator"
+              - !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:geofence-collection/location.aws.com.api.playground.geofence.collection.1"
+              - !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:geofence-collection/location.aws.com.api.playground.geofence.collection.2"
         Version: 2012-10-17
       PolicyName: !Sub "CognitoIdentityPoolUnauthRoleIamPolicy-${AWS::StackName}"
       Roles:
@@ -69,6 +66,20 @@ Resources:
       Description: You created this resource by running Amazon Location APIPlayground's CloudFormation template.
       MapName: location.aws.com.api.playground.maps.HERE.Explore
 
+  AmazonLocationAPIPlaygroundPlaceIndexHere:
+    Type: AWS::Location::PlaceIndex
+    Properties:
+      DataSource: Here
+      Description: You created this resource by running Amazon Location Demo's CloudFormation template.
+      IndexName: location.aws.com.api.playground.places.HERE.PlaceIndex
+
+  AmazonLocationApiPlaygroundRouteCalculatorHere:
+    Type: AWS::Location::RouteCalculator
+    Properties:
+      CalculatorName: location.aws.com.demo.routes.HERE.RouteCalculator
+      DataSource: Here
+      Description: You created this resource by running Amazon Location Demo's CloudFormation template.
+
   AmazonLocationAPIPlaygroundTracker1:
     Type: AWS::Location::Tracker
     Properties:
@@ -81,7 +92,7 @@ Resources:
     Properties:
       Description: You created this resource by running Amazon Location APIPlayground's CloudFormation template.
       PositionFiltering: DistanceBased
-      TrackerName: location.aws.com.api.playground.tracker.2      
+      TrackerName: location.aws.com.api.playground.tracker.2
 
   AmazonLocationDemoTrackerConsumer1:
     DependsOn: AmazonLocationAPIPlaygroundTracker1
@@ -96,7 +107,6 @@ Resources:
     Properties:
       ConsumerArn: !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:geofence-collection/location.aws.com.api.playground.geofence.collection.2"
       TrackerName: location.aws.com.api.playground.tracker.2
-
 
   AmazonLocationDemoGeoFenceLogGroup:
     Type: AWS::Logs::LogGroup
@@ -113,31 +123,12 @@ Resources:
         detail-type:
           - Location Geofence Event
         resources:
-          - !Sub arn:aws:geo:${AWS::Region}:${AWS::AccountId}:geofence-collection/location.aws.com.api.playground.geofence.collection.1
-          - !Sub arn:aws:geo:${AWS::Region}:${AWS::AccountId}:geofence-collection/location.aws.com.api.playground.geofence.collection.2
+          - !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:geofence-collection/location.aws.com.api.playground.geofence.collection.1"
+          - !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:geofence-collection/location.aws.com.api.playground.geofence.collection.2"
       State: ENABLED
       Targets:
         - Id: GeoFenceLogGroupTarget
           Arn: !GetAtt AmazonLocationDemoGeoFenceLogGroup.Arn
-
-  AmazonLocationDemoIoTPolicy:
-    Type: AWS::IoT::Policy
-    Properties:
-      PolicyName: AmazonLocationIotPolicyUnauth
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Action:
-              - iot:Connect
-              - iot:Publish
-              - iot:Subscribe
-              - iot:Receive
-            Resource:
-              - !Sub "arn:aws:iot:${AWS::Region}:${AWS::AccountId}:client/${!cognito-identity.amazonaws.com:sub}"
-              - !Sub "arn:aws:iot:${AWS::Region}:${AWS::AccountId}:topic/${!cognito-identity.amazonaws.com:sub}"
-              - !Sub "arn:aws:iot:${AWS::Region}:${AWS::AccountId}:topicfilter/${!cognito-identity.amazonaws.com:sub}/*"
-              - !Sub "arn:aws:iot:${AWS::Region}:${AWS::AccountId}:topic/${!cognito-identity.amazonaws.com:sub}/tracker"
 
   AmazonLocationDemoGeofenceLambdaInvoke:
     Type: "Custom::GeofenceTrigger"

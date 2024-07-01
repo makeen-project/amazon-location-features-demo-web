@@ -98,11 +98,20 @@ const ApiPlaygroundDetailsPage: FC = () => {
 		() =>
 			isApiDataPresent ? (
 				<>
-					<Text className="title bold medium-large-text">{apiDetails!.title}</Text>
+					<Text
+						className="title bold medium-large-text"
+						style={{
+							overflow: "clip",
+							textOverflow: "ellipsis",
+							whiteSpace: "nowrap"
+						}}
+					>
+						{apiDetails!.title}
+					</Text>
 					<Text className="description regular small-text">{apiDetails!.description}</Text>
 					{apiDetails?.shouldRenderMap && (
 						<Flex className="map-container">
-							<Map />
+							<Map useFixedMapName />
 						</Flex>
 					)}
 					<Flex className="customize-request-button-container-tablet">

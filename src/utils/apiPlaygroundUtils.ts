@@ -1,4 +1,4 @@
-import { ApiRequestObj, ApiRequestObjValues, RequestParam } from "@demo/types";
+import { ApiRequestObj, ApiRequestObjValues, FieldTypeEnum, RequestParam } from "@demo/types";
 
 /* Function to check if a parameter is visible based on its dependencies */
 export const isVisible = (requestObject: ApiRequestObj, param: RequestParam): boolean => {
@@ -9,6 +9,28 @@ export const isVisible = (requestObject: ApiRequestObj, param: RequestParam): bo
 	return depValue1 && depValue2
 		? requestObject[depName] === depValue1 || requestObject[depName] === depValue2
 		: requestObject[depName] === depValue1;
+};
+
+export const getDefaultValueForRequestObj = ({ fieldType, required, defaultValue }: RequestParam) => {
+	switch (fieldType) {
+		case FieldTypeEnum.STRING_INPUT:
+		case FieldTypeEnum.STRING_INPUT_ARRAY:
+		case FieldTypeEnum.NUMBER_INPUT:
+		case FieldTypeEnum.NUMBER_INPUT_ARRAY:
+		case FieldTypeEnum.COORDINATES:
+		case FieldTypeEnum.COORDINATES_ARRAY:
+		case FieldTypeEnum.CHECKBOX:
+		case FieldTypeEnum.DROPDOWN:
+			if (required) {
+				return defaultValue ? defaultValue : "";
+			} else {
+				return defaultValue ? defaultValue : undefined;
+			}
+		case FieldTypeEnum.DROPDOWN:
+			break;
+		default:
+			break;
+	}
 };
 
 /* Function to build request object */
@@ -27,7 +49,7 @@ export const buildRequestObject = (params: RequestParam[]): { [key: string]: Api
 				const subParam = allParams.find(p => p.name === subParamName);
 
 				if (subParam && isVisible(requestObject, subParam)) {
-					nestedObject[subParam.name] = subParam.defaultValue;
+					nestedObject[subParam.name] = getDefaultValueForRequestObj(param);
 				}
 			});
 		}
@@ -39,7 +61,7 @@ export const buildRequestObject = (params: RequestParam[]): { [key: string]: Api
 			if (param.type === "object" && param.subParams) {
 				requestObject[param.name] = buildNestedObject(param, params);
 			} else {
-				requestObject[param.name] = param.defaultValue;
+				requestObject[param.name] = getDefaultValueForRequestObj(param);
 			}
 		}
 	});

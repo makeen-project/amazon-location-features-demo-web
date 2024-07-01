@@ -1,10 +1,17 @@
 import { Fragment, forwardRef, lazy, useCallback, useEffect, useImperativeHandle, useMemo, useState } from "react";
 
 import { CheckboxField, Flex } from "@aws-amplify/ui-react";
-import { GetMapTileCommandInput, SearchPlaceIndexForPositionRequest } from "@aws-sdk/client-location";
+import {
+	GetGeofenceCommandInput,
+	GetMapTileCommandInput,
+	SearchPlaceIndexForPositionRequest,
+	SearchPlaceIndexForSuggestionsRequest,
+	SearchPlaceIndexForTextRequest
+} from "@aws-sdk/client-location";
 import { IconInfo } from "@demo/assets/svgs";
+import { showToast } from "@demo/core/Toast";
 import { useApiPlayground } from "@demo/hooks";
-import { ApiIdEnum, ApiRequestObj, ApiRequestObjValues, FieldTypeEnum, RequestParam } from "@demo/types";
+import { ApiIdEnum, ApiRequestObj, FieldTypeEnum, RequestParam, ToastType } from "@demo/types";
 import { buildRequestObject, isVisible } from "@demo/utils";
 import { Tooltip } from "react-tooltip";
 import "./styles.scss";
@@ -27,13 +34,21 @@ interface RequestParamsFormProps {
 }
 
 const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProps>(({ apiId, requestParams }, ref) => {
-	const [formValues, setFormValues] = useState<ApiRequestObj>({});
+	const [formValues, setFormValues] = useState<{ [key: string]: string | boolean }>({});
 	const [apiRequest, setApiRequest] = useState<ApiRequestObj>({});
 	const [paramsToRender, setParamsToRender] = useState<RequestParam[]>([]);
-	const { resetStore: resetApiPlaygroundStore, getMapTile, searchPlaceIndexForPosition } = useApiPlayground();
-	console.log({ formValues, apiRequest, paramsToRender });
+	const {
+		getMapTile,
+		searchPlaceIndexForPosition,
+		searchPlaceIndexForSuggestions,
+		searchPlaceIndexForText,
+		getGeofence,
+		resetStore: resetApiPlaygroundStore
+	} = useApiPlayground();
+	console.log({ apiRequest });
 
-	// const requiredParams = useMemo(() => requestParams.filter(param => param.required), [requestParams]);
+	const requestObj = useMemo(() => buildRequestObject(requestParams), [requestParams]);
+	const requiredParams = useMemo(() => requestParams.filter(param => param.required), [requestParams]);
 	// const dependentParams = useMemo(() => requestParams.filter(param => !!param.visibleIf), [requestParams]);
 	// const editableParams = useMemo(() => requestParams.filter(param => param.isEditable), [requestParams]);
 	// const nestedParams = useMemo(() => requestParams.filter(param => !!param.subParams), [requestParams]);
@@ -46,15 +61,38 @@ const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProp
 	};
 
 	const handleSubmit = () => {
-		switch (apiId) {
-			case ApiIdEnum.GetMapTileCommand:
-				getMapTile(apiRequest as unknown as GetMapTileCommandInput);
-				break;
-			case ApiIdEnum.SearchPlaceIndexForPositionCommand:
-				searchPlaceIndexForPosition(apiRequest as unknown as SearchPlaceIndexForPositionRequest);
-				break;
-			default:
-				break;
+		const existsInApiRequest = requiredParams.every(param => !!apiRequest[param.name]);
+
+		if (existsInApiRequest) {
+			switch (apiId) {
+				case ApiIdEnum.GetMapTileCommand:
+					getMapTile(apiRequest as unknown as GetMapTileCommandInput);
+					break;
+				case ApiIdEnum.SearchPlaceIndexForPositionCommand:
+					searchPlaceIndexForPosition(apiRequest as unknown as SearchPlaceIndexForPositionRequest);
+					break;
+				case ApiIdEnum.SearchPlaceIndexForSuggestionsCommand:
+					searchPlaceIndexForSuggestions(apiRequest as unknown as SearchPlaceIndexForSuggestionsRequest);
+					break;
+				case ApiIdEnum.SearchPlaceIndexForTextCommand:
+					searchPlaceIndexForText(apiRequest as unknown as SearchPlaceIndexForTextRequest);
+					break;
+				case ApiIdEnum.CalculateRouteCommand:
+					break;
+				case ApiIdEnum.GetGeofenceCommand:
+					getGeofence(apiRequest as unknown as GetGeofenceCommandInput);
+					break;
+				case ApiIdEnum.ListGeofencesCommand:
+					break;
+				case ApiIdEnum.DescribeTrackerCommand:
+					break;
+				case ApiIdEnum.GetDevicePositionCommand:
+					break;
+				default:
+					break;
+			}
+		} else {
+			showToast({ content: "Missing one or more mandatory fields", type: ToastType.ERROR });
 		}
 	};
 
@@ -72,8 +110,6 @@ const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProp
 		[requestParams]
 	);
 
-	const requestObj = useMemo(() => buildRequestObject(requestParams), [requestParams]);
-
 	/* Create initial apiRequest and update paramsToRender */
 	useEffect(() => {
 		if (Object.keys(apiRequest).length === 0) {
@@ -83,25 +119,38 @@ const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProp
 		}
 	}, [apiRequest, requestObj, setApiRequest, updateParamsToRender]);
 
-	/* Update apiRequest when form values changes */
-	const handleInputChange = (fieldType: FieldTypeEnum, name: string, value: ApiRequestObjValues) => {
+	/* Update formvValues and apiRequest when form values changes */
+	const handleInputChange = (fieldType: FieldTypeEnum, name: string, value: string | boolean) => {
 		setFormValues(s => ({ ...s, [name]: value }));
+		const strArr = value.toString().split(",");
+		const isValidStringArr = strArr.every(str => str.trim().length > 0) && strArr.length >= 1;
+		const numArr = value
+			.toString()
+			.split(",")
+			.map(str => Number(str.trim()));
+		const isValidNumberArr = numArr.every(num => !isNaN(num)) && numArr.length >= 2;
+
 		switch (fieldType) {
 			case FieldTypeEnum.STRING_INPUT:
-			case FieldTypeEnum.NUMBER_INPUT:
-				setApiRequest(s => ({ ...s, [name]: value }));
+				setApiRequest(s => ({ ...s, [name]: value ? `${value}` : undefined }));
 				break;
 			case FieldTypeEnum.STRING_INPUT_ARRAY:
+				setApiRequest(s => ({
+					...s,
+					[name]: isValidStringArr ? strArr : undefined
+				}));
+				break;
+			case FieldTypeEnum.NUMBER_INPUT:
+				setApiRequest(s => ({ ...s, [name]: value ? Number(value) : undefined }));
 				break;
 			case FieldTypeEnum.NUMBER_INPUT_ARRAY:
+				setApiRequest(s => ({ ...s, [name]: isValidNumberArr ? numArr : undefined }));
 				break;
 			case FieldTypeEnum.COORDINATES:
-				const [lat, lng] = (value as string).split(",");
-
-				if (lat && lng) {
-					const coords = [parseFloat(lng.trim()), parseFloat(lat.trim())];
-					setApiRequest(s => ({ ...s, [name]: coords }));
-				}
+				setApiRequest(s => ({
+					...s,
+					[name]: isValidNumberArr ? [numArr[1], numArr[0]] : undefined
+				}));
 				break;
 			case FieldTypeEnum.COORDINATES_ARRAY:
 				break;
@@ -144,7 +193,7 @@ const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProp
 			// type,
 			// subParams
 		} = param;
-		// const inputName = type === "object" && subParams ? `${name}.${subParams.join(".")}` : name;
+		const defaultVal = defaultValue ? defaultValue : "";
 
 		switch (fieldType) {
 			case FieldTypeEnum.STRING_INPUT:
@@ -156,7 +205,7 @@ const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProp
 							id={name}
 							name={name}
 							type={"text"}
-							value={formValues[name] ? `${formValues[name]}` : `${defaultValue}`}
+							value={Object.hasOwn(formValues, name) ? (formValues[name] as string) : (defaultVal as string)}
 							onChange={e => handleInputChange(fieldType, name, e.target.value)}
 							disabled={!isEditable}
 						/>
@@ -166,7 +215,15 @@ const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProp
 				return (
 					<Flex className="form-field col">
 						{renderLabel(param)}
-						string-input-array
+						<InputField
+							dataTestId={`input-${name}`}
+							id={name}
+							name={name}
+							type={"text"}
+							value={Object.hasOwn(formValues, name) ? (formValues[name] as string) : (defaultVal as string)}
+							onChange={e => handleInputChange(fieldType, name, e.target.value)}
+							disabled={!isEditable}
+						/>
 					</Flex>
 				);
 			case FieldTypeEnum.NUMBER_INPUT:
@@ -178,22 +235,14 @@ const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProp
 							id={name}
 							name={name}
 							type={"number"}
-							value={formValues[name] ? `${formValues[name]}` : `${defaultValue}`}
-							onChange={e => handleInputChange(fieldType, name, parseFloat(e.target.value))}
+							value={Object.hasOwn(formValues, name) ? (formValues[name] as string) : (defaultVal as string)}
+							onChange={e => handleInputChange(fieldType, name, e.target.value)}
 							disabled={!isEditable}
 						/>
 					</Flex>
 				);
 			case FieldTypeEnum.NUMBER_INPUT_ARRAY:
-				// [-12.12, 12.12, 0.0, 0.0]
-				return (
-					<Flex className="form-field col">
-						{renderLabel(param)}
-						number-input-array
-					</Flex>
-				);
 			case FieldTypeEnum.COORDINATES:
-				// [-12.12, 12.12]
 				return (
 					<Flex className="form-field col">
 						{renderLabel(param)}
@@ -202,7 +251,7 @@ const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProp
 							id={name}
 							name={name}
 							type={"text"}
-							value={formValues[name] ? (formValues[name] as string) : (defaultValue as string)}
+							value={Object.hasOwn(formValues, name) ? (formValues[name] as string) : (defaultVal as string)}
 							onChange={e => handleInputChange(fieldType, name, e.target.value)}
 							disabled={!isEditable}
 						/>
@@ -226,7 +275,7 @@ const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProp
 							name={name}
 							label={""}
 							value={name}
-							checked={formValues[name] ? (formValues[name] as boolean) : (defaultValue as boolean)}
+							checked={apiRequest[name] ? (apiRequest[name] as boolean) : (defaultValue as boolean)}
 							onChange={e => handleInputChange(fieldType, name, e.target.checked)}
 						/>
 						{renderLabel(param)}

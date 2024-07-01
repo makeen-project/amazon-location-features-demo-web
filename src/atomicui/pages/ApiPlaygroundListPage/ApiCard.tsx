@@ -32,6 +32,10 @@ const ApiCard: FC<ApiCardProps> = ({ id, imageSource, title, description, onCard
 			<Flex className="card-content">
 				<Text
 					className="title medium-text bold"
+					style={{
+						textOverflow: "ellipsis",
+						whiteSpace: "nowrap"
+					}}
 					textAlign={isLtr ? "start" : "end"}
 					alignSelf={isLtr ? "start" : "end"}
 				>

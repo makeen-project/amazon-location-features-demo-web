@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { withIdentityPoolId } from "@aws/amazon-location-utilities-auth-helper";
 import { appConfig } from "@demo/core/constants";
@@ -13,13 +13,19 @@ const {
 	MAP_RESOURCES: { AMAZON_HQ }
 } = appConfig;
 
-interface MapProps {}
+interface MapProps {
+	useFixedMapName?: boolean;
+}
 
-const Map: FC<MapProps> = ({}) => {
+const Map: FC<MapProps> = ({ useFixedMapName = false }) => {
 	const mapRef = useRef<maplibregl.Map | null>(null);
 	const mapContainer = useRef<HTMLDivElement | null>(null);
 	const [showGridLoader, setShowGridLoader] = useState(true);
 	const { setMapRef } = useAwsMap();
+	const mapName = useMemo(
+		() => (useFixedMapName ? "location.aws.com.api.playground.maps.HERE.Explore" : HereMapEnum.HERE_EXPLORE),
+		[useFixedMapName]
+	);
 
 	const onLoad = useCallback(() => {
 		setShowGridLoader(false);
@@ -36,9 +42,9 @@ const Map: FC<MapProps> = ({}) => {
 				center: [AMAZON_HQ.US.longitude, AMAZON_HQ.US.latitude],
 				zoom: 10,
 				renderWorldCopies: false,
-				style: `https://maps.geo.${API_PLAYGROUND_IDENTITY_POOL_ID.split(":")[0]}.amazonaws.com/maps/v0/maps/${
-					HereMapEnum.HERE_EXPLORE
-				}/style-descriptor`,
+				style: `https://maps.geo.${
+					API_PLAYGROUND_IDENTITY_POOL_ID.split(":")[0]
+				}.amazonaws.com/maps/v0/maps/${mapName}/style-descriptor`,
 				...authHelper.getMapAuthenticationOptions()
 			});
 
@@ -47,7 +53,7 @@ const Map: FC<MapProps> = ({}) => {
 
 			setMapRef(mapRef.current);
 		}
-	}, [onLoad, setMapRef]);
+	}, [mapName, onLoad, setMapRef]);
 
 	useEffect(() => {
 		initMap();

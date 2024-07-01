@@ -44,6 +44,15 @@ const useAwsPlaceService = () => {
 
 	return useMemo(
 		() => ({
+			searchPlaceIndexForPosition: async (apiRequest: SearchPlaceIndexForPositionRequest) => {
+				return await locationClient?.searchPlaceIndexForPosition(apiRequest);
+			},
+			searchPlaceIndexForSuggestions: async (apiRequest: SearchPlaceIndexForSuggestionsRequest) => {
+				return await locationClient?.searchPlaceIndexForSuggestions(apiRequest);
+			},
+			searchPlaceIndexForText: async (apiRequest: SearchPlaceIndexForTextRequest) => {
+				return await locationClient?.searchPlaceIndexForText(apiRequest);
+			},
 			getPlaceSuggestions: async (Text: string) => {
 				const params: SearchPlaceIndexForSuggestionsRequest = {
 					...config,
@@ -107,9 +116,6 @@ const useAwsPlaceService = () => {
 					throw new Error(responseBody.message);
 				}
 				return responseBody;
-			},
-			searchPlaceIndexForPosition: async (apiRequest: SearchPlaceIndexForPositionRequest) => {
-				return await locationClient?.searchPlaceIndexForPosition(apiRequest);
 			}
 		}),
 		[config, locationClient, currentMapProvider, viewpoint]

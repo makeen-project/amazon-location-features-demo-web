@@ -5,7 +5,7 @@ export type RequestParam = {
 	description: string;
 	required: boolean;
 	type: string;
-	defaultValue: string | number | boolean;
+	defaultValue: string | number | boolean | null;
 	validValues: string[] | number[] | boolean[] | null;
 	visibleIf: string[] | null;
 	shouldRender: boolean;
@@ -30,7 +30,7 @@ export type ApiListData = {
 	[key: string]: ApiListItem[];
 };
 
-export type ApiRequestObjValues = string | string[] | number | number[] | number[][] | boolean | {};
+export type ApiRequestObjValues = string | string[] | number | number[] | number[][] | boolean | {} | undefined;
 
 export type ApiRequestObj = { [key: string]: ApiRequestObjValues };
 

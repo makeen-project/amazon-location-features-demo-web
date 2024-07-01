@@ -3,7 +3,12 @@
 
 import { useMemo } from "react";
 
-import { SearchForTextResult, SearchPlaceIndexForPositionRequest } from "@aws-sdk/client-location";
+import {
+	SearchForTextResult,
+	SearchPlaceIndexForPositionRequest,
+	SearchPlaceIndexForSuggestionsRequest,
+	SearchPlaceIndexForTextRequest
+} from "@aws-sdk/client-location";
 import { useAmplifyMap } from "@demo/hooks";
 import { useAwsPlaceService } from "@demo/services";
 import { useAwsPlaceStore } from "@demo/stores";
@@ -25,6 +30,30 @@ const useAwsPlace = () => {
 
 	const methods = useMemo(
 		() => ({
+			searchPlaceIndexForPosition: async (apiRequest: SearchPlaceIndexForPositionRequest) => {
+				try {
+					const response = await awsPlaceService.searchPlaceIndexForPosition(apiRequest);
+					return response;
+				} catch (error) {
+					throw new Error((error as Error).message);
+				}
+			},
+			searchPlaceIndexForSuggestions: async (apiRequest: SearchPlaceIndexForSuggestionsRequest) => {
+				try {
+					const response = await awsPlaceService.searchPlaceIndexForSuggestions(apiRequest);
+					return response;
+				} catch (error) {
+					throw new Error((error as Error).message);
+				}
+			},
+			searchPlaceIndexForText: async (apiRequest: SearchPlaceIndexForTextRequest) => {
+				try {
+					const response = await awsPlaceService.searchPlaceIndexForText(apiRequest);
+					return response;
+				} catch (error) {
+					throw new Error((error as Error).message);
+				}
+			},
 			setSearchingState: (isSearching = true) => {
 				setState({ isSearching });
 			},
@@ -234,14 +263,6 @@ const useAwsPlace = () => {
 			},
 			setSuggestions: (suggestions?: SuggestionType[]) => {
 				setState({ suggestions });
-			},
-			searchPlaceIndexForPosition: async (apiRequest: SearchPlaceIndexForPositionRequest) => {
-				try {
-					const response = await awsPlaceService.searchPlaceIndexForPosition(apiRequest);
-					return response;
-				} catch (error) {
-					console.error({ error });
-				}
 			},
 			resetStore() {
 				setInitial();

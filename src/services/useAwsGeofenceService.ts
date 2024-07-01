@@ -7,6 +7,7 @@ import {
 	BatchDeleteGeofenceRequest,
 	BatchEvaluateGeofencesRequest,
 	GeofenceGeometry,
+	GetGeofenceCommandInput,
 	ListGeofencesRequest,
 	PutGeofenceRequest
 } from "@aws-sdk/client-location";
@@ -22,6 +23,9 @@ const useAwsGeofenceService = () => {
 
 	return useMemo(
 		() => ({
+			getGeofence: async (apiRequest: GetGeofenceCommandInput) => {
+				return await locationClient?.getGeofence(apiRequest);
+			},
 			listGeofences: async (geofenceCollection?: string) => {
 				const params: ListGeofencesRequest = {
 					CollectionName: geofenceCollection || GEOFENCE_COLLECTION

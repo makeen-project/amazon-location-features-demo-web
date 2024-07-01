@@ -18,7 +18,7 @@ const useAwsMap = () => {
 					const response = await awsMapService.getMapTile(apiRequest);
 					return response;
 				} catch (error) {
-					console.error({ error });
+					throw new Error((error as Error).message);
 				}
 			},
 			setMapRef: (mapRef: maplibregl.Map) => setState({ mapRef }),

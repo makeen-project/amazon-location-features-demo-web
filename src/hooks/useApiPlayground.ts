@@ -3,49 +3,48 @@
 
 import { useMemo } from "react";
 
-import { GetMapTileCommandInput, SearchPlaceIndexForPositionRequest } from "@aws-sdk/client-location";
+import {
+	GetGeofenceCommandInput,
+	GetMapTileCommandInput,
+	SearchPlaceIndexForPositionRequest,
+	SearchPlaceIndexForSuggestionsRequest,
+	SearchPlaceIndexForTextRequest
+} from "@aws-sdk/client-location";
 import { showToast } from "@demo/core/Toast";
-import { appConfig } from "@demo/core/constants";
 import { useApiPlaygroundStore } from "@demo/stores";
 import { ToastType } from "@demo/types";
 import { getTileBounds } from "@demo/utils";
 
+import useAwsGeofence from "./useAwsGeofence";
 import useAwsMap from "./useAwsMap";
 import useAwsPlace from "./useAwsPlace";
-
-const {
-	MAP_RESOURCES: {
-		PLACE_INDEXES: { HERE }
-	}
-} = appConfig;
 
 const useApiPlayground = () => {
 	const store = useApiPlaygroundStore();
 	const { setInitial } = store;
 	const { setState } = useApiPlaygroundStore;
 	const { mapRef, getMapTile } = useAwsMap();
-	const { searchPlaceIndexForPosition } = useAwsPlace();
+	const { searchPlaceIndexForPosition, searchPlaceIndexForSuggestions, searchPlaceIndexForText } = useAwsPlace();
+	const { getGeofence } = useAwsGeofence();
 
 	const methods = useMemo(
 		() => ({
 			getMapTile: async (apiRequest: GetMapTileCommandInput) => {
 				setState({ isLoading: true });
 				try {
-					const { MapName, Z, X, Y } = apiRequest;
+					const response = await getMapTile(apiRequest);
+					const bounds = getTileBounds(
+						parseInt(apiRequest.Z as string),
+						parseInt(apiRequest.X as string),
+						parseInt(apiRequest.Y as string)
+					);
 
-					if (MapName && Z && X && Y) {
-						const response = await getMapTile(apiRequest);
-
-						if (response?.$metadata.httpStatusCode === 200) {
-							const bounds = getTileBounds(parseInt(Z), parseInt(X), parseInt(Y));
-							mapRef && mapRef.fitBounds(bounds);
-							setState({ request: JSON.stringify(apiRequest), response: JSON.stringify(response) });
-						}
-					} else {
-						throw new Error("Missing one or more request form values");
+					if (response?.$metadata.httpStatusCode === 200) {
+						mapRef && mapRef.fitBounds(bounds);
+						setState({ request: JSON.stringify(apiRequest), response: JSON.stringify(response) });
 					}
 				} catch (error) {
-					setState({ request: JSON.stringify(apiRequest), response: JSON.stringify(error) });
+					setState({ request: JSON.stringify(apiRequest), response: (error as Error).message });
 					showToast({ content: (error as Error).message, type: ToastType.ERROR });
 				} finally {
 					setState({ isLoading: false });
@@ -54,10 +53,46 @@ const useApiPlayground = () => {
 			searchPlaceIndexForPosition: async (apiRequest: SearchPlaceIndexForPositionRequest) => {
 				setState({ isLoading: true });
 				try {
-					const response = await searchPlaceIndexForPosition({ ...apiRequest, IndexName: HERE });
+					const response = await searchPlaceIndexForPosition(apiRequest);
 					setState({ request: JSON.stringify(apiRequest), response: JSON.stringify(response) });
 				} catch (error) {
-					setState({ request: JSON.stringify(apiRequest), response: JSON.stringify(error) });
+					setState({ request: JSON.stringify(apiRequest), response: (error as Error).message });
+					showToast({ content: (error as Error).message, type: ToastType.ERROR });
+				} finally {
+					setState({ isLoading: false });
+				}
+			},
+			searchPlaceIndexForSuggestions: async (apiRequest: SearchPlaceIndexForSuggestionsRequest) => {
+				setState({ isLoading: true });
+				try {
+					const response = await searchPlaceIndexForSuggestions(apiRequest);
+					setState({ request: JSON.stringify(apiRequest), response: JSON.stringify(response) });
+				} catch (error) {
+					setState({ request: JSON.stringify(apiRequest), response: (error as Error).message });
+					showToast({ content: (error as Error).message, type: ToastType.ERROR });
+				} finally {
+					setState({ isLoading: false });
+				}
+			},
+			searchPlaceIndexForText: async (apiRequest: SearchPlaceIndexForTextRequest) => {
+				setState({ isLoading: true });
+				try {
+					const response = await searchPlaceIndexForText(apiRequest);
+					setState({ request: JSON.stringify(apiRequest), response: JSON.stringify(response) });
+				} catch (error) {
+					setState({ request: JSON.stringify(apiRequest), response: (error as Error).message });
+					showToast({ content: (error as Error).message, type: ToastType.ERROR });
+				} finally {
+					setState({ isLoading: false });
+				}
+			},
+			getGeofence: async (apiRequest: GetGeofenceCommandInput) => {
+				setState({ isLoading: true });
+				try {
+					const response = await getGeofence(apiRequest);
+					setState({ request: JSON.stringify(apiRequest), response: JSON.stringify(response) });
+				} catch (error) {
+					setState({ request: JSON.stringify(apiRequest), response: (error as Error).message });
 					showToast({ content: (error as Error).message, type: ToastType.ERROR });
 				} finally {
 					setState({ isLoading: false });
@@ -67,7 +102,16 @@ const useApiPlayground = () => {
 				setInitial();
 			}
 		}),
-		[getMapTile, mapRef, searchPlaceIndexForPosition, setInitial, setState]
+		[
+			getGeofence,
+			getMapTile,
+			mapRef,
+			searchPlaceIndexForPosition,
+			searchPlaceIndexForSuggestions,
+			searchPlaceIndexForText,
+			setInitial,
+			setState
+		]
 	);
 
 	return { ...methods, ...store };
