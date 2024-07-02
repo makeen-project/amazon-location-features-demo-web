@@ -13,6 +13,7 @@ const useAwsMap = () => {
 
 	const methods = useMemo(
 		() => ({
+			setMapRef: (mapRef: maplibregl.Map) => setState({ mapRef }),
 			getMapTile: async (apiRequest: GetMapTileCommandInput) => {
 				try {
 					const response = await awsMapService.getMapTile(apiRequest);
@@ -21,7 +22,6 @@ const useAwsMap = () => {
 					throw new Error((error as Error).message);
 				}
 			},
-			setMapRef: (mapRef: maplibregl.Map) => setState({ mapRef }),
 			resetStore: () => {
 				setState({ mapRef: undefined });
 				setInitial();

@@ -4,11 +4,15 @@
 import { useMemo } from "react";
 
 import {
+	CalculateRouteCommandInput,
+	DescribeTrackerCommandInput,
+	GetDevicePositionCommandInput,
 	GetGeofenceCommandInput,
 	GetMapTileCommandInput,
-	SearchPlaceIndexForPositionRequest,
-	SearchPlaceIndexForSuggestionsRequest,
-	SearchPlaceIndexForTextRequest
+	ListGeofencesCommandInput,
+	SearchPlaceIndexForPositionCommandInput,
+	SearchPlaceIndexForSuggestionsCommandInput,
+	SearchPlaceIndexForTextCommandInput
 } from "@aws-sdk/client-location";
 import { showToast } from "@demo/core/Toast";
 import { useApiPlaygroundStore } from "@demo/stores";
@@ -18,6 +22,8 @@ import { getTileBounds } from "@demo/utils";
 import useAwsGeofence from "./useAwsGeofence";
 import useAwsMap from "./useAwsMap";
 import useAwsPlace from "./useAwsPlace";
+import useAwsRoute from "./useAwsRoute";
+import useAwsTracker from "./useAwsTracker";
 
 const useApiPlayground = () => {
 	const store = useApiPlaygroundStore();
@@ -25,7 +31,9 @@ const useApiPlayground = () => {
 	const { setState } = useApiPlaygroundStore;
 	const { mapRef, getMapTile } = useAwsMap();
 	const { searchPlaceIndexForPosition, searchPlaceIndexForSuggestions, searchPlaceIndexForText } = useAwsPlace();
-	const { getGeofence } = useAwsGeofence();
+	const { calculateRoute } = useAwsRoute();
+	const { getGeofence, listGeofences } = useAwsGeofence();
+	const { describeTracker, getDevicePosition } = useAwsTracker();
 
 	const methods = useMemo(
 		() => ({
@@ -50,7 +58,7 @@ const useApiPlayground = () => {
 					setState({ isLoading: false });
 				}
 			},
-			searchPlaceIndexForPosition: async (apiRequest: SearchPlaceIndexForPositionRequest) => {
+			searchPlaceIndexForPosition: async (apiRequest: SearchPlaceIndexForPositionCommandInput) => {
 				setState({ isLoading: true });
 				try {
 					const response = await searchPlaceIndexForPosition(apiRequest);
@@ -62,7 +70,7 @@ const useApiPlayground = () => {
 					setState({ isLoading: false });
 				}
 			},
-			searchPlaceIndexForSuggestions: async (apiRequest: SearchPlaceIndexForSuggestionsRequest) => {
+			searchPlaceIndexForSuggestions: async (apiRequest: SearchPlaceIndexForSuggestionsCommandInput) => {
 				setState({ isLoading: true });
 				try {
 					const response = await searchPlaceIndexForSuggestions(apiRequest);
@@ -74,10 +82,22 @@ const useApiPlayground = () => {
 					setState({ isLoading: false });
 				}
 			},
-			searchPlaceIndexForText: async (apiRequest: SearchPlaceIndexForTextRequest) => {
+			searchPlaceIndexForText: async (apiRequest: SearchPlaceIndexForTextCommandInput) => {
 				setState({ isLoading: true });
 				try {
 					const response = await searchPlaceIndexForText(apiRequest);
+					setState({ request: JSON.stringify(apiRequest), response: JSON.stringify(response) });
+				} catch (error) {
+					setState({ request: JSON.stringify(apiRequest), response: (error as Error).message });
+					showToast({ content: (error as Error).message, type: ToastType.ERROR });
+				} finally {
+					setState({ isLoading: false });
+				}
+			},
+			calculateRoute: async (apiRequest: CalculateRouteCommandInput) => {
+				setState({ isLoading: true });
+				try {
+					const response = await calculateRoute(apiRequest);
 					setState({ request: JSON.stringify(apiRequest), response: JSON.stringify(response) });
 				} catch (error) {
 					setState({ request: JSON.stringify(apiRequest), response: (error as Error).message });
@@ -98,19 +118,59 @@ const useApiPlayground = () => {
 					setState({ isLoading: false });
 				}
 			},
+			listGeofences: async (apiRequest: ListGeofencesCommandInput) => {
+				setState({ isLoading: true });
+				try {
+					const response = await listGeofences(apiRequest);
+					setState({ request: JSON.stringify(apiRequest), response: JSON.stringify(response) });
+				} catch (error) {
+					setState({ request: JSON.stringify(apiRequest), response: (error as Error).message });
+					showToast({ content: (error as Error).message, type: ToastType.ERROR });
+				} finally {
+					setState({ isLoading: false });
+				}
+			},
+			describeTracker: async (apiRequest: DescribeTrackerCommandInput) => {
+				setState({ isLoading: true });
+				try {
+					const response = await describeTracker(apiRequest);
+					setState({ request: JSON.stringify(apiRequest), response: JSON.stringify(response) });
+				} catch (error) {
+					setState({ request: JSON.stringify(apiRequest), response: (error as Error).message });
+					showToast({ content: (error as Error).message, type: ToastType.ERROR });
+				} finally {
+					setState({ isLoading: false });
+				}
+			},
+			getDevicePosition: async (apiRequest: GetDevicePositionCommandInput) => {
+				setState({ isLoading: true });
+				try {
+					const response = await getDevicePosition(apiRequest);
+					setState({ request: JSON.stringify(apiRequest), response: JSON.stringify(response) });
+				} catch (error) {
+					setState({ request: JSON.stringify(apiRequest), response: (error as Error).message });
+					showToast({ content: (error as Error).message, type: ToastType.ERROR });
+				} finally {
+					setState({ isLoading: false });
+				}
+			},
 			resetStore: () => {
 				setInitial();
 			}
 		}),
 		[
-			getGeofence,
+			setState,
 			getMapTile,
 			mapRef,
 			searchPlaceIndexForPosition,
 			searchPlaceIndexForSuggestions,
 			searchPlaceIndexForText,
-			setInitial,
-			setState
+			calculateRoute,
+			getGeofence,
+			listGeofences,
+			describeTracker,
+			getDevicePosition,
+			setInitial
 		]
 	);
 

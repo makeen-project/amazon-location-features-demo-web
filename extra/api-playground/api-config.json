@@ -815,7 +815,7 @@
 						],
 						"visibleIf": null,
 						"shouldRender": true,
-						"isEditable": false,
+						"isEditable": true,
 						"subParams": null,
 						"fieldType": "dropdown"
 					},

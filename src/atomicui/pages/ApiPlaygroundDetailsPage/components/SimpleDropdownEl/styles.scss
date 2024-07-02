@@ -41,6 +41,8 @@
 		.text {
 			padding: 0.92rem 1.08rem;
 			cursor: pointer;
+			overflow: hidden;
+			word-wrap: break-word;
 
 			&:hover {
 				background-color: var(--primary-alpha-light-color);

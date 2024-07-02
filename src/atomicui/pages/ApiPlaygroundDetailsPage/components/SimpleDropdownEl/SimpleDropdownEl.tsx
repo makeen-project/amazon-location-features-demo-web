@@ -32,7 +32,7 @@ const SimpleDropdownEl: FC<SimpleDropdownElProps> = ({ defaultOption, options, o
 
 	const handleOptionClick = (option: string) => {
 		setOpen(false);
-		setSelectedOption(selectedOption);
+		setSelectedOption(option);
 		onSelect(option);
 	};
 

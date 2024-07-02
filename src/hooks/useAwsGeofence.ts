@@ -3,13 +3,23 @@
 
 import { useMemo } from "react";
 
-import { GeofenceGeometry, GetGeofenceCommandInput, ListGeofenceResponseEntry } from "@aws-sdk/client-location";
+import {
+	GeofenceGeometry,
+	GetGeofenceCommandInput,
+	ListGeofenceResponseEntry,
+	ListGeofencesCommandInput
+} from "@aws-sdk/client-location";
+import { appConfig } from "@demo/core/constants";
 import { useAwsGeofenceService } from "@demo/services";
 import { useAmplifyAuthStore, useAwsGeofenceStore } from "@demo/stores";
 import { EventTypeEnum, NotificationHistoryItemtype } from "@demo/types";
 import { record } from "@demo/utils/analyticsUtils";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { useTranslation } from "react-i18next";
+
+const {
+	MAP_RESOURCES: { GEOFENCE_COLLECTION }
+} = appConfig;
 
 const useAwsGeofence = () => {
 	const store = useAwsGeofenceStore();
@@ -21,21 +31,16 @@ const useAwsGeofence = () => {
 
 	const methods = useMemo(
 		() => ({
-			getGeofence: async (apiRequest: GetGeofenceCommandInput) => {
-				try {
-					const response = await awsGeofenceService.getGeofence(apiRequest);
-					return response;
-				} catch (error) {
-					throw new Error((error as Error).message);
-				}
-			},
 			getGeofencesList: async (
 				geofenceCollection?: string,
 				cb?: (geofences?: Array<ListGeofenceResponseEntry>) => void
 			) => {
 				try {
 					setState({ isFetchingGeofences: true });
-					const res = await awsGeofenceService.listGeofences(geofenceCollection);
+					const params: ListGeofencesCommandInput = {
+						CollectionName: geofenceCollection || GEOFENCE_COLLECTION
+					};
+					const res = await awsGeofenceService.listGeofences(params);
 					cb ? cb(res?.Entries) : setState({ geofences: res?.Entries });
 					record(
 						[{ EventType: EventTypeEnum.GET_GEOFENCES_LIST_SUCCESSFUL, Attributes: {} }],
@@ -108,11 +113,27 @@ const useAwsGeofence = () => {
 					}
 				});
 			},
+			getGeofence: async (apiRequest: GetGeofenceCommandInput) => {
+				try {
+					const response = await awsGeofenceService.getGeofence(apiRequest);
+					return response;
+				} catch (error) {
+					throw new Error((error as Error).message);
+				}
+			},
+			listGeofences: async (apiRequest: ListGeofencesCommandInput) => {
+				try {
+					const response = await awsGeofenceService.listGeofences(apiRequest);
+					return response;
+				} catch (error) {
+					throw new Error((error as Error).message);
+				}
+			},
 			resetStore: () => {
 				setInitial();
 			}
 		}),
-		[setInitial, setState, awsGeofenceService, authStore.credentials, t]
+		[setState, awsGeofenceService, t, authStore.credentials, setInitial]
 	);
 
 	return useMemo(() => ({ ...methods, ...store }), [methods, store]);

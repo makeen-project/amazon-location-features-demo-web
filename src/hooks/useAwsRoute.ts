@@ -3,44 +3,66 @@
 
 import { useMemo } from "react";
 
-import { CalculateRouteRequest } from "@aws-sdk/client-location";
+import { CalculateRouteCommandInput } from "@aws-sdk/client-location";
+import { appConfig } from "@demo/core/constants";
 import { useAwsRouteService } from "@demo/services";
 import { useAmplifyMapStore, useAwsRouteStore } from "@demo/stores";
 import { InputType, RouteDataType, SuggestionType } from "@demo/types";
-import { EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
+import { EventTypeEnum, MapProviderEnum, TriggeredByEnum } from "@demo/types/Enums";
 import { record } from "@demo/utils/analyticsUtils";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { useTranslation } from "react-i18next";
+
+const {
+	MAP_RESOURCES: {
+		ROUTE_CALCULATORS: { ESRI, HERE, GRAB }
+	}
+} = appConfig;
 
 const useAwsRoute = () => {
 	const store = useAwsRouteStore();
 	const { setInitial } = store;
 	const { setState } = useAwsRouteStore;
-	const routesService = useAwsRouteService();
-	const mapStore = useAmplifyMapStore();
+	const awsRouteService = useAwsRouteService();
+	const { mapProvider } = useAmplifyMapStore();
 	const { t } = useTranslation();
 
 	const methods = useMemo(
 		() => ({
-			getRoute: async (params: CalculateRouteRequest, triggeredBy: TriggeredByEnum) => {
+			getRoute: async (apiRequest: CalculateRouteCommandInput, triggeredBy: TriggeredByEnum) => {
 				try {
 					setState({ isFetchingRoute: true });
-					const routeData = await routesService.calculateRoute(params, mapStore.mapProvider);
+					const params = {
+						...apiRequest,
+						CalculatorName:
+							mapProvider === MapProviderEnum.ESRI || mapProvider === MapProviderEnum.OPEN_DATA
+								? ESRI
+								: mapProvider === MapProviderEnum.HERE
+								? HERE
+								: mapProvider === MapProviderEnum.GRAB
+								? GRAB
+								: "",
+						DepartNow: true
+					};
+					const routeData = await awsRouteService.calculateRoute(params);
 					return routeData;
 				} catch (error) {
-					errorHandler(error, `${t("error_handler__failed_calculate_route.text") as string} (${params.TravelMode})`);
+					errorHandler(
+						error,
+						`${t("error_handler__failed_calculate_route.text") as string} (${apiRequest.TravelMode})`
+					);
 				} finally {
 					setState({ isFetchingRoute: false });
 
 					const recordAttributes: { [key: string]: string } = {
-						travelMode: params.TravelMode || "N/A",
-						distanceUnit: params.DistanceUnit || "N/A",
+						travelMode: apiRequest.TravelMode || "N/A",
+						distanceUnit: apiRequest.DistanceUnit || "N/A",
 						triggeredBy: String(triggeredBy)
 					};
 
 					const modeOptions = {
-						...(params.CarModeOptions ? params.CarModeOptions : {}),
-						...(params.TruckModeOptions ? params.TruckModeOptions : {})
+						...(apiRequest.CarModeOptions ? apiRequest.CarModeOptions : {}),
+						...(apiRequest.TruckModeOptions ? apiRequest.TruckModeOptions : {})
 					};
 
 					for (const [key, value] of Object.entries(modeOptions)) {
@@ -62,11 +84,19 @@ const useAwsRoute = () => {
 			setDirections: (directions?: { info: SuggestionType; isEsriLimitation: boolean }) => {
 				setState({ directions });
 			},
+			calculateRoute: async (apiRequest: CalculateRouteCommandInput) => {
+				try {
+					const response = await awsRouteService.calculateRoute(apiRequest);
+					return response;
+				} catch (error) {
+					throw new Error((error as Error).message);
+				}
+			},
 			resetStore: () => {
 				setInitial();
 			}
 		}),
-		[setInitial, setState, routesService, mapStore.mapProvider, t]
+		[setInitial, setState, awsRouteService, mapProvider, t]
 	);
 
 	return useMemo(() => ({ ...methods, ...store }), [methods, store]);

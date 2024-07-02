@@ -4,10 +4,10 @@
 import { useMemo } from "react";
 
 import {
-	GetPlaceRequest,
-	SearchPlaceIndexForPositionRequest,
-	SearchPlaceIndexForSuggestionsRequest,
-	SearchPlaceIndexForTextRequest
+	GetPlaceCommandInput,
+	SearchPlaceIndexForPositionCommandInput,
+	SearchPlaceIndexForSuggestionsCommandInput,
+	SearchPlaceIndexForTextCommandInput
 } from "@aws-sdk/client-location";
 import { appConfig } from "@demo/core/constants";
 import { useAmplifyMap, useAws } from "@demo/hooks";
@@ -44,17 +44,8 @@ const useAwsPlaceService = () => {
 
 	return useMemo(
 		() => ({
-			searchPlaceIndexForPosition: async (apiRequest: SearchPlaceIndexForPositionRequest) => {
-				return await locationClient?.searchPlaceIndexForPosition(apiRequest);
-			},
-			searchPlaceIndexForSuggestions: async (apiRequest: SearchPlaceIndexForSuggestionsRequest) => {
-				return await locationClient?.searchPlaceIndexForSuggestions(apiRequest);
-			},
-			searchPlaceIndexForText: async (apiRequest: SearchPlaceIndexForTextRequest) => {
-				return await locationClient?.searchPlaceIndexForText(apiRequest);
-			},
 			getPlaceSuggestions: async (Text: string) => {
-				const params: SearchPlaceIndexForSuggestionsRequest = {
+				const params: SearchPlaceIndexForSuggestionsCommandInput = {
 					...config,
 					BiasPosition:
 						currentMapProvider !== MapProviderEnum.GRAB
@@ -66,7 +57,7 @@ const useAwsPlaceService = () => {
 				return await locationClient?.searchPlaceIndexForSuggestions(params);
 			},
 			getPlaceById: async (PlaceId: string) => {
-				const params: GetPlaceRequest = {
+				const params: GetPlaceCommandInput = {
 					...config,
 					PlaceId
 				};
@@ -74,7 +65,7 @@ const useAwsPlaceService = () => {
 				return await locationClient?.getPlace(params);
 			},
 			getPlacesByText: async (Text: string) => {
-				const params: SearchPlaceIndexForTextRequest = {
+				const params: SearchPlaceIndexForTextCommandInput = {
 					...config,
 					BiasPosition:
 						currentMapProvider !== MapProviderEnum.GRAB
@@ -86,7 +77,7 @@ const useAwsPlaceService = () => {
 				return await locationClient?.searchPlaceIndexForText(params);
 			},
 			getPlaceByCoordinates: async (Position: number[]) => {
-				const params: SearchPlaceIndexForPositionRequest = {
+				const params: SearchPlaceIndexForPositionCommandInput = {
 					...config,
 					Position
 				};
@@ -116,6 +107,15 @@ const useAwsPlaceService = () => {
 					throw new Error(responseBody.message);
 				}
 				return responseBody;
+			},
+			searchPlaceIndexForPosition: async (apiRequest: SearchPlaceIndexForPositionCommandInput) => {
+				return await locationClient?.searchPlaceIndexForPosition(apiRequest);
+			},
+			searchPlaceIndexForSuggestions: async (apiRequest: SearchPlaceIndexForSuggestionsCommandInput) => {
+				return await locationClient?.searchPlaceIndexForSuggestions(apiRequest);
+			},
+			searchPlaceIndexForText: async (apiRequest: SearchPlaceIndexForTextCommandInput) => {
+				return await locationClient?.searchPlaceIndexForText(apiRequest);
 			}
 		}),
 		[config, locationClient, currentMapProvider, viewpoint]

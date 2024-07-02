@@ -4,12 +4,12 @@
 import { useMemo } from "react";
 
 import {
-	BatchDeleteGeofenceRequest,
-	BatchEvaluateGeofencesRequest,
+	BatchDeleteGeofenceCommandInput,
+	BatchEvaluateGeofencesCommandInput,
 	GeofenceGeometry,
 	GetGeofenceCommandInput,
-	ListGeofencesRequest,
-	PutGeofenceRequest
+	ListGeofencesCommandInput,
+	PutGeofenceCommandInput
 } from "@aws-sdk/client-location";
 import { appConfig } from "@demo/core/constants";
 import { useAws } from "@demo/hooks";
@@ -23,18 +23,8 @@ const useAwsGeofenceService = () => {
 
 	return useMemo(
 		() => ({
-			getGeofence: async (apiRequest: GetGeofenceCommandInput) => {
-				return await locationClient?.getGeofence(apiRequest);
-			},
-			listGeofences: async (geofenceCollection?: string) => {
-				const params: ListGeofencesRequest = {
-					CollectionName: geofenceCollection || GEOFENCE_COLLECTION
-				};
-
-				return await locationClient?.listGeofences(params);
-			},
 			putGeofence: async (GeofenceId: string, Geometry: GeofenceGeometry) => {
-				const params: PutGeofenceRequest = {
+				const params: PutGeofenceCommandInput = {
 					CollectionName: GEOFENCE_COLLECTION,
 					GeofenceId,
 					Geometry
@@ -43,7 +33,7 @@ const useAwsGeofenceService = () => {
 				return await locationClient?.putGeofence(params);
 			},
 			deleteGeofence: async (GeofenceId: string) => {
-				const params: BatchDeleteGeofenceRequest = {
+				const params: BatchDeleteGeofenceCommandInput = {
 					CollectionName: GEOFENCE_COLLECTION,
 					GeofenceIds: [GeofenceId]
 				};
@@ -51,7 +41,7 @@ const useAwsGeofenceService = () => {
 				return await locationClient?.batchDeleteGeofence(params);
 			},
 			evaluateGeofence: async (Position: number[], IdentityId: string, geofenceCollection?: string) => {
-				const params: BatchEvaluateGeofencesRequest = {
+				const params: BatchEvaluateGeofencesCommandInput = {
 					CollectionName: geofenceCollection || GEOFENCE_COLLECTION,
 					DevicePositionUpdates: [
 						{
@@ -67,6 +57,12 @@ const useAwsGeofenceService = () => {
 				};
 
 				return await locationClient?.batchEvaluateGeofences(params);
+			},
+			getGeofence: async (apiRequest: GetGeofenceCommandInput) => {
+				return await locationClient?.getGeofence(apiRequest);
+			},
+			listGeofences: async (apiRequest: ListGeofencesCommandInput) => {
+				return await locationClient?.listGeofences(apiRequest);
 			}
 		}),
 		[locationClient]

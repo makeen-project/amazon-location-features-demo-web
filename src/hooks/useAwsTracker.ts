@@ -3,6 +3,8 @@
 
 import { useMemo } from "react";
 
+import { DescribeTrackerCommandInput, GetDevicePositionCommandInput } from "@aws-sdk/client-location";
+import { useAwsTrackerService } from "@demo/services";
 import { useAwsTrackerStore } from "@demo/stores";
 import { TrackerType } from "@demo/types";
 
@@ -10,6 +12,7 @@ const useAwsTracker = () => {
 	const store = useAwsTrackerStore();
 	const { setInitial } = store;
 	const { setState } = useAwsTrackerStore;
+	const awsTrackerService = useAwsTrackerService();
 
 	const methods = useMemo(
 		() => ({
@@ -28,11 +31,27 @@ const useAwsTracker = () => {
 			setSelectedTrackerType: (selectedTrackerType: TrackerType) => {
 				setState({ selectedTrackerType });
 			},
+			describeTracker: async (apiRequest: DescribeTrackerCommandInput) => {
+				try {
+					const response = await awsTrackerService.describeTracker(apiRequest);
+					return response;
+				} catch (error) {
+					throw new Error((error as Error).message);
+				}
+			},
+			getDevicePosition: async (apiRequest: GetDevicePositionCommandInput) => {
+				try {
+					const response = await awsTrackerService.getDevicePosition(apiRequest);
+					return response;
+				} catch (error) {
+					throw new Error((error as Error).message);
+				}
+			},
 			resetStore: () => {
 				setInitial();
 			}
 		}),
-		[setInitial, setState]
+		[awsTrackerService, setInitial, setState]
 	);
 
 	return useMemo(() => ({ ...methods, ...store }), [methods, store]);

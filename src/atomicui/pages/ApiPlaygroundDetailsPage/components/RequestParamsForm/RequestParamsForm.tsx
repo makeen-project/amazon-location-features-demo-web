@@ -2,11 +2,15 @@ import { Fragment, forwardRef, lazy, useCallback, useEffect, useImperativeHandle
 
 import { CheckboxField, Flex } from "@aws-amplify/ui-react";
 import {
+	CalculateRouteCommandInput,
+	DescribeTrackerCommandInput,
+	GetDevicePositionCommandInput,
 	GetGeofenceCommandInput,
 	GetMapTileCommandInput,
-	SearchPlaceIndexForPositionRequest,
-	SearchPlaceIndexForSuggestionsRequest,
-	SearchPlaceIndexForTextRequest
+	ListGeofencesCommandInput,
+	SearchPlaceIndexForPositionCommandInput,
+	SearchPlaceIndexForSuggestionsCommandInput,
+	SearchPlaceIndexForTextCommandInput
 } from "@aws-sdk/client-location";
 import { IconInfo } from "@demo/assets/svgs";
 import { showToast } from "@demo/core/Toast";
@@ -42,7 +46,11 @@ const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProp
 		searchPlaceIndexForPosition,
 		searchPlaceIndexForSuggestions,
 		searchPlaceIndexForText,
+		calculateRoute,
 		getGeofence,
+		listGeofences,
+		describeTracker,
+		getDevicePosition,
 		resetStore: resetApiPlaygroundStore
 	} = useApiPlayground();
 	console.log({ apiRequest });
@@ -69,24 +77,28 @@ const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProp
 					getMapTile(apiRequest as unknown as GetMapTileCommandInput);
 					break;
 				case ApiIdEnum.SearchPlaceIndexForPositionCommand:
-					searchPlaceIndexForPosition(apiRequest as unknown as SearchPlaceIndexForPositionRequest);
+					searchPlaceIndexForPosition(apiRequest as unknown as SearchPlaceIndexForPositionCommandInput);
 					break;
 				case ApiIdEnum.SearchPlaceIndexForSuggestionsCommand:
-					searchPlaceIndexForSuggestions(apiRequest as unknown as SearchPlaceIndexForSuggestionsRequest);
+					searchPlaceIndexForSuggestions(apiRequest as unknown as SearchPlaceIndexForSuggestionsCommandInput);
 					break;
 				case ApiIdEnum.SearchPlaceIndexForTextCommand:
-					searchPlaceIndexForText(apiRequest as unknown as SearchPlaceIndexForTextRequest);
+					searchPlaceIndexForText(apiRequest as unknown as SearchPlaceIndexForTextCommandInput);
 					break;
 				case ApiIdEnum.CalculateRouteCommand:
+					calculateRoute(apiRequest as unknown as CalculateRouteCommandInput);
 					break;
 				case ApiIdEnum.GetGeofenceCommand:
 					getGeofence(apiRequest as unknown as GetGeofenceCommandInput);
 					break;
 				case ApiIdEnum.ListGeofencesCommand:
+					listGeofences(apiRequest as unknown as ListGeofencesCommandInput);
 					break;
 				case ApiIdEnum.DescribeTrackerCommand:
+					describeTracker(apiRequest as unknown as DescribeTrackerCommandInput);
 					break;
 				case ApiIdEnum.GetDevicePositionCommand:
+					getDevicePosition(apiRequest as unknown as GetDevicePositionCommandInput);
 					break;
 				default:
 					break;
@@ -157,6 +169,7 @@ const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProp
 			case FieldTypeEnum.CHECKBOX:
 				break;
 			case FieldTypeEnum.DROPDOWN:
+				setApiRequest(s => ({ ...s, [name]: value ? `${value}` : undefined }));
 				break;
 			case FieldTypeEnum.PARENT:
 				break;
@@ -288,7 +301,7 @@ const RequestParamsForm = forwardRef<RequestParamsFormRef, RequestParamsFormProp
 						<SimpleDropdownEl
 							defaultOption={defaultValue as string}
 							options={validValues as string[]}
-							onSelect={option => console.log({ option })}
+							onSelect={option => handleInputChange(fieldType, name, option)}
 							disabled={!isEditable}
 						/>
 					</Flex>

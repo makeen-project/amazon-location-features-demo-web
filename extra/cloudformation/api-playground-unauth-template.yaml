@@ -31,6 +31,8 @@ Resources:
               - "geo:CalculateRoute"
               - "geo:GetGeofence"
               - "geo:ListGeofences"
+              - "geo:DescribeTracker"
+              - "geo:GetDevicePosition"
             Effect: Allow
             Resource:
               - !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:map/location.aws.com.api.playground.maps.HERE.Explore"
@@ -38,6 +40,8 @@ Resources:
               - !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:route-calculator/location.aws.com.api.playground.routes.HERE.RouteCalculator"
               - !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:geofence-collection/location.aws.com.api.playground.geofence.collection.1"
               - !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:geofence-collection/location.aws.com.api.playground.geofence.collection.2"
+              - !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:tracker/location.aws.com.api.playground.tracker.1"
+              - !Sub "arn:aws:geo:${AWS::Region}:${AWS::AccountId}:tracker/location.aws.com.api.playground.tracker.2"
         Version: 2012-10-17
       PolicyName: !Sub "CognitoIdentityPoolUnauthRoleIamPolicy-${AWS::StackName}"
       Roles:
