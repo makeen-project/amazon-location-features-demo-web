@@ -20,7 +20,7 @@
 		}
 	},
 	"scripts": {
-		"dev": "vite --host 0.0.0.0",
+		"dev": "vite",
 		"lib": "tsc && vite build --config vite.library.ts",
 		"local-lib": "tsc && vite build --config vite.library.ts && node extra/prepare-local-lib/index.js",
 		"build": "tsc && vite build && cp -r ./public/.well-known/ ./build/",
@@ -47,7 +47,6 @@
 		"@aws-sdk/credential-providers": "3.370.0",
 		"@turf/turf": "6.5.0",
 		"aws-amplify": "4.3.43",
-		"cypress-mochawesome-reporter": "3.8.2",
 		"date-fns": "2.29.3",
 		"i18next": "23.2.8",
 		"i18next-browser-languagedetector": "7.1.0",
@@ -80,6 +79,7 @@
 		"@typescript-eslint/parser": "5.33.1",
 		"@vitejs/plugin-react": "2.1.0",
 		"cypress": "12.10.0",
+		"cypress-mochawesome-reporter": "3.8.2",
 		"cypress-browser-permissions": "1.1.0",
 		"eslint": "8.22.0",
 		"eslint-config-prettier": "8.5.0",

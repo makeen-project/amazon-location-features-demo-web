@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Set up Node
         uses: actions/setup-node@v3
         with:
           node-version: "18"
@@ -37,8 +37,6 @@ jobs:
           echo "VITE_MIGRATE_AN_IOS_APP_PAGE=${{ secrets.VITE_MIGRATE_AN_IOS_APP_PAGE }}" >> .env
           echo "VITE_MIGRATE_A_WEB_SERVICE_PAGE=${{ secrets.VITE_MIGRATE_A_WEB_SERVICE_PAGE }}" >> .env
           echo "VITE_PRICING_PAGE=${{ secrets.VITE_PRICING_PAGE }}" >> .env
-          echo "VITE_API_PLAYGROUND_PAGE=${{ secrets.VITE_API_PLAYGROUND_PAGE }}" >> .env
-          cat .env  # Log the contents of .env file
 
       - name: Set up Docker
         run: sudo apt-get update && sudo apt-get install -y docker.io
@@ -46,22 +44,22 @@ jobs:
       - name: Build Docker image
         run: npm run docker-build-image
 
+      - name: Delete .env file
+        run: rm -rf .env
+
       - name: Run Docker container
         run: npm run docker-run-container
 
       - name: Wait for Docker container to be ready
         run: |
           echo "Waiting for the container to be ready..."
-          until curl -s http://localhost:3000 > /dev/null; do
+          until curl -s ${{ secrets.WEB_DOMAIN }} > /dev/null; do
             echo -n '.'
             sleep 1
           done
 
       - name: Install Dependencies
-        run: npm install
-
-      - name: Setup Cypress
-        run: npm install cypress --save-dev
+        run: npm i
 
       - name: Run Cypress test
         env:

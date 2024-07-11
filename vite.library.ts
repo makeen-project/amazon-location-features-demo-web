@@ -64,7 +64,6 @@ export default defineConfig(() => {
 					"@aws-sdk/credential-providers",
 					"@turf/turf",
 					"aws-amplify",
-					"cypress-mochawesome-reporter",
 					"date-fns",
 					"i18next",
 					"i18next-browser-languagedetector",
