@@ -24,9 +24,9 @@
 		"lib": "tsc && vite build --config vite.library.ts",
 		"local-lib": "tsc && vite build --config vite.library.ts && node extra/prepare-local-lib/index.js",
 		"build": "tsc && vite build && cp -r ./public/.well-known/ ./build/",
+		"docker-build-image": "docker build -t amazon-location-features-demo-web-docker-image .",
+		"docker-run-container": "docker run -d -p 3000:3000 amazon-location-features-demo-web-docker-image",
 		"cypress": "cypress run --browser chrome --headed",
-		"cypress run": "cypress run",
-		"cypress open": "cypress open",
 		"prepare": "husky install",
 		"test": "react-scripts test",
 		"ci-test": "CI=true react-scripts test",
@@ -34,9 +34,7 @@
 		"security-tests": "cd security-tests && npm install && node index.js && cd ../",
 		"stylelint-check": "stylelint-config-prettier-check",
 		"translate-content": "cd extra/translation-script-content && npm install && node index.js && cd ../../",
-		"translate-content-update": "cd extra/translation-script-content && npm install && node update-translation.js && cd ../../",
-		"docker-build-image": "docker build -t amazon-location-features-demo-web-docker-image .",
-		"docker-run-container": "docker run -d -p 3000:3000 amazon-location-features-demo-web-docker-image"
+		"translate-content-update": "cd extra/translation-script-content && npm install && node update-translation.js && cd ../../"
 	},
 	"dependencies": {
 		"@aws-amplify/ui-react": "3.6.1",
