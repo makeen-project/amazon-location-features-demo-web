@@ -21,8 +21,24 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Create .env file
+        run: |
+          echo "VITE_AWS_COGNITO_IDENTITY_POOL_IDS=${{ secrets.VITE_AWS_COGNITO_IDENTITY_POOL_IDS }}" > .env
+          echo "VITE_AWS_WEB_SOCKET_URLS=${{ secrets.VITE_AWS_WEB_SOCKET_URLS }}" >> .env
+          echo "VITE_PINPOINT_IDENTITY_POOL_ID=${{ secrets.VITE_PINPOINT_IDENTITY_POOL_ID }}" >> .env
+          echo "VITE_PINPOINT_APPLICATION_ID=${{ secrets.VITE_PINPOINT_APPLICATION_ID }}" >> .env
+          echo "VITE_AWS_CF_TEMPLATE=${{ secrets.VITE_AWS_CF_TEMPLATE }}" >> .env
+          echo "VITE_APPLE_APP_STORE_LINK=${{ secrets.VITE_APPLE_APP_STORE_LINK }}" >> .env
+          echo "VITE_GOOGLE_PLAY_STORE_LINK=${{ secrets.VITE_GOOGLE_PLAY_STORE_LINK }}" >> .env
+          echo "VITE_APP_VERSION=${{ secrets.VITE_APP_VERSION }}" >> .env
+          echo "VITE_MIGRATE_FROM_GOOGLE_MAPS_PAGE=${{ secrets.VITE_MIGRATE_FROM_GOOGLE_MAPS_PAGE }}" >> .env
+          echo "VITE_MIGRATE_A_WEB_APP_PAGE=${{ secrets.VITE_MIGRATE_A_WEB_APP_PAGE }}" >> .env
+          echo "VITE_MIGRATE_AN_ANDROID_APP_PAGE=${{ secrets.VITE_MIGRATE_AN_ANDROID_APP_PAGE }}" >> .env
+          echo "VITE_MIGRATE_AN_IOS_APP_PAGE=${{ secrets.VITE_MIGRATE_AN_IOS_APP_PAGE }}" >> .env
+          echo "VITE_MIGRATE_A_WEB_SERVICE_PAGE=${{ secrets.VITE_MIGRATE_A_WEB_SERVICE_PAGE }}" >> .env
+          echo "VITE_PRICING_PAGE=${{ secrets.VITE_PRICING_PAGE }}" >> .env
+          echo "VITE_API_PLAYGROUND_PAGE=${{ secrets.VITE_API_PLAYGROUND_PAGE }}" >> .env
+          cat .env  # Log the contents of .env file
 
       - name: Set up Docker
         run: sudo apt-get update && sudo apt-get install -y docker.io
@@ -33,13 +49,16 @@ jobs:
       - name: Run Docker container
         run: npm run docker-run-container
 
-      # - name: Wait for Docker container to be ready
-      #   run: |
-      #     echo "Waiting for the container to be ready..."
-      #     until curl -s http://localhost:3000 > /dev/null; do
-      #       echo -n '.'
-      #       sleep 1
-      #     done
+      - name: Wait for Docker container to be ready
+        run: |
+          echo "Waiting for the container to be ready..."
+          until curl -s http://localhost:3000 > /dev/null; do
+            echo -n '.'
+            sleep 1
+          done
+
+      - name: Install Dependencies
+        run: npm install
 
       - name: Setup Cypress
         run: npm install cypress --save-dev
