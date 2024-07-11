@@ -54,6 +54,9 @@ jobs:
           echo "Server started"
           sleep 10 # Wait for server to start
 
+      - name: Setup Cypress
+        run: npm install cypress --save-dev
+
       - name: Run Cypress test
         env:
           CYPRESS_WEB_DOMAIN: ${{ secrets.WEB_DOMAIN }}
