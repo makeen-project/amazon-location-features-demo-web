@@ -16,11 +16,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      - name: Set up Node.js
         uses: actions/setup-node@v3
+        with:
+          node-version: "18"
 
       - name: Install Dependencies
         run: npm install
+
+      - name: Set up Docker
+        run: sudo apt-get update && sudo apt-get install -y docker.io
+
+      - name: Build Docker image
+        run: docker build -t amazon-location-features-demo-web-docker-image
+
+      - name: Run Docker container
+        run: docker run -p 3000:3000 amazon-location-features-demo-web-docker-image
+
+      - name: Wait for Docker container to be ready
+        run: |
+          echo "Waiting for the container to be ready..."
+          until curl -s http://localhost:3000 > /dev/null; do
+            echo -n '.'
+            sleep 1
+          done
 
       - name: Setup Cypress
         run: npm install cypress --save-dev
