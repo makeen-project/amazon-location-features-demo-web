@@ -30,7 +30,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run app
+      - name: Run App
         env:
           env:
           HOST: "0.0.0.0"
@@ -53,9 +53,6 @@ jobs:
           npm run dev &
           echo "Server started"
           sleep 10 # Wait for server to start
-
-      - name: Setup Cypress
-        run: npm install cypress --save-dev
 
       - name: Run Cypress test
         env:
