@@ -2,25 +2,21 @@
 /* SPDX-License-Identifier: MIT-0 */
 
 describe("Unauthorized users have limited permissions", () => {
-	context("Desktop view", () => {
-		beforeEach(() => {
-			cy.visitDomainInDesktopView();
-		});
+	let awsAccountButtonLocator = '[data-testid="connect-aws-account-button"]';
 
-		it("shouldn't allow unauth users to user tracker and geofence", { scrollBehavior: false }, () => {
+	context("Desktop view", () => {
+		it("UULP-001 - shouldn't allow unauth users to use tracker and geofence", { scrollBehavior: false }, () => {
+			cy.visitDomain(`${Cypress.env("WEB_DOMAIN")}/demo`);
 			cy.get('[data-testid="hamburger-menu"]').click();
-			cy.get('[data-testid="connect-aws-account-button"]').should("exist");
+			cy.get(awsAccountButtonLocator).should("exist");
 		});
 	});
 
 	context("Responsive view", () => {
-		beforeEach(() => {
-			cy.visitDomainInResponsiveView();
-			cy.expandBottomsheet();
-		});
-
-		it("shouldn't allow unauth users to user tracker and geofence", { scrollBehavior: false }, () => {
-			cy.get('[data-testid="connect-aws-account-button"]').should("exist");
+		it("UULP-002 - shouldn't allow unauth users to use tracker and geofence", { scrollBehavior: false }, () => {
+			cy.visitDomainInResponsiveView(`${Cypress.env("WEB_DOMAIN")}/demo`);
+			cy.openResponsiveMenu('[data-testid="bottomsheet"]');
+			cy.get(awsAccountButtonLocator).should("exist");
 		});
 	});
 });
