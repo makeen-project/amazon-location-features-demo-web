@@ -20,7 +20,7 @@
 		}
 	},
 	"scripts": {
-		"dev": "vite",
+		"dev": "vite --host 0.0.0.0",
 		"lib": "tsc && vite build --config vite.library.ts",
 		"local-lib": "tsc && vite build --config vite.library.ts && node extra/prepare-local-lib/index.js",
 		"build": "tsc && vite build && cp -r ./public/.well-known/ ./build/",

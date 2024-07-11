@@ -1,0 +1,7 @@
+.github/
+build
+coverage
+demo-app-lib
+node_modules
+Dockerfile
+.dockerignore
