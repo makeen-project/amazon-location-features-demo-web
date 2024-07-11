@@ -12,6 +12,12 @@ jobs:
     name: E2E-Testing
     runs-on: ubuntu-20.04
 
+    services:
+      app:
+        image: node:18
+        ports:
+          - 3000:3000
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -24,9 +30,9 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Start Vite server
-        run: npm run dev &
+      - name: Run app
         env:
+          env:
           HOST: "0.0.0.0"
           PORT: 3000
           VITE_AWS_COGNITO_IDENTITY_POOL_IDS: ${{ secrets.VITE_AWS_COGNITO_IDENTITY_POOL_IDS }}
@@ -43,6 +49,10 @@ jobs:
           VITE_MIGRATE_AN_IOS_APP_PAGE: ${{ secrets.VITE_MIGRATE_AN_IOS_APP_PAGE }}
           VITE_MIGRATE_A_WEB_SERVICE_PAGE: ${{ secrets.VITE_MIGRATE_A_WEB_SERVICE_PAGE }}
           VITE_PRICING_PAGE: ${{ secrets.VITE_PRICING_PAGE }}
+        run: |
+          npm run dev &
+          echo "Server started"
+          sleep 10 # Wait for server to start
 
       - name: Run Cypress test
         env:
