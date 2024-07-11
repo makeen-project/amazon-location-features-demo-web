@@ -28,7 +28,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y docker.io
 
       - name: Build Docker image
-        run: docker build -t amazon-location-features-demo-web-docker-image
+        run: docker build -t amazon-location-features-demo-web-docker-image .
 
       - name: Run Docker container
         run: docker run -p 3000:3000 amazon-location-features-demo-web-docker-image
