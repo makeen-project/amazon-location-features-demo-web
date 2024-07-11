@@ -11,11 +11,8 @@ RUN npm install --legacy-peer-deps
 # Copy app source
 COPY . .
 
-# Build the app
-RUN npm run build
-
 # Expose the port
 EXPOSE 3000
 
 # Run the app
-CMD ["npx", "serve", "-s", "build", "-p", "3000"]
+CMD ["npm", "run", "dev"]

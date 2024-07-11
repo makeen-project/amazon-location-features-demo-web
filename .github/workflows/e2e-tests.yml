@@ -59,7 +59,7 @@ jobs:
           done
 
       - name: Install Dependencies
-        run: npm i
+        run: npm install
 
       - name: Run Cypress test
         env:
