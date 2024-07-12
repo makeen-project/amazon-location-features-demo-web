@@ -76,10 +76,10 @@ Cypress.Commands.add("addEditAndDeleteGeofence", (isResponsive, geofenceName) =>
 	} else {
 		cy.get('[class="amplify-flex geofence-button"]').click();
 		cy.wait(5000);
-		cy.screenshot("1");
+		cy.screenshot("1", { capture: "runner" });
 		cy.get('[data-testid-"sign-in-button"]').click();
 		cy.wait(5000);
-		cy.screenshot("1");
+		cy.screenshot("2", { capture: "runner" });
 		cy.get('[class="amplify-flex geofence-button"]').click();
 		cy.get('[data-testid-"sign-in-button"]').should("not.exist");
 	}
