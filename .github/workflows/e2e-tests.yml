@@ -44,6 +44,12 @@ jobs:
       - name: Create Build
         run: npm run build
 
+      - name: Download Build
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: /home/runner/work/amazon-location-features-demo-web/amazon-location-features-demo-web/build
+
       - name: Run Build
         run: |
           npm run start-build &
@@ -65,9 +71,3 @@ jobs:
           PINPOINT_IDENTITY_POOL_ID: ${{ secrets.VITE_PINPOINT_IDENTITY_POOL_ID }}
           PINPOINT_APPLICATION_ID: ${{ secrets.VITE_PINPOINT_APPLICATION_ID }}
         run: npm run cypress
-
-      - name: Download Cypress Report
-        uses: actions/download-artifact@v4
-        with:
-          name: cypress-report
-          path: /home/runner/work/amazon-location-features-demo-web/amazon-location-features-demo-web/cypress/reports/index.html
