@@ -41,21 +41,15 @@ jobs:
           echo "VITE_MIGRATE_A_WEB_SERVICE_PAGE=${{ secrets.VITE_MIGRATE_A_WEB_SERVICE_PAGE }}" >> .env
           echo "VITE_PRICING_PAGE=${{ secrets.VITE_PRICING_PAGE }}" >> .env
 
-      - name: Create Build
-        run: npm run build
-
-      - name: Verify Build Directory
-        run: ls -al build # Verify that the build directory exists
-
-      - name: Upload Build
+      - name: Upload .env File
         uses: actions/upload-artifact@v4
         with:
-          name: build
-          path: build/
+          name: env
+          path: .env
 
-      - name: Run Build
+      - name: Run App
         run: |
-          npm run start-build &
+          npm run dev &
           echo "Server started"
           sleep 10
 
@@ -74,3 +68,9 @@ jobs:
           PINPOINT_IDENTITY_POOL_ID: ${{ secrets.VITE_PINPOINT_IDENTITY_POOL_ID }}
           PINPOINT_APPLICATION_ID: ${{ secrets.VITE_PINPOINT_APPLICATION_ID }}
         run: npm run cypress
+
+      - name: Upload Cypress Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cypress Report
+          path: cypress/reports/index.html
