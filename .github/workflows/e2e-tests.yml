@@ -22,23 +22,6 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # - name: Create .env File
-      #   run: |
-      #     echo "VITE_AWS_COGNITO_IDENTITY_POOL_IDS=${{ secrets.VITE_AWS_COGNITO_IDENTITY_POOL_IDS }}" > .env
-      #     echo "VITE_AWS_WEB_SOCKET_URLS=${{ secrets.VITE_AWS_WEB_SOCKET_URLS }}" >> .env
-      #     echo "VITE_PINPOINT_IDENTITY_POOL_ID=${{ secrets.VITE_PINPOINT_IDENTITY_POOL_ID }}" >> .env
-      #     echo "VITE_PINPOINT_APPLICATION_ID=${{ secrets.VITE_PINPOINT_APPLICATION_ID }}" >> .env
-      #     echo "VITE_AWS_CF_TEMPLATE=${{ secrets.VITE_AWS_CF_TEMPLATE }}" >> .env
-      #     echo "VITE_APPLE_APP_STORE_LINK=${{ secrets.VITE_APPLE_APP_STORE_LINK }}" >> .env
-      #     echo "VITE_GOOGLE_PLAY_STORE_LINK=${{ secrets.VITE_GOOGLE_PLAY_STORE_LINK }}" >> .env
-      #     echo "VITE_APP_VERSION=${{ secrets.VITE_APP_VERSION }}" >> .env
-      #     echo "VITE_MIGRATE_FROM_GOOGLE_MAPS_PAGE=${{ secrets.VITE_MIGRATE_FROM_GOOGLE_MAPS_PAGE }}" >> .env
-      #     echo "VITE_MIGRATE_A_WEB_APP_PAGE=${{ secrets.VITE_MIGRATE_A_WEB_APP_PAGE }}" >> .env
-      #     echo "VITE_MIGRATE_AN_ANDROID_APP_PAGE=${{ secrets.VITE_MIGRATE_AN_ANDROID_APP_PAGE }}" >> .env
-      #     echo "VITE_MIGRATE_AN_IOS_APP_PAGE=${{ secrets.VITE_MIGRATE_AN_IOS_APP_PAGE }}" >> .env
-      #     echo "VITE_MIGRATE_A_WEB_SERVICE_PAGE=${{ secrets.VITE_MIGRATE_A_WEB_SERVICE_PAGE }}" >> .env
-      #     echo "VITE_PRICING_PAGE=${{ secrets.VITE_PRICING_PAGE }}" >> .env
-
       - name: Run App
         env:
           VITE_AWS_COGNITO_IDENTITY_POOL_IDS: ${{ secrets.VITE_AWS_COGNITO_IDENTITY_POOL_IDS }}
@@ -55,7 +38,6 @@ jobs:
           VITE_MIGRATE_AN_IOS_APP_PAGE: ${{ secrets.VITE_MIGRATE_AN_IOS_APP_PAGE }}
           VITE_MIGRATE_A_WEB_SERVICE_PAGE: ${{ secrets.VITE_MIGRATE_A_WEB_SERVICE_PAGE }}
           VITE_PRICING_PAGE: ${{ secrets.VITE_PRICING_PAGE }}
-          NODE_ENV: development
         run: |
           npm run dev &
           echo "Server started"
