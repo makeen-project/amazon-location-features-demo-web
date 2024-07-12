@@ -24,7 +24,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Create .env file
+      - name: Create .env File
         run: |
           echo "VITE_AWS_COGNITO_IDENTITY_POOL_IDS=${{ secrets.VITE_AWS_COGNITO_IDENTITY_POOL_IDS }}" > .env
           echo "VITE_AWS_WEB_SOCKET_URLS=${{ secrets.VITE_AWS_WEB_SOCKET_URLS }}" >> .env
@@ -50,7 +50,7 @@ jobs:
           echo "Server started"
           sleep 10
 
-      - name: Run Cypress test
+      - name: Run Cypress Tests
         env:
           CYPRESS_WEB_DOMAIN: ${{ secrets.WEB_DOMAIN }}
           CYPRESS_WEB_DOMAIN_USERNAME: ${{ secrets.WEB_DOMAIN_USERNAME }}
@@ -65,3 +65,9 @@ jobs:
           PINPOINT_IDENTITY_POOL_ID: ${{ secrets.VITE_PINPOINT_IDENTITY_POOL_ID }}
           PINPOINT_APPLICATION_ID: ${{ secrets.VITE_PINPOINT_APPLICATION_ID }}
         run: npm run cypress
+
+      - name: Download Cypress Report
+        uses: actions/download-artifact@v4
+        with:
+          name: cypress-report
+          path: /home/runner/work/amazon-location-features-demo-web/amazon-location-features-demo-web/cypress/reports/index.html
