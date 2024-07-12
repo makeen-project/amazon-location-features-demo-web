@@ -44,11 +44,14 @@ jobs:
       - name: Create Build
         run: npm run build
 
+      - name: Verify Build Directory
+        run: ls -al build # Verify that the build directory exists
+
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with:
           name: build
-          path: /home/runner/work/amazon-location-features-demo-web/build
+          path: build/
 
       - name: Run Build
         run: |
