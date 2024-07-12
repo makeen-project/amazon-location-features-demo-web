@@ -94,33 +94,18 @@ Cypress.Commands.add("connectAwsAccount", isResponsive => {
 			  });
 	});
 	cy.wait(5000);
-	cy.reload();
-	cy.wait(5000);
 	isResponsive
 		? cy.openResponsiveMenu('[data-testid="bottomsheet"]')
 		: cy.get('[data-testid="hamburger-menu"]').click();
-	cy.wait(5000);
-	cy.screenshot("1", { log: true });
 	cy.get("#root").then($root => {
 		if ($root.find('[data-testid="sign-in-button"]').length > 0) {
 			cy.get('[data-testid="sign-in-button"]').click();
-			cy.wait(1000);
-			cy.screenshot("2", { log: true });
-			cy.wait(1000);
-			cy.screenshot("3", { log: true });
-			cy.wait(1000);
-			cy.screenshot("4", { log: true });
 		} else {
 			isResponsive
 				? cy.closeResponsiveMenu('[data-testid="bottomsheet"]')
 				: cy.get('[data-testid="hamburger-menu"]').click();
 		}
 	});
-	isResponsive
-		? cy.openResponsiveMenu('[data-testid="bottomsheet"]')
-		: cy.get('[data-testid="hamburger-menu"]').click();
-	cy.wait(5000);
-	cy.screenshot("5", { log: true });
 });
 
 Cypress.Commands.add("signOutAndDisconnectFromAwsAccount", isResponsive => {
