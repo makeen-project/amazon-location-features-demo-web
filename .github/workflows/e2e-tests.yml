@@ -50,7 +50,8 @@ jobs:
           VITE_MIGRATE_A_WEB_SERVICE_PAGE: ${{ secrets.VITE_MIGRATE_A_WEB_SERVICE_PAGE }}
           VITE_PRICING_PAGE: ${{ secrets.VITE_PRICING_PAGE }}
         run: |
-          npm run dev
+          npm run dev &
+          echo "Server started"
           sleep 10
 
       - name: Run Cypress test
