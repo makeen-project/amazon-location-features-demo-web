@@ -32,7 +32,6 @@ jobs:
 
       - name: Run App
         env:
-          env:
           HOST: "0.0.0.0"
           PORT: 3000
           VITE_AWS_COGNITO_IDENTITY_POOL_IDS: ${{ secrets.VITE_AWS_COGNITO_IDENTITY_POOL_IDS }}
