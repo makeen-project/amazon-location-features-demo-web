@@ -30,7 +30,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run App
+      - name: Create build
         env:
           HOST: "0.0.0.0"
           PORT: 3000
@@ -49,7 +49,11 @@ jobs:
           VITE_MIGRATE_A_WEB_SERVICE_PAGE: ${{ secrets.VITE_MIGRATE_A_WEB_SERVICE_PAGE }}
           VITE_PRICING_PAGE: ${{ secrets.VITE_PRICING_PAGE }}
         run: |
-          npm run dev &
+          npm run build
+
+      - name: Run build
+        run: |
+          npm run start-build &
           echo "Server started"
           sleep 10
 
