@@ -9,7 +9,7 @@ on:
 
 jobs:
   e2e-tests:
-    name: E2E-Testing
+    name: E2E Tests
     runs-on: ubuntu-20.04
 
     services:
@@ -50,9 +50,8 @@ jobs:
           VITE_MIGRATE_A_WEB_SERVICE_PAGE: ${{ secrets.VITE_MIGRATE_A_WEB_SERVICE_PAGE }}
           VITE_PRICING_PAGE: ${{ secrets.VITE_PRICING_PAGE }}
         run: |
-          npm run dev &
-          echo "Server started"
-          sleep 10 # Wait for server to start
+          npm run dev
+          sleep 10
 
       - name: Run Cypress test
         env:

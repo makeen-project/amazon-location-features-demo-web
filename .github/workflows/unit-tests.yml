@@ -8,8 +8,8 @@ on:
     branches: [main]
 
 jobs:
-  e2e-tests:
-    name: Unit-Testing
+  unit-tests:
+    name: Unit Tests
     runs-on: ubuntu-20.04
 
     steps:
