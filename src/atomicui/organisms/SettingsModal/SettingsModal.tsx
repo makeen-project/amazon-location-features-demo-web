@@ -651,15 +651,15 @@ const SettingsModal: FC<SettingsModalProps> = ({
 											fontFamily="AmazonEmber-Bold"
 											width="100%"
 											onClick={async () => {
-												// await record(
-												// 	[
-												// 		{
-												// 			EventType: EventTypeEnum.SIGN_IN_STARTED,
-												// 			Attributes: { triggeredBy: TriggeredByEnum.SETTINGS_MODAL }
-												// 		}
-												// 	],
-												// 	["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
-												// );
+												await record(
+													[
+														{
+															EventType: EventTypeEnum.SIGN_IN_STARTED,
+															Attributes: { triggeredBy: TriggeredByEnum.SETTINGS_MODAL }
+														}
+													],
+													["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+												);
 
 												_onLogin();
 											}}

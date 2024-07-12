@@ -206,12 +206,12 @@ const Sidebar: FC<SidebarProps> = ({
 								if (isAuthenticated) {
 									_onLogout();
 								} else {
-									// await record(
-									// 	[
-									// 		{ EventType: EventTypeEnum.SIGN_IN_STARTED, Attributes: { triggeredBy: TriggeredByEnum.SIDEBAR } }
-									// 	],
-									// 	["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
-									// );
+									await record(
+										[
+											{ EventType: EventTypeEnum.SIGN_IN_STARTED, Attributes: { triggeredBy: TriggeredByEnum.SIDEBAR } }
+										],
+										["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+									);
 
 									_onLogin();
 								}

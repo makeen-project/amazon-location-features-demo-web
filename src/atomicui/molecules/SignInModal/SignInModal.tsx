@@ -52,15 +52,15 @@ const SignInModal: FC<SignInModalProps> = ({ open, onClose }) => {
 						fontFamily="AmazonEmber-Bold"
 						marginTop="2.46rem"
 						onClick={async () => {
-							// await record(
-							// 	[
-							// 		{
-							// 			EventType: EventTypeEnum.SIGN_IN_STARTED,
-							// 			Attributes: { triggeredBy: TriggeredByEnum.SIGN_IN_MODAL }
-							// 		}
-							// 	],
-							// 	["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
-							// );
+							await record(
+								[
+									{
+										EventType: EventTypeEnum.SIGN_IN_STARTED,
+										Attributes: { triggeredBy: TriggeredByEnum.SIGN_IN_MODAL }
+									}
+								],
+								["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+							);
 
 							onLogin();
 						}}

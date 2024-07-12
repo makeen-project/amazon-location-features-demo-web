@@ -328,15 +328,15 @@ const ConnectAwsAccountModal: FC<ConnectAwsAccountModalProps> = ({
 										variation="primary"
 										fontFamily="AmazonEmber-Bold"
 										onClick={async () => {
-											// await record(
-											// 	[
-											// 		{
-											// 			EventType: EventTypeEnum.SIGN_IN_STARTED,
-											// 			Attributes: { triggeredBy: TriggeredByEnum.CONNECT_AWS_ACCOUNT_MODAL }
-											// 		}
-											// 	],
-											// 	["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
-											// );
+											await record(
+												[
+													{
+														EventType: EventTypeEnum.SIGN_IN_STARTED,
+														Attributes: { triggeredBy: TriggeredByEnum.CONNECT_AWS_ACCOUNT_MODAL }
+													}
+												],
+												["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+											);
 											await _onLogin();
 										}}
 									>
