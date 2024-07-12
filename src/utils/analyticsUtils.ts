@@ -129,6 +129,8 @@ export const record: (input: RecordInput[], excludeAttributes?: string[]) => Pro
 	input,
 	excludeAttributes = []
 ) => {
+	if (import.meta.env.DEV) return;
+
 	const { [location.pathname.replace(/\//g, "_")]: pageViewIdentifier } = JSON.parse(
 		localStorage.getItem(pageViewIdentifiersKey) || "{}"
 	);

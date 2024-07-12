@@ -72,36 +72,31 @@ Cypress.Commands.add("addTrackerAndGeofenceEnterExit", (isResponsive, geofenceNa
 Cypress.Commands.add("addEditAndDeleteGeofence", (isResponsive, geofenceName) => {
 	if (isResponsive) {
 		cy.get('[data-testid="explore-button-container-Geofences"]').click();
+		cy.wait(5000);
 		cy.get('[data-testid="add-geofence-button-container-mobile"]', { timeout: 30000 }).click();
 	} else {
 		cy.get('[class="amplify-flex geofence-button"]').click();
 		cy.wait(5000);
-		cy.screenshot("1", { capture: "runner" });
-		cy.get('[data-testid-"sign-in-button"]').click();
-		cy.wait(5000);
-		cy.screenshot("2", { capture: "runner" });
-		cy.get('[class="amplify-flex geofence-button"]').click();
-		cy.get('[data-testid-"sign-in-button"]').should("not.exist");
 	}
-	// cy.get('[placeholder="Enter address or coordinates"]', { timeout: 30000 }).type("Rio Tinto Perth Western Australia", {
-	// 	delay: 200
-	// });
-	// cy.wait(4000);
-	// isResponsive ? cy.get('[class="amplify-flex suggestion border-top"]').click() : cy.contains("Rio Tinto").click();
-	// cy.get('[placeholder="Type unique Geofence Name"]').type(`${geofenceName}`);
-	// cy.wait(5000);
-	// cy.contains("Save").click();
-	// cy.wait(5000);
-	// cy.get("div").should("contain", `${geofenceName}`);
-	// cy.contains(`${geofenceName}`).click({ force: true });
-	// cy.contains("Save").should("be.disabled");
-	// isResponsive ? cy.get('[data-testid="bottomsheet-header-close-icon"]').click() : cy.contains("Go Back").click();
-	// cy.get(`[data-testid="icon-trash-${geofenceName}"]`).click({ force: true });
-	// cy.get('[data-testid="geofences-list-container"]').should("not.contain", `${geofenceName}`);
-	// isResponsive
-	// 	? cy.get('[data-testid="bottomsheet-header-close-icon"]').click()
-	// 	: cy.get('[data-testid="auth-geofence-box-close-button"]').click();
-	// cy.signOutAndDisconnectFromAwsAccount(isResponsive);
+	cy.get('[placeholder="Enter address or coordinates"]', { timeout: 30000 }).type("Rio Tinto Perth Western Australia", {
+		delay: 200
+	});
+	cy.wait(4000);
+	isResponsive ? cy.get('[class="amplify-flex suggestion border-top"]').click() : cy.contains("Rio Tinto").click();
+	cy.get('[placeholder="Type unique Geofence Name"]').type(`${geofenceName}`);
+	cy.wait(5000);
+	cy.contains("Save").click();
+	cy.wait(5000);
+	cy.get("div").should("contain", `${geofenceName}`);
+	cy.contains(`${geofenceName}`).click({ force: true });
+	cy.contains("Save").should("be.disabled");
+	isResponsive ? cy.get('[data-testid="bottomsheet-header-close-icon"]').click() : cy.contains("Go Back").click();
+	cy.get(`[data-testid="icon-trash-${geofenceName}"]`).click({ force: true });
+	cy.get('[data-testid="geofences-list-container"]').should("not.contain", `${geofenceName}`);
+	isResponsive
+		? cy.get('[data-testid="bottomsheet-header-close-icon"]').click()
+		: cy.get('[data-testid="auth-geofence-box-close-button"]').click();
+	cy.signOutAndDisconnectFromAwsAccount(isResponsive);
 });
 
 Cypress.Commands.add("useUnauthSimulation", isResponsive => {
