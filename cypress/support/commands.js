@@ -101,7 +101,7 @@ Cypress.Commands.add("connectAwsAccount", isResponsive => {
 	cy.screenshot();
 	cy.get("#root").then($root => {
 		if ($root.find('[data-testid="sign-in-button"]').length > 0) {
-			cy.get('[data-testid="sign-in-button"]').click();
+			cy.get('[data-testid="sign-in-button"]').click({ force: true });
 		} else {
 			isResponsive
 				? cy.closeResponsiveMenu('[data-testid="bottomsheet"]')
@@ -113,15 +113,6 @@ Cypress.Commands.add("connectAwsAccount", isResponsive => {
 		: cy.get('[data-testid="hamburger-menu"]').click();
 	cy.wait(5000);
 	cy.screenshot();
-	cy.get("#root").then($root => {
-		if ($root.find('[data-testid="sign-in-button"]').length > 0) {
-			cy.get('[data-testid="sign-in-button"]').click();
-		} else {
-			isResponsive
-				? cy.closeResponsiveMenu('[data-testid="bottomsheet"]')
-				: cy.get('[data-testid="hamburger-menu"]').click();
-		}
-	});
 });
 
 Cypress.Commands.add("signOutAndDisconnectFromAwsAccount", isResponsive => {
