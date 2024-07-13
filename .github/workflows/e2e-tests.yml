@@ -22,7 +22,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run App
+      - name: Create Build
         env:
           VITE_AWS_COGNITO_IDENTITY_POOL_IDS: ${{ secrets.VITE_AWS_COGNITO_IDENTITY_POOL_IDS }}
           VITE_AWS_WEB_SOCKET_URLS: ${{ secrets.VITE_AWS_WEB_SOCKET_URLS }}
@@ -38,8 +38,18 @@ jobs:
           VITE_MIGRATE_AN_IOS_APP_PAGE: ${{ secrets.VITE_MIGRATE_AN_IOS_APP_PAGE }}
           VITE_MIGRATE_A_WEB_SERVICE_PAGE: ${{ secrets.VITE_MIGRATE_A_WEB_SERVICE_PAGE }}
           VITE_PRICING_PAGE: ${{ secrets.VITE_PRICING_PAGE }}
+        run: npm run build
+
+      - name: Upload Build
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: build/
+
+      - name: Run Build
         run: |
-          npm run dev &
+          npm run start-build &
           echo "Server started"
           sleep 10
 

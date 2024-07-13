@@ -72,11 +72,10 @@ Cypress.Commands.add("addTrackerAndGeofenceEnterExit", (isResponsive, geofenceNa
 Cypress.Commands.add("addEditAndDeleteGeofence", (isResponsive, geofenceName) => {
 	if (isResponsive) {
 		cy.get('[data-testid="explore-button-container-Geofences"]').click();
-		cy.wait(5000);
 		cy.get('[data-testid="add-geofence-button-container-mobile"]', { timeout: 30000 }).click();
 	} else {
 		cy.get('[class="amplify-flex geofence-button"]').click();
-		cy.wait(5000);
+		cy.get('[class="amplify-loader"]').should("not.exist");
 	}
 	cy.get('[placeholder="Enter address or coordinates"]', { timeout: 30000 }).type("Rio Tinto Perth Western Australia", {
 		delay: 200
