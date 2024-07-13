@@ -24,7 +24,7 @@ jobs:
 
       - name: Create .env File
         run: |
-          echo "VITE_AWS_COGNITO_IDENTITY_POOL_IDS=$VITE_AWS_COGNITO_IDENTITY_POOL_IDS" >> .env
+          echo "VITE_AWS_COGNITO_IDENTITY_POOL_IDS=$VITE_AWS_COGNITO_IDENTITY_POOL_IDS" > .env
           echo "VITE_AWS_WEB_SOCKET_URLS=$VITE_AWS_WEB_SOCKET_URLS" >> .env
           echo "VITE_PINPOINT_IDENTITY_POOL_ID=$VITE_PINPOINT_IDENTITY_POOL_ID" >> .env
           echo "VITE_PINPOINT_APPLICATION_ID=$VITE_PINPOINT_APPLICATION_ID" >> .env
@@ -40,21 +40,6 @@ jobs:
           echo "VITE_PRICING_PAGE=$VITE_PRICING_PAGE" >> .env
 
       - name: Create Build
-        # env:
-        #   VITE_AWS_COGNITO_IDENTITY_POOL_IDS: ${{ secrets.VITE_AWS_COGNITO_IDENTITY_POOL_IDS }}
-        #   VITE_AWS_WEB_SOCKET_URLS: ${{ secrets.VITE_AWS_WEB_SOCKET_URLS }}
-        #   VITE_PINPOINT_IDENTITY_POOL_ID: ${{ secrets.VITE_PINPOINT_IDENTITY_POOL_ID }}
-        #   VITE_PINPOINT_APPLICATION_ID: ${{ secrets.VITE_PINPOINT_APPLICATION_ID }}
-        #   VITE_AWS_CF_TEMPLATE: ${{ secrets.VITE_AWS_CF_TEMPLATE }}
-        #   VITE_APPLE_APP_STORE_LINK: ${{ secrets.VITE_APPLE_APP_STORE_LINK }}
-        #   VITE_GOOGLE_PLAY_STORE_LINK: ${{ secrets.VITE_GOOGLE_PLAY_STORE_LINK }}
-        #   VITE_APP_VERSION: ${{ secrets.VITE_APP_VERSION }}
-        #   VITE_MIGRATE_FROM_GOOGLE_MAPS_PAGE: ${{ secrets.VITE_MIGRATE_FROM_GOOGLE_MAPS_PAGE }}
-        #   VITE_MIGRATE_A_WEB_APP_PAGE: ${{ secrets.VITE_MIGRATE_A_WEB_APP_PAGE }}
-        #   VITE_MIGRATE_AN_ANDROID_APP_PAGE: ${{ secrets.VITE_MIGRATE_AN_ANDROID_APP_PAGE }}
-        #   VITE_MIGRATE_AN_IOS_APP_PAGE: ${{ secrets.VITE_MIGRATE_AN_IOS_APP_PAGE }}
-        #   VITE_MIGRATE_A_WEB_SERVICE_PAGE: ${{ secrets.VITE_MIGRATE_A_WEB_SERVICE_PAGE }}
-        #   VITE_PRICING_PAGE: ${{ secrets.VITE_PRICING_PAGE }}
         run: npm run build
 
       - name: Upload Build
