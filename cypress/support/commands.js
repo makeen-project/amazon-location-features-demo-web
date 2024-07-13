@@ -16,7 +16,7 @@ Cypress.Commands.add("visitDomain", domain => {
 			  })
 			: cy.visit(domain);
 
-		cy.wait(20000);
+		cy.wait(10000);
 		cy.get('[data-testid="welcome-modal-continue-button"]').click();
 	}
 });
@@ -97,15 +97,18 @@ Cypress.Commands.add("connectAwsAccount", isResponsive => {
 	isResponsive
 		? cy.openResponsiveMenu('[data-testid="bottomsheet"]')
 		: cy.get('[data-testid="hamburger-menu"]').click();
+	cy.wait(5000);
 	cy.get("#root").then($root => {
+		cy.log(`LENGTH: ${$root.find('[data-testid="sign-in-button"]').length}`);
 		if ($root.find('[data-testid="sign-in-button"]').length > 0) {
-			cy.get('[data-testid="sign-in-button"]').trigger("click");
+			cy.get('[data-testid="sign-in-button"]').click({ force: true });
 		} else {
 			isResponsive
 				? cy.closeResponsiveMenu('[data-testid="bottomsheet"]')
 				: cy.get('[data-testid="hamburger-menu"]').click();
 		}
 	});
+	cy.wait(5000);
 });
 
 Cypress.Commands.add("signOutAndDisconnectFromAwsAccount", isResponsive => {
