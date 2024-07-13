@@ -101,7 +101,7 @@ Cypress.Commands.add("connectAwsAccount", isResponsive => {
 	cy.get("#root").then($root => {
 		cy.log(`LENGTH: ${$root.find('[data-testid="sign-in-button"]').length}`);
 		if ($root.find('[data-testid="sign-in-button"]').length > 0) {
-			cy.get('[data-testid="sign-in-button"]').click({ force: true });
+			cy.get('[data-testid="sign-in-button"]').click();
 		} else {
 			isResponsive
 				? cy.closeResponsiveMenu('[data-testid="bottomsheet"]')
