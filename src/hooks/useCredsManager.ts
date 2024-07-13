@@ -102,10 +102,10 @@ const useCredsManager = () => {
 		if (code && state && !authTokens) {
 			window.history.replaceState(undefined, "", DEMO);
 			setAuthTokens({ code, state });
-			// record(
-			// 	[{ EventType: EventTypeEnum.SIGN_IN_SUCCESSFUL, Attributes: {} }],
-			// 	["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
-			// );
+			record(
+				[{ EventType: EventTypeEnum.SIGN_IN_SUCCESSFUL, Attributes: {} }],
+				["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+			);
 			setTimeout(() => clearCredsAndLocationClient(), 0);
 		}
 
