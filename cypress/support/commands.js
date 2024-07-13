@@ -65,6 +65,7 @@ Cypress.Commands.add("connectAwsAccount", isResponsive => {
 	cy.get('[data-testid="sign-in-button"]').click();
 	cy.wait(5000);
 	cy.origin(`${Cypress.env("USER_DOMAIN")}`, { args: { isResponsive } }, ({ isResponsive }) => {
+		cy.url().then(url => cy.log("Current URL is", url));
 		isResponsive
 			? cy.get(".modal-content.background-customizable.modal-content-mobile.visible-md.visible-lg").then(els => {
 					[...els].forEach(el => {
