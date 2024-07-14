@@ -90,6 +90,8 @@ jobs:
           pwd
           cd ../
           ls -a
+          cd amazon-location-web-marketing-temp
+          ls -a
 
       # - name: Create build
       #   run: npm run create-build-with-demo-lib
