@@ -58,7 +58,8 @@ async function main() {
 
 		// Copy the build directory from amazon-location-web-marketing-temp directory to current directory
 		console.log(`Copying the build directory from ${cloneDir} directory to current directory...`);
-		fs.cpSync(`../${cloneDir}/build`, "./", { recursive: true, force: true });
+		fs.mkdirSync(`build`, { recursive: true, force: true });
+		fs.cpSync(`../${cloneDir}/build/`, "./build", { recursive: true, force: true });
 
 		// Remove the amazon-location-web-marketing-temp directory
 		console.log(`Removing the ${cloneDir} repository directory...`);
