@@ -1,8 +1,6 @@
 const { exec } = require("child_process");
 const fs = require("fs");
 
-const repoUrl = "git@github.com:makeen-project/amazon-location-web-marketing.git";
-const branch = "develop";
 const cloneDir = "amazon-location-web-marketing-temp";
 const libDir = "demo-app-lib";
 
