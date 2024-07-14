@@ -37,10 +37,6 @@ async function main() {
 		packageJson.devDependencies = {};
 		fs.writeFileSync("demo-app-lib/package.json", JSON.stringify(packageJson, null, 2));
 
-		// Clone the amazon-location-web-marketing repository
-		console.log(`Cloning the ${branch} branch from ${repoUrl}`);
-		await runCommand(`git clone --branch ${branch} ${repoUrl} ../${cloneDir}`);
-
 		// Copy .env file from current directory into amazon-location-web-marketing-temp directory
 		console.log(`Copy .env file from current directory into ${cloneDir} directory...`);
 		await runCommand(`cp .env ../${cloneDir}`);
@@ -60,10 +56,6 @@ async function main() {
 		console.log(`Copying the build directory from ${cloneDir} directory to current directory...`);
 		fs.mkdirSync(`build`, { recursive: true, force: true });
 		fs.cpSync(`../${cloneDir}/build/`, "./build", { recursive: true, force: true });
-
-		// Remove the amazon-location-web-marketing-temp directory
-		console.log(`Removing the ${cloneDir} repository directory...`);
-		fs.rmSync(`../${cloneDir}`, { recursive: true, force: true });
 
 		console.log("Done.");
 	} catch (error) {

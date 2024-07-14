@@ -1,4 +1,4 @@
-name: E2E_Tests
+name: E2E tests
 
 on:
   push:
@@ -9,20 +9,20 @@ on:
 
 jobs:
   e2e-tests:
-    name: E2E Tests
+    name: E2E tests
     runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      - name: Setup node
         uses: actions/setup-node@v3
 
-      # - name: Install Dependencies
+      # - name: Install dependencies
       #   run: npm install
 
-      # - name: Run App
+      # - name: Run app
       #   env:
       #     VITE_AWS_COGNITO_IDENTITY_POOL_IDS: ${{ secrets.VITE_AWS_COGNITO_IDENTITY_POOL_IDS }}
       #     VITE_AWS_WEB_SOCKET_URLS: ${{ secrets.VITE_AWS_WEB_SOCKET_URLS }}
@@ -43,7 +43,7 @@ jobs:
       #     echo "Server started"
       #     sleep 10
 
-      # - name: Create .env File
+      # - name: Create .env file
       #   run: |
       #     echo "VITE_AWS_COGNITO_IDENTITY_POOL_IDS=${{secrets.VITE_AWS_COGNITO_IDENTITY_POOL_IDS}}" > .env
       #     echo "VITE_AWS_WEB_SOCKET_URLS=${{secrets.VITE_AWS_WEB_SOCKET_URLS}}" >> .env
@@ -60,7 +60,7 @@ jobs:
       #     echo "VITE_MIGRATE_A_WEB_SERVICE_PAGE=${{secrets.VITE_MIGRATE_A_WEB_SERVICE_PAGE}}" >> .env
       #     echo "VITE_PRICING_PAGE=${{secrets.VITE_PRICING_PAGE}}" >> .env
 
-      - name: Create .env File
+      - name: Create .env file
         run: |
           echo "VITE_AWS_COGNITO_IDENTITY_POOL_IDS=${{ secrets.VITE_AWS_COGNITO_IDENTITY_POOL_IDS }}" > .env
           echo "VITE_AWS_WEB_SOCKET_URLS=${{ secrets.VITE_AWS_WEB_SOCKET_URLS }}" >> .env
@@ -80,23 +80,28 @@ jobs:
           echo "VITE_PRICING_PAGE=${{ secrets.VITE_PRICING_PAGE }}" >> .env
           echo "VITE_CUSTOM_ASSETS_URL=${{ secrets.VITE_CUSTOM_ASSETS_URL }}" >> .env
 
-      - name: Create Build
+      - name: Clone the amazon-location-web-marketing repository
+        run: |
+          mkdir -p ../amazon-location-web-marketing-temp
+          git clone --branch develop https://its-aazizi:${{ secrets.PAT }}@github.com/makeen-project/amazon-location-web-marketing.git ../amazon-location-web-marketing-temp
+
+      - name: Create build
         run: npm run create-build-with-demo-lib
 
-      - name: Upload Build
+      - name: Upload build
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: build
           path: build/
 
-      - name: Run Build
+      - name: Run build
         run: |
           npm run start-build &
           echo "Server started"
           sleep 10
 
-      - name: Run Cypress Tests
+      - name: Run cypress tests
         env:
           CYPRESS_WEB_DOMAIN: ${{ secrets.WEB_DOMAIN }}
           CYPRESS_WEB_DOMAIN_USERNAME: ${{ secrets.WEB_DOMAIN_USERNAME }}
@@ -112,14 +117,14 @@ jobs:
           PINPOINT_APPLICATION_ID: ${{ secrets.VITE_PINPOINT_APPLICATION_ID }}
         run: npm run cypress
 
-      - name: Upload Cypress Report
+      - name: Upload cypress report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: cypress-reports
           path: cypress/reports
 
-      - name: Upload Cypress Screenshots
+      - name: Upload cypress screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:

@@ -1,4 +1,4 @@
-name: Security_Tests
+name: Security tests
 
 on:
   push:
@@ -9,20 +9,20 @@ on:
 
 jobs:
   security-tests:
-    name: Security Tests
+    name: Security tests
     runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      - name: Setup node
         uses: actions/setup-node@v3
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: cd security-tests/ && npm install
 
-      - name: Run Security Tests
+      - name: Run security tests
         env:
           IDENTITY_POOL_ID: ${{ secrets.IDENTITY_POOL_ID }}
           USER_POOL_ID: ${{ secrets.USER_POOL_ID }}
