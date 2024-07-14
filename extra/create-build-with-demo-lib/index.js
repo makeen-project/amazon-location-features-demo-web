@@ -20,12 +20,6 @@ function runCommand(command, cwd) {
 
 async function main() {
 	try {
-		// Remove node_modules, build, demo-app-lib directories from current directory if exists and amazon-location-web-marketing-temp outside of current directory if exists...
-		console.log(
-			`Remove node_modules, build, demo-app-lib directories from current directory if exists\nand ${cloneDir} outside of current directory if exists...`
-		);
-		await runCommand(`rm -rf node_modules && rm -rf build && rm -rf demo-app-lib && rm -rf ../${cloneDir}`);
-
 		// Run npm install in current directory
 		console.log(`Running npm install and npm run local-lib in current directory...`);
 		await runCommand(`npm install && npm run local-lib`);
