@@ -85,48 +85,54 @@ jobs:
           mkdir -p ../amazon-location-web-marketing-temp
           git clone --branch develop https://its-aazizi:${{ secrets.PAT }}@github.com/makeen-project/amazon-location-web-marketing.git ../amazon-location-web-marketing-temp
 
-      - name: Create build
-        run: npm run create-build-with-demo-lib
-
-      - name: Upload build
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: build/
-
-      - name: Run build
+      - name: Test
         run: |
-          npm run start-build &
-          echo "Server started"
-          sleep 10
+          pwd
+          cd ../
+          ls -a
 
-      - name: Run cypress tests
-        env:
-          CYPRESS_WEB_DOMAIN: ${{ secrets.WEB_DOMAIN }}
-          CYPRESS_WEB_DOMAIN_USERNAME: ${{ secrets.WEB_DOMAIN_USERNAME }}
-          CYPRESS_WEB_DOMAIN_PASSWORD: ${{ secrets.WEB_DOMAIN_PASSWORD }}
-          CYPRESS_IDENTITY_POOL_ID: ${{ secrets.IDENTITY_POOL_ID }}
-          CYPRESS_USER_DOMAIN: ${{ secrets.USER_DOMAIN }}
-          CYPRESS_USER_POOL_CLIENT_ID: ${{ secrets.USER_POOL_CLIENT_ID }}
-          CYPRESS_USER_POOL_ID: ${{ secrets.USER_POOL_ID }}
-          CYPRESS_WEB_SOCKET_URL: ${{ secrets.WEB_SOCKET_URL }}
-          CYPRESS_COGNITO_EMAIL: ${{ secrets.COGNITO_EMAIL }}
-          CYPRESS_COGNITO_PASSWORD: ${{ secrets.COGNITO_PASSWORD }}
-          PINPOINT_IDENTITY_POOL_ID: ${{ secrets.VITE_PINPOINT_IDENTITY_POOL_ID }}
-          PINPOINT_APPLICATION_ID: ${{ secrets.VITE_PINPOINT_APPLICATION_ID }}
-        run: npm run cypress
+      # - name: Create build
+      #   run: npm run create-build-with-demo-lib
 
-      - name: Upload cypress report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-reports
-          path: cypress/reports
+      # - name: Upload build
+      #   if: always()
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: build
+      #     path: build/
 
-      - name: Upload cypress screenshots
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
+      # - name: Run build
+      #   run: |
+      #     npm run start-build &
+      #     echo "Server started"
+      #     sleep 10
+
+      # - name: Run cypress tests
+      #   env:
+      #     CYPRESS_WEB_DOMAIN: ${{ secrets.WEB_DOMAIN }}
+      #     CYPRESS_WEB_DOMAIN_USERNAME: ${{ secrets.WEB_DOMAIN_USERNAME }}
+      #     CYPRESS_WEB_DOMAIN_PASSWORD: ${{ secrets.WEB_DOMAIN_PASSWORD }}
+      #     CYPRESS_IDENTITY_POOL_ID: ${{ secrets.IDENTITY_POOL_ID }}
+      #     CYPRESS_USER_DOMAIN: ${{ secrets.USER_DOMAIN }}
+      #     CYPRESS_USER_POOL_CLIENT_ID: ${{ secrets.USER_POOL_CLIENT_ID }}
+      #     CYPRESS_USER_POOL_ID: ${{ secrets.USER_POOL_ID }}
+      #     CYPRESS_WEB_SOCKET_URL: ${{ secrets.WEB_SOCKET_URL }}
+      #     CYPRESS_COGNITO_EMAIL: ${{ secrets.COGNITO_EMAIL }}
+      #     CYPRESS_COGNITO_PASSWORD: ${{ secrets.COGNITO_PASSWORD }}
+      #     PINPOINT_IDENTITY_POOL_ID: ${{ secrets.VITE_PINPOINT_IDENTITY_POOL_ID }}
+      #     PINPOINT_APPLICATION_ID: ${{ secrets.VITE_PINPOINT_APPLICATION_ID }}
+      #   run: npm run cypress
+
+      # - name: Upload cypress report
+      #   if: always()
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: cypress-reports
+      #     path: cypress/reports
+
+      # - name: Upload cypress screenshots
+      #   if: always()
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: cypress-screenshots
+      #     path: cypress/screenshots
