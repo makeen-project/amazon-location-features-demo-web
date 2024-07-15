@@ -4,13 +4,16 @@ Cypress.Commands.add("addTrackerAndGeofenceEnterExit", (isResponsive, geofenceNa
 		cy.get('[data-testid="add-geofence-button-container-mobile"]', { timeout: 30000 }).click();
 	} else {
 		cy.get('[class="amplify-flex geofence-button"]').click();
+		cy.wait(5000);
 	}
-	cy.get('[placeholder="Enter address or coordinates"]', { timeout: 30000 }).type("Empire State Building", {
+	cy.get('[placeholder="Enter address or coordinates"]').type("Empire State Building", {
 		delay: 200
 	});
-	cy.wait(5000);
-	cy.contains("Empire State Building").click();
-	cy.get('[placeholder="Type unique Geofence Name"]').type(`${geofenceName}`, { force: true });
+	cy.wait(4000);
+	cy.get('[class="amplify-flex suggestion border-top"]').click();
+	cy.wait(2000);
+	cy.get('[placeholder="Type unique Geofence Name"]').type(`${geofenceName}`);
+	cy.wait(2000);
 	cy.contains("Save").click();
 	cy.wait(5000);
 	cy.get("div").should("contain", `${geofenceName}`);
@@ -18,8 +21,7 @@ Cypress.Commands.add("addTrackerAndGeofenceEnterExit", (isResponsive, geofenceNa
 		cy.get('[data-testid="bottomsheet-header-close-icon"]').click();
 		cy.openResponsiveMenu('[data-testid="bottomsheet"]');
 	} else {
-		// cy.get('[data-testid="auth-geofence-box-close-button"]').click();
-		cy.get('[class="amplify-flex geofence-card-close "]').click(); // TODO: remove this after deployment
+		cy.get('[data-testid="auth-geofence-box-close-button"]').click();
 		cy.get('[data-testid="hamburger-menu"]').click();
 	}
 	cy.wait(5000);
@@ -75,15 +77,16 @@ Cypress.Commands.add("addEditAndDeleteGeofence", (isResponsive, geofenceName) =>
 		cy.get('[data-testid="add-geofence-button-container-mobile"]', { timeout: 30000 }).click();
 	} else {
 		cy.get('[class="amplify-flex geofence-button"]').click();
-		cy.get('[class="amplify-loader"]').should("not.exist");
+		cy.wait(5000);
 	}
-	cy.get('[placeholder="Enter address or coordinates"]', { timeout: 30000 }).type("Rio Tinto Perth Western Australia", {
+	cy.get('[placeholder="Enter address or coordinates"]').type("Seattle", {
 		delay: 200
 	});
 	cy.wait(4000);
-	isResponsive ? cy.get('[class="amplify-flex suggestion border-top"]').click() : cy.contains("Rio Tinto").click();
+	cy.get('[class="amplify-flex suggestion border-top"]').click();
+	cy.wait(2000);
 	cy.get('[placeholder="Type unique Geofence Name"]').type(`${geofenceName}`);
-	cy.wait(5000);
+	cy.wait(2000);
 	cy.contains("Save").click();
 	cy.wait(5000);
 	cy.get("div").should("contain", `${geofenceName}`);
