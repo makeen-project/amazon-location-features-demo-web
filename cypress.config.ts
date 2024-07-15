@@ -6,8 +6,8 @@ export default defineConfig({
 	defaultCommandTimeout: 20000,
 	viewportWidth: 1440,
 	viewportHeight: 733,
-	retries: 0,
-	video: true,
+	retries: 2,
+	video: false,
 	env: {
 		browserPermissions: {
 			notifications: "allow",

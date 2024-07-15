@@ -47,13 +47,6 @@ jobs:
       - name: Create build
         run: npm run create-build-with-demo-lib
 
-      - name: Upload build
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: build/
-
       - name: Run build
         run: |
           npm run start-build &
