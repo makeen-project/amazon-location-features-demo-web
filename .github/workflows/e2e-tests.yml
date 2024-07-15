@@ -42,7 +42,7 @@ jobs:
       - name: Clone the amazon-location-web-marketing repository
         run: |
           mkdir -p ../amazon-location-web-marketing-temp
-          git clone --branch main https://${{ secrets.GH_USERNAME }}:${{ secrets.GH_PAT }}@github.com/aws-geospatial/amazon-location-web-marketing.git ../amazon-location-web-marketing-temp
+          git clone --branch main https://${{ secrets.GH_USERNAME }}:${{ secrets.GH_PAT }}@github.com/makeen-project/amazon-location-web-marketing.git ../amazon-location-web-marketing-temp
 
       - name: Create build
         run: npm run create-build-with-demo-lib
