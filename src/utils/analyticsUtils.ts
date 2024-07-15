@@ -46,7 +46,7 @@ if (!endpointId) {
 
 const authLocalStorageKeyString = localStorage.getItem(amplifyAuthDataLocalStorageKey) as string;
 const credentials = JSON.parse(authLocalStorageKeyString || "{}")?.state?.credentials;
-let userId = `${credentials?.authenticated ? credentials.identityId : `AnonymousUser:${endpointId}`}`;
+const userId = `${credentials?.authenticated ? credentials.identityId : `AnonymousUser:${endpointId}`}`;
 
 let analyticsCreds = JSON.parse(localStorage.getItem(analyticsCredsKey) || "{}");
 
@@ -129,83 +129,84 @@ export const record: (input: RecordInput[], excludeAttributes?: string[]) => Pro
 	input,
 	excludeAttributes = []
 ) => {
-	const { [location.pathname.replace(/\//g, "_")]: pageViewIdentifier } = JSON.parse(
-		localStorage.getItem(pageViewIdentifiersKey) || "{}"
-	);
+	// const { [location.pathname.replace(/\//g, "_")]: pageViewIdentifier } = JSON.parse(
+	// 	localStorage.getItem(pageViewIdentifiersKey) || "{}"
+	// );
 
-	const eventTypes = input.map(x => x.EventType);
-	const hasSessionStartEvent = eventTypes.includes(EventTypeEnum.SESSION_START);
-	const sessionStopEvent = input.find(x => x.EventType === EventTypeEnum.SESSION_STOP);
+	// const eventTypes = input.map(x => x.EventType);
+	// const hasSessionStartEvent = eventTypes.includes(EventTypeEnum.SESSION_START);
+	// const sessionStopEvent = input.find(x => x.EventType === EventTypeEnum.SESSION_STOP);
 
-	if (!hasSessionStartEvent && !sessionStopEvent) {
-		while (session.creationStatus !== AnalyticsSessionStatus.CREATED) {
-			if (session.creationStatus === AnalyticsSessionStatus.NOT_CREATED) {
-				await startSession();
-			} else {
-				// sleep in both NOT_CREATED and IN_PROGRESS case (wait until the session event is created)
-				await sleep(2000);
-			}
-		}
-	}
+	// if (!hasSessionStartEvent && !sessionStopEvent) {
+	// 	while (session.creationStatus !== AnalyticsSessionStatus.CREATED) {
+	// 		if (session.creationStatus === AnalyticsSessionStatus.NOT_CREATED) {
+	// 			await startSession();
+	// 		} else {
+	// 			// sleep in both NOT_CREATED and IN_PROGRESS case (wait until the session event is created)
+	// 			await sleep(2000);
+	// 		}
+	// 	}
+	// }
 
-	const authLocalStorageKeyString = localStorage.getItem(amplifyAuthDataLocalStorageKey) as string;
-	const authLocalStorage = JSON.parse(authLocalStorageKeyString || "{}");
-	const { credentials, isUserAwsAccountConnected } = authLocalStorage?.state || {};
+	// const authLocalStorageKeyString = localStorage.getItem(amplifyAuthDataLocalStorageKey) as string;
+	// const authLocalStorage = JSON.parse(authLocalStorageKeyString || "{}");
+	// const { credentials, isUserAwsAccountConnected } = authLocalStorage?.state || {};
 
-	const _userId = `${credentials?.authenticated ? credentials.identityId : `AnonymousUser:${endpointId}`}`;
+	// const _userId = `${credentials?.authenticated ? credentials.identityId : `AnonymousUser:${endpointId}`}`;
 
-	// incase user id has changed, update endpoint
-	if (userId !== _userId) {
-		userId = _userId;
-		await createOrUpdateEndpoint();
-	}
+	// // incase user id has changed, update endpoint
+	// if (userId !== _userId) {
+	// 	userId = _userId;
+	// 	await createOrUpdateEndpoint();
+	// }
 
-	if (!pageViewIdentifier) {
-		excludeAttributes.push("pageViewIdentifier");
-	} else if (!pageViewIdentifier.split("__")[1]) {
-		// reload to regenerate this identifier if it's corrupt (edge case)
-		window.location.reload();
-	}
+	// if (!pageViewIdentifier) {
+	// 	excludeAttributes.push("pageViewIdentifier");
+	// } else if (!pageViewIdentifier.split("__")[1]) {
+	// 	// reload to regenerate this identifier if it's corrupt (edge case)
+	// 	window.location.reload();
+	// }
 
-	const defaultOptions = omit(excludeAttributes, {
-		userAWSAccountConnectionStatus: isUserAwsAccountConnected ? "Connected" : "Not connected",
-		userAuthenticationStatus: credentials?.authenticated ? "Authenticated" : "Unauthenticated",
-		pageViewIdentifier
-	});
+	// const defaultOptions = omit(excludeAttributes, {
+	// 	userAWSAccountConnectionStatus: isUserAwsAccountConnected ? "Connected" : "Not connected",
+	// 	userAuthenticationStatus: credentials?.authenticated ? "Authenticated" : "Unauthenticated",
+	// 	pageViewIdentifier
+	// });
 
-	if (sessionStopEvent) {
-		// adding a separate session end event because aws pinpoint does not show "_session.stop" event on dashboard, neither stream it.
-		input.push({
-			...sessionStopEvent,
-			EventType: EventTypeEnum.SESSION_END
-		});
-	}
+	// if (sessionStopEvent) {
+	// 	// adding a separate session end event because aws pinpoint does not show "_session.stop" event on dashboard, neither stream it.
+	// 	input.push({
+	// 		...sessionStopEvent,
+	// 		EventType: EventTypeEnum.SESSION_END
+	// 	});
+	// }
 
-	const events = input.reduce((result, value) => {
-		const eventId = uuid.randomUUID();
+	// const events = input.reduce((result, value) => {
+	// 	const eventId = uuid.randomUUID();
 
-		const extValue: Event = {
-			...value,
-			Attributes: {
-				...defaultOptions,
-				...(value.Attributes || {})
-			},
-			Session: { Id: session.id, StartTimestamp: session.startTimestamp, ...(value.Session || {}) },
-			Timestamp: new Date().toISOString()
-		};
+	// 	const extValue: Event = {
+	// 		...value,
+	// 		Attributes: {
+	// 			...defaultOptions,
+	// 			...(value.Attributes || {})
+	// 		},
+	// 		Session: { Id: session.id, StartTimestamp: session.startTimestamp, ...(value.Session || {}) },
+	// 		Timestamp: new Date().toISOString()
+	// 	};
 
-		result[eventId] = extValue;
+	// 	result[eventId] = extValue;
 
-		return result;
-	}, {} as { [key: string]: Event });
+	// 	return result;
+	// }, {} as { [key: string]: Event });
 
-	const commandInput: PutEventsRequest = {
-		ApplicationId: PINPOINT_APPLICATION_ID,
-		EventsRequest: { BatchItem: { [endpointId!]: { Endpoint: {}, Events: events } } }
-	};
+	// const commandInput: PutEventsRequest = {
+	// 	ApplicationId: PINPOINT_APPLICATION_ID,
+	// 	EventsRequest: { BatchItem: { [endpointId!]: { Endpoint: {}, Events: events } } }
+	// };
 
-	const putEventsCommand = new PutEventsCommand(commandInput);
-	await sendEvent(putEventsCommand);
+	// const putEventsCommand = new PutEventsCommand(commandInput);
+	// await sendEvent(putEventsCommand);
+	return;
 };
 
 const handleClick = () => {
