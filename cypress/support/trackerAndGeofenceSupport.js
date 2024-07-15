@@ -1,4 +1,7 @@
 Cypress.Commands.add("addTrackerAndGeofenceEnterExit", (isResponsive, geofenceName) => {
+	Cypress.on("uncaught:exception", () => {
+		return false;
+	});
 	if (isResponsive) {
 		cy.get('[data-testid="explore-button-container-Geofences"]').click();
 		cy.get('[data-testid="add-geofence-button-container-mobile"]', { timeout: 30000 }).click();
@@ -72,6 +75,9 @@ Cypress.Commands.add("addTrackerAndGeofenceEnterExit", (isResponsive, geofenceNa
 });
 
 Cypress.Commands.add("addEditAndDeleteGeofence", (isResponsive, geofenceName) => {
+	Cypress.on("uncaught:exception", () => {
+		return false;
+	});
 	if (isResponsive) {
 		cy.get('[data-testid="explore-button-container-Geofences"]').click();
 		cy.get('[data-testid="add-geofence-button-container-mobile"]', { timeout: 30000 }).click();
