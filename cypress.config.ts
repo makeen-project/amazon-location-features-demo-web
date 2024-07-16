@@ -7,7 +7,7 @@ export default defineConfig({
 	viewportWidth: 1440,
 	viewportHeight: 733,
 	retries: 3,
-	video: true,
+	video: false,
 	env: {
 		browserPermissions: {
 			notifications: "allow",
