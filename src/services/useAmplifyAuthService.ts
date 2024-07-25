@@ -3,6 +3,7 @@
 
 import { useMemo } from "react";
 
+import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { appConfig } from "@demo/core/constants";
 import { Auth } from "aws-amplify";
 
@@ -13,18 +14,15 @@ const {
 const useAmplifyAuthService = () => {
 	return useMemo(
 		() => ({
-			fetchHostedUi: async (domain: string, userPoolWebClientId: string) =>
-				await fetch(
-					`https://${domain}/login?client_id=${userPoolWebClientId}&response_type=token&scope=email+openid+profile&redirect_uri=${window.location.origin}${DEMO}`,
-					{
-						method: "POST",
-						headers: {
-							"Access-Control-Allow-Origin": "*",
-							"Content-Type": "application/x-www-form-urlencoded"
-						}
-					}
-				),
-			getCurrentUserCredentials: async () => await Auth.currentUserCredentials(),
+			fetchCredentials: async (identityPoolId: string, region: string) => {
+				const credentialsProvider = fromCognitoIdentityPool({
+					identityPoolId,
+					clientConfig: { region }
+				});
+				return await credentialsProvider();
+			},
+			hostedUi: (userDomain: string, userPoolClientId: string) =>
+				`https://${userDomain}/login?client_id=${userPoolClientId}&response_type=code&identity_provider=COGNITO&scope=email%20openid%20profile&redirect_uri=${window.location.origin}${DEMO}`,
 			login: async () => await Auth.federatedSignIn(),
 			logout: async () => await Auth.signOut(),
 			getCurrentSession: async () => await Auth.currentSession()

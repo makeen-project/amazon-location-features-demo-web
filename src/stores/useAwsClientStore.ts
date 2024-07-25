@@ -7,11 +7,11 @@ import { IStateProps } from "@demo/types";
 
 import createStore from "./createStore";
 
-export interface AwsStoreProps {
+export interface AwsClientStoreProps {
 	locationClient?: Location;
 	iotClient?: IoT;
 }
 
-export const initialState: IStateProps<AwsStoreProps> = {};
+export const initialState: IStateProps<AwsClientStoreProps> = {};
 
-export default createStore<AwsStoreProps>(initialState);
+export default createStore<AwsClientStoreProps>(initialState);

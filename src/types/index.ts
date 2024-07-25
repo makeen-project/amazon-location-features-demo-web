@@ -1,7 +1,7 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-export type { AuthTokensType, ConnectFormValuesType } from "./AmplifyAuthModel";
+export type { CognitoIdentityCredentials, AuthTokensType, ConnectFormValuesType } from "./AmplifyAuthModel";
 export type { BaseStateProps } from "./BaseStateProps";
 export type { IContextProps } from "./IContextProps";
 export type { default as IActions } from "./IActions";

@@ -17,7 +17,7 @@ import {
 	IconShuffle
 } from "@demo/assets/svgs";
 import { appConfig, languageSwitcherData, regionsData } from "@demo/core/constants";
-import { useAmplifyAuth, useAmplifyMap, useAws, useAwsIot, usePersistedData } from "@demo/hooks";
+import { useAmplifyAuth, useAmplifyMap, useAwsClient, useAwsIot, usePersistedData } from "@demo/hooks";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import {
 	ConnectFormValuesType,
@@ -112,7 +112,7 @@ const SettingsModal: FC<SettingsModalProps> = ({
 		resetStore: resetMapStore
 	} = useAmplifyMap();
 	const { defaultRouteOptions, setDefaultRouteOptions, setSettingsOptions, settingsOptions } = usePersistedData();
-	const { resetStore: resetAwsStore } = useAws();
+	const { resetStore: resetAwsClientStore } = useAwsClient();
 	const { detachPolicy } = useAwsIot();
 	const keyArr = Object.keys(formValues);
 	const isAuthenticated = !!credentials?.authenticated;
@@ -188,7 +188,7 @@ const SettingsModal: FC<SettingsModalProps> = ({
 
 				setConnectFormValues(formValues);
 				clearCredentials();
-				resetAwsStore();
+				resetAwsClientStore();
 				setIsUserAwsAccountConnected(true);
 			}
 		);
@@ -201,7 +201,7 @@ const SettingsModal: FC<SettingsModalProps> = ({
 		handleCurrentLocationAndViewpoint,
 		setConnectFormValues,
 		clearCredentials,
-		resetAwsStore,
+		resetAwsClientStore,
 		setIsUserAwsAccountConnected
 	]);
 
@@ -254,11 +254,11 @@ const SettingsModal: FC<SettingsModalProps> = ({
 	const handleRegionChange = useCallback(
 		(region: "Automatic" | RegionEnum) => {
 			setAutoRegion(region === "Automatic", region);
-			resetAwsStore();
+			resetAwsClientStore();
 			resetAppState();
 			resetMapStore();
 		},
-		[setAutoRegion, resetAwsStore, resetAppState, resetMapStore]
+		[setAutoRegion, resetAwsClientStore, resetAppState, resetMapStore]
 	);
 
 	const optionItems: Array<SettingOptionItemType> = useMemo(

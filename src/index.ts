@@ -1,7 +1,7 @@
 import appConfig from "./core/constants/appConfig";
 import useAmplifyAuth from "./hooks/useAmplifyAuth";
 import useAmplifyMap from "./hooks/useAmplifyMap";
-import useAws from "./hooks/useAws";
+import useAwsClient from "./hooks/useAwsClient";
 import useAwsGeofence from "./hooks/useAwsGeofence";
 import useAwsPlace from "./hooks/useAwsPlace";
 import useAwsRoute from "./hooks/useAwsRoute";
@@ -19,7 +19,7 @@ export {
 	appConfig as demoAppConfig,
 	useAmplifyAuth,
 	useAmplifyMap,
-	useAws,
+	useAwsClient,
 	useAwsGeofence,
 	useAwsPlace,
 	useAwsRoute,

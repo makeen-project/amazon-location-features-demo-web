@@ -3,7 +3,7 @@
 
 export { default as useAmplifyAuth } from "./useAmplifyAuth";
 export { default as useAmplifyMap } from "./useAmplifyMap";
-export { default as useAws } from "./useAws";
+export { default as useAwsClient } from "./useAwsClient";
 export { default as useAwsGeofence } from "./useAwsGeofence";
 export { default as useAwsIot } from "./useAwsIot";
 export { default as useAwsPlace } from "./useAwsPlace";

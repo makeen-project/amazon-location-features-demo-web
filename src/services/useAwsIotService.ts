@@ -4,10 +4,10 @@
 import { useMemo } from "react";
 
 import { AttachPolicyRequest } from "@aws-sdk/client-iot";
-import { useAws } from "@demo/hooks";
+import { useAwsClient } from "@demo/hooks";
 
 const useAwsIotService = () => {
-	const { iotClient } = useAws();
+	const { iotClient } = useAwsClient();
 
 	return useMemo(
 		() => ({

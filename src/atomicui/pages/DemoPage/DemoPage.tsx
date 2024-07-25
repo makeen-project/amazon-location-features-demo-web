@@ -483,7 +483,7 @@ const DemoPage: FC = () => {
 			"_blank"
 		);
 
-	return !!credentials?.identityId ? (
+	return !!credentials ? (
 		<View
 			style={{ height: "100%" }}
 			className={`${currentMapStyle.toLowerCase().includes("dark") ? "dark-mode" : "light-mode"}`}

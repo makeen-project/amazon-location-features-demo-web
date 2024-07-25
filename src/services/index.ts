@@ -2,7 +2,7 @@
 /* SPDX-License-Identifier: MIT-0 */
 
 export { default as useAmplifyAuthService } from "./useAmplifyAuthService";
-export { default as useAwsService } from "./useAwsService";
+export { default as useAwsClientService } from "./useAwsClientService";
 export { default as useAmplifyMapService } from "./useAmplifyMapService";
 export { default as useAwsPlaceService } from "./useAwsPlaceService";
 export { default as useAwsRouteService } from "./useAwsRouteService";

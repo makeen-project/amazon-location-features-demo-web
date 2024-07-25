@@ -11,14 +11,14 @@ import {
 	PutGeofenceRequest
 } from "@aws-sdk/client-location";
 import { appConfig } from "@demo/core/constants";
-import { useAws } from "@demo/hooks";
+import { useAwsClient } from "@demo/hooks";
 
 const {
 	MAP_RESOURCES: { GEOFENCE_COLLECTION, DEVICE_ID_WEB }
 } = appConfig;
 
 const useAwsGeofenceService = () => {
-	const { locationClient } = useAws();
+	const { locationClient } = useAwsClient();
 
 	return useMemo(
 		() => ({

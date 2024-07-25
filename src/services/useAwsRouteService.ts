@@ -5,7 +5,7 @@ import { useMemo } from "react";
 
 import { CalculateRouteRequest } from "@aws-sdk/client-location";
 import { appConfig } from "@demo/core/constants";
-import { useAws } from "@demo/hooks";
+import { useAwsClient } from "@demo/hooks";
 import { MapProviderEnum } from "@demo/types";
 
 const {
@@ -15,7 +15,7 @@ const {
 } = appConfig;
 
 const useAwsRouteService = () => {
-	const { locationClient } = useAws();
+	const { locationClient } = useAwsClient();
 
 	return useMemo(
 		() => ({

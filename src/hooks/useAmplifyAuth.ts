@@ -6,7 +6,7 @@ import { useEffect, useMemo } from "react";
 import { CognitoIdentity } from "@aws-sdk/client-cognito-identity";
 import { showToast } from "@demo/core/Toast";
 import appConfig from "@demo/core/constants/appConfig";
-import { useAmplifyMap, useAws } from "@demo/hooks";
+import { useAmplifyMap, useAwsClient } from "@demo/hooks";
 import { useAmplifyAuthService } from "@demo/services";
 import { useAmplifyAuthStore } from "@demo/stores";
 import { AuthTokensType, ConnectFormValuesType, ToastType } from "@demo/types";
@@ -17,7 +17,6 @@ import { getDomainName } from "@demo/utils/getDomainName";
 import { clearStorage } from "@demo/utils/localstorageUtils";
 import { setClosestRegion } from "@demo/utils/regionUtils";
 import { transformCloudFormationLink } from "@demo/utils/transformCloudFormationLink";
-import { Amplify, Auth } from "aws-amplify";
 import { useTranslation } from "react-i18next";
 
 import useDeviceMediaQuery from "./useDeviceMediaQuery";
@@ -25,7 +24,7 @@ import useDeviceMediaQuery from "./useDeviceMediaQuery";
 const {
 	POOLS,
 	WEB_SOCKET_URLS,
-	ROUTES: { DEMO, ERROR_BOUNDARY },
+	ROUTES: { DEMO },
 	PERSIST_STORAGE_KEYS: { FASTEST_REGION },
 	MAP_RESOURCES: { GRAB_SUPPORTED_AWS_REGIONS }
 } = appConfig;
@@ -36,14 +35,15 @@ const useAmplifyAuth = () => {
 	const store = useAmplifyAuthStore();
 	const { setInitial } = store;
 	const { setState } = useAmplifyAuthStore;
-	const { getCurrentUserCredentials, login, logout, fetchHostedUi, getCurrentSession } = useAmplifyAuthService();
-	const { resetStore: resetAwsStore } = useAws();
+	const amplifyAuthService = useAmplifyAuthService();
+	const { resetStore: resetAwsClientStore } = useAwsClient();
 	const { resetStore: resetAmplifyMapStore } = useAmplifyMap();
 	const { t } = useTranslation();
 	const { isDesktop } = useDeviceMediaQuery();
 
 	useEffect(() => {
 		if (window.location.pathname === DEMO && !store.identityPoolId) {
+			console.log("called");
 			(async () => {
 				await setClosestRegion();
 				const region = localStorage.getItem(FASTEST_REGION) ?? fallbackRegion;
@@ -57,11 +57,16 @@ const useAmplifyAuth = () => {
 
 	const methods = useMemo(
 		() => ({
-			configureAmplify: (config: unknown) => {
+			fetchCredentials: async () => {
 				try {
-					Amplify.configure(config);
+					const { identityPoolId, region } = store;
+
+					if (identityPoolId && region) {
+						const credentials = await amplifyAuthService.fetchCredentials(identityPoolId, region);
+						setState({ credentials });
+					}
 				} catch (error) {
-					errorHandler(error, t("error_handler__failed_configure_amplify.text") as string);
+					errorHandler(error, t("error_handler__failed_fetch_creds.text") as string);
 				}
 			},
 			validateIdentityPoolIdAndRegion: (IdentityPoolId: string, successCb?: () => void) => {
@@ -93,33 +98,6 @@ const useAmplifyAuth = () => {
 					}
 				);
 			},
-			validateDomainAndUserPoolClientId: async (
-				domain: string,
-				userPoolWebClientId: string,
-				successCb?: () => void
-			) => {
-				try {
-					const res = await fetchHostedUi(domain, userPoolWebClientId);
-
-					if (res.ok) {
-						successCb && successCb();
-					} else {
-						console.error({ error: res });
-						showToast({ content: t("failed_to_connect_ud_up.text"), type: ToastType.ERROR });
-					}
-				} catch (error) {
-					console.error({ error });
-					errorHandler(error, t("failed_to_connect_ud_up.text") as string);
-				}
-			},
-			validateUserPoolId: (config: unknown, successCb?: () => void) => {
-				try {
-					Auth.configure(config);
-					successCb && successCb();
-				} catch (error) {
-					errorHandler(error, t("error_handler__failed_connect_2.text") as string);
-				}
-			},
 			validateFormValues: (
 				identityPoolId: string,
 				userPoolId: string,
@@ -133,64 +111,9 @@ const useAmplifyAuth = () => {
 					identityPoolId,
 					/* Success callback */
 					() => {
-						// /* Validates userPoolClientId and domain */
-						// methods.validateDomainAndUserPoolClientId(
-						// 	domain,
-						// 	userPoolWebClientId,
-						// 	/* Success callback */
-						// 	() => {
-						// 		/* Validates userPoolId  */
-						// 		methods.validateUserPoolId(
-						// 			{
-						// 				identityPoolId,
-						// 				region: identityPoolId.split(":")[0],
-						// 				userPoolId,
-						// 				userPoolWebClientId,
-						// 				oauth: {
-						// 					domain,
-						// 					scope: ["email", "openid", "profile"],
-						// 					redirectSignIn: `${window.location.origin}${DEMO}`,
-						// 					redirectSignOut: `${window.location.origin}${DEMO}`,
-						// 					responseType: "token"
-						// 				}
-						// 			},
-						// 			successCb
-						// 		);
-						// 	}
-						// );
-						/* Validates userPoolId  */
-						methods.validateUserPoolId(
-							{
-								identityPoolId,
-								region: identityPoolId.split(":")[0],
-								userPoolId,
-								userPoolWebClientId,
-								oauth: {
-									domain: getDomainName(domain),
-									scope: ["email", "openid", "profile"],
-									redirectSignIn: `${window.location.origin}${DEMO}`,
-									redirectSignOut: `${window.location.origin}${DEMO}`,
-									responseType: "token"
-								}
-							},
-							successCb
-						);
+						successCb && successCb();
 					}
 				);
-			},
-			getCurrentUserCredentials: async () => {
-				try {
-					const credentials = await getCurrentUserCredentials();
-
-					if (credentials.identityId) {
-						setState({ credentials });
-					} else {
-						setState({ credentials: undefined });
-						window.location.replace(ERROR_BOUNDARY);
-					}
-				} catch (error) {
-					errorHandler(error, t("error_handler__failed_fetch_creds.text") as string);
-				}
 			},
 			clearCredentials: () => {
 				setState({ credentials: undefined });
@@ -220,7 +143,7 @@ const useAmplifyAuth = () => {
 			onLogin: async () => {
 				try {
 					setState({ authTokens: undefined });
-					await login();
+					await amplifyAuthService.login();
 				} catch (error) {
 					record(
 						[{ EventType: EventTypeEnum.SIGN_IN_FAILED, Attributes: { error: JSON.stringify(error) } }],
@@ -231,7 +154,7 @@ const useAmplifyAuth = () => {
 			},
 			onLogout: async () => {
 				try {
-					await logout();
+					await amplifyAuthService.logout();
 					setState({ authTokens: undefined });
 					record(
 						[{ EventType: EventTypeEnum.SIGN_OUT_SUCCESSFUL, Attributes: {} }],
@@ -248,14 +171,14 @@ const useAmplifyAuth = () => {
 			onDisconnectAwsAccount: () => {
 				clearStorage();
 				methods.resetStore();
-				resetAwsStore();
+				resetAwsClientStore();
 				resetAmplifyMapStore();
 				setTimeout(() => window.location.reload(), 3000);
 			},
 			handleCurrentSession: async (resetAwsStore: () => void) => {
 				try {
-					await getCurrentSession();
-					await methods.getCurrentUserCredentials();
+					await amplifyAuthService.getCurrentSession();
+					await methods.fetchCredentials();
 					resetAwsStore();
 				} catch (error) {
 					console.error("HANDLE_CURRENT_SESSION_ERROR:", JSON.stringify(error));
@@ -336,19 +259,7 @@ const useAmplifyAuth = () => {
 				setInitial();
 			}
 		}),
-		[
-			setInitial,
-			setState,
-			fetchHostedUi,
-			getCurrentUserCredentials,
-			login,
-			logout,
-			getCurrentSession,
-			resetAmplifyMapStore,
-			resetAwsStore,
-			t,
-			isDesktop
-		]
+		[store, amplifyAuthService, setState, t, resetAwsClientStore, resetAmplifyMapStore, isDesktop, setInitial]
 	);
 
 	return { ...methods, ...store };

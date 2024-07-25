@@ -3,32 +3,32 @@
 
 import { useMemo } from "react";
 
-import { ICredentials } from "@aws-amplify/core";
-import { useAwsService } from "@demo/services";
-import { useAwsStore } from "@demo/stores";
+import { useAwsClientService } from "@demo/services";
+import { useAwsClientStore } from "@demo/stores";
+import { CognitoIdentityCredentials } from "@demo/types";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { useTranslation } from "react-i18next";
 
 const useAws = () => {
-	const store = useAwsStore();
+	const store = useAwsClientStore();
 	const { setInitial } = store;
-	const { setState } = useAwsStore;
-	const { createLocationClient, createIotClient } = useAwsService();
+	const { setState } = useAwsClientStore;
+	const awsClientService = useAwsClientService();
 	const { t } = useTranslation();
 
 	const methods = useMemo(
 		() => ({
-			createLocationClient: (credentials: ICredentials, region: string) => {
+			createLocationClient: (credentials: CognitoIdentityCredentials, region: string) => {
 				try {
-					const locationClient = createLocationClient(credentials, region);
+					const locationClient = awsClientService.createLocationClient(credentials, region);
 					setState({ locationClient });
 				} catch (error) {
 					errorHandler(error, t("error_handler__failed_create_location_client.text") as string);
 				}
 			},
-			createIotClient: (credentials: ICredentials, region: string) => {
+			createIotClient: (credentials: CognitoIdentityCredentials, region: string) => {
 				try {
-					const iotClient = createIotClient(credentials, region);
+					const iotClient = awsClientService.createIotClient(credentials, region);
 					setState({ iotClient });
 				} catch (error) {
 					errorHandler(error, t("error_handler__failed_create_iot_client.text") as string);
@@ -39,7 +39,7 @@ const useAws = () => {
 				setInitial();
 			}
 		}),
-		[setInitial, setState, createLocationClient, createIotClient, t]
+		[awsClientService, setState, t, setInitial]
 	);
 
 	return { ...methods, ...store };

@@ -1,13 +1,10 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-import { FC, ReactNode, useMemo } from "react";
+import { FC, ReactNode } from "react";
 
 import { ThemeProvider } from "@aws-amplify/ui-react";
-import { appConfig } from "@demo/core/constants";
-import { useAmplifyAuth } from "@demo/hooks";
 import { appTheme } from "@demo/theme";
-import { EsriMapEnum } from "@demo/types";
 
 import "@aws-amplify/ui-react/styles.css";
 import "react-toastify/dist/ReactToastify.min.css";
@@ -15,60 +12,14 @@ import "@demo/theme/appStyles.scss";
 import "react-tooltip/dist/react-tooltip.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const {
-	ROUTES: { DEMO },
-	MAP_RESOURCES: { MAP_ITEMS }
-} = appConfig;
-
 interface AppWrapperProps {
 	children?: ReactNode;
 }
 
-const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
-	const { identityPoolId, region, userPoolId, userPoolClientId, userDomain, configureAmplify } = useAmplifyAuth();
-
-	const amplifyConfig = useMemo(
-		() => ({
-			Auth:
-				userPoolId && userPoolClientId && userDomain
-					? {
-							identityPoolId,
-							region,
-							userPoolId,
-							userPoolWebClientId: userPoolClientId,
-							oauth: {
-								domain: userDomain,
-								scope: ["email", "openid", "profile"],
-								redirectSignIn: `${window.location.origin}${DEMO}`,
-								redirectSignOut: `${window.location.origin}${DEMO}?sign_out=true`,
-								responseType: "code"
-							}
-					  }
-					: {
-							identityPoolId,
-							region
-					  },
-			geo: {
-				AmazonLocationService: {
-					maps: {
-						items: MAP_ITEMS,
-						default: EsriMapEnum.ESRI_LIGHT
-					},
-					region
-				}
-			}
-		}),
-		[identityPoolId, region, userPoolId, userPoolClientId, userDomain]
-	);
-
-	/* Configure Auth and Geo via amplify */
-	configureAmplify(amplifyConfig);
-
-	return (
-		<ThemeProvider theme={appTheme} nonce="dAnIsRazNonCe">
-			{children}
-		</ThemeProvider>
-	);
-};
+const AppWrapper: FC<AppWrapperProps> = ({ children }) => (
+	<ThemeProvider theme={appTheme} nonce="dAnIsRazNonCe">
+		{children}
+	</ThemeProvider>
+);
 
 export default AppWrapper;
