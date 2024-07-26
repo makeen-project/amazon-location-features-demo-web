@@ -43,7 +43,6 @@ const useAmplifyAuth = () => {
 
 	useEffect(() => {
 		if (window.location.pathname === DEMO && !store.identityPoolId) {
-			console.log("called");
 			(async () => {
 				await setClosestRegion();
 				const region = localStorage.getItem(FASTEST_REGION) ?? fallbackRegion;
@@ -63,6 +62,7 @@ const useAmplifyAuth = () => {
 
 					if (identityPoolId && region) {
 						const credentials = await amplifyAuthService.fetchCredentials(identityPoolId, region);
+						console.log({ credentials });
 						setState({ credentials });
 					}
 				} catch (error) {
