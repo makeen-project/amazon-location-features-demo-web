@@ -1,7 +1,7 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { appConfig } from "@demo/core/constants";
 import { useAmplifyMapService } from "@demo/services";
@@ -17,6 +17,7 @@ import {
 } from "@demo/types";
 
 import { OpenDataMapEnum } from "@demo/types/Enums";
+import { getCountryCode } from "@demo/utils/countryUtil";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { useTranslation } from "react-i18next";
 
@@ -33,6 +34,17 @@ const useAmplifyMap = () => {
 	const { setState } = useAmplifyMapStore;
 	const mapsService = useAmplifyMapService();
 	const { t } = useTranslation();
+
+	useEffect(() => {
+		if (store.autoMapUnit.selected) {
+			(async () => {
+				const countryCode = await getCountryCode();
+				const isImperial = !!countryCode && IMPERIAL_COUNTRIES.includes(countryCode);
+				const mapUnit = isImperial ? IMPERIAL : METRIC;
+				setState(s => ({ autoMapUnit: { ...s.autoMapUnit, system: mapUnit }, mapUnit }));
+			})();
+		}
+	}, [setState, store.autoMapUnit.selected]);
 
 	const methods = useMemo(
 		() => ({
@@ -58,11 +70,6 @@ const useAmplifyMap = () => {
 			},
 			setIsAutomaticMapUnit: (selected: boolean) => {
 				setState(s => ({ autoMapUnit: { ...s.autoMapUnit, selected } }));
-			},
-			setAutomaticMapUnit: () => {
-				const isMetric = !IMPERIAL_COUNTRIES.includes(navigator.language.split("-")[1]);
-				const mapUnit = isMetric ? METRIC : IMPERIAL;
-				setState(s => ({ autoMapUnit: { ...s.autoMapUnit, system: mapUnit }, mapUnit }));
 			},
 			setMapUnit: (mapUnit: MapUnitEnum) => {
 				setState({ mapUnit });
