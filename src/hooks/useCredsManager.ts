@@ -6,17 +6,16 @@ import { EventTypeEnum, MapProviderEnum } from "@demo/types/Enums";
 import { record } from "@demo/utils";
 import { differenceInMilliseconds } from "date-fns";
 
-import useAmplifyAuth from "./useAmplifyAuth";
-import useAmplifyMap from "./useAmplifyMap";
+import useAwsAuth from "./useAwsAuth";
 import useAwsClient from "./useAwsClient";
 import useAwsIot from "./useAwsIot";
+import useAwsMap from "./useAwsMap";
 
 const {
 	PERSIST_STORAGE_KEYS: { SHOULD_CLEAR_CREDENTIALS },
 	ROUTES: { DEMO }
 } = appConfig;
-let authTimeout: NodeJS.Timer | undefined;
-let unauthTimeout: NodeJS.Timer | undefined;
+let timeout: NodeJS.Timer | undefined;
 
 const useCredsManager = () => {
 	const {
@@ -30,8 +29,9 @@ const useCredsManager = () => {
 		refreshTokens,
 		userPoolId,
 		userPoolClientId,
-		authTokens
-	} = useAmplifyAuth();
+		authTokens,
+		setAuthTokens
+	} = useAwsAuth();
 	const {
 		locationClient,
 		createLocationClient,
@@ -40,7 +40,7 @@ const useCredsManager = () => {
 		resetStore: resetAwsClientStore
 	} = useAwsClient();
 	const { attachPolicy } = useAwsIot();
-	const { mapProvider: currentMapProvider } = useAmplifyMap();
+	const { mapProvider: currentMapProvider } = useAwsMap();
 	const shouldClearCredentials = localStorage.getItem(SHOULD_CLEAR_CREDENTIALS) === "true";
 
 	const clearCredsAndClients = useCallback(() => {
@@ -53,36 +53,31 @@ const useCredsManager = () => {
 		clearCredsAndClients();
 	}
 
+	const refreshCredentials = useCallback(async () => {
+		if (credentials && credentials.authenticated) {
+			(async () => {
+				await refreshTokens();
+			})();
+		}
+
+		clearCredsAndClients();
+	}, [clearCredsAndClients, credentials, refreshTokens]);
+
 	/* Fetch the current user credentials */
 	useEffect(() => {
-		if (credentials && credentials?.expiration) {
+		if (credentials && credentials.expiration) {
 			const now = new Date();
 			const expiration = new Date(credentials.expiration);
 
 			if (now > expiration) {
-				/* If the credentials are expired, clear them and the location client */
-				clearCredsAndClients();
+				/* If the credentials are expired, refresh them */
+				refreshCredentials();
 			} else {
-				/* If the credentials are not expired, set the refresh interval/timeout */
-				authTimeout && clearTimeout(authTimeout);
-				unauthTimeout && clearTimeout(unauthTimeout);
-
-				if (credentials.authenticated && authTokens) {
-					/* If the credentials are authenticated, set the refresh interval */
-					console.log("setting interval");
-					authTimeout = setTimeout(() => {
-						(async () => {
-							await refreshTokens();
-							clearCredsAndClients();
-						})();
-					}, differenceInMilliseconds(new Date(credentials.expiration || 0), new Date()) - 300);
-				} else {
-					/* If the credentials are not authenticated, set the refresh timeout */
-					console.log("setting timeout");
-					unauthTimeout = setTimeout(() => {
-						clearCredsAndClients();
-					}, differenceInMilliseconds(new Date(credentials.expiration || 0), new Date()) - 300);
-				}
+				/* If the credentials are not expired, set the refresh timeout */
+				timeout && clearTimeout(timeout);
+				timeout = setTimeout(() => {
+					refreshCredentials();
+				}, differenceInMilliseconds(new Date(credentials.expiration || 0), new Date()) - 300);
 			}
 		} else {
 			/* If the credentials are not present, fetch them */
@@ -90,7 +85,16 @@ const useCredsManager = () => {
 				await fetchCredentials();
 			})();
 		}
-	}, [credentials, fetchCredentials, resetAwsClientStore, clearCredsAndClients, authTokens, refreshTokens]);
+	}, [
+		credentials,
+		fetchCredentials,
+		resetAwsClientStore,
+		clearCredsAndClients,
+		refreshTokens,
+		authTokens,
+		setAuthTokens,
+		refreshCredentials
+	]);
 
 	/* Instantiate location and iot client from aws-sdk whenever the credentials change */
 	useEffect(() => {

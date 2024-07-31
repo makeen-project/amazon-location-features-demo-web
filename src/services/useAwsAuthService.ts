@@ -10,7 +10,7 @@ const {
 	ROUTES: { DEMO }
 } = appConfig;
 
-const useAmplifyAuthService = () => {
+const useAwsAuthService = () => {
 	return useMemo(
 		() => ({
 			fetchCredentials: async (options: FromCognitoIdentityPoolParameters) => {
@@ -53,4 +53,4 @@ const useAmplifyAuthService = () => {
 	);
 };
 
-export default useAmplifyAuthService;
+export default useAwsAuthService;

@@ -1,7 +1,7 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-export { default as useAmplifyAuthService } from "./useAmplifyAuthService";
+export { default as useAwsAuthService } from "./useAwsAuthService";
 export { default as useAwsClientService } from "./useAwsClientService";
 export { default as useAwsPlaceService } from "./useAwsPlaceService";
 export { default as useAwsRouteService } from "./useAwsRouteService";

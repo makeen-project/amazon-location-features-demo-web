@@ -49,7 +49,7 @@ const mockProps: MapButtonsProps = {
 	onSetShowUnauthTrackerBox: jest.fn()
 };
 
-const mockUseAmplifyAuthData = {
+const mockUseAwsAuthData = {
 	credentials: {
 		accessKeyId: faker.random.word(),
 		sessionToken: faker.random.word(),
@@ -61,7 +61,7 @@ const mockUseAmplifyAuthData = {
 	isUserAwsAccountConnected: false
 };
 
-const mockUseAmplifyMapData = {
+const mockUseAwsMapData = {
 	mapProvider: MapProviderEnum.ESRI,
 	mapStyle: EsriMapEnum.ESRI_STREET_MAP
 };
@@ -76,8 +76,8 @@ const mockUseUnauthSimulationData = {
 };
 
 jest.mock("@demo/hooks", () => ({
-	useAmplifyAuth: () => mockUseAmplifyAuthData,
-	useAmplifyMap: () => mockUseAmplifyMapData,
+	useAwsAuth: () => mockUseAwsAuthData,
+	useAwsMap: () => mockUseAwsMapData,
 	useAwsGeofence: () => mockUseAwsGeofenceData,
 	useUnauthSimulation: () => mockUseUnauthSimulationData
 }));
@@ -93,9 +93,9 @@ describe("<MapButtons/>", () => {
 
 	beforeEach(() => {
 		mockProps.onlyMapStyles = false;
-		mockUseAmplifyAuthData.isUserAwsAccountConnected = false;
-		mockUseAmplifyAuthData.credentials.authenticated = false;
-		mockUseAmplifyMapData.mapProvider = MapProviderEnum.ESRI;
+		mockUseAwsAuthData.isUserAwsAccountConnected = false;
+		mockUseAwsAuthData.credentials.authenticated = false;
+		mockUseAwsMapData.mapProvider = MapProviderEnum.ESRI;
 	});
 
 	it("renders map style when onlyMapStyles prop set to true", () => {
@@ -187,8 +187,8 @@ describe("<MapButtons/>", () => {
 	it("should reset filters when click on", () => {});
 
 	it("renders geofence button and executes correctly when user AWS account connected and authenticated", () => {
-		mockUseAmplifyAuthData.isUserAwsAccountConnected = true;
-		mockUseAmplifyAuthData.credentials.authenticated = true;
+		mockUseAwsAuthData.isUserAwsAccountConnected = true;
+		mockUseAwsAuthData.credentials.authenticated = true;
 		const { getByTestId } = renderComponent();
 		expect(getByTestId("geofence-control-button")).toBeInTheDocument();
 		act(() => {
@@ -215,7 +215,7 @@ describe("<MapButtons/>", () => {
 	});
 
 	it("renders geofence button and executes correctly when user AWS account not connected and map is Grab", () => {
-		mockUseAmplifyMapData.mapProvider = MapProviderEnum.GRAB;
+		mockUseAwsMapData.mapProvider = MapProviderEnum.GRAB;
 		const { getByTestId } = renderComponent();
 		expect(getByTestId("geofence-control-button")).toBeInTheDocument();
 		act(() => {
@@ -241,8 +241,8 @@ describe("<MapButtons/>", () => {
 	});
 
 	it("renders tracker button and executes correctly when user AWS account connected and authenticated and map is Esri", () => {
-		mockUseAmplifyAuthData.isUserAwsAccountConnected = true;
-		mockUseAmplifyAuthData.credentials.authenticated = true;
+		mockUseAwsAuthData.isUserAwsAccountConnected = true;
+		mockUseAwsAuthData.credentials.authenticated = true;
 		const { getByTestId } = renderComponent();
 		expect(getByTestId("tracker-control-button")).toBeInTheDocument();
 		act(() => {
@@ -257,9 +257,9 @@ describe("<MapButtons/>", () => {
 	});
 
 	it("renders tracker button and executes correctly when user AWS account not connected", () => {
-		mockUseAmplifyAuthData.isUserAwsAccountConnected = true;
-		mockUseAmplifyAuthData.credentials.authenticated = true;
-		mockUseAmplifyMapData.mapProvider = MapProviderEnum.GRAB;
+		mockUseAwsAuthData.isUserAwsAccountConnected = true;
+		mockUseAwsAuthData.credentials.authenticated = true;
+		mockUseAwsMapData.mapProvider = MapProviderEnum.GRAB;
 		const { getByTestId } = renderComponent();
 		expect(getByTestId("tracker-control-button")).toBeInTheDocument();
 		act(() => {

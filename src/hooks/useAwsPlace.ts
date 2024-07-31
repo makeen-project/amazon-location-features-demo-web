@@ -4,7 +4,7 @@
 import { useMemo } from "react";
 
 import { SearchForTextResult } from "@aws-sdk/client-location";
-import { useAmplifyMap } from "@demo/hooks";
+import { useAwsMap } from "@demo/hooks";
 import { useAwsPlaceService } from "@demo/services";
 import { useAwsPlaceStore } from "@demo/stores";
 import { ClustersType, SuggestionType, ViewPointType } from "@demo/types";
@@ -19,7 +19,7 @@ const useAwsPlace = () => {
 	const store = useAwsPlaceStore();
 	const { setInitial } = store;
 	const { setState } = useAwsPlaceStore;
-	const { setViewpoint } = useAmplifyMap();
+	const { setViewpoint } = useAwsMap();
 	const placesService = useAwsPlaceService();
 	const { t } = useTranslation();
 

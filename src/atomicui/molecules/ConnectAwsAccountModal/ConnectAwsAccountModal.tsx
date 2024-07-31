@@ -8,7 +8,7 @@ import { IconAwsCloudFormation, IconCheckMarkCircle } from "@demo/assets/svgs";
 import { DropdownEl, Modal } from "@demo/atomicui/atoms";
 import { InputField } from "@demo/atomicui/molecules";
 import { appConfig, regionsData } from "@demo/core/constants";
-import { useAmplifyAuth, useAmplifyMap, useAwsClient } from "@demo/hooks";
+import { useAwsAuth, useAwsClient, useAwsMap } from "@demo/hooks";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import { ConnectFormValuesType, EsriMapEnum, MapProviderEnum } from "@demo/types";
 import { AnalyticsEventActionsEnum, EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
@@ -52,9 +52,9 @@ const ConnectAwsAccountModal: FC<ConnectAwsAccountModalProps> = ({
 		stackRegion,
 		cloudFormationLink,
 		handleStackRegion
-	} = useAmplifyAuth();
+	} = useAwsAuth();
 	const { resetStore: resetAwsClientStore } = useAwsClient();
-	const { mapProvider: currentMapProvider, setMapProvider, setMapStyle } = useAmplifyMap();
+	const { mapProvider: currentMapProvider, setMapProvider, setMapStyle } = useAwsMap();
 	const keyArr = Object.keys(formValues);
 	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();

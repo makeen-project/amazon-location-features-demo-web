@@ -9,7 +9,7 @@ import { CognitoIdentityCredentials } from "@demo/types";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { useTranslation } from "react-i18next";
 
-const useAws = () => {
+const useAwsClient = () => {
 	const store = useAwsClientStore();
 	const { setInitial } = store;
 	const { setState } = useAwsClientStore;
@@ -45,4 +45,4 @@ const useAws = () => {
 	return { ...methods, ...store };
 };
 
-export default useAws;
+export default useAwsClient;

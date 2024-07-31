@@ -19,7 +19,7 @@ const useAwsPlace = () => ({
 	})
 });
 
-jest.mock("hooks", () => ({ useAwsPlace, useAmplifyMap: () => ({ mapUnit: "Metric" }) }));
+jest.mock("hooks", () => ({ useAwsPlace, useAwsMap: () => ({ mapUnit: "Metric" }) }));
 
 describe("<StepCard/>", () => {
 	let stepCardContainer: HTMLElement;

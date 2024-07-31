@@ -7,7 +7,7 @@ import { Button, Flex, Placeholder, Text, View } from "@aws-amplify/ui-react";
 import { CalculateRouteRequest, CalculateRouteResponse } from "@aws-sdk/client-location";
 import { IconCar, IconClose, IconCopyPages, IconDirections, IconInfo } from "@demo/assets/svgs";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
-import { useAmplifyMap, useAwsPlace, useAwsRoute } from "@demo/hooks";
+import { useAwsMap, useAwsPlace, useAwsRoute } from "@demo/hooks";
 import useBottomSheet from "@demo/hooks/useBottomSheet";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import { DistanceUnitEnum, MapProviderEnum, MapUnitEnum, SuggestionType, TravelMode } from "@demo/types";
@@ -40,7 +40,7 @@ const Popup: FC<Props> = ({ active, info, select, onClosePopUp, setInfo }) => {
 		mapProvider: currentMapProvider,
 		mapUnit: currentMapUnit,
 		isCurrentLocationDisabled
-	} = useAmplifyMap();
+	} = useAwsMap();
 	const { clearPoiList } = useAwsPlace();
 	const { getRoute, setDirections, isFetchingRoute } = useAwsRoute();
 	const [longitude, latitude] = useMemo(() => info.Place?.Geometry?.Point as number[], [info]);

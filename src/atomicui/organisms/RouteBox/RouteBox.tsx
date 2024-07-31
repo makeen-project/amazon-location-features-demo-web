@@ -23,7 +23,7 @@ import {
 import { NotFoundCard, StepCard } from "@demo/atomicui/molecules";
 import { appConfig } from "@demo/core/constants";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
-import { useAmplifyMap, useAwsPlace, useAwsRoute, usePersistedData } from "@demo/hooks";
+import { useAwsMap, useAwsPlace, useAwsRoute, usePersistedData } from "@demo/hooks";
 import useBottomSheet from "@demo/hooks/useBottomSheet";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import {
@@ -107,7 +107,7 @@ const RouteBox: FC<RouteBoxProps> = ({
 		mapUnit: currentMapUnit,
 		isCurrentLocationDisabled,
 		mapProvider: currentMapProvider
-	} = useAmplifyMap();
+	} = useAwsMap();
 	const { search, getPlaceData } = useAwsPlace();
 	const {
 		setUI,

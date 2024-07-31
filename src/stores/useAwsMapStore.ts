@@ -24,7 +24,7 @@ const {
 } = appConfig;
 const localStorageKey = `${LOCAL_STORAGE_PREFIX}${AMPLIFY_MAP_DATA}`;
 
-interface AmplifyMapStoreProps {
+interface AwsMapStoreProps {
 	currentLocationData?: CurrentLocationDataType;
 	viewpoint: ViewPointType;
 	autoMapUnit: {
@@ -37,7 +37,7 @@ interface AmplifyMapStoreProps {
 	isCurrentLocationDisabled: boolean;
 }
 
-const initialState: IStateProps<AmplifyMapStoreProps> = {
+const initialState: IStateProps<AwsMapStoreProps> = {
 	viewpoint: US,
 	autoMapUnit: {
 		selected: true,
@@ -49,4 +49,4 @@ const initialState: IStateProps<AmplifyMapStoreProps> = {
 	isCurrentLocationDisabled: false
 };
 
-export default createStore<AmplifyMapStoreProps>(initialState, true, localStorageKey);
+export default createStore<AwsMapStoreProps>(initialState, true, localStorageKey);

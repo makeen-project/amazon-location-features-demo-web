@@ -38,7 +38,7 @@ import {
 } from "@demo/assets/svgs";
 import { appConfig } from "@demo/core/constants";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
-import { useAmplifyAuth, useAmplifyMap, useAwsGeofence, useUnauthSimulation } from "@demo/hooks";
+import { useAwsAuth, useAwsGeofence, useAwsMap, useUnauthSimulation } from "@demo/hooks";
 import useBottomSheet from "@demo/hooks/useBottomSheet";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import {
@@ -158,8 +158,8 @@ const MapButtons: FC<MapButtonsProps> = ({
 	const [searchWidth, setSearchWidth] = useState(isHandDevice ? searchHandDeviceWidth : searchDesktopWidth);
 	const stylesCardRef = useRef<HTMLDivElement | null>(null);
 	const stylesCardTogglerRef = useRef<HTMLDivElement | null>(null);
-	const { credentials, isUserAwsAccountConnected } = useAmplifyAuth();
-	const { mapProvider: currentMapProvider, mapStyle: currentMapStyle } = useAmplifyMap();
+	const { credentials, isUserAwsAccountConnected } = useAwsAuth();
+	const { mapProvider: currentMapProvider, mapStyle: currentMapStyle } = useAwsMap();
 	const { isAddingGeofence, setIsAddingGeofence } = useAwsGeofence();
 	const isAuthenticated = !!credentials?.authenticated;
 	const { isTablet, isMobile, isDesktop, isDesktopBrowser } = useDeviceMediaQuery();

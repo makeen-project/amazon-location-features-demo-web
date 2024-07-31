@@ -1,8 +1,8 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-export { default as useAmplifyAuth } from "./useAmplifyAuth";
-export { default as useAmplifyMap } from "./useAmplifyMap";
+export { default as useAwsAuth } from "./useAwsAuth";
+export { default as useAwsMap } from "./useAwsMap";
 export { default as useAwsClient } from "./useAwsClient";
 export { default as useAwsGeofence } from "./useAwsGeofence";
 export { default as useAwsIot } from "./useAwsIot";

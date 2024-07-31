@@ -19,7 +19,7 @@ const mockProps = {
 	isStylesCardOpen: false
 };
 
-const mockUseAmplifyMapData = {
+const mockUseAwsMapData = {
 	currentLocationData: {
 		error: null
 	},
@@ -45,7 +45,7 @@ const mockUseAwsPlaceData = {
 };
 
 jest.mock("@demo/hooks", () => ({
-	useAmplifyMap: () => mockUseAmplifyMapData,
+	useAwsMap: () => mockUseAwsMapData,
 	useAwsPlace: () => mockUseAwsPlaceData
 }));
 

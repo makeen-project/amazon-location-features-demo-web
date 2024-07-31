@@ -74,7 +74,7 @@ const mockUseAwsPlaceData = {
 };
 
 jest.mock("@demo/hooks", () => ({
-	useAmplifyMap: () => ({
+	useAwsMap: () => ({
 		mapUnit: "METRIC",
 		mapProvider: "SomeProvider"
 	}),

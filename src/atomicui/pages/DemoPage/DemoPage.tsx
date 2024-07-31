@@ -9,9 +9,9 @@ import { SearchBox } from "@demo/atomicui/organisms/SearchBox";
 import { appConfig } from "@demo/core/constants";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
 import {
-	useAmplifyAuth,
-	useAmplifyMap,
+	useAwsAuth,
 	useAwsGeofence,
+	useAwsMap,
 	useAwsPlace,
 	useAwsRoute,
 	useAwsTracker,
@@ -180,7 +180,7 @@ const DemoPage: FC = () => {
 	const [searchBoxValue, setSearchBoxValue] = useState("");
 	const mapViewRef = useRef<MapRef | null>(null);
 	const geolocateControlRef = useRef<GeolocateControlRef | null>(null);
-	const { credentials, region, isUserAwsAccountConnected } = useAmplifyAuth();
+	const { credentials, region, isUserAwsAccountConnected } = useAwsAuth();
 	const {
 		mapProvider: currentMapProvider,
 		mapStyle: currentMapStyle,
@@ -188,7 +188,7 @@ const DemoPage: FC = () => {
 		setMapProvider,
 		isCurrentLocationDisabled,
 		viewpoint
-	} = useAmplifyMap();
+	} = useAwsMap();
 	const { selectedMarker, suggestions, bound, clearPoiList, zoom, setZoom } = useAwsPlace();
 	const { routeData, directions, resetStore: resetAwsRouteStore } = useAwsRoute();
 	const { resetStore: resetAwsGeofenceStore } = useAwsGeofence();

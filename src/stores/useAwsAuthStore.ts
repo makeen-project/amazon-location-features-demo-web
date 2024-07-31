@@ -12,7 +12,7 @@ const {
 } = appConfig;
 const localStorageKey = `${LOCAL_STORAGE_PREFIX}${AMPLIFY_AUTH_DATA}`;
 
-export interface AmplifyAuthStoreProps {
+export interface AwsAuthStoreProps {
 	credentials?: CognitoIdentityCredentials;
 	authTokens?: AuthTokensType;
 	isUserAwsAccountConnected: boolean;
@@ -27,10 +27,10 @@ export interface AmplifyAuthStoreProps {
 	cloudFormationLink: string;
 }
 
-export const initialState: IStateProps<AmplifyAuthStoreProps> = {
+export const initialState: IStateProps<AwsAuthStoreProps> = {
 	isUserAwsAccountConnected: false,
 	autoRegion: true,
 	cloudFormationLink: CF_TEMPLATE
 };
 
-export default createStore<AmplifyAuthStoreProps>(initialState, true, localStorageKey);
+export default createStore<AwsAuthStoreProps>(initialState, true, localStorageKey);

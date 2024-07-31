@@ -26,10 +26,10 @@ import {
 	MapRef
 } from "react-map-gl";
 
-import useAmplifyAuth from "./useAmplifyAuth";
-import useAmplifyMap from "./useAmplifyMap";
+import useAwsAuth from "./useAwsAuth";
 import useAwsClient from "./useAwsClient";
 import useAwsGeofence from "./useAwsGeofence";
+import useAwsMap from "./useAwsMap";
 import useAwsPlace from "./useAwsPlace";
 import useAwsRoute from "./useAwsRoute";
 import useAwsTracker from "./useAwsTracker";
@@ -84,7 +84,7 @@ const useMapManager = ({
 		switchToDefaultRegionStack,
 		handleStackRegion,
 		stackRegion
-	} = useAmplifyAuth();
+	} = useAwsAuth();
 	const {
 		mapProvider: currentMapProvider,
 		currentLocationData,
@@ -94,7 +94,7 @@ const useMapManager = ({
 		setIsCurrentLocationDisabled,
 		setCurrentLocation,
 		setViewpoint
-	} = useAmplifyMap();
+	} = useAwsMap();
 	const { setMarker, marker, selectedMarker, clearPoiList, setZoom, setSelectedMarker } = useAwsPlace();
 	const {
 		doNotAskGrabDisclaimerModal,

@@ -19,7 +19,7 @@ import { Flex, Loader, Text } from "@aws-amplify/ui-react";
 import { IconClose, IconNotificationBell } from "@demo/assets/svgs";
 import appConfig from "@demo/core/constants/appConfig";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
-import { useAmplifyMap, useAwsGeofence, useAwsRoute, useAwsTracker, usePersistedData } from "@demo/hooks";
+import { useAwsGeofence, useAwsMap, useAwsRoute, useAwsTracker, usePersistedData } from "@demo/hooks";
 import useBottomSheet from "@demo/hooks/useBottomSheet";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import { ShowStateType } from "@demo/types";
@@ -151,7 +151,7 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 	const { setSettingsOptions } = usePersistedData();
 	const { resetStore: resetAwsRouteStore } = useAwsRoute();
 	const { setIsEditingRoute, setTrackerPoints } = useAwsTracker();
-	const { mapStyle } = useAmplifyMap();
+	const { mapStyle } = useAwsMap();
 	const [arrowDirection, setArrowDirection] = useState("no-dragging");
 	const prevBottomSheetHeightRef = useRef(bottomSheetCurrentHeight);
 	const bottomSheetRef = useRef<RefHandles | null>(null);

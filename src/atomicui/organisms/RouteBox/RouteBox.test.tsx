@@ -95,7 +95,7 @@ const useAwsRouteServiceReturnValue = {
 const servicesObj = { useAwsRouteService: () => useAwsRouteServiceReturnValue };
 const MarkerMock = ({ ...props }) => <View {...props} />;
 
-jest.mock("hooks/useAmplifyMap", () => () => ({}));
+jest.mock("hooks/useAwsMap", () => () => ({}));
 jest.mock("hooks/useAwsPlace", () => useAwsPlace);
 jest.mock("services", () => servicesObj);
 jest.mock("react-map-gl", () => ({

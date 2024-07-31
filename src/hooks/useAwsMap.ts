@@ -4,7 +4,7 @@
 import { useEffect, useMemo } from "react";
 
 import { appConfig } from "@demo/core/constants";
-import { useAmplifyMapStore } from "@demo/stores";
+import { useAwsMapStore } from "@demo/stores";
 import {
 	CurrentLocationDataType,
 	EsriMapEnum,
@@ -25,10 +25,10 @@ const {
 } = appConfig;
 const { IMPERIAL, METRIC } = MapUnitEnum;
 
-const useAmplifyMap = () => {
-	const store = useAmplifyMapStore();
+const useAwsMap = () => {
+	const store = useAwsMapStore();
 	const { setInitial } = store;
-	const { setState } = useAmplifyMapStore;
+	const { setState } = useAwsMapStore;
 
 	useEffect(() => {
 		if (store.autoMapUnit.selected) {
@@ -82,4 +82,4 @@ const useAmplifyMap = () => {
 	return useMemo(() => ({ ...methods, ...store }), [methods, store]);
 };
 
-export default useAmplifyMap;
+export default useAwsMap;

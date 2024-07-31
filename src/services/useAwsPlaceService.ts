@@ -10,7 +10,7 @@ import {
 	SearchPlaceIndexForTextRequest
 } from "@aws-sdk/client-location";
 import { appConfig } from "@demo/core/constants";
-import { useAmplifyMap, useAwsClient } from "@demo/hooks";
+import { useAwsClient, useAwsMap } from "@demo/hooks";
 import { MapProviderEnum } from "@demo/types";
 import { useTranslation } from "react-i18next";
 
@@ -23,7 +23,7 @@ const {
 
 const useAwsPlaceService = () => {
 	const { locationClient } = useAwsClient();
-	const { mapProvider: currentMapProvider, viewpoint } = useAmplifyMap();
+	const { mapProvider: currentMapProvider, viewpoint } = useAwsMap();
 	const { i18n } = useTranslation();
 	const lang = i18n.language;
 

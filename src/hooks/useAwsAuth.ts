@@ -6,10 +6,10 @@ import { useEffect, useMemo } from "react";
 import { CognitoIdentity } from "@aws-sdk/client-cognito-identity";
 import { showToast } from "@demo/core/Toast";
 import appConfig from "@demo/core/constants/appConfig";
-import { useAmplifyMap, useAwsClient } from "@demo/hooks";
-import { useAmplifyAuthService } from "@demo/services";
-import { useAmplifyAuthStore } from "@demo/stores";
-import { ConnectFormValuesType, ToastType } from "@demo/types";
+import { useAwsClient, useAwsMap } from "@demo/hooks";
+import { useAwsAuthService } from "@demo/services";
+import { useAwsAuthStore } from "@demo/stores";
+import { AuthTokensType, ConnectFormValuesType, ToastType } from "@demo/types";
 import { EventTypeEnum, RegionEnum } from "@demo/types/Enums";
 import { record } from "@demo/utils/analyticsUtils";
 import { errorHandler } from "@demo/utils/errorHandler";
@@ -31,13 +31,13 @@ const {
 
 const fallbackRegion = POOLS[Object.keys(POOLS)[0]];
 
-const useAmplifyAuth = () => {
-	const store = useAmplifyAuthStore();
+const useAwsAuth = () => {
+	const store = useAwsAuthStore();
 	const { setInitial } = store;
-	const { setState } = useAmplifyAuthStore;
-	const amplifyAuthService = useAmplifyAuthService();
+	const { setState } = useAwsAuthStore;
+	const awsAuthService = useAwsAuthService();
 	const { resetStore: resetAwsClientStore } = useAwsClient();
-	const { resetStore: resetAmplifyMapStore } = useAmplifyMap();
+	const { resetStore: resetAmplifyMapStore } = useAwsMap();
 	const { t } = useTranslation();
 	const { isDesktop } = useDeviceMediaQuery();
 
@@ -60,7 +60,7 @@ const useAmplifyAuth = () => {
 					const { identityPoolId, region, userPoolId, authTokens } = store;
 
 					if (identityPoolId && region) {
-						const credentials = await amplifyAuthService.fetchCredentials({
+						const credentials = await awsAuthService.fetchCredentials({
 							identityPoolId,
 							clientConfig: { region },
 							logins: authTokens
@@ -70,11 +70,7 @@ const useAmplifyAuth = () => {
 						setState({ credentials: { ...credentials, authenticated: authTokens ? true : false } });
 					}
 				} catch (error) {
-					errorHandler(error, t("error_handler__failed_fetch_creds.text") as string);
-					if ((error as Error).message.includes("Invalid login token")) {
-						methods.onLogout();
-						showToast({ content: "Tokens have expired, please sign in again.", type: ToastType.INFO });
-					}
+					errorHandler(error, t("error_handler__failed_fetch_creds.text"));
 				}
 			},
 			fetchTokens: async (code: string) => {
@@ -82,10 +78,10 @@ const useAmplifyAuth = () => {
 					const { userDomain, userPoolClientId } = store;
 
 					if (userDomain && userPoolClientId) {
-						const response = await amplifyAuthService.fetchTokens(userDomain, userPoolClientId, code);
+						const response = await awsAuthService.fetchTokens(userDomain, userPoolClientId, code);
 
 						if (!response.ok) {
-							throw new Error("Failed to fetch tokens");
+							throw new Error(t("error_handler__failed_fetch_tokens.text"));
 						}
 
 						const authTokens = await response.json();
@@ -100,7 +96,7 @@ const useAmplifyAuth = () => {
 						[{ EventType: EventTypeEnum.SIGN_IN_FAILED, Attributes: {} }],
 						["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
 					);
-					errorHandler(error, "Failed to fetch tokens");
+					errorHandler(error, t("error_handler__failed_fetch_tokens.text"));
 				}
 			},
 			refreshTokens: async () => {
@@ -108,21 +104,17 @@ const useAmplifyAuth = () => {
 					const { userDomain, userPoolClientId, authTokens } = store;
 
 					if (userDomain && userPoolClientId && authTokens) {
-						const response = await amplifyAuthService.refreshTokens(
-							userDomain,
-							userPoolClientId,
-							authTokens.refresh_token
-						);
+						const response = await awsAuthService.refreshTokens(userDomain, userPoolClientId, authTokens.refresh_token);
 
 						if (!response.ok) {
-							throw new Error("Failed to refresh tokens");
+							throw new Error(t("error_handler__failed_refresh_tokens.text"));
 						}
 
-						const tokens = await response.json();
-						setState({ authTokens: tokens });
+						const newTokens = await response.json();
+						setState({ authTokens: { ...newTokens, refresh_token: authTokens.refresh_token } });
 					}
 				} catch (error) {
-					errorHandler(error, "Failed to refresh tokens");
+					errorHandler(error, t("error_handler__failed_refresh_tokens.text"));
 				}
 			},
 			validateIdentityPoolIdAndRegion: (IdentityPoolId: string, successCb?: () => void) => {
@@ -167,6 +159,9 @@ const useAmplifyAuth = () => {
 			clearCredentials: () => {
 				setState({ credentials: undefined });
 			},
+			setAuthTokens: (authTokens?: AuthTokensType) => {
+				setState({ authTokens });
+			},
 			setConnectFormValues: ({
 				IdentityPoolId,
 				UserDomain,
@@ -193,7 +188,7 @@ const useAmplifyAuth = () => {
 					if (userDomain && userPoolClientId) {
 						setState({ authTokens: undefined });
 						window.open(
-							`https://${userDomain}/login?client_id=${userPoolClientId}&response_type=code&identity_provider=COGNITO&scope=email%20openid%20profile&redirect_uri=${window.location.origin}${DEMO}`,
+							`https://${userDomain}/login?client_id=${userPoolClientId}&response_type=code&identity_provider=COGNITO&redirect_uri=${window.location.origin}${DEMO}`,
 							"_self"
 						);
 					}
@@ -306,10 +301,10 @@ const useAmplifyAuth = () => {
 				setInitial();
 			}
 		}),
-		[store, amplifyAuthService, setState, t, resetAwsClientStore, resetAmplifyMapStore, isDesktop, setInitial]
+		[store, awsAuthService, setState, t, resetAwsClientStore, resetAmplifyMapStore, isDesktop, setInitial]
 	);
 
 	return { ...methods, ...store };
 };
 
-export default useAmplifyAuth;
+export default useAwsAuth;

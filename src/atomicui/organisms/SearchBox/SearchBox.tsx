@@ -20,7 +20,7 @@ import { NLSearchLoader } from "@demo/atomicui/atoms";
 import { InputField, Marker, NotFoundCard, SuggestionMarker } from "@demo/atomicui/molecules";
 import { appConfig } from "@demo/core/constants";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
-import { useAmplifyMap, useAwsPlace } from "@demo/hooks";
+import { useAwsMap, useAwsPlace } from "@demo/hooks";
 import useBottomSheet from "@demo/hooks/useBottomSheet";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import { DistanceUnitEnum, MapProviderEnum, MapUnitEnum, SuggestionType } from "@demo/types";
@@ -85,8 +85,13 @@ const SearchBox: FC<SearchBoxProps> = ({
 	const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const [isNLChecked, setIsNLChecked] = useState(false);
 	const autocompleteRef = useRef<HTMLInputElement | null>(null);
-	const { mapUnit: currentMapUnit, isCurrentLocationDisabled, currentLocationData, viewpoint } = useAmplifyMap();
-	const { mapProvider: currentMapProvider } = useAmplifyMap();
+	const {
+		mapProvider: currentMapProvider,
+		mapUnit: currentMapUnit,
+		isCurrentLocationDisabled,
+		currentLocationData,
+		viewpoint
+	} = useAwsMap();
 	const {
 		clusters,
 		suggestions,

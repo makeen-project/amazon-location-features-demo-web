@@ -4,7 +4,7 @@
 import { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { CalculateRouteRequest } from "@aws-sdk/client-location";
-import { useAmplifyMap, useAwsGeofence, useAwsRoute, useAwsTracker, usePersistedData } from "@demo/hooks";
+import { useAwsGeofence, useAwsMap, useAwsRoute, useAwsTracker, usePersistedData } from "@demo/hooks";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import { DistanceUnitEnum, MapUnitEnum, RouteDataType, TrackerType, TravelMode } from "@demo/types";
 import { TriggeredByEnum } from "@demo/types/Enums";
@@ -45,7 +45,7 @@ const AuthTrackerSimulation: FC<AuthTrackerSimulationProps> = ({
 }) => {
 	const [idx, setIdx] = useState(0);
 	const timeoutId = useRef<NodeJS.Timeout | null>(null);
-	const { mapUnit: currentMapUnit } = useAmplifyMap();
+	const { mapUnit: currentMapUnit } = useAwsMap();
 	const { getRoute } = useAwsRoute();
 	const { evaluateGeofence } = useAwsGeofence();
 	const { trackerPoints } = useAwsTracker();

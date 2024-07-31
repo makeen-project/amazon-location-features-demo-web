@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { HubPayload } from "@aws-amplify/core";
 import { AWSIoTProvider } from "@aws-amplify/pubsub";
 import { showToast } from "@demo/core/Toast";
-import { useAmplifyAuth, useAwsGeofence } from "@demo/hooks";
+import { useAwsAuth, useAwsGeofence } from "@demo/hooks";
 import i18n from "@demo/locales/i18n";
 import { EventTypeEnum, NotificationHistoryItemtype, ToastType } from "@demo/types";
 import { record } from "@demo/utils/analyticsUtils";
@@ -26,7 +26,7 @@ const useWebSocketService = (
 	const [connectionState, setConnectionState] = useState<string>("Disconnected");
 	const [subscription, setSubscription] = useState<ZenObservable.Subscription | null>(null);
 	const timeoutId = useRef<NodeJS.Timeout | null>(null);
-	const { region, webSocketUrl, credentials } = useAmplifyAuth();
+	const { region, webSocketUrl, credentials } = useAwsAuth();
 	const { setUnauthNotifications } = useAwsGeofence();
 	const url = getDomainName(webSocketUrl || "");
 	const provider = useMemo(

@@ -5,7 +5,7 @@ import { useMemo } from "react";
 
 import { CalculateRouteRequest } from "@aws-sdk/client-location";
 import { useAwsRouteService } from "@demo/services";
-import { useAmplifyMapStore, useAwsRouteStore } from "@demo/stores";
+import { useAwsMapStore, useAwsRouteStore } from "@demo/stores";
 import { InputType, RouteDataType, SuggestionType } from "@demo/types";
 import { EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
 import { record } from "@demo/utils/analyticsUtils";
@@ -17,7 +17,7 @@ const useAwsRoute = () => {
 	const { setInitial } = store;
 	const { setState } = useAwsRouteStore;
 	const routesService = useAwsRouteService();
-	const mapStore = useAmplifyMapStore();
+	const mapStore = useAwsMapStore();
 	const { t } = useTranslation();
 
 	const methods = useMemo(

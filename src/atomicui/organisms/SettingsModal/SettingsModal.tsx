@@ -17,7 +17,7 @@ import {
 	IconShuffle
 } from "@demo/assets/svgs";
 import { appConfig, languageSwitcherData, regionsData } from "@demo/core/constants";
-import { useAmplifyAuth, useAmplifyMap, useAwsClient, useAwsIot, usePersistedData } from "@demo/hooks";
+import { useAwsAuth, useAwsClient, useAwsIot, useAwsMap, usePersistedData } from "@demo/hooks";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import {
 	ConnectFormValuesType,
@@ -98,7 +98,7 @@ const SettingsModal: FC<SettingsModalProps> = ({
 		stackRegion,
 		cloudFormationLink,
 		handleStackRegion
-	} = useAmplifyAuth();
+	} = useAwsAuth();
 	const {
 		autoMapUnit,
 		setIsAutomaticMapUnit,
@@ -109,7 +109,7 @@ const SettingsModal: FC<SettingsModalProps> = ({
 		setMapProvider,
 		setMapStyle,
 		resetStore: resetMapStore
-	} = useAmplifyMap();
+	} = useAwsMap();
 	const { defaultRouteOptions, setDefaultRouteOptions, setSettingsOptions, settingsOptions } = usePersistedData();
 	const { resetStore: resetAwsClientStore } = useAwsClient();
 	const { detachPolicy } = useAwsIot();

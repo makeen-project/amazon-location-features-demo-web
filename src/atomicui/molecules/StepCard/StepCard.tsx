@@ -5,7 +5,7 @@ import { FC, memo, useCallback, useEffect, useRef, useState } from "react";
 
 import { Flex, Text, View } from "@aws-amplify/ui-react";
 import { Step } from "@aws-sdk/client-location";
-import { useAmplifyMap, useAwsPlace } from "@demo/hooks";
+import { useAwsMap, useAwsPlace } from "@demo/hooks";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import { MapUnitEnum, SuggestionType, TravelMode } from "@demo/types";
 import { uuid } from "@demo/utils/uuid";
@@ -23,7 +23,7 @@ interface StepCardProps {
 
 const StepCard: FC<StepCardProps> = ({ step, isFirst, isLast }) => {
 	const [placeData, setPlaceData] = useState<SuggestionType | undefined>(undefined);
-	const { mapUnit: currentMapUnit } = useAmplifyMap();
+	const { mapUnit: currentMapUnit } = useAwsMap();
 	const { getPlaceDataByCoordinates } = useAwsPlace();
 	const onlyOneEl = isFirst && isLast;
 	const { t, i18n } = useTranslation();
