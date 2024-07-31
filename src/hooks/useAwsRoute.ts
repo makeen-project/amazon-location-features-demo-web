@@ -16,7 +16,7 @@ const useAwsRoute = () => {
 	const store = useAwsRouteStore();
 	const { setInitial } = store;
 	const { setState } = useAwsRouteStore;
-	const routesService = useAwsRouteService();
+	const awsRouteService = useAwsRouteService();
 	const mapStore = useAwsMapStore();
 	const { t } = useTranslation();
 
@@ -25,7 +25,7 @@ const useAwsRoute = () => {
 			getRoute: async (params: CalculateRouteRequest, triggeredBy: TriggeredByEnum) => {
 				try {
 					setState({ isFetchingRoute: true });
-					const routeData = await routesService.calculateRoute(params, mapStore.mapProvider);
+					const routeData = await awsRouteService.calculateRoute(params, mapStore.mapProvider);
 					return routeData;
 				} catch (error) {
 					errorHandler(error, `${t("error_handler__failed_calculate_route.text") as string} (${params.TravelMode})`);
@@ -67,7 +67,7 @@ const useAwsRoute = () => {
 				setInitial();
 			}
 		}),
-		[setInitial, setState, routesService, mapStore.mapProvider, t]
+		[setInitial, setState, awsRouteService, mapStore.mapProvider, t]
 	);
 
 	return useMemo(() => ({ ...methods, ...store }), [methods, store]);
