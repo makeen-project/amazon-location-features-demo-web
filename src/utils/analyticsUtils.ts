@@ -7,7 +7,8 @@ import {
 	PinpointClient,
 	PutEventsCommand,
 	PutEventsRequest,
-	UpdateEndpointCommand
+	UpdateEndpointCommand,
+	UpdateEndpointCommandInput
 } from "@aws-sdk/client-pinpoint";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 
@@ -106,7 +107,7 @@ export const createOrUpdateEndpoint = async () => {
 		platformType = "IOS";
 	}
 
-	const input = {
+	const input: UpdateEndpointCommandInput = {
 		ApplicationId: PINPOINT_APPLICATION_ID,
 		EndpointId: endpointId!,
 		EndpointRequest: {

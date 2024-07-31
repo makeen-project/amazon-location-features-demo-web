@@ -78,7 +78,7 @@ interface IProps {
 	confirmCloseSimulation: boolean;
 	setConfirmCloseSimulation: Dispatch<SetStateAction<boolean>>;
 	setShowAuthTrackerBox: (b: boolean) => void;
-	clearCredsAndLocationClient?: () => void;
+	clearCredsAndClients?: () => void;
 	setShowAuthGeofenceBox: (b: boolean) => void;
 	setTriggerOnClose: Dispatch<SetStateAction<boolean>>;
 	setTriggerOnReset: Dispatch<SetStateAction<boolean>>;
@@ -123,7 +123,7 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 	confirmCloseSimulation,
 	setConfirmCloseSimulation,
 	setShowAuthTrackerBox,
-	clearCredsAndLocationClient,
+	clearCredsAndClients,
 	setTriggerOnClose,
 	setTriggerOnReset,
 	isEditingAuthRoute,
@@ -320,12 +320,12 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 	}, [from, resetToExplore, setShow]);
 
 	const onCloseAuthTracker = useCallback(() => {
-		clearCredsAndLocationClient && clearCredsAndLocationClient();
+		clearCredsAndClients && clearCredsAndClients();
 		setIsEditingRoute(false);
 		setTrackerPoints(undefined);
 		setShowAuthTrackerBox(false);
 		setUI(ResponsiveUIEnum.explore);
-	}, [clearCredsAndLocationClient, setIsEditingRoute, setShowAuthTrackerBox, setTrackerPoints, setUI]);
+	}, [clearCredsAndClients, setIsEditingRoute, setShowAuthTrackerBox, setTrackerPoints, setUI]);
 
 	const onBackUnauthHandler = useCallback(() => {
 		if (isNotifications) {
@@ -557,13 +557,13 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 	const footerHeight = useCallback((maxHeight: number) => calculatePixelValue(maxHeight, 50), [calculatePixelValue]);
 
 	const onCloseHandler = useCallback(() => {
-		clearCredsAndLocationClient && clearCredsAndLocationClient();
+		clearCredsAndClients && clearCredsAndClients();
 		setShowStartUnauthSimulation(false);
 		from === MenuItemEnum.GEOFENCE ? setShowUnauthGeofenceBox(false) : setShowUnauthTrackerBox(false);
 		setConfirmCloseSimulation(false);
 		resetToExplore();
 	}, [
-		clearCredsAndLocationClient,
+		clearCredsAndClients,
 		from,
 		resetToExplore,
 		setConfirmCloseSimulation,

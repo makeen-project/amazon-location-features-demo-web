@@ -21,7 +21,7 @@ const props: AuthTrackerBoxProps = {
 		fitBounds: () => {}
 	},
 	setShowAuthTrackerBox: jest.fn(),
-	clearCredsAndLocationClient: jest.fn()
+	clearCredsAndClients: jest.fn()
 };
 
 const mockGeofencesData = [

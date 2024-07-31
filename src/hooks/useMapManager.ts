@@ -82,7 +82,8 @@ const useMapManager = ({
 		switchToGrabMapRegionStack,
 		isUserAwsAccountConnected,
 		switchToDefaultRegionStack,
-		handleStackRegion
+		handleStackRegion,
+		stackRegion
 	} = useAmplifyAuth();
 	const {
 		mapProvider: currentMapProvider,
@@ -490,15 +491,17 @@ const useMapManager = ({
 
 	/* Handled stack region and cloudformation link */
 	useEffect(() => {
-		if (defaultRegion) {
-			currentMapProvider === MapProviderEnum.GRAB
-				? handleStackRegion({
-						value: "ap-southeast-1",
-						label: "regions__ap_southeast_1.text"
-				  })
-				: handleStackRegion(defaultRegion);
+		if (currentMapProvider === MapProviderEnum.GRAB) {
+			handleStackRegion({
+				value: "ap-southeast-1",
+				label: "regions__ap_southeast_1.text"
+			});
 		}
-	}, [defaultRegion, currentMapProvider, handleStackRegion]);
+
+		if (defaultRegion !== stackRegion) {
+			handleStackRegion(defaultRegion);
+		}
+	}, [defaultRegion, currentMapProvider, handleStackRegion, stackRegion]);
 
 	const onMapStyleChange = useCallback(
 		(mapStyle: EsriMapEnum | HereMapEnum | GrabMapEnum | OpenDataMapEnum) => {

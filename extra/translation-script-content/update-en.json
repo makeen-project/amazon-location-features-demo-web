@@ -1,1 +1,8 @@
-{}
+{
+	"error_handler__failed_fetch_token": {
+		"text": "Failed to fetch token"
+	},
+	"error_handler__failed_refresh_token": {
+		"text": "Failed to refresh token"
+	}
+}

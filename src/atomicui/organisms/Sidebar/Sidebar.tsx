@@ -52,8 +52,7 @@ const Sidebar: FC<SidebarProps> = ({
 	onShowUnauthTrackerBox,
 	onOpenFeedbackModal
 }) => {
-	const { isUserAwsAccountConnected, credentials, onLogin, onLogout, onDisconnectAwsAccount, setAuthTokens } =
-		useAmplifyAuth();
+	const { isUserAwsAccountConnected, credentials, onLogin, onLogout, onDisconnectAwsAccount } = useAmplifyAuth();
 	const { mapProvider: currentMapProvider } = useAmplifyMap();
 	const { detachPolicy } = useAwsIot();
 	const navigate = useNavigate();
@@ -118,14 +117,6 @@ const Sidebar: FC<SidebarProps> = ({
 		onCloseSidebar();
 		onShowAboutModal();
 	};
-
-	const _onLogout = async () => {
-		setAuthTokens(undefined);
-		await detachPolicy(credentials!.identityId);
-		await onLogout();
-	};
-
-	const _onLogin = async () => await onLogin();
 
 	return (
 		<Card data-testid="side-bar" className="side-bar">
@@ -204,16 +195,25 @@ const Sidebar: FC<SidebarProps> = ({
 							textAlign="center"
 							onClick={async () => {
 								if (isAuthenticated) {
-									_onLogout();
+									record(
+										[
+											{
+												EventType: EventTypeEnum.SIGN_OUT_STARTED,
+												Attributes: { triggeredBy: TriggeredByEnum.SIDEBAR }
+											}
+										],
+										["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
+									);
+									await detachPolicy(credentials!.identityId);
+									onLogout();
 								} else {
-									await record(
+									record(
 										[
 											{ EventType: EventTypeEnum.SIGN_IN_STARTED, Attributes: { triggeredBy: TriggeredByEnum.SIDEBAR } }
 										],
 										["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
 									);
-
-									_onLogin();
+									onLogin();
 								}
 							}}
 						>

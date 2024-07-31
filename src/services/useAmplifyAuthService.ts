@@ -3,9 +3,8 @@
 
 import { useMemo } from "react";
 
-import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
+import { FromCognitoIdentityPoolParameters, fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { appConfig } from "@demo/core/constants";
-import { Auth } from "aws-amplify";
 
 const {
 	ROUTES: { DEMO }
@@ -14,18 +13,41 @@ const {
 const useAmplifyAuthService = () => {
 	return useMemo(
 		() => ({
-			fetchCredentials: async (identityPoolId: string, region: string) => {
-				const credentialsProvider = fromCognitoIdentityPool({
-					identityPoolId,
-					clientConfig: { region }
-				});
+			fetchCredentials: async (options: FromCognitoIdentityPoolParameters) => {
+				const credentialsProvider = fromCognitoIdentityPool(options);
 				return await credentialsProvider();
 			},
-			hostedUi: (userDomain: string, userPoolClientId: string) =>
-				`https://${userDomain}/login?client_id=${userPoolClientId}&response_type=code&identity_provider=COGNITO&scope=email%20openid%20profile&redirect_uri=${window.location.origin}${DEMO}`,
-			login: async () => await Auth.federatedSignIn(),
-			logout: async () => await Auth.signOut(),
-			getCurrentSession: async () => await Auth.currentSession()
+			fetchTokens: async (userDomain: string, userPoolClientId: string, code: string) => {
+				const tokenUrl = `https://${userDomain}/oauth2/token`;
+				const body = new URLSearchParams({
+					grant_type: "authorization_code",
+					client_id: userPoolClientId,
+					redirect_uri: `${window.location.origin}${DEMO}`,
+					code
+				});
+				return await fetch(tokenUrl, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					body: body.toString()
+				});
+			},
+			refreshTokens: async (userDomain: string, userPoolClientId: string, refreshToken: string) => {
+				const tokenUrl = `https://${userDomain}/oauth2/token`;
+				const body = new URLSearchParams({
+					grant_type: "refresh_token",
+					client_id: userPoolClientId,
+					refresh_token: refreshToken
+				});
+				return await fetch(tokenUrl, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					body: body.toString()
+				});
+			}
 		}),
 		[]
 	);

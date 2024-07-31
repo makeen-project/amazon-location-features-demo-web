@@ -61,7 +61,7 @@ const SignInModal: FC<SignInModalProps> = ({ open, onClose }) => {
 								],
 								["userAWSAccountConnectionStatus", "userAuthenticationStatus"]
 							);
-
+							onClose();
 							onLogin();
 						}}
 					>

@@ -196,7 +196,7 @@ const DemoPage: FC = () => {
 	const { showWelcomeModal, setShowWelcomeModal, setSettingsOptions } = usePersistedData();
 	const { isDesktop, isMobile, isTablet } = useDeviceMediaQuery();
 	const { setUI, ui, bottomSheetCurrentHeight = 0, setBottomSheetHeight, setBottomSheetMinHeight } = useBottomSheet();
-	const { clearCredsAndLocationClient } = useCredsManager();
+	const { clearCredsAndClients } = useCredsManager();
 	const {
 		gridLoader,
 		setGridLoader,
@@ -558,7 +558,7 @@ const DemoPage: FC = () => {
 								<AuthTrackerBox
 									mapRef={mapViewRef?.current}
 									setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
-									clearCredsAndLocationClient={clearCredsAndLocationClient}
+									clearCredsAndClients={clearCredsAndClients}
 								/>
 							) : show.unauthGeofenceBox || show.unauthTrackerBox ? (
 								UnauthSimulationUI
@@ -669,7 +669,7 @@ const DemoPage: FC = () => {
 							confirmCloseSimulation={confirmCloseUnauthSimulation}
 							setConfirmCloseSimulation={setConfirmCloseUnauthSimulation}
 							setShowAuthTrackerBox={b => setShow(s => ({ ...s, authTrackerBox: b }))}
-							clearCredsAndLocationClient={clearCredsAndLocationClient}
+							clearCredsAndClients={clearCredsAndClients}
 							setShowAuthGeofenceBox={b => setShow(s => ({ ...s, authGeofenceBox: b }))}
 							setShowRouteBox={b => setShow(s => ({ ...s, routeBox: b }))}
 							isExpandRouteOptionsMobile={expandRouteOptionsMobile}

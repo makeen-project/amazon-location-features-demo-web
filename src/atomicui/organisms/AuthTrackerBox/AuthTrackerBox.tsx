@@ -42,10 +42,10 @@ export const trackerTypes = [
 export interface AuthTrackerBoxProps {
 	mapRef: MapRef | null;
 	setShowAuthTrackerBox: (b: boolean) => void;
-	clearCredsAndLocationClient?: () => void;
+	clearCredsAndClients?: () => void;
 }
 
-const AuthTrackerBox: FC<AuthTrackerBoxProps> = ({ mapRef, setShowAuthTrackerBox, clearCredsAndLocationClient }) => {
+const AuthTrackerBox: FC<AuthTrackerBoxProps> = ({ mapRef, setShowAuthTrackerBox, clearCredsAndClients }) => {
 	const [isSaved, setIsSaved] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [routeData, setRouteData] = useState<RouteDataType | undefined>(undefined);
@@ -89,7 +89,7 @@ const AuthTrackerBox: FC<AuthTrackerBoxProps> = ({ mapRef, setShowAuthTrackerBox
 	};
 
 	const onClose = () => {
-		clearCredsAndLocationClient && clearCredsAndLocationClient();
+		clearCredsAndClients && clearCredsAndClients();
 		setIsEditingRoute(false);
 		setTrackerPoints(undefined);
 		setShowAuthTrackerBox(false);
