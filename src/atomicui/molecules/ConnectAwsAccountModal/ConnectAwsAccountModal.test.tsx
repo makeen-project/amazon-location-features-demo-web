@@ -18,7 +18,7 @@ const mockProps: ConnectAwsAccountModalProps = {
 	handleCurrentLocationAndViewpoint: jest.fn()
 };
 
-const mockUseAwsAuthData = {
+const mockUseAuthData = {
 	region: "ap-southeast-1",
 	isUserAwsAccountConnected: false,
 	setConnectFormValues: jest.fn(),
@@ -31,20 +31,20 @@ const mockUseAwsAuthData = {
 	handleStackRegion: jest.fn()
 };
 
-const mockUseAwsMapData = {
+const mockUseMapData = {
 	mapProvider: "Grab",
 	setMapProvider: jest.fn(),
 	setMapStyle: jest.fn()
 };
 
-const mockUseAwsClientData = {
+const mockUseClientData = {
 	resetStore: jest.fn()
 };
 
 jest.mock("@demo/hooks", () => ({
-	useAwsAuth: () => mockUseAwsAuthData,
-	useAwsMap: () => mockUseAwsMapData,
-	useAwsClient: () => mockUseAwsClientData,
+	useAuth: () => mockUseAuthData,
+	useMap: () => mockUseMapData,
+	useClient: () => mockUseClientData,
 	useMediaQuery: () => true
 }));
 
@@ -65,7 +65,7 @@ describe("<ConnectAwsAccountModal />", () => {
 		);
 
 	beforeEach(() => {
-		mockUseAwsAuthData.isUserAwsAccountConnected = false;
+		mockUseAuthData.isUserAwsAccountConnected = false;
 		i18n.changeLanguage("en");
 	});
 
@@ -128,11 +128,11 @@ describe("<ConnectAwsAccountModal />", () => {
 			() => {
 				expect(getByTestId("connect-button")).toBeEnabled();
 				fireEvent.click(getByTestId("connect-button"));
-				expect(mockUseAwsAuthData.validateFormValues).toHaveBeenCalledWith();
-				expect(mockUseAwsAuthData.setConnectFormValues).toHaveBeenCalled();
-				expect(mockUseAwsAuthData.clearCredentials).toHaveBeenCalled();
-				expect(mockUseAwsClientData.resetStore).toHaveBeenCalled();
-				expect(mockUseAwsAuthData.setIsUserAwsAccountConnected).toHaveBeenCalled();
+				expect(mockUseAuthData.validateFormValues).toHaveBeenCalledWith();
+				expect(mockUseAuthData.setConnectFormValues).toHaveBeenCalled();
+				expect(mockUseAuthData.clearCredentials).toHaveBeenCalled();
+				expect(mockUseClientData.resetStore).toHaveBeenCalled();
+				expect(mockUseAuthData.setIsUserAwsAccountConnected).toHaveBeenCalled();
 			},
 			{
 				timeout: 10000,
@@ -146,7 +146,7 @@ describe("<ConnectAwsAccountModal />", () => {
 	});
 
 	it("should allow to continue to explore page after connecting successfully", () => {
-		mockUseAwsAuthData.isUserAwsAccountConnected = true;
+		mockUseAuthData.isUserAwsAccountConnected = true;
 		const { getByTestId } = renderComponent();
 
 		waitFor(
@@ -169,7 +169,7 @@ describe("<ConnectAwsAccountModal />", () => {
 	});
 
 	it("should allow to signin after connecting successfully", () => {
-		mockUseAwsAuthData.isUserAwsAccountConnected = true;
+		mockUseAuthData.isUserAwsAccountConnected = true;
 		const { getByTestId } = renderComponent();
 
 		waitFor(
@@ -178,7 +178,7 @@ describe("<ConnectAwsAccountModal />", () => {
 				expect(getByTestId("continue-to-explore")).toBeInTheDocument();
 				fireEvent.click(getByTestId("sign-in-button"));
 				expect(mockProps.onClose).toHaveBeenCalled();
-				expect(mockUseAwsAuthData.onLogin).toHaveBeenCalled();
+				expect(mockUseAuthData.onLogin).toHaveBeenCalled();
 			},
 			{
 				timeout: 10000,
@@ -205,7 +205,7 @@ describe("<ConnectAwsAccountModal />", () => {
 				expect(getByTestId("modal-container")).toBeInTheDocument();
 				fireEvent.click(getByTestId("modal-container"));
 				expect(mockProps.onClose).toHaveBeenCalled();
-				expect(mockUseAwsAuthData.onLogin).toHaveBeenCalled();
+				expect(mockUseAuthData.onLogin).toHaveBeenCalled();
 			},
 			{
 				timeout: 10000,

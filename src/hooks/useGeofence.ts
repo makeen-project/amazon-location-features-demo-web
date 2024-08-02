@@ -4,19 +4,19 @@
 import { useMemo } from "react";
 
 import { GeofenceGeometry, ListGeofenceResponseEntry } from "@aws-sdk/client-location";
-import { useAwsGeofenceService } from "@demo/services";
-import { useAwsAuthStore, useAwsGeofenceStore } from "@demo/stores";
+import { useGeofenceService } from "@demo/services";
+import { useAuthStore, useGeofenceStore } from "@demo/stores";
 import { EventTypeEnum, NotificationHistoryItemtype } from "@demo/types";
 import { record } from "@demo/utils/analyticsUtils";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { useTranslation } from "react-i18next";
 
-const useAwsGeofence = () => {
-	const store = useAwsGeofenceStore();
+const useGeofence = () => {
+	const store = useGeofenceStore();
 	const { setInitial } = store;
-	const { setState } = useAwsGeofenceStore;
-	const awsGeofenceService = useAwsGeofenceService();
-	const authStore = useAwsAuthStore();
+	const { setState } = useGeofenceStore;
+	const geofenceService = useGeofenceService();
+	const authStore = useAuthStore();
 	const { t } = useTranslation();
 
 	const methods = useMemo(
@@ -27,7 +27,7 @@ const useAwsGeofence = () => {
 			) => {
 				try {
 					setState({ isFetchingGeofences: true });
-					const res = await awsGeofenceService.listGeofences(geofenceCollection);
+					const res = await geofenceService.listGeofences(geofenceCollection);
 					cb ? cb(res?.Entries) : setState({ geofences: res?.Entries });
 					record(
 						[{ EventType: EventTypeEnum.GET_GEOFENCES_LIST_SUCCESSFUL, Attributes: {} }],
@@ -46,7 +46,7 @@ const useAwsGeofence = () => {
 			createGeofence: async (GeofenceId: string, Geometry: GeofenceGeometry) => {
 				try {
 					setState({ isCreatingGeofence: true });
-					const res = await awsGeofenceService.putGeofence(GeofenceId, Geometry);
+					const res = await geofenceService.putGeofence(GeofenceId, Geometry);
 					res && methods.getGeofencesList();
 					record(
 						[{ EventType: EventTypeEnum.GEOFENCE_CREATION_SUCCESSFUL, Attributes: {} }],
@@ -65,7 +65,7 @@ const useAwsGeofence = () => {
 			deleteGeofence: async (GeofenceId: string) => {
 				try {
 					setState({ isDeletingGeofence: true });
-					const res = await awsGeofenceService.deleteGeofence(GeofenceId);
+					const res = await geofenceService.deleteGeofence(GeofenceId);
 					res && methods.getGeofencesList();
 					record(
 						[{ EventType: EventTypeEnum.GEOFENCE_DELETION_SUCCESSFUL, Attributes: {} }],
@@ -83,7 +83,7 @@ const useAwsGeofence = () => {
 			},
 			evaluateGeofence: async (Position: number[], geofenceCollection?: string) => {
 				try {
-					await awsGeofenceService.evaluateGeofence(Position, authStore.credentials!.identityId, geofenceCollection);
+					await geofenceService.evaluateGeofence(Position, authStore.credentials!.identityId, geofenceCollection);
 				} catch (error) {
 					errorHandler(error, t("error_handler__failed_evaluate_geofences.text") as string);
 				}
@@ -105,10 +105,10 @@ const useAwsGeofence = () => {
 				setInitial();
 			}
 		}),
-		[setInitial, setState, awsGeofenceService, authStore.credentials, t]
+		[setInitial, setState, geofenceService, authStore.credentials, t]
 	);
 
 	return useMemo(() => ({ ...methods, ...store }), [methods, store]);
 };
 
-export default useAwsGeofence;
+export default useGeofence;

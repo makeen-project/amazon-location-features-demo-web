@@ -3,24 +3,24 @@
 
 import { useMemo } from "react";
 
-import { useAwsClientService } from "@demo/services";
-import { useAwsClientStore } from "@demo/stores";
+import { useClientService } from "@demo/services";
+import { useClientStore } from "@demo/stores";
 import { CognitoIdentityCredentials } from "@demo/types";
 import { errorHandler } from "@demo/utils/errorHandler";
 import { useTranslation } from "react-i18next";
 
-const useAwsClient = () => {
-	const store = useAwsClientStore();
+const useClient = () => {
+	const store = useClientStore();
 	const { setInitial } = store;
-	const { setState } = useAwsClientStore;
-	const awsClientService = useAwsClientService();
+	const { setState } = useClientStore;
+	const clientService = useClientService();
 	const { t } = useTranslation();
 
 	const methods = useMemo(
 		() => ({
 			createLocationClient: (credentials: CognitoIdentityCredentials, region: string) => {
 				try {
-					const locationClient = awsClientService.createLocationClient(credentials, region);
+					const locationClient = clientService.createLocationClient(credentials, region);
 					setState({ locationClient });
 				} catch (error) {
 					errorHandler(error, t("error_handler__failed_create_location_client.text") as string);
@@ -28,7 +28,7 @@ const useAwsClient = () => {
 			},
 			createIotClient: (credentials: CognitoIdentityCredentials, region: string) => {
 				try {
-					const iotClient = awsClientService.createIotClient(credentials, region);
+					const iotClient = clientService.createIotClient(credentials, region);
 					setState({ iotClient });
 				} catch (error) {
 					errorHandler(error, t("error_handler__failed_create_iot_client.text") as string);
@@ -39,10 +39,10 @@ const useAwsClient = () => {
 				setInitial();
 			}
 		}),
-		[awsClientService, setState, t, setInitial]
+		[clientService, setState, t, setInitial]
 	);
 
 	return { ...methods, ...store };
 };
 
-export default useAwsClient;
+export default useClient;

@@ -26,16 +26,16 @@ import {
 	MapRef
 } from "react-map-gl";
 
-import useAwsAuth from "./useAwsAuth";
-import useAwsClient from "./useAwsClient";
-import useAwsGeofence from "./useAwsGeofence";
-import useAwsMap from "./useAwsMap";
-import useAwsPlace from "./useAwsPlace";
-import useAwsRoute from "./useAwsRoute";
-import useAwsTracker from "./useAwsTracker";
+import useAuth from "./useAuth";
 import useBottomSheet from "./useBottomSheet";
+import useClient from "./useClient";
 import useDeviceMediaQuery from "./useDeviceMediaQuery";
+import useGeofence from "./useGeofence";
+import useMap from "./useMap";
 import usePersistedData from "./usePersistedData";
+import usePlace from "./usePlace";
+import useRoute from "./useRoute";
+import useTracker from "./useTracker";
 
 const {
 	POOLS,
@@ -84,7 +84,7 @@ const useMapManager = ({
 		switchToDefaultRegionStack,
 		handleStackRegion,
 		stackRegion
-	} = useAwsAuth();
+	} = useAuth();
 	const {
 		mapProvider: currentMapProvider,
 		currentLocationData,
@@ -94,18 +94,18 @@ const useMapManager = ({
 		setIsCurrentLocationDisabled,
 		setCurrentLocation,
 		setViewpoint
-	} = useAwsMap();
-	const { setMarker, marker, selectedMarker, clearPoiList, setZoom, setSelectedMarker } = useAwsPlace();
+	} = useMap();
+	const { setMarker, marker, selectedMarker, clearPoiList, setZoom, setSelectedMarker } = usePlace();
 	const {
 		doNotAskGrabDisclaimerModal,
 		setDoNotAskGrabDisclaimerModal,
 		doNotAskOpenDataDisclaimerModal,
 		setDoNotAskOpenDataDisclaimerModal
 	} = usePersistedData();
-	const { resetStore: resetAwsClientStore } = useAwsClient();
-	const { routeData, setRouteData, resetStore: resetAwsRouteStore } = useAwsRoute();
-	const { resetStore: resetAwsGeofenceStore } = useAwsGeofence();
-	const { isEditingRoute, trackerPoints, setTrackerPoints, resetStore: resetAwsTrackingStore } = useAwsTracker();
+	const { resetStore: resetClientStore } = useClient();
+	const { routeData, setRouteData, resetStore: resetRouteStore } = useRoute();
+	const { resetStore: resetGeofenceStore } = useGeofence();
+	const { isEditingRoute, trackerPoints, setTrackerPoints, resetStore: resetTrackerStore } = useTracker();
 	const { t } = useTranslation();
 	const { isDesktop } = useDeviceMediaQuery();
 	const { setBottomSheetOpen, setBottomSheetHeight, setBottomSheetMinHeight } = useBottomSheet();
@@ -173,7 +173,7 @@ const useMapManager = ({
 	const onGeoLocate = useCallback(
 		({ coords: { latitude, longitude } }: GeolocateResultEvent) => {
 			if (routeData) {
-				resetAwsRouteStore();
+				resetRouteStore();
 				closeRouteBox();
 
 				setTimeout(() => {
@@ -185,7 +185,7 @@ const useMapManager = ({
 				setCurrentLocation({ currentLocation: { latitude, longitude }, error: undefined });
 			}
 		},
-		[closeRouteBox, resetAwsRouteStore, routeData, setCurrentLocation, setViewpoint]
+		[closeRouteBox, resetRouteStore, routeData, setCurrentLocation, setViewpoint]
 	);
 
 	const onGeoLocateError = useCallback(
@@ -315,7 +315,7 @@ const useMapManager = ({
 
 			if (currentMapProvider === MapProviderEnum.GRAB && !isUserAwsAccountConnected && fastestRegion !== region) {
 				switchToDefaultRegionStack();
-				resetAwsClientStore();
+				resetClientStore();
 				setIsCurrentLocationDisabled(false);
 				!isDesktop && setBottomSheetOpen();
 			}
@@ -340,7 +340,7 @@ const useMapManager = ({
 			tempMapStyle,
 			handleCurrentLocationAndViewpoint,
 			switchToDefaultRegionStack,
-			resetAwsClientStore,
+			resetClientStore,
 			setIsCurrentLocationDisabled,
 			isDesktop,
 			setBottomSheetOpen
@@ -349,11 +349,11 @@ const useMapManager = ({
 
 	const resetAppState = useCallback(() => {
 		clearPoiList();
-		resetAwsRouteStore();
-		resetAwsGeofenceStore();
-		resetAwsTrackingStore();
+		resetRouteStore();
+		resetGeofenceStore();
+		resetTrackerStore();
 		resetAppStateCb();
-	}, [clearPoiList, resetAwsRouteStore, resetAwsGeofenceStore, resetAwsTrackingStore, resetAppStateCb]);
+	}, [clearPoiList, resetRouteStore, resetGeofenceStore, resetTrackerStore, resetAppStateCb]);
 
 	const handleGrabMapChange = useCallback(
 		(mapStyle?: GrabMapEnum) => {
@@ -363,7 +363,7 @@ const useMapManager = ({
 
 			if (!isUserAwsAccountConnected && !isGrabAvailableInRegion) {
 				switchToGrabMapRegionStack();
-				resetAwsClientStore();
+				resetClientStore();
 				!isDesktop && setBottomSheetOpen();
 			}
 
@@ -387,7 +387,7 @@ const useMapManager = ({
 			resetAppState,
 			handleCurrentLocationAndViewpoint,
 			switchToGrabMapRegionStack,
-			resetAwsClientStore,
+			resetClientStore,
 			isDesktop,
 			setBottomSheetOpen
 		]
@@ -412,7 +412,7 @@ const useMapManager = ({
 					/* Switching from Grab map provider to different map provider and style */
 					if (!isUserAwsAccountConnected && fastestRegion !== region) {
 						switchToDefaultRegionStack();
-						resetAwsClientStore();
+						resetClientStore();
 						setIsCurrentLocationDisabled(false);
 
 						if (!isDesktop) {
@@ -458,7 +458,7 @@ const useMapManager = ({
 			setMapStyle,
 			handleCurrentLocationAndViewpoint,
 			switchToDefaultRegionStack,
-			resetAwsClientStore,
+			resetClientStore,
 			setIsCurrentLocationDisabled,
 			isDesktop,
 			setBottomSheetMinHeight,
@@ -532,7 +532,7 @@ const useMapManager = ({
 					/* Switching from Grab map provider to different map provider and style */
 					if (!isUserAwsAccountConnected && fastestRegion !== region) {
 						switchToDefaultRegionStack();
-						resetAwsClientStore();
+						resetClientStore();
 						setIsCurrentLocationDisabled(false);
 
 						if (!isDesktop) {
@@ -589,7 +589,7 @@ const useMapManager = ({
 			setMapProvider,
 			handleCurrentLocationAndViewpoint,
 			switchToDefaultRegionStack,
-			resetAwsClientStore,
+			resetClientStore,
 			setIsCurrentLocationDisabled,
 			isDesktop,
 			setBottomSheetMinHeight,

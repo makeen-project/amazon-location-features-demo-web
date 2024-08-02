@@ -10,7 +10,7 @@ const {
 	ROUTES: { DEMO }
 } = appConfig;
 
-const useAwsAuthService = () => {
+const useAuthService = () => {
 	return useMemo(
 		() => ({
 			fetchCredentials: async (options: FromCognitoIdentityPoolParameters) => {
@@ -53,4 +53,4 @@ const useAwsAuthService = () => {
 	);
 };
 
-export default useAwsAuthService;
+export default useAuthService;

@@ -6,7 +6,7 @@ import { FC, lazy } from "react";
 import { Button, Card, Flex, Text, View } from "@aws-amplify/ui-react";
 import { IconClose, IconCompass, IconGear, IconGeofence, IconInfo, IconLockSolid, IconRadar } from "@demo/assets/svgs";
 import { appConfig, marketingMenuOptionsData } from "@demo/core/constants";
-import { useAwsAuth, useAwsIot, useAwsMap } from "@demo/hooks";
+import { useAuth, useIot, useMap } from "@demo/hooks";
 import useBottomSheet from "@demo/hooks/useBottomSheet";
 import { AnalyticsEventActionsEnum, EventTypeEnum, MapProviderEnum, MenuItemEnum, TriggeredByEnum } from "@demo/types";
 import { ResponsiveUIEnum } from "@demo/types/Enums";
@@ -52,9 +52,9 @@ const Sidebar: FC<SidebarProps> = ({
 	onShowUnauthTrackerBox,
 	onOpenFeedbackModal
 }) => {
-	const { isUserAwsAccountConnected, credentials, onLogin, onLogout, onDisconnectAwsAccount } = useAwsAuth();
-	const { mapProvider: currentMapProvider } = useAwsMap();
-	const { detachPolicy } = useAwsIot();
+	const { isUserAwsAccountConnected, credentials, onLogin, onLogout, onDisconnectAwsAccount } = useAuth();
+	const { mapProvider: currentMapProvider } = useMap();
+	const { detachPolicy } = useIot();
 	const navigate = useNavigate();
 	const isAuthenticated = !!credentials?.authenticated;
 	const { t } = useTranslation();

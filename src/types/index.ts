@@ -40,7 +40,8 @@ export {
 	TriggeredByEnum,
 	AnalyticsEventActionsEnum,
 	OpenDataMapEnum,
-	RegionEnum
+	RegionEnum,
+	MqttConnectionState
 } from "./Enums";
 export type { RouteDataType } from "./RouteDataType";
 export type { CirclePropertiesType, CircleDrawEventType, CircleFeatureType } from "./CircleDrawControlTypes";

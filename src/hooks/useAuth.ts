@@ -6,9 +6,9 @@ import { useEffect, useMemo } from "react";
 import { CognitoIdentity } from "@aws-sdk/client-cognito-identity";
 import { showToast } from "@demo/core/Toast";
 import appConfig from "@demo/core/constants/appConfig";
-import { useAwsClient, useAwsMap } from "@demo/hooks";
-import { useAwsAuthService } from "@demo/services";
-import { useAwsAuthStore } from "@demo/stores";
+import { useClient, useMap } from "@demo/hooks";
+import { useAuthService } from "@demo/services";
+import { useAuthStore } from "@demo/stores";
 import { AuthTokensType, ConnectFormValuesType, ToastType } from "@demo/types";
 import { EventTypeEnum, RegionEnum } from "@demo/types/Enums";
 import { record } from "@demo/utils/analyticsUtils";
@@ -28,16 +28,15 @@ const {
 	PERSIST_STORAGE_KEYS: { FASTEST_REGION },
 	MAP_RESOURCES: { GRAB_SUPPORTED_AWS_REGIONS }
 } = appConfig;
-
 const fallbackRegion = POOLS[Object.keys(POOLS)[0]];
 
-const useAwsAuth = () => {
-	const store = useAwsAuthStore();
+const useAuth = () => {
+	const store = useAuthStore();
 	const { setInitial } = store;
-	const { setState } = useAwsAuthStore;
-	const awsAuthService = useAwsAuthService();
-	const { resetStore: resetAwsClientStore } = useAwsClient();
-	const { resetStore: resetAmplifyMapStore } = useAwsMap();
+	const { setState } = useAuthStore;
+	const authService = useAuthService();
+	const { resetStore: resetClientStore } = useClient();
+	const { resetStore: resetMapStore } = useMap();
 	const { t } = useTranslation();
 	const { isDesktop } = useDeviceMediaQuery();
 
@@ -60,7 +59,7 @@ const useAwsAuth = () => {
 					const { identityPoolId, region, userPoolId, authTokens } = store;
 
 					if (identityPoolId && region) {
-						const credentials = await awsAuthService.fetchCredentials({
+						const credentials = await authService.fetchCredentials({
 							identityPoolId,
 							clientConfig: { region },
 							logins: authTokens
@@ -78,7 +77,7 @@ const useAwsAuth = () => {
 					const { userDomain, userPoolClientId } = store;
 
 					if (userDomain && userPoolClientId) {
-						const response = await awsAuthService.fetchTokens(userDomain, userPoolClientId, code);
+						const response = await authService.fetchTokens(userDomain, userPoolClientId, code);
 
 						if (!response.ok) {
 							throw new Error(t("error_handler__failed_fetch_tokens.text"));
@@ -104,7 +103,7 @@ const useAwsAuth = () => {
 					const { userDomain, userPoolClientId, authTokens } = store;
 
 					if (userDomain && userPoolClientId && authTokens) {
-						const response = await awsAuthService.refreshTokens(userDomain, userPoolClientId, authTokens.refresh_token);
+						const response = await authService.refreshTokens(userDomain, userPoolClientId, authTokens.refresh_token);
 
 						if (!response.ok) {
 							throw new Error(t("error_handler__failed_refresh_tokens.text"));
@@ -222,8 +221,8 @@ const useAwsAuth = () => {
 			onDisconnectAwsAccount: () => {
 				clearStorage();
 				methods.resetStore();
-				resetAwsClientStore();
-				resetAmplifyMapStore();
+				resetClientStore();
+				resetMapStore();
 				setTimeout(() => window.location.reload(), 3000);
 			},
 			switchToGrabMapRegionStack: () => {
@@ -301,10 +300,10 @@ const useAwsAuth = () => {
 				setInitial();
 			}
 		}),
-		[store, awsAuthService, setState, t, resetAwsClientStore, resetAmplifyMapStore, isDesktop, setInitial]
+		[store, authService, setState, t, resetClientStore, resetMapStore, isDesktop, setInitial]
 	);
 
 	return { ...methods, ...store };
 };
 
-export default useAwsAuth;
+export default useAuth;

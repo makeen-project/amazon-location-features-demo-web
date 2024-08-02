@@ -309,3 +309,14 @@ export enum ResponsiveUIEnum {
 	unauth_geofence = "unauth_geofence",
 	direction_to_routes = "direction_to_routes"
 }
+
+export enum MqttConnectionState {
+	CLOSED = "closed",
+	CONNECT = "connect",
+	CONNECTION_FAILURE = "connection_failure",
+	CONNECTION_SUCCESS = "connection_success",
+	DISCONNECT = "disconnect",
+	ERROR = "error",
+	INTERRUPT = "interrupt",
+	RESUME = "resume"
+}

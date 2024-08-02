@@ -31,7 +31,7 @@ import {
 } from "@demo/atomicui/molecules";
 import { appConfig, busRoutesData } from "@demo/core/constants";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
-import { useAwsGeofence, useUnauthSimulation, useWebSocketBanner } from "@demo/hooks";
+import { useGeofence, useUnauthSimulation, useWebSocketBanner } from "@demo/hooks";
 import useBottomSheet from "@demo/hooks/useBottomSheet";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import {
@@ -131,7 +131,7 @@ const UnauthSimulation: FC<UnauthSimulationProps> = ({
 	const [selectedRoutes, setSelectedRoutes] = useState<SelectOption[]>([busRoutesDropdown[0]]);
 	const [busSelectedValue, setBusSelectedValue] = useState<SelectOption>(busRoutesDropdown[0]);
 	const [isPlaying, setIsPlaying] = useState(true);
-	const { unauthNotifications, setUnauthNotifications } = useAwsGeofence();
+	const { unauthNotifications, setUnauthNotifications } = useGeofence();
 	const { Connection, isHidden } = useWebSocketBanner(
 		useCallback((n: NotificationHistoryItemtype) => {
 			// Update tracking history with geofence notification, for geofence add "Bus stop number 1" to title and bus stop coords to description

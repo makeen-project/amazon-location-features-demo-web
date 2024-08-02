@@ -15,7 +15,7 @@ jest.mock("react-map-gl", () => ({
 	Popup: PopupMock
 }));
 
-const useAwsMapReturnValue: {
+const useMapReturnValue: {
 	currentLocationData: {
 		error: null | string;
 	};
@@ -34,9 +34,9 @@ const useAwsMapReturnValue: {
 };
 
 jest.mock("hooks", () => ({
-	useAwsMap: () => useAwsMapReturnValue,
-	useAwsPlace: () => ({}),
-	useAwsRoute: () => ({
+	useMap: () => useMapReturnValue,
+	usePlace: () => ({}),
+	useRoute: () => ({
 		getRoute: () => {}
 	}),
 	useMediaQuery: () => true

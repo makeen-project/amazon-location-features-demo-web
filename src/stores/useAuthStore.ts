@@ -8,11 +8,11 @@ import createStore from "./createStore";
 
 const {
 	ENV: { CF_TEMPLATE },
-	PERSIST_STORAGE_KEYS: { LOCAL_STORAGE_PREFIX, AMPLIFY_AUTH_DATA }
+	PERSIST_STORAGE_KEYS: { LOCAL_STORAGE_PREFIX, AUTH_DATA }
 } = appConfig;
-const localStorageKey = `${LOCAL_STORAGE_PREFIX}${AMPLIFY_AUTH_DATA}`;
+const localStorageKey = `${LOCAL_STORAGE_PREFIX}${AUTH_DATA}`;
 
-export interface AwsAuthStoreProps {
+export interface AuthStoreProps {
 	credentials?: CognitoIdentityCredentials;
 	authTokens?: AuthTokensType;
 	isUserAwsAccountConnected: boolean;
@@ -27,10 +27,10 @@ export interface AwsAuthStoreProps {
 	cloudFormationLink: string;
 }
 
-export const initialState: IStateProps<AwsAuthStoreProps> = {
+export const initialState: IStateProps<AuthStoreProps> = {
 	isUserAwsAccountConnected: false,
 	autoRegion: true,
 	cloudFormationLink: CF_TEMPLATE
 };
 
-export default createStore<AwsAuthStoreProps>(initialState, true, localStorageKey);
+export default createStore<AuthStoreProps>(initialState, true, localStorageKey);

@@ -18,7 +18,7 @@ import {
 } from "@demo/assets/svgs";
 import { appConfig } from "@demo/core/constants";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
-import { useAwsAuth, useAwsIot, useAwsMap } from "@demo/hooks";
+import { useAuth, useIot, useMap } from "@demo/hooks";
 import useBottomSheet from "@demo/hooks/useBottomSheet";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import {
@@ -104,9 +104,9 @@ const Explore: FC<IProps> = ({
 	const isLtr = langDir === "ltr";
 	const { setBottomSheetMinHeight, setBottomSheetHeight, bottomSheetCurrentHeight = 0 } = useBottomSheet();
 	const { isDesktop, isDesktopBrowser } = useDeviceMediaQuery();
-	const { isUserAwsAccountConnected, credentials, onLogin, onLogout, onDisconnectAwsAccount } = useAwsAuth();
-	const { mapProvider: currentMapProvider } = useAwsMap();
-	const { detachPolicy } = useAwsIot();
+	const { isUserAwsAccountConnected, credentials, onLogin, onLogout, onDisconnectAwsAccount } = useAuth();
+	const { mapProvider: currentMapProvider } = useMap();
+	const { detachPolicy } = useIot();
 	const isAuthenticated = !!credentials?.authenticated;
 	const disconnectButtonText = t("disconnect_aws_account.text");
 	const navigate = useNavigate();

@@ -9,16 +9,16 @@ import { SearchBox } from "@demo/atomicui/organisms/SearchBox";
 import { appConfig } from "@demo/core/constants";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
 import {
-	useAwsAuth,
-	useAwsGeofence,
-	useAwsMap,
-	useAwsPlace,
-	useAwsRoute,
-	useAwsTracker,
+	useAuth,
 	useCredsManager,
+	useGeofence,
+	useMap,
 	useMapManager,
 	usePersistedData,
-	useRecordViewPage
+	usePlace,
+	useRecordViewPage,
+	useRoute,
+	useTracker
 } from "@demo/hooks";
 import useBottomSheet from "@demo/hooks/useBottomSheet";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
@@ -180,7 +180,7 @@ const DemoPage: FC = () => {
 	const [searchBoxValue, setSearchBoxValue] = useState("");
 	const mapViewRef = useRef<MapRef | null>(null);
 	const geolocateControlRef = useRef<GeolocateControlRef | null>(null);
-	const { credentials, region, isUserAwsAccountConnected } = useAwsAuth();
+	const { credentials, region, isUserAwsAccountConnected } = useAuth();
 	const {
 		mapProvider: currentMapProvider,
 		mapStyle: currentMapStyle,
@@ -188,11 +188,11 @@ const DemoPage: FC = () => {
 		setMapProvider,
 		isCurrentLocationDisabled,
 		viewpoint
-	} = useAwsMap();
-	const { selectedMarker, suggestions, bound, clearPoiList, zoom, setZoom } = useAwsPlace();
-	const { routeData, directions, resetStore: resetAwsRouteStore } = useAwsRoute();
-	const { resetStore: resetAwsGeofenceStore } = useAwsGeofence();
-	const { isEditingRoute, resetStore: resetAwsTrackingStore } = useAwsTracker();
+	} = useMap();
+	const { selectedMarker, suggestions, bound, clearPoiList, zoom, setZoom } = usePlace();
+	const { routeData, directions, resetStore: resetRouteStore } = useRoute();
+	const { resetStore: resetGeofenceStore } = useGeofence();
+	const { isEditingRoute, resetStore: resetTrackerStore } = useTracker();
 	const { showWelcomeModal, setShowWelcomeModal, setSettingsOptions } = usePersistedData();
 	const { isDesktop, isMobile, isTablet } = useDeviceMediaQuery();
 	const { setUI, ui, bottomSheetCurrentHeight = 0, setBottomSheetHeight, setBottomSheetMinHeight } = useBottomSheet();
@@ -330,9 +330,9 @@ const DemoPage: FC = () => {
 
 	const onEnableTracking = () => {
 		clearPoiList();
-		resetAwsRouteStore();
-		resetAwsGeofenceStore();
-		resetAwsTrackingStore();
+		resetRouteStore();
+		resetGeofenceStore();
+		resetTrackerStore();
 		setShow(s => ({ ...s, authTrackerDisclaimerModal: false, authTrackerBox: true }));
 		if (!isDesktop) {
 			setUI(ResponsiveUIEnum.auth_tracker);

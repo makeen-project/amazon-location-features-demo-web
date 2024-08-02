@@ -17,7 +17,7 @@ import {
 	IconShuffle
 } from "@demo/assets/svgs";
 import { appConfig, languageSwitcherData, regionsData } from "@demo/core/constants";
-import { useAwsAuth, useAwsClient, useAwsIot, useAwsMap, usePersistedData } from "@demo/hooks";
+import { useAuth, useClient, useIot, useMap, usePersistedData } from "@demo/hooks";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import {
 	ConnectFormValuesType,
@@ -98,7 +98,7 @@ const SettingsModal: FC<SettingsModalProps> = ({
 		stackRegion,
 		cloudFormationLink,
 		handleStackRegion
-	} = useAwsAuth();
+	} = useAuth();
 	const {
 		autoMapUnit,
 		setIsAutomaticMapUnit,
@@ -109,10 +109,10 @@ const SettingsModal: FC<SettingsModalProps> = ({
 		setMapProvider,
 		setMapStyle,
 		resetStore: resetMapStore
-	} = useAwsMap();
+	} = useMap();
 	const { defaultRouteOptions, setDefaultRouteOptions, setSettingsOptions, settingsOptions } = usePersistedData();
-	const { resetStore: resetAwsClientStore } = useAwsClient();
-	const { detachPolicy } = useAwsIot();
+	const { resetStore: resetClientStore } = useClient();
+	const { detachPolicy } = useIot();
 	const keyArr = Object.keys(formValues);
 	const isAuthenticated = !!credentials?.authenticated;
 	const { t, i18n } = useTranslation();
@@ -169,7 +169,7 @@ const SettingsModal: FC<SettingsModalProps> = ({
 
 				setConnectFormValues(formValues);
 				clearCredentials();
-				resetAwsClientStore();
+				resetClientStore();
 				setIsUserAwsAccountConnected(true);
 			}
 		);
@@ -182,7 +182,7 @@ const SettingsModal: FC<SettingsModalProps> = ({
 		handleCurrentLocationAndViewpoint,
 		setConnectFormValues,
 		clearCredentials,
-		resetAwsClientStore,
+		resetClientStore,
 		setIsUserAwsAccountConnected
 	]);
 
@@ -235,11 +235,11 @@ const SettingsModal: FC<SettingsModalProps> = ({
 	const handleRegionChange = useCallback(
 		(region: "Automatic" | RegionEnum) => {
 			setAutoRegion(region === "Automatic", region);
-			resetAwsClientStore();
+			resetClientStore();
 			resetAppState();
 			resetMapStore();
 		},
-		[setAutoRegion, resetAwsClientStore, resetAppState, resetMapStore]
+		[setAutoRegion, resetClientStore, resetAppState, resetMapStore]
 	);
 
 	const optionItems: Array<SettingOptionItemType> = useMemo(

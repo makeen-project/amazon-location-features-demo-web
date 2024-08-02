@@ -3,33 +3,33 @@
 
 import { useMemo } from "react";
 
-import { useAwsIotService } from "@demo/services";
+import { useIotService } from "@demo/services";
 import { errorHandler } from "@demo/utils/errorHandler";
 
-const useAwsIot = () => {
-	const awsIotService = useAwsIotService();
+const useIot = () => {
+	const iotService = useIotService();
 
 	const methods = useMemo(
 		() => ({
 			attachPolicy: async (identityId: string, unauthUser = false) => {
 				try {
-					await awsIotService.attachPolicy(identityId, unauthUser);
+					await iotService.attachPolicy(identityId, unauthUser);
 				} catch (error) {
 					errorHandler(error);
 				}
 			},
 			detachPolicy: async (identityId: string, unauthUser = false) => {
 				try {
-					await awsIotService.detachPolicy(identityId, unauthUser);
+					await iotService.detachPolicy(identityId, unauthUser);
 				} catch (error) {
 					errorHandler(error);
 				}
 			}
 		}),
-		[awsIotService]
+		[iotService]
 	);
 
 	return useMemo(() => ({ ...methods }), [methods]);
 };
 
-export default useAwsIot;
+export default useIot;

@@ -17,14 +17,14 @@ import {
 import createStore from "./createStore";
 
 const {
-	PERSIST_STORAGE_KEYS: { LOCAL_STORAGE_PREFIX, AMPLIFY_MAP_DATA },
+	PERSIST_STORAGE_KEYS: { LOCAL_STORAGE_PREFIX, MAP_DATA },
 	MAP_RESOURCES: {
 		AMAZON_HQ: { US }
 	}
 } = appConfig;
-const localStorageKey = `${LOCAL_STORAGE_PREFIX}${AMPLIFY_MAP_DATA}`;
+const localStorageKey = `${LOCAL_STORAGE_PREFIX}${MAP_DATA}`;
 
-interface AwsMapStoreProps {
+interface MapStoreProps {
 	currentLocationData?: CurrentLocationDataType;
 	viewpoint: ViewPointType;
 	autoMapUnit: {
@@ -37,7 +37,7 @@ interface AwsMapStoreProps {
 	isCurrentLocationDisabled: boolean;
 }
 
-const initialState: IStateProps<AwsMapStoreProps> = {
+const initialState: IStateProps<MapStoreProps> = {
 	viewpoint: US,
 	autoMapUnit: {
 		selected: true,
@@ -49,4 +49,4 @@ const initialState: IStateProps<AwsMapStoreProps> = {
 	isCurrentLocationDisabled: false
 };
 
-export default createStore<AwsMapStoreProps>(initialState, true, localStorageKey);
+export default createStore<MapStoreProps>(initialState, true, localStorageKey);

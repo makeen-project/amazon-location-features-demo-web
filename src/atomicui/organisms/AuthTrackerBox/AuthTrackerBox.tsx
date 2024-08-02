@@ -13,7 +13,7 @@ import {
 	IconSegment,
 	IconWalking
 } from "@demo/assets/svgs";
-import { useAwsGeofence, useAwsRoute, useAwsTracker, useWebSocketBanner } from "@demo/hooks";
+import { useGeofence, useRoute, useTracker, useWebSocketBanner } from "@demo/hooks";
 import useBottomSheet from "@demo/hooks/useBottomSheet";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import { RouteDataType, TrackerType } from "@demo/types";
@@ -51,8 +51,8 @@ const AuthTrackerBox: FC<AuthTrackerBoxProps> = ({ mapRef, setShowAuthTrackerBox
 	const [routeData, setRouteData] = useState<RouteDataType | undefined>(undefined);
 	const [points, setPoints] = useState<number[][] | undefined>(undefined);
 	const [trackerPos, setTrackerPos] = useState<number[] | undefined>(undefined);
-	const { isFetchingRoute } = useAwsRoute();
-	const { geofences, getGeofencesList } = useAwsGeofence();
+	const { isFetchingRoute } = useRoute();
+	const { geofences, getGeofencesList } = useGeofence();
 	const {
 		selectedTrackerType,
 		setSelectedTrackerType,
@@ -60,7 +60,7 @@ const AuthTrackerBox: FC<AuthTrackerBoxProps> = ({ mapRef, setShowAuthTrackerBox
 		setIsEditingRoute,
 		trackerPoints,
 		setTrackerPoints
-	} = useAwsTracker();
+	} = useTracker();
 	const { Connection } = useWebSocketBanner();
 	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();

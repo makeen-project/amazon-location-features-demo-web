@@ -20,7 +20,7 @@ import { NLSearchLoader } from "@demo/atomicui/atoms";
 import { InputField, Marker, NotFoundCard, SuggestionMarker } from "@demo/atomicui/molecules";
 import { appConfig } from "@demo/core/constants";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
-import { useAwsMap, useAwsPlace } from "@demo/hooks";
+import { useMap, usePlace } from "@demo/hooks";
 import useBottomSheet from "@demo/hooks/useBottomSheet";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import { DistanceUnitEnum, MapProviderEnum, MapUnitEnum, SuggestionType } from "@demo/types";
@@ -91,7 +91,7 @@ const SearchBox: FC<SearchBoxProps> = ({
 		isCurrentLocationDisabled,
 		currentLocationData,
 		viewpoint
-	} = useAwsMap();
+	} = useMap();
 	const {
 		clusters,
 		suggestions,
@@ -104,7 +104,7 @@ const SearchBox: FC<SearchBoxProps> = ({
 		setHoveredMarker,
 		setSearchingState,
 		setIsSearching
-	} = useAwsPlace();
+	} = usePlace();
 	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();
 	const currentLang = i18n.language;
