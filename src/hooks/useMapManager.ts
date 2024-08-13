@@ -492,14 +492,13 @@ const useMapManager = ({
 	/* Handled stack region and cloudformation link */
 	useEffect(() => {
 		if (currentMapProvider === MapProviderEnum.GRAB) {
-			handleStackRegion({
-				value: "ap-southeast-1",
-				label: "regions__ap_southeast_1.text"
-			});
-		}
-
-		if (defaultRegion.value !== stackRegion?.value) {
-			handleStackRegion(defaultRegion);
+			stackRegion?.value !== "ap-southeast-1" &&
+				handleStackRegion({
+					value: "ap-southeast-1",
+					label: "regions__ap_southeast_1.text"
+				});
+		} else {
+			defaultRegion.value !== stackRegion?.value && handleStackRegion(defaultRegion);
 		}
 	}, [defaultRegion, currentMapProvider, handleStackRegion, stackRegion]);
 
