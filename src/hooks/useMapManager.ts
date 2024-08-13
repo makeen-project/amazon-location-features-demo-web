@@ -110,7 +110,7 @@ const useMapManager = ({
 	const { isDesktop } = useDeviceMediaQuery();
 	const { setBottomSheetOpen, setBottomSheetHeight, setBottomSheetMinHeight } = useBottomSheet();
 	const fallbackRegion = Object.values(POOLS)[0];
-	const fastestRegion = localStorage.getItem(FASTEST_REGION) ?? fallbackRegion;
+	const fastestRegion = localStorage.getItem(FASTEST_REGION) ?? fallbackRegion.split(":")[0];
 	const defaultRegion = regionsData.find(option => option.value === fastestRegion) as { value: string; label: string };
 	const isGrabAvailableInRegion = useMemo(() => !!region && GRAB_SUPPORTED_AWS_REGIONS.includes(region), [region]);
 	const isGrabVisible = useMemo(
