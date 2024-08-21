@@ -9,7 +9,7 @@ import appConfig from "@demo/core/constants/appConfig";
 import { useClient, useMap } from "@demo/hooks";
 import { useAuthService } from "@demo/services";
 import { useAuthStore } from "@demo/stores";
-import { AuthTokensType, CognitoIdentityCredentials, ConnectFormValuesType, ToastType } from "@demo/types";
+import { AuthTokensType, ConnectFormValuesType, ToastType } from "@demo/types";
 import { EventTypeEnum, RegionEnum } from "@demo/types/Enums";
 import { record } from "@demo/utils/analyticsUtils";
 import { errorHandler } from "@demo/utils/errorHandler";
@@ -59,14 +59,18 @@ const useAuth = () => {
 					const { identityPoolId, region, userPoolId, authTokens } = store;
 
 					if (identityPoolId && region) {
-						const authHelper = await authService.withIdentityPoolId(identityPoolId, region, authTokens, userPoolId);
-						const credentials = authHelper.getCredentials();
-						const authOptions = authHelper.getMapAuthenticationOptions();
-
-						setState({
-							credentials: { ...credentials, authenticated: authTokens ? true : false } as CognitoIdentityCredentials,
-							authOptions: { ...authOptions }
+						const cognitoIdentityCredentials = await authService.fetchCredentials({
+							identityPoolId,
+							clientConfig: { region },
+							logins: authTokens
+								? {
+										[`cognito-idp.${region}.amazonaws.com/${userPoolId}`]: authTokens.id_token
+								  }
+								: undefined
 						});
+						const credentials = { ...cognitoIdentityCredentials, authenticated: !!authTokens };
+						// resetClientStore();
+						setState({ credentials });
 					}
 				} catch (error) {
 					errorHandler(error, t("error_handler__failed_fetch_creds.text"));
@@ -291,6 +295,21 @@ const useAuth = () => {
 					const translatedLabel = t(label);
 					const l = translatedLabel.slice(0, translatedLabel.indexOf(")") + 1);
 					setState({ stackRegion: { label: l, value }, cloudFormationLink: newUrl });
+				}
+			},
+			fetchAuthOptions: async () => {
+				try {
+					const { identityPoolId, region, userPoolId, authTokens } = store;
+
+					if (identityPoolId && region) {
+						const authHelper = await authService.withIdentityPoolId(identityPoolId, region, authTokens, userPoolId);
+						const authOptions = { ...authHelper.getMapAuthenticationOptions() };
+						setState({ authOptions });
+					}
+				} catch (error) {
+					await methods.refreshTokens();
+					resetClientStore();
+					setState({ credentials: undefined, authOptions: undefined });
 				}
 			},
 			resetStore: () => {
