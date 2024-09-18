@@ -38,6 +38,15 @@ const getEnv = (key: string) => {
 };
 
 const appConfig = {
+	API_KEYS: (getEnv("VITE_AWS_API_KEYS") || "")
+		.split(",")
+		.reduce((result: { [key: string]: string }, apiKey: string, idx: number) => {
+			const regions = (getEnv("VITE_AWS_API_KEY_REGIONS") || "").split(",");
+			const region = regions[idx].trim();
+			result[region] = apiKey.trim();
+
+			return result;
+		}, {}) as { [key: string]: string },
 	POOLS: (getEnv("VITE_AWS_COGNITO_IDENTITY_POOL_IDS") || "")
 		.split(",")
 		.reduce((result: { [key: string]: string }, value: string) => {

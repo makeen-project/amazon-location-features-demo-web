@@ -2,10 +2,13 @@
 
 ## Requirements
 
+<!-- TODO: Add point below for VITE_API_KEY_REGIONS and VITE_API_KEYS -->
+<!-- TODO: Update point below to inform that us-east-1 region is necessary pinpoint and that stack created in any regions allows usage of iot, geofences and trackers from that region -->
 1. Run the template from `/extra/cloudformation/default-unauth-resources-template.yaml` to create a cloudformation stack on AWS in `us-east-1` region using your own AWS account and get `IdentityPoolId`, `PinPointAppId`, `WebSocketUrl` from stack output's tab.
    - `IdentityPoolId` value will be added to `.env` file against `VITE_AWS_COGNITO_IDENTITY_POOL_IDS` and `VITE_PINPOINT_IDENTITY_POOL_ID`.
    - `PinPointAppId` value will be added to `.env` file against `VITE_PINPOINT_APPLICATION_ID`.
    - `WebSocketUrl` value will be added to `.env` file against `VITE_AWS_WEB_SOCKET_URLS`.
+<!-- TODO: Update point below since data providers are not needed anymore, ap-southeast-1 region might still be required for multi-region support -->
 2. Run the template from `/extra/cloudformation/default-unauth-resources-template.yaml` to create a cloudformation stack on AWS in `ap-southeast-1` region using your own AWS account and get `IdentityPoolId`, `WebSocketUrl` from stack output's tab **[Necessary if you want *GrabMaps* to be enabled]**.
    - `IdentityPoolId` value will be added to `.env` file against `VITE_AWS_COGNITO_IDENTITY_POOL_IDS` **(comma separated for multiple values)**.
    - `WebSocketUrl` value will be added to `.env` file against `VITE_AWS_WEB_SOCKET_URLS` **(comma separated for multiple values)**.
@@ -15,6 +18,8 @@
 
 #### Env keys required in `.env` file, see `.env.example` for reference
 
+> VITE_AWS_API_KEY_REGIONS<br />
+> VITE_AWS_API_KEYS<br />
 > VITE_AWS_COGNITO_IDENTITY_POOL_IDS<br />
 > VITE_AWS_WEB_SOCKET_URLS<br />
 > VITE_PINPOINT_IDENTITY_POOL_ID<br />
@@ -91,6 +96,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 > WEB_SOCKET_URL: "XXXXXXXXXXX-ats.iot.us-east-1.amazonaws.com" // Stack output as WebSocketUrl
 > COGNITO_EMAIL: "abc@xyz.com" // Stack output as UserEmail
 > COGNITO_PASSWORD: "XXXXXX" // This is the password for the cognito user (received on registered email)
+> VITE_AWS_API_KEY_REGIONS
+> VITE_AWS_API_KEYS
 > VITE_AWS_COGNITO_IDENTITY_POOL_IDS
 > VITE_AWS_WEB_SOCKET_URLS
 > VITE_PINPOINT_IDENTITY_POOL_ID
