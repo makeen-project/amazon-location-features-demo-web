@@ -55,10 +55,10 @@ export const errorHandler = (error: any, message?: string) => {
 				if (error.url.includes("https://maps.geo")) {
 					isStackCorrupted = true;
 					showToast({ content: i18n.t("show_toast__refreshing_session.text"), type: ToastType.INFO });
-					setTimeout(() => {
-						localStorage.setItem(SHOULD_CLEAR_CREDENTIALS, "true");
-						window.location.reload();
-					}, 2000);
+					// setTimeout(() => {
+					// 	localStorage.setItem(SHOULD_CLEAR_CREDENTIALS, "true");
+					// 	window.location.reload();
+					// }, 2000);
 					return;
 				} else {
 					window.location.replace(`${ERROR_BOUNDARY}?from=${DEMO}`);

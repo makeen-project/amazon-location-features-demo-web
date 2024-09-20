@@ -136,6 +136,7 @@ const UnauthSimulationExitModal = lazy(() =>
 );
 
 const {
+	API_KEYS,
 	MAP_RESOURCES: { MAX_BOUNDS },
 	LINKS: { AMAZON_LOCATION_TERMS_AND_CONDITIONS, AWS_LOCATION },
 	ROUTES: { DEMO }
@@ -472,6 +473,10 @@ const DemoPage: FC = () => {
 			"_blank"
 		);
 
+	const styles = ["Standard", "Monochrome", "Hybrid", "Satellite"];
+	const colorSchemes = ["Light", "Dark"];
+	const variants = ["Default", "Logistics"];
+
 	return !!authOptions?.transformRequest ? (
 		<View
 			style={{ height: "100%" }}
@@ -488,7 +493,10 @@ const DemoPage: FC = () => {
 						? { ...currentLocationData.currentLocation, zoom }
 						: { ...viewpoint, zoom }
 				}
-				mapStyle={`https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${currentMapStyle}/style-descriptor`}
+				// mapStyle={`https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${currentMapStyle}/style-descriptor`}
+				mapStyle={`https://maps.geo.${Object.keys(API_KEYS)[0]}.amazonaws.com/v2/styles/${styles[2]}/descriptor?key=${
+					Object.values(API_KEYS)[0]
+				}&variant=${variants[0]}`}
 				minZoom={2}
 				maxBounds={
 					currentMapProvider === MapProviderEnum.GRAB
@@ -507,7 +515,18 @@ const DemoPage: FC = () => {
 				onError={error => errorHandler(error.error)}
 				onIdle={() => gridLoader && setGridLoader(false)}
 				attributionControl={false}
-				{...authOptions}
+				// {...authOptions}
+				transformRequest={url => {
+					if (url.indexOf("?key=") > -1) {
+						return {
+							url: url
+						};
+					}
+
+					return {
+						url: url + `?key=${Object.values(API_KEYS)[0]}`
+					};
+				}}
 			>
 				<View className={gridLoader ? "loader-container" : ""}>
 					{isDesktop && (

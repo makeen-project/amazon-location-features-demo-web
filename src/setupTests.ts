@@ -27,6 +27,9 @@ if (typeof window?.matchMedia === "undefined") {
 }
 
 jest.mock("@demo/core/constants/appConfig", () => ({
+	API_KEYS: {
+		"XX-XXXX-X": "v1.public.XXXXXXXXXXXXXXX"
+	},
 	POOLS: {
 		"XX-XXXX-X": "XX-XXXX-X:XXXXXXXX-XXXX-1234-abcd-1234567890ab"
 	},
