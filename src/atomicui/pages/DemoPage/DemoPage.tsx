@@ -494,9 +494,9 @@ const DemoPage: FC = () => {
 						: { ...viewpoint, zoom }
 				}
 				// mapStyle={`https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${currentMapStyle}/style-descriptor`}
-				mapStyle={`https://maps.geo.${Object.keys(API_KEYS)[0]}.amazonaws.com/v2/styles/${styles[2]}/descriptor?key=${
+				mapStyle={`https://maps.geo.${Object.keys(API_KEYS)[0]}.amazonaws.com/v2/styles/${styles[0]}/descriptor?key=${
 					Object.values(API_KEYS)[0]
-				}&variant=${variants[0]}`}
+				}&color-scheme=${colorSchemes[0]}&variant=${variants[0]}`}
 				minZoom={2}
 				maxBounds={
 					currentMapProvider === MapProviderEnum.GRAB
