@@ -72,14 +72,7 @@ const useMapManager = ({
 	const [doNotAskGrabDisclaimer, setDoNotAskGrabDisclaimer] = useState(false);
 	const [openDataDisclaimerModal, setOpenDataDisclaimerModal] = useState(false);
 	const [doNotAskOpenDataDisclaimer, setDoNotAskOpenDataDisclaimer] = useState(false);
-	const {
-		region,
-		switchToGrabMapRegionStack,
-		isUserAwsAccountConnected,
-		switchToDefaultRegionStack,
-		handleStackRegion,
-		stackRegion
-	} = useAuth();
+	const { region, isUserAwsAccountConnected, switchToDefaultRegionStack, handleStackRegion, stackRegion } = useAuth();
 	const {
 		mapProvider: currentMapProvider,
 		currentLocationData,
@@ -357,7 +350,6 @@ const useMapManager = ({
 			setGridLoader(true);
 
 			if (!isUserAwsAccountConnected && !isGrabAvailableInRegion) {
-				switchToGrabMapRegionStack();
 				resetClientStore();
 				!isDesktop && setBottomSheetOpen();
 			}
@@ -381,7 +373,6 @@ const useMapManager = ({
 			tempMapStyle,
 			resetAppState,
 			handleCurrentLocationAndViewpoint,
-			switchToGrabMapRegionStack,
 			resetClientStore,
 			isDesktop,
 			setBottomSheetOpen

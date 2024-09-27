@@ -8,9 +8,9 @@ import { IconAwsCloudFormation, IconCheckMarkCircle } from "@demo/assets/svgs";
 import { DropdownEl, Modal } from "@demo/atomicui/atoms";
 import { InputField } from "@demo/atomicui/molecules";
 import { appConfig, regionsData } from "@demo/core/constants";
-import { useAuth, useClient, useMap } from "@demo/hooks";
+import { useAuth, useClient } from "@demo/hooks";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
-import { ConnectFormValuesType, EsriMapEnum, MapProviderEnum } from "@demo/types";
+import { ConnectFormValuesType } from "@demo/types";
 import { AnalyticsEventActionsEnum, EventTypeEnum, TriggeredByEnum } from "@demo/types/Enums";
 import { record } from "@demo/utils/analyticsUtils";
 import { isAndroid, isIOS } from "react-device-detect";
@@ -19,7 +19,6 @@ import "./styles.scss";
 
 const {
 	ROUTES: { HELP },
-	MAP_RESOURCES: { GRAB_SUPPORTED_AWS_REGIONS },
 	LINKS: { AWS_TERMS_AND_CONDITIONS }
 } = appConfig;
 let scrollTimeout: NodeJS.Timer | undefined;
@@ -27,14 +26,9 @@ let scrollTimeout: NodeJS.Timer | undefined;
 export interface ConnectAwsAccountModalProps {
 	open: boolean;
 	onClose: () => void;
-	handleCurrentLocationAndViewpoint: (b: boolean) => void;
 }
 
-const ConnectAwsAccountModal: FC<ConnectAwsAccountModalProps> = ({
-	open,
-	onClose,
-	handleCurrentLocationAndViewpoint
-}) => {
+const ConnectAwsAccountModal: FC<ConnectAwsAccountModalProps> = ({ open, onClose }) => {
 	const [formValues, setFormValues] = useState<ConnectFormValuesType>({
 		IdentityPoolId: "",
 		UserDomain: "",
@@ -54,7 +48,6 @@ const ConnectAwsAccountModal: FC<ConnectAwsAccountModalProps> = ({
 		handleStackRegion
 	} = useAuth();
 	const { resetStore: resetClientStore } = useClient();
-	const { mapProvider: currentMapProvider, setMapProvider, setMapStyle } = useMap();
 	const keyArr = Object.keys(formValues);
 	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();
@@ -131,15 +124,6 @@ const ConnectAwsAccountModal: FC<ConnectAwsAccountModalProps> = ({
 			identityPoolId,
 			/* Success callback */
 			() => {
-				if (
-					currentMapProvider === MapProviderEnum.GRAB &&
-					!GRAB_SUPPORTED_AWS_REGIONS.includes(identityPoolId.split(":")[0])
-				) {
-					setMapProvider(MapProviderEnum.ESRI);
-					setMapStyle(EsriMapEnum.ESRI_LIGHT);
-					handleCurrentLocationAndViewpoint(false);
-				}
-
 				setConnectFormValues(formValues);
 				clearCredentials();
 				resetClientStore();

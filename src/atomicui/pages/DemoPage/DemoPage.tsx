@@ -10,7 +10,7 @@ import { appConfig } from "@demo/core/constants";
 import BottomSheetHeights from "@demo/core/constants/bottomSheetHeights";
 import {
 	useAuth,
-	useCredsManager,
+	useAuthManager,
 	useGeofence,
 	useMap,
 	useMapManager,
@@ -180,7 +180,8 @@ const DemoPage: FC = () => {
 	const [searchBoxValue, setSearchBoxValue] = useState("");
 	const mapRef = useRef<MapRef | null>(null);
 	const geolocateControlRef = useRef<GeolocateControlRef | null>(null);
-	const { authOptions, region, isUserAwsAccountConnected } = useAuth();
+	const { region, isUserAwsAccountConnected, apiKey } = useAuth();
+	const apiKeyRegion = useMemo(() => (region && region in API_KEYS ? region : Object.keys(API_KEYS)[0]), [region]);
 	const {
 		mapProvider: currentMapProvider,
 		mapStyle: currentMapStyle,
@@ -196,7 +197,7 @@ const DemoPage: FC = () => {
 	const { showWelcomeModal, setShowWelcomeModal, setSettingsOptions } = usePersistedData();
 	const { isDesktop, isMobile, isTablet, isMax766 } = useDeviceMediaQuery();
 	const { setUI, ui, bottomSheetCurrentHeight = 0, setBottomSheetHeight, setBottomSheetMinHeight } = useBottomSheet();
-	const { clearCredsAndClients } = useCredsManager();
+	const { clearCredsAndClients } = useAuthManager();
 	const {
 		gridLoader,
 		setGridLoader,
@@ -204,11 +205,9 @@ const DemoPage: FC = () => {
 		setTempMapStyle,
 		grabDisclaimerModal,
 		setGrabDisclaimerModal,
-		// doNotAskGrabDisclaimer,
 		setDoNotAskGrabDisclaimer,
 		openDataDisclaimerModal,
 		setOpenDataDisclaimerModal,
-		// doNotAskOpenDataDisclaimer,
 		setDoNotAskOpenDataDisclaimer,
 		isGrabVisible,
 		onLoad,
@@ -477,7 +476,7 @@ const DemoPage: FC = () => {
 	const colorSchemes = ["Light", "Dark"];
 	const variants = ["Default", "Logistics"];
 
-	return !!authOptions?.transformRequest ? (
+	return !!apiKeyRegion && !!apiKey ? (
 		<View
 			style={{ height: "100%" }}
 			className={`${currentMapStyle.toLowerCase().includes("dark") ? "dark-mode" : "light-mode"}`}
@@ -493,10 +492,7 @@ const DemoPage: FC = () => {
 						? { ...currentLocationData.currentLocation, zoom }
 						: { ...viewpoint, zoom }
 				}
-				// mapStyle={`https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${currentMapStyle}/style-descriptor`}
-				mapStyle={`https://maps.geo.${Object.keys(API_KEYS)[0]}.amazonaws.com/v2/styles/${styles[0]}/descriptor?key=${
-					Object.values(API_KEYS)[0]
-				}&color-scheme=${colorSchemes[0]}&variant=${variants[0]}`}
+				mapStyle={`https://maps.geo.${apiKeyRegion}.amazonaws.com/v2/styles/${styles[0]}/descriptor?key=${apiKey}&color-scheme=${colorSchemes[0]}&variant=${variants[0]}`}
 				minZoom={2}
 				maxBounds={
 					currentMapProvider === MapProviderEnum.GRAB
@@ -515,7 +511,6 @@ const DemoPage: FC = () => {
 				onError={error => errorHandler(error.error)}
 				onIdle={() => gridLoader && setGridLoader(false)}
 				attributionControl={false}
-				// {...authOptions}
 				transformRequest={url => {
 					if (url.indexOf("?key=") > -1) {
 						return {
@@ -524,7 +519,7 @@ const DemoPage: FC = () => {
 					}
 
 					return {
-						url: url + `?key=${Object.values(API_KEYS)[0]}`
+						url: url + `?key=${apiKey}`
 					};
 				}}
 			>
@@ -741,7 +736,6 @@ const DemoPage: FC = () => {
 			<ConnectAwsAccountModal
 				open={show.connectAwsAccount}
 				onClose={() => setShow(s => ({ ...s, connectAwsAccount: false }))}
-				handleCurrentLocationAndViewpoint={handleCurrentLocationAndViewpoint}
 			/>
 			<FeedbackModal open={show.openFeedbackModal} onClose={() => setShow(s => ({ ...s, openFeedbackModal: false }))} />
 			<SettingsModal

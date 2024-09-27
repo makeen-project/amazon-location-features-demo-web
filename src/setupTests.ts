@@ -27,14 +27,14 @@ if (typeof window?.matchMedia === "undefined") {
 }
 
 jest.mock("@demo/core/constants/appConfig", () => ({
-	API_KEYS: {
-		"XX-XXXX-X": "v1.public.XXXXXXXXXXXXXXX"
-	},
 	POOLS: {
 		"XX-XXXX-X": "XX-XXXX-X:XXXXXXXX-XXXX-1234-abcd-1234567890ab"
 	},
 	WEB_SOCKET_URLS: {
 		"XX-XXXX-X": "XXXXXXXXXXXXXX-ats.iot.XX-XXXX-X.amazonaws.com"
+	},
+	API_KEYS: {
+		"XX-XXXX-X": "v1.public.XXXXXXXXXXXXXXX"
 	},
 	ENV: {
 		PINPOINT_IDENTITY_POOL_ID: process.env["VITE_PINPOINT_IDENTITY_POOL_ID"],
@@ -90,7 +90,6 @@ jest.mock("@demo/core/constants/appConfig", () => ({
 	},
 	MAP_RESOURCES: {
 		IMPERIAL_COUNTRIES: ["US", "GB", "LR", "MM"],
-		GRAB_SUPPORTED_AWS_REGIONS: ["ap-southeast-1"],
 		AMAZON_HQ: {
 			US: { longitude: -122.3408586, latitude: 47.6149975 },
 			SG: { longitude: 103.8461793, latitude: 1.2840177 }

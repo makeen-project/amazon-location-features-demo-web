@@ -24,11 +24,12 @@ import useDeviceMediaQuery from "./useDeviceMediaQuery";
 const {
 	POOLS,
 	WEB_SOCKET_URLS,
+	API_KEYS,
 	ROUTES: { DEMO },
-	PERSIST_STORAGE_KEYS: { FASTEST_REGION },
-	MAP_RESOURCES: { GRAB_SUPPORTED_AWS_REGIONS }
+	PERSIST_STORAGE_KEYS: { FASTEST_REGION }
 } = appConfig;
 const fallbackRegion = POOLS[Object.keys(POOLS)[0]];
+const fallbackApiKey = Object.values(API_KEYS)[0];
 
 const useAuth = () => {
 	const store = useAuthStore();
@@ -41,19 +42,31 @@ const useAuth = () => {
 	const { isDesktop } = useDeviceMediaQuery();
 
 	useEffect(() => {
-		if (window.location.pathname === DEMO && !store.identityPoolId) {
+		if (window.location.pathname === DEMO && (!store.apiKey || !store.identityPoolId)) {
 			(async () => {
 				await setClosestRegion();
 				const region = localStorage.getItem(FASTEST_REGION) ?? fallbackRegion;
-				const identityPoolId = POOLS[region];
-				const webSocketUrl = WEB_SOCKET_URLS[region];
-				setState({ identityPoolId, region, webSocketUrl });
+				setState({
+					apiKey: region in API_KEYS ? API_KEYS[region] : fallbackApiKey,
+					identityPoolId: POOLS[region],
+					region,
+					webSocketUrl: WEB_SOCKET_URLS[region]
+				});
 			})();
 		}
-	}, [store.identityPoolId, setState]);
+	}, [store.apiKey, store.identityPoolId, setState]);
 
 	const methods = useMemo(
 		() => ({
+			fetchLocationClientConfigWithApiKey: async (apiKey: string) => {
+				try {
+					const authHelper = await authService.withAPIKey(apiKey);
+					const locationClientConfig = authHelper.getLocationClientConfig();
+					return locationClientConfig;
+				} catch (error) {
+					errorHandler(error);
+				}
+			},
 			fetchCredentials: async () => {
 				try {
 					const { identityPoolId, region, userPoolId, authTokens } = store;
@@ -117,8 +130,7 @@ const useAuth = () => {
 						const newTokens = await response.json();
 						setState({
 							authTokens: { ...newTokens, refresh_token: authTokens.refresh_token },
-							credentials: undefined,
-							authOptions: undefined
+							credentials: undefined
 						});
 					}
 				} catch (error) {
@@ -165,7 +177,7 @@ const useAuth = () => {
 				);
 			},
 			clearCredentials: () => {
-				setState({ credentials: undefined, authOptions: undefined });
+				setState({ credentials: undefined });
 			},
 			setAuthTokens: (authTokens?: AuthTokensType) => {
 				setState({ authTokens });
@@ -230,42 +242,32 @@ const useAuth = () => {
 			onDisconnectAwsAccount: () => {
 				clearStorage();
 				methods.resetStore();
-				resetClientStore();
+				resetClientStore(); // Clear credentials dependent clients only
 				resetMapStore();
 				setTimeout(() => window.location.reload(), 3000);
 			},
-			switchToGrabMapRegionStack: () => {
-				for (const region of GRAB_SUPPORTED_AWS_REGIONS) {
-					const identityPoolId = POOLS[region];
-					const webSocketUrl = WEB_SOCKET_URLS[region];
-
-					if (identityPoolId) {
-						setState({ identityPoolId, region, webSocketUrl, credentials: undefined, authOptions: undefined });
-						return;
-					}
-				}
-			},
 			switchToDefaultRegionStack: () => {
 				const region = localStorage.getItem(FASTEST_REGION) ?? fallbackRegion;
-				const identityPoolId = POOLS[region];
-				const webSocketUrl = WEB_SOCKET_URLS[region];
-
-				setState({ identityPoolId, region, webSocketUrl, credentials: undefined, authOptions: undefined });
+				setState({
+					apiKey: region in API_KEYS ? API_KEYS[region] : fallbackApiKey,
+					identityPoolId: POOLS[region],
+					region,
+					webSocketUrl: WEB_SOCKET_URLS[region],
+					credentials: undefined
+				});
 			},
 			setAutoRegion: (autoRegion: boolean, region: "Automatic" | RegionEnum) => {
 				if (autoRegion) {
 					(async () => {
 						await setClosestRegion();
 						const region = localStorage.getItem(FASTEST_REGION) ?? fallbackRegion;
-						const identityPoolId = POOLS[region];
-						const webSocketUrl = WEB_SOCKET_URLS[region];
 						setState({
-							identityPoolId,
+							apiKey: region in API_KEYS ? API_KEYS[region] : fallbackApiKey,
+							identityPoolId: POOLS[region],
 							region,
-							webSocketUrl,
+							webSocketUrl: WEB_SOCKET_URLS[region],
 							autoRegion,
-							credentials: undefined,
-							authOptions: undefined
+							credentials: undefined
 						});
 					})();
 				} else {
@@ -277,18 +279,9 @@ const useAuth = () => {
 							webSocketUrl: WEB_SOCKET_URLS[region],
 							autoRegion,
 							credentials: undefined,
-							authOptions: undefined
+							apiKey: region in API_KEYS ? API_KEYS[region] : fallbackApiKey
 						});
 				}
-			},
-			setIdentityPoolIdRegionAndWebSocketUrl: (identityPoolId?: string, region?: string, webSocketUrl?: string) => {
-				setState({ identityPoolId, region, webSocketUrl });
-			},
-			setStackRegion: (stackRegion?: { value: string; label: string }) => {
-				setState({ stackRegion });
-			},
-			setCloudFormationLink: (cloudFormationLink: string) => {
-				setState({ cloudFormationLink });
 			},
 			handleStackRegion: (option: { value: string; label: string }) => {
 				const { label, value } = option;
@@ -302,28 +295,9 @@ const useAuth = () => {
 					setState({ stackRegion: { label: l, value }, cloudFormationLink: newUrl });
 				}
 			},
-			fetchAuthOptions: async () => {
-				try {
-					const { identityPoolId, region, userPoolId, authTokens } = store;
-
-					if (identityPoolId && region) {
-						const authHelper = await authService.withIdentityPoolId(identityPoolId, region, authTokens, userPoolId);
-						const authOptions = authHelper.getMapAuthenticationOptions();
-						setState({ authOptions });
-					}
-				} catch (error) {
-					if ((error as Error).name === "NotAuthorizedException") {
-						await methods.refreshTokens();
-						resetClientStore();
-					} else {
-						errorHandler(error);
-					}
-				}
-			},
 			resetStore: () => {
 				setState({
 					credentials: undefined,
-					authOptions: undefined,
 					authTokens: undefined,
 					identityPoolId: undefined,
 					region: undefined,
@@ -331,7 +305,8 @@ const useAuth = () => {
 					userPoolClientId: undefined,
 					userPoolId: undefined,
 					webSocketUrl: undefined,
-					stackRegion: undefined
+					stackRegion: undefined,
+					apiKey: undefined
 				});
 				setInitial();
 			}

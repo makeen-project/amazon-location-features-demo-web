@@ -2,14 +2,13 @@ import { useCallback, useEffect } from "react";
 
 import { appConfig } from "@demo/core/constants";
 
-import { EventTypeEnum, MapProviderEnum } from "@demo/types/Enums";
+import { EventTypeEnum } from "@demo/types/Enums";
 import { record } from "@demo/utils";
 import { differenceInMilliseconds } from "date-fns";
 
 import useAuth from "./useAuth";
 import useClient from "./useClient";
 import useIot from "./useIot";
-import useMap from "./useMap";
 
 const {
 	PERSIST_STORAGE_KEYS: { SHOULD_CLEAR_CREDENTIALS },
@@ -17,7 +16,7 @@ const {
 } = appConfig;
 let timeout: NodeJS.Timer | undefined;
 
-const useCredsManager = () => {
+const useAuthManager = () => {
 	const {
 		credentials,
 		fetchCredentials,
@@ -31,8 +30,8 @@ const useCredsManager = () => {
 		userPoolClientId,
 		authTokens,
 		setAuthTokens,
-		authOptions,
-		fetchAuthOptions
+		apiKey,
+		fetchLocationClientConfigWithApiKey
 	} = useAuth();
 	const {
 		locationClient,
@@ -42,12 +41,22 @@ const useCredsManager = () => {
 		resetStore: resetClientStore
 	} = useClient();
 	const { attachPolicy } = useIot();
-	const { mapProvider: currentMapProvider } = useMap();
 	const shouldClearCredentials = localStorage.getItem(SHOULD_CLEAR_CREDENTIALS) === "true";
+
+	/* Instantiate Places and Routes clients whenever the apiKey changes */
+	useEffect(() => {
+		if (!!apiKey) {
+			(async () => {
+				// const locationClientConfig = await fetchLocationClientConfigWithApiKey(apiKey);
+				// !placesClient && createPlacesClient(locationClientConfig);
+				// !routesClient && createRoutesClient(locationClientConfig);
+			})();
+		}
+	}, [apiKey, fetchLocationClientConfigWithApiKey]);
 
 	const clearCredsAndClients = useCallback(() => {
 		clearCredentials();
-		resetClientStore();
+		resetClientStore(); // TODO: Clear credentials dependent clients only
 	}, [clearCredentials, resetClientStore]);
 
 	if (shouldClearCredentials || (!!credentials && !credentials?.identityId)) {
@@ -98,7 +107,7 @@ const useCredsManager = () => {
 		refreshCredentials
 	]);
 
-	/* Instantiate location and iot clients whenever the credentials change */
+	/* Instantiate location (Geofences and Trackers) and iot clients whenever the credentials change */
 	useEffect(() => {
 		if (credentials && region) {
 			!locationClient && createLocationClient(credentials, region);
@@ -144,28 +153,19 @@ const useCredsManager = () => {
 			} else {
 				if (credentials.authenticated) {
 					await attachPolicy(credentials.identityId);
-				} else if (!isUserAwsAccountConnected && currentMapProvider !== MapProviderEnum.GRAB) {
+				} else if (!isUserAwsAccountConnected) {
 					await attachPolicy(credentials.identityId, true);
 				}
 			}
 		}
-	}, [credentials, refreshCredentials, isUserAwsAccountConnected, currentMapProvider, attachPolicy]);
+	}, [credentials, refreshCredentials, isUserAwsAccountConnected, attachPolicy]);
 
-	/* Attach IoT policy to authenticated user to ensure successful websocket connection */
+	/* Attach IoT policy to unauth and auth user to ensure successful websocket connection */
 	useEffect(() => {
 		_attachPolicy();
 	}, [_attachPolicy]);
 
-	/* Fetch authOptions for map */
-	useEffect(() => {
-		if (!!!authOptions?.transformRequest) {
-			(async () => {
-				await fetchAuthOptions();
-			})();
-		}
-	}, [authOptions, fetchAuthOptions]);
-
 	return { clearCredsAndClients };
 };
 
-export default useCredsManager;
+export default useAuthManager;

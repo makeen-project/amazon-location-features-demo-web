@@ -1,7 +1,6 @@
 /* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. */
 /* SPDX-License-Identifier: MIT-0 */
 
-import { MapAuthenticationOptions } from "@aws/amazon-location-utilities-auth-helper";
 import { appConfig } from "@demo/core/constants";
 import { AuthTokensType, CognitoIdentityCredentials, IStateProps } from "@demo/types";
 
@@ -14,6 +13,7 @@ const {
 const localStorageKey = `${LOCAL_STORAGE_PREFIX}${AUTH_DATA}`;
 
 export interface AuthStoreProps {
+	apiKey?: string;
 	credentials?: CognitoIdentityCredentials;
 	authTokens?: AuthTokensType;
 	isUserAwsAccountConnected: boolean;
@@ -26,7 +26,6 @@ export interface AuthStoreProps {
 	autoRegion: boolean;
 	stackRegion?: { value: string; label: string };
 	cloudFormationLink: string;
-	authOptions?: MapAuthenticationOptions;
 }
 
 export const initialState: IStateProps<AuthStoreProps> = {
