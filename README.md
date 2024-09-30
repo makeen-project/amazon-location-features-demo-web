@@ -2,19 +2,22 @@
 
 ## Requirements
 
-<!-- TODO: Add point below for VITE_API_KEY_REGIONS and VITE_API_KEYS -->
-<!-- TODO: Update point below to inform that us-east-1 region is necessary pinpoint and that stack created in any regions allows usage of iot, geofences and trackers from that region -->
-1. Run the template from `/extra/cloudformation/default-unauth-resources-template.yaml` to create a cloudformation stack on AWS in `us-east-1` region using your own AWS account and get `IdentityPoolId`, `PinPointAppId`, `WebSocketUrl` from stack output's tab.
+1. Run the template from `/extra/cloudformation/unauth-resources.yaml` to create AWS CloudFormation stack in `us-east-1` region and get `Region`, `ApiKey`, `IdentityPoolId`, `PinPointAppId`, `WebSocketUrl` from stack output's tab.
+   - `Region` value will be added to `.env` file against `VITE_AWS_API_KEY_REGIONS`.
+   - `ApiKey` value will be added to `.env` file against `VITE_AWS_API_KEYS`.
    - `IdentityPoolId` value will be added to `.env` file against `VITE_AWS_COGNITO_IDENTITY_POOL_IDS` and `VITE_PINPOINT_IDENTITY_POOL_ID`.
    - `PinPointAppId` value will be added to `.env` file against `VITE_PINPOINT_APPLICATION_ID`.
    - `WebSocketUrl` value will be added to `.env` file against `VITE_AWS_WEB_SOCKET_URLS`.
-<!-- TODO: Update point below since data providers are not needed anymore, ap-southeast-1 region might still be required for multi-region support -->
-2. Run the template from `/extra/cloudformation/default-unauth-resources-template.yaml` to create a cloudformation stack on AWS in `ap-southeast-1` region using your own AWS account and get `IdentityPoolId`, `WebSocketUrl` from stack output's tab **[Necessary if you want *GrabMaps* to be enabled]**.
-   - `IdentityPoolId` value will be added to `.env` file against `VITE_AWS_COGNITO_IDENTITY_POOL_IDS` **(comma separated for multiple values)**.
-   - `WebSocketUrl` value will be added to `.env` file against `VITE_AWS_WEB_SOCKET_URLS` **(comma separated for multiple values)**.
-3. Value for `VITE_AWS_CF_TEMPLATE`, `VITE_APPLE_APP_STORE_LINK`, `VITE_GOOGLE_PLAY_STORE_LINK` can be added as it is to `.env` file from `.env.examples`.
-4. Value for `VITE_APP_VERSION` needs to be populated with the correct version at the time of deployment in the following format `2.1.0`.
-5. Values for `VITE_MIGRATE_FROM_GOOGLE_MAPS_PAGE`, `VITE_MIGRATE_A_WEB_APP_PAGE`, `VITE_MIGRATE_AN_ANDROID_APP_PAGE`, `VITE_MIGRATE_AN_IOS_APP_PAGE`, `VITE_MIGRATE_A_WEB_SERVICE_PAGE` and `VITE_PRICING_PAG` can either be `1` or `0` to either enable or disable the respective pages.
+   -  ---
+      ***Note***
+      * Pinpoint and Translate resosurces are only created in `us-east-1` which are required for the analytics feature and running translation scripts.
+      * Make sure to run the above stack in `eu-west-1` and `ap-southeast-1` as well to support multiple regions.
+      * The `Region`, `ApiKey`, `IdentityPoolId`, `WebSocketUrl` values from stack output's tab can be added to `.env` file against the respective keys.
+      * The `VITE_AWS_API_KEY_REGIONS`, `VITE_AWS_API_KEYS`, `VITE_AWS_COGNITO_IDENTITY_POOL_IDS`, `VITE_AWS_WEB_SOCKET_URLS` keys in `.env` file should be comma separated for multiple values.
+      ---
+2. Value for `VITE_AWS_CF_TEMPLATE`, `VITE_APPLE_APP_STORE_LINK`, `VITE_GOOGLE_PLAY_STORE_LINK` can be added as it is to `.env` file from `.env.examples`.
+5. Value for `VITE_APP_VERSION` needs to be populated with the correct version at the time of deployment in the following format `2.1.0`.
+6. Values for `VITE_MIGRATE_FROM_GOOGLE_MAPS_PAGE`, `VITE_MIGRATE_A_WEB_APP_PAGE`, `VITE_MIGRATE_AN_ANDROID_APP_PAGE`, `VITE_MIGRATE_AN_IOS_APP_PAGE`, `VITE_MIGRATE_A_WEB_SERVICE_PAGE` and `VITE_PRICING_PAG` can either be `1` or `0` to either enable or disable the respective pages.
 
 #### Env keys required in `.env` file, see `.env.example` for reference
 
@@ -74,8 +77,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 #### If you are configuring Github actions for the E2E tests, make sure to add the below env keys to the secrets section of the repo.
 
-1. The `/extra/cloudformation/main-cf-template.yaml` needs to be deployed on one of the production accounts in the `us-east-1` region.
-2. Download this `/extra/cloudformation/main-cf-template.yaml` on local machine.
+1. The `/extra/cloudformation/auth-resources.yaml` needs to be deployed on one of the production accounts in the `us-east-1` region.
+2. Download this `/extra/cloudformation/auth-resources.yaml` on local machine.
 3. Login to AWS console.
 4. Go to CloudFormation service.
 5. Click on Create Stack → Upload a Template file → Select the template file downloaded above.
