@@ -34,6 +34,10 @@ const useAuthManager = () => {
 		fetchLocationClientConfigWithApiKey
 	} = useAuth();
 	const {
+		placesClient,
+		createPlacesClient,
+		routesClient,
+		createRoutesClient,
 		locationClient,
 		createLocationClient,
 		iotClient,
@@ -47,12 +51,15 @@ const useAuthManager = () => {
 	useEffect(() => {
 		if (!!apiKey) {
 			(async () => {
-				// const locationClientConfig = await fetchLocationClientConfigWithApiKey(apiKey);
-				// !placesClient && createPlacesClient(locationClientConfig);
-				// !routesClient && createRoutesClient(locationClientConfig);
+				const locationClientConfig = await fetchLocationClientConfigWithApiKey(apiKey);
+
+				if (locationClientConfig) {
+					!placesClient && createPlacesClient(locationClientConfig);
+					!routesClient && createRoutesClient(locationClientConfig);
+				}
 			})();
 		}
-	}, [apiKey, fetchLocationClientConfigWithApiKey]);
+	}, [apiKey, fetchLocationClientConfigWithApiKey, placesClient, createPlacesClient, routesClient, createRoutesClient]);
 
 	const clearCredsAndClients = useCallback(() => {
 		clearCredentials();
@@ -107,7 +114,7 @@ const useAuthManager = () => {
 		refreshCredentials
 	]);
 
-	/* Instantiate location (Geofences and Trackers) and iot clients whenever the credentials change */
+	/* Instantiate location client for Geofences and Trackers and iot client whenever the credentials change */
 	useEffect(() => {
 		if (credentials && region) {
 			!locationClient && createLocationClient(credentials, region);
@@ -142,6 +149,7 @@ const useAuthManager = () => {
 		}
 	}, [clearCredsAndClients, credentials, identityPoolId, userPoolClientId, region, userPoolId, fetchTokens]);
 
+	// TODO: check if policy already attached before attaching
 	const _attachPolicy = useCallback(async () => {
 		if (credentials && credentials?.expiration) {
 			const now = new Date();

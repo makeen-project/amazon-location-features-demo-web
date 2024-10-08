@@ -33,11 +33,12 @@ import useRoute from "./useRoute";
 import useTracker from "./useTracker";
 
 const {
-	POOLS,
+	IDENTITY_POOL_IDS,
 	PERSIST_STORAGE_KEYS: { FASTEST_REGION, GEO_LOCATION_ALLOWED },
 	MAP_RESOURCES: { MAX_BOUNDS, AMAZON_HQ, GRAB_SUPPORTED_AWS_REGIONS },
 	GET_PARAMS: { DATA_PROVIDER }
 } = appConfig;
+const fallbackRegion = Object.values(IDENTITY_POOL_IDS)[0];
 const searchParams = new URLSearchParams(window.location.search);
 let switchToMapProvider = searchParams.get(DATA_PROVIDER);
 
@@ -97,7 +98,6 @@ const useMapManager = ({
 	const { t } = useTranslation();
 	const { isDesktop } = useDeviceMediaQuery();
 	const { setBottomSheetOpen, setBottomSheetHeight, setBottomSheetMinHeight } = useBottomSheet();
-	const fallbackRegion = Object.values(POOLS)[0];
 	const fastestRegion = localStorage.getItem(FASTEST_REGION) ?? fallbackRegion.split(":")[0];
 	const defaultRegion = regionsData.find(option => option.value === fastestRegion) as { value: string; label: string };
 	const isGrabAvailableInRegion = useMemo(() => !!region && GRAB_SUPPORTED_AWS_REGIONS.includes(region), [region]);

@@ -42,7 +42,7 @@ const InputField = lazy(() =>
 );
 
 const {
-	POOLS,
+	IDENTITY_POOL_IDS,
 	ROUTES: { HELP },
 	MAP_RESOURCES: {
 		MAP_STYLES: { ESRI_STYLES, HERE_STYLES },
@@ -53,6 +53,7 @@ const {
 } = appConfig;
 const { IMPERIAL, METRIC } = MapUnitEnum;
 const { ESRI, HERE, GRAB, OPEN_DATA } = MapProviderEnum;
+const fallbackRegion = Object.keys(IDENTITY_POOL_IDS)[0];
 
 interface SettingsModalProps {
 	open: boolean;
@@ -118,7 +119,6 @@ const SettingsModal: FC<SettingsModalProps> = ({
 	const { t, i18n } = useTranslation();
 	const langDir = i18n.dir();
 	const isLtr = langDir === "ltr";
-	const fallbackRegion = Object.values(POOLS)[0];
 	const fastestRegion = localStorage.getItem(FASTEST_REGION) ?? fallbackRegion;
 	const { isDesktop, isMobile } = useDeviceMediaQuery();
 

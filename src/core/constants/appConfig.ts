@@ -38,7 +38,7 @@ const getEnv = (key: string) => {
 };
 
 const appConfig = {
-	POOLS: (getEnv("VITE_AWS_COGNITO_IDENTITY_POOL_IDS") || "")
+	IDENTITY_POOL_IDS: (getEnv("VITE_AWS_COGNITO_IDENTITY_POOL_IDS") || "")
 		.split(",")
 		.reduce((result: { [key: string]: string }, value: string) => {
 			const poolId = value.trim();

@@ -474,7 +474,6 @@ const DemoPage: FC = () => {
 
 	const styles = ["Standard", "Monochrome", "Hybrid", "Satellite"];
 	const colorSchemes = ["Light", "Dark"];
-	const variants = ["Default", "Logistics"];
 
 	return !!apiKeyRegion && !!apiKey ? (
 		<View
@@ -492,7 +491,7 @@ const DemoPage: FC = () => {
 						? { ...currentLocationData.currentLocation, zoom }
 						: { ...viewpoint, zoom }
 				}
-				mapStyle={`https://maps.geo.${apiKeyRegion}.amazonaws.com/v2/styles/${styles[0]}/descriptor?key=${apiKey}&color-scheme=${colorSchemes[0]}&variant=${variants[0]}`}
+				mapStyle={`https://maps.geo.${apiKeyRegion}.amazonaws.com/v2/styles/${styles[0]}/descriptor?key=${apiKey}&color-scheme=${colorSchemes[0]}`}
 				minZoom={2}
 				maxBounds={
 					currentMapProvider === MapProviderEnum.GRAB
@@ -511,17 +510,7 @@ const DemoPage: FC = () => {
 				onError={error => errorHandler(error.error)}
 				onIdle={() => gridLoader && setGridLoader(false)}
 				attributionControl={false}
-				transformRequest={url => {
-					if (url.indexOf("?key=") > -1) {
-						return {
-							url: url
-						};
-					}
-
-					return {
-						url: url + `?key=${apiKey}`
-					};
-				}}
+				transformRequest={url => (url.indexOf("?key=") > -1 ? { url } : { url: url + `?key=${apiKey}` })}
 			>
 				<View className={gridLoader ? "loader-container" : ""}>
 					{isDesktop && (

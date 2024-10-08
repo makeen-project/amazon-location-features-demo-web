@@ -27,7 +27,7 @@ if (typeof window?.matchMedia === "undefined") {
 }
 
 jest.mock("@demo/core/constants/appConfig", () => ({
-	POOLS: {
+	IDENTITY_POOL_IDS: {
 		"XX-XXXX-X": "XX-XXXX-X:XXXXXXXX-XXXX-1234-abcd-1234567890ab"
 	},
 	WEB_SOCKET_URLS: {

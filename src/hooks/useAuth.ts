@@ -22,13 +22,13 @@ import { useTranslation } from "react-i18next";
 import useDeviceMediaQuery from "./useDeviceMediaQuery";
 
 const {
-	POOLS,
+	IDENTITY_POOL_IDS,
 	WEB_SOCKET_URLS,
 	API_KEYS,
 	ROUTES: { DEMO },
 	PERSIST_STORAGE_KEYS: { FASTEST_REGION }
 } = appConfig;
-const fallbackRegion = POOLS[Object.keys(POOLS)[0]];
+const fallbackRegion = Object.keys(IDENTITY_POOL_IDS)[0];
 const fallbackApiKey = Object.values(API_KEYS)[0];
 
 const useAuth = () => {
@@ -48,7 +48,7 @@ const useAuth = () => {
 				const region = localStorage.getItem(FASTEST_REGION) ?? fallbackRegion;
 				setState({
 					apiKey: region in API_KEYS ? API_KEYS[region] : fallbackApiKey,
-					identityPoolId: POOLS[region],
+					identityPoolId: IDENTITY_POOL_IDS[region],
 					region,
 					webSocketUrl: WEB_SOCKET_URLS[region]
 				});
@@ -250,7 +250,7 @@ const useAuth = () => {
 				const region = localStorage.getItem(FASTEST_REGION) ?? fallbackRegion;
 				setState({
 					apiKey: region in API_KEYS ? API_KEYS[region] : fallbackApiKey,
-					identityPoolId: POOLS[region],
+					identityPoolId: IDENTITY_POOL_IDS[region],
 					region,
 					webSocketUrl: WEB_SOCKET_URLS[region],
 					credentials: undefined
@@ -263,7 +263,7 @@ const useAuth = () => {
 						const region = localStorage.getItem(FASTEST_REGION) ?? fallbackRegion;
 						setState({
 							apiKey: region in API_KEYS ? API_KEYS[region] : fallbackApiKey,
-							identityPoolId: POOLS[region],
+							identityPoolId: IDENTITY_POOL_IDS[region],
 							region,
 							webSocketUrl: WEB_SOCKET_URLS[region],
 							autoRegion,
@@ -271,15 +271,15 @@ const useAuth = () => {
 						});
 					})();
 				} else {
-					!!POOLS[region] &&
+					!!IDENTITY_POOL_IDS[region] &&
 						!!WEB_SOCKET_URLS[region] &&
 						setState({
-							identityPoolId: POOLS[region],
+							apiKey: region in API_KEYS ? API_KEYS[region] : fallbackApiKey,
+							identityPoolId: IDENTITY_POOL_IDS[region],
 							region,
 							webSocketUrl: WEB_SOCKET_URLS[region],
 							autoRegion,
-							credentials: undefined,
-							apiKey: region in API_KEYS ? API_KEYS[region] : fallbackApiKey
+							credentials: undefined
 						});
 				}
 			},
