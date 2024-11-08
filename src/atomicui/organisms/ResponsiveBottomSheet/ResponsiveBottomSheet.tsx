@@ -24,7 +24,7 @@ import { useGeofence, useMap, usePersistedData, useRoute, useTracker } from "@de
 import useBottomSheet from "@demo/hooks/useBottomSheet";
 import useDeviceMediaQuery from "@demo/hooks/useDeviceMediaQuery";
 import { ShowStateType } from "@demo/types";
-import { MenuItemEnum, ResponsiveUIEnum, SettingOptionEnum } from "@demo/types/Enums";
+import { MapColorSchemeEnum, MenuItemEnum, ResponsiveUIEnum, SettingOptionEnum } from "@demo/types/Enums";
 import type { GeolocateControl as GeolocateControlRef } from "maplibre-gl";
 import { useTranslation } from "react-i18next";
 import { MapRef } from "react-map-gl/maplibre";
@@ -56,11 +56,9 @@ interface IProps {
 	onShowAuthGeofenceBox: () => void;
 	onShowAuthTrackerBox: () => void;
 	onShowSettings: () => void;
-	onShowTrackingDisclaimerModal: () => void;
 	onShowAboutModal: () => void;
 	onShowUnauthGeofenceBox: () => void;
 	onShowUnauthTrackerBox: () => void;
-	onshowUnauthSimulationDisclaimerModal: () => void;
 	setShowUnauthGeofenceBox: (b: boolean) => void;
 	setShowUnauthTrackerBox: (b: boolean) => void;
 	setShowStartUnauthSimulation: (b: boolean) => void;
@@ -78,7 +76,6 @@ interface IProps {
 	confirmCloseSimulation: boolean;
 	setConfirmCloseSimulation: Dispatch<SetStateAction<boolean>>;
 	setShowAuthTrackerBox: (b: boolean) => void;
-	clearCredsAndClients?: () => void;
 	setShowAuthGeofenceBox: (b: boolean) => void;
 	setTriggerOnClose: Dispatch<SetStateAction<boolean>>;
 	setTriggerOnReset: Dispatch<SetStateAction<boolean>>;
@@ -87,6 +84,7 @@ interface IProps {
 	isExpandRouteOptionsMobile: boolean;
 	setExpandRouteOptionsMobile: (b: boolean) => void;
 	setSearchBoxValue: Dispatch<SetStateAction<string>>;
+	setShowUnauthSimulationBounds: (b: boolean) => void;
 }
 
 const ResponsiveBottomSheet: FC<IProps> = ({
@@ -102,11 +100,9 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 	onShowAuthGeofenceBox,
 	onShowAuthTrackerBox,
 	onShowSettings,
-	onShowTrackingDisclaimerModal,
 	onShowAboutModal,
 	onShowUnauthGeofenceBox,
 	onShowUnauthTrackerBox,
-	onshowUnauthSimulationDisclaimerModal,
 	setShowUnauthGeofenceBox,
 	setShowUnauthTrackerBox,
 	from,
@@ -123,14 +119,14 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 	confirmCloseSimulation,
 	setConfirmCloseSimulation,
 	setShowAuthTrackerBox,
-	clearCredsAndClients,
 	setTriggerOnClose,
 	setTriggerOnReset,
 	isEditingAuthRoute,
 	setShowRouteBox,
 	isExpandRouteOptionsMobile,
 	setExpandRouteOptionsMobile,
-	setSearchBoxValue
+	setSearchBoxValue,
+	setShowUnauthSimulationBounds
 }) => {
 	const { isDesktop, isMobile, isTablet, isMax556, isDesktopBrowser } = useDeviceMediaQuery();
 	const { unauthNotifications, isAddingGeofence } = useGeofence();
@@ -150,7 +146,7 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 	const { setSettingsOptions } = usePersistedData();
 	const { resetStore: resetRouteStore } = useRoute();
 	const { setIsEditingRoute, setTrackerPoints } = useTracker();
-	const { mapStyle } = useMap();
+	const { mapColorScheme } = useMap();
 	const [arrowDirection, setArrowDirection] = useState("no-dragging");
 	const prevBottomSheetHeightRef = useRef(bottomSheetCurrentHeight);
 	const bottomSheetRef = useRef<RefHandles | null>(null);
@@ -333,12 +329,11 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 	}, [from, resetToExplore, setShow]);
 
 	const onCloseAuthTracker = useCallback(() => {
-		clearCredsAndClients && clearCredsAndClients();
 		setIsEditingRoute(false);
 		setTrackerPoints(undefined);
 		setShowAuthTrackerBox(false);
 		setUI(ResponsiveUIEnum.explore);
-	}, [clearCredsAndClients, setIsEditingRoute, setShowAuthTrackerBox, setTrackerPoints, setUI]);
+	}, [setIsEditingRoute, setShowAuthTrackerBox, setTrackerPoints, setUI]);
 
 	const onBackUnauthHandler = useCallback(() => {
 		if (isNotifications) {
@@ -413,9 +408,6 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 							<Flex direction="column" alignItems="flex-start" gap="0">
 								<Text fontFamily="AmazonEmber-Bold" fontSize="1.23rem" textAlign="left">
 									{t("map_style.text")}
-								</Text>
-								<Text fontFamily="AmazonEmber-Regular" fontSize="1rem" color="var(--grey-color)" textAlign="left">
-									{t("map_buttons__info.text")}
 								</Text>
 							</Flex>
 						</Flex>
@@ -517,11 +509,9 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 										onShowAuthGeofenceBox={onShowAuthGeofenceBox}
 										onShowAuthTrackerBox={onShowAuthTrackerBox}
 										onShowSettings={onShowSettings}
-										onShowTrackingDisclaimerModal={onShowTrackingDisclaimerModal}
 										onShowAboutModal={onShowAboutModal}
 										onShowUnauthGeofenceBox={onShowUnauthGeofenceBox}
 										onShowUnauthTrackerBox={onShowUnauthTrackerBox}
-										onshowUnauthSimulationDisclaimerModal={onshowUnauthSimulationDisclaimerModal}
 										bottomSheetRef={bottomSheetRef}
 									/>
 								)}
@@ -544,10 +534,8 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 			onShowAuthGeofenceBox,
 			onShowAuthTrackerBox,
 			onShowSettings,
-			onShowTrackingDisclaimerModal,
 			onShowUnauthGeofenceBox,
 			onShowUnauthTrackerBox,
-			onshowUnauthSimulationDisclaimerModal,
 			setUI
 		]
 	);
@@ -570,19 +558,21 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 	const footerHeight = useCallback((maxHeight: number) => calculatePixelValue(maxHeight, 50), [calculatePixelValue]);
 
 	const onCloseHandler = useCallback(() => {
-		clearCredsAndClients && clearCredsAndClients();
+		setShowUnauthSimulationBounds(false);
 		setShowStartUnauthSimulation(false);
 		from === MenuItemEnum.GEOFENCE ? setShowUnauthGeofenceBox(false) : setShowUnauthTrackerBox(false);
 		setConfirmCloseSimulation(false);
 		resetToExplore();
+		geolocateControlRef.current?.trigger();
 	}, [
-		clearCredsAndClients,
-		from,
-		resetToExplore,
-		setConfirmCloseSimulation,
+		setShowUnauthSimulationBounds,
 		setShowStartUnauthSimulation,
+		from,
 		setShowUnauthGeofenceBox,
-		setShowUnauthTrackerBox
+		setShowUnauthTrackerBox,
+		setConfirmCloseSimulation,
+		resetToExplore,
+		geolocateControlRef
 	]);
 
 	const ExitSimulation = () => (
@@ -655,7 +645,7 @@ const ResponsiveBottomSheet: FC<IProps> = ({
 						{isMax556 && (
 							<Flex className="logo-mobile-container">
 								<Flex
-									className={`logo-mobile ${mapStyle.toLowerCase().includes("dark") ? "dark-logo" : "light-logo"}`}
+									className={`logo-mobile ${mapColorScheme === MapColorSchemeEnum.DARK ? "dark-logo" : "light-logo"}`}
 									onClick={handleLogoClick}
 								/>
 							</Flex>
