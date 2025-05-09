@@ -81,7 +81,9 @@ const appConfig = {
 		MIGRATE_AN_ANDROID_APP: "/migrate-an-android-app",
 		MIGRATE_AN_IOS_APP: "/migrate-an-ios-app",
 		MIGRATE_A_WEB_SERVICE: "/migrate-a-web-service",
-		PRICING: "/pricing"
+		PRICING: "/pricing",
+		API_PLAYGROUND: "/api-playground",
+		API_PLAYGROUND_DETAILS: "/api-playground/:apiPlaygroundId"
 	},
 	GET_PARAMS: {
 		NL_TOGGLE: "nl"
