@@ -190,7 +190,12 @@ export const record: (input: RecordInput[], excludeAttributes?: string[]) => Pro
 
 	const events = input.reduce((result, value) => {
 		const eventId = uuid.randomUUID();
-
+		const date = new Date();
+		if (isNaN(date.getTime())) {
+			console.error("Invalid Date object");
+		} else {
+			console.log(date.toISOString());
+		}
 		const extValue: Event = {
 			...value,
 			Attributes: {
@@ -198,7 +203,18 @@ export const record: (input: RecordInput[], excludeAttributes?: string[]) => Pro
 				...(value.Attributes || {})
 			},
 			Session: { Id: session.id, StartTimestamp: session.startTimestamp, ...(value.Session || {}) },
-			Timestamp: new Date().toISOString()
+			Timestamp: (() => {
+				try {
+					const validDate = new Date(date);
+					if (isNaN(validDate.getTime())) {
+						throw new Error("Invalid Date");
+					}
+					return validDate.toISOString();
+				} catch (error) {
+					console.error("Error generating Timestamp:", error);
+					return "1970-01-01T00:00:00.000Z"; // Fallback value
+				}
+			})()
 		};
 
 		result[eventId] = extValue;
